@@ -1,0 +1,1378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="author" content="Javier Pereiro Pérez">
+<meta name="copyright" content="© 2026 Javier Pereiro Pérez">
+<link rel="canonical" href="https://pactometro.es/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="pactómetro.es">
+<meta property="og:title" content="pactómetro.es">
+<meta property="og:description" content="Mayorías y pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones y todos los ayuntamientos de España, con el histórico electoral oficial.">
+<meta property="og:url" content="https://pactometro.es/">
+<meta property="og:image" content="https://pactometro.es/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#051e3e">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/icono-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<title>Pactómetro</title>
+<meta name="description" content="Calcula mayorías y pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, cabildos, consells y todos los ayuntamientos de España, con el histórico electoral oficial desde 1977.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<style>
+/* Layout: a monochrome "acta" (official record) — masthead, then one working sheet per institution.
+   Party colours are the only colour on the page; all chrome is ink on paper, so no UI colour reads as partisan. */
+:root{
+  --paper:#f2f4f7;        /* page ground */
+  --sheet:#ffffff;        /* working surface */
+  --ink:#051e3e;          /* the logo's navy: text, "sí" state, majority mark */
+  --ink-2:#3c4a5f;        /* secondary text */
+  --muted:#626e80;        /* captions */
+  --rule:#d7dde6;         /* hairlines */
+  --wash:#e8ecf2;         /* hover, control tracks */
+  --seat-empty:#cdd4de;   /* vacant / unassigned seats */
+  --seat-ring:rgba(255,255,255,0);
+  --shadow:0 1px 0 rgba(5,30,62,.04),0 8px 24px -16px rgba(5,30,62,.28);
+  --logo-light:block;     /* navy wordmark on light grounds */
+  --logo-dark:none;
+  --f-display:"Ibarra Real Nova","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --f-sans:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+  --r:6px;
+  --gutter:clamp(16px,4vw,40px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b1018; --sheet:#121926; --ink:#edf0f4; --ink-2:#c3cad5; --muted:#919bab; --rule:#273142;
+    --wash:#1b2432; --seat-empty:#384356; --seat-ring:rgba(255,255,255,.22);
+    --shadow:0 1px 0 rgba(0,0,0,.3),0 10px 30px -18px rgba(0,0,0,.8); --logo-light:none; --logo-dark:block; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0b1018; --sheet:#121926; --ink:#edf0f4; --ink-2:#c3cad5; --muted:#919bab; --rule:#273142;
+  --wash:#1b2432; --seat-empty:#384356; --seat-ring:rgba(255,255,255,.22);
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 10px 30px -18px rgba(0,0,0,.8); --logo-light:none; --logo-dark:block; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 var(--f-sans);font-variation-settings:"wdth" 100}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:var(--gutter)}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.005em}
+h1{font-size:clamp(30px,4.6vw,48px)}
+h2{font-size:clamp(23px,3vw,30px)}
+h3{font-size:19px}
+p{margin:0}
+.eyebrow{font:600 11.5px/1.2 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.num{font-variant-numeric:tabular-nums}
+.stack{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stack > *,.section > *,.page-head > *{min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* ---------- masthead ---------- */
+.mast{background:var(--sheet);border-bottom:1px solid var(--rule);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.mast .wrap{display:flex;align-items:center;gap:20px;min-height:60px;flex-wrap:wrap;padding-block:6px}
+.brand{display:flex;align-items:center;text-decoration:none;flex:none;padding-block:4px}
+.brand img{height:30px;width:auto;display:block}
+.brand .logo-l{display:var(--logo-light)}
+.brand .logo-d{display:var(--logo-dark)}
+@media (max-width:720px){.brand img{height:26px}}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto;min-width:0;max-width:100%}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:8px 11px;border-radius:999px;text-decoration:none;font-weight:500;font-size:14px;white-space:nowrap;color:var(--ink-2)}
+.nav a:hover{background:var(--wash);color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+@media (max-width:720px){.mast .wrap{gap:4px}.nav{margin-left:0;width:100%}}
+
+/* ---------- page furniture ---------- */
+main{padding-block:28px 56px}
+.page-head{display:grid;gap:10px;margin-bottom:22px}
+.page-head .lede{max-width:68ch;color:var(--ink-2);font-size:16px}
+.notice{display:flex;gap:16px;align-items:center;flex-wrap:wrap;border:1.5px solid var(--ink);border-radius:var(--r);padding:12px 16px;margin-bottom:22px;background:var(--sheet)}
+.notice .date{font:700 13px/1 var(--f-sans);font-variation-settings:"wdth" 112;letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:7px 10px;border-radius:4px;white-space:nowrap}
+.notice p{flex:1 1 280px;min-width:0}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:clamp(16px,2.4vw,26px)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:16px}
+.tab{border:1px solid var(--rule);background:var(--sheet);padding:8px 13px;border-radius:999px;text-decoration:none;font-weight:500;font-size:14px;cursor:pointer;white-space:nowrap}
+.tab:hover{border-color:var(--ink)}
+.tab[aria-current="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.select{appearance:none;border:1px solid var(--rule);background:var(--sheet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23686e7a' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;padding:8px 32px 8px 13px;border-radius:999px;font-weight:500;font-size:14px;cursor:pointer;max-width:100%}
+.select:hover{border-color:var(--ink)}
+.badge{display:inline-flex;align-items:center;gap:6px;font:600 11px/1 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);border-radius:999px;padding:5px 9px;color:var(--ink-2);white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.badge.compilado::before{background:transparent;border:1.5px solid var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ink);background:var(--sheet);color:var(--ink);border-radius:999px;padding:7px 13px;font-weight:600;font-size:13.5px;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.ghost{border-color:var(--rule)}
+.btn.ghost:hover{border-color:var(--ink);background:var(--wash);color:var(--ink)}
+.error{border:1.5px dashed var(--ink);border-radius:var(--r);padding:18px;background:var(--sheet)}
+
+/* ---------- pactómetro ---------- */
+.pacto{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px)}
+@media (max-width:900px){.pacto{grid-template-columns:minmax(0,1fr)}}
+.stage{display:flex;flex-direction:column;gap:16px;min-width:0}
+.hemi svg{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
+.hemi .seat{transition:opacity .15s}
+.hemi svg.dim .seat{opacity:.22}
+.hemi svg.dim .seat.hi{opacity:1}
+.hemi text{font-family:var(--f-sans);fill:var(--ink)}
+.tally{display:flex;height:14px;gap:2px;border-radius:4px;overflow:visible;position:relative;background:var(--sheet)}
+.tally > i{display:block;height:100%}
+.tally .t-si{background:var(--ink);border-radius:4px 0 0 4px}
+.tally .t-ab{background:repeating-linear-gradient(135deg,var(--muted) 0 2px,transparent 2px 5px);opacity:.75}
+.tally .t-no{background:var(--wash);border-radius:0 4px 4px 0;box-shadow:inset 0 0 0 1px var(--rule)}
+.tally .mark{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--ink);transform:translateX(-1px)}
+.tally-legend{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.tally-legend b{font-weight:700;color:var(--ink)}
+.verdict{border-top:1px solid var(--rule);padding-top:14px;display:grid;gap:10px}
+.figures{display:flex;gap:clamp(14px,3vw,32px);flex-wrap:wrap;align-items:flex-end}
+.fig{display:grid;gap:2px}
+.fig .v{font:700 clamp(38px,6vw,56px)/.95 var(--f-sans);font-variation-settings:"wdth" 115;letter-spacing:-.02em}
+.fig.minor .v{font-size:clamp(26px,3.6vw,34px);color:var(--ink-2)}
+.fig .k{font:600 11px/1.2 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;letter-spacing:.02em;border:1.5px solid var(--ink);white-space:nowrap}
+.pill.on{background:var(--ink);color:var(--paper)}
+.pill.on::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--paper)}
+.pill.off{background:transparent;color:var(--ink)}
+.pill.off::before{content:"";width:7px;height:7px;border-radius:50%;border:1.5px solid var(--ink)}
+.verdict .why{color:var(--ink-2);max-width:62ch}
+.verdict .law{font-size:12.5px;color:var(--muted)}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.preset-note{font-size:12.5px;color:var(--muted)}
+.plist{display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;background:var(--sheet)}
+.prow{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:9px 10px 9px 12px;border-bottom:1px solid var(--rule)}
+.prow:last-child{border-bottom:0}
+.prow:hover{background:color-mix(in srgb,var(--wash) 60%,transparent)}
+.sw{width:10px;height:28px;border-radius:3px;display:block}
+.pname{min-width:0;display:grid}
+.pname b{font-weight:700;font-size:14.5px;line-height:1.25;overflow-wrap:anywhere}
+.pname small{color:var(--muted);font-size:12px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pseats{text-align:right;display:grid}
+.pseats .e{font:700 17px/1.1 var(--f-sans);font-variant-numeric:tabular-nums}
+.pseats small{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pseats input{width:64px;padding:5px 6px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;background:var(--wash);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:5px 9px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer;min-width:40px}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-checked="true"].v-si{background:var(--ink);color:var(--paper)}
+.seg button[aria-checked="true"].v-abs{background:var(--sheet);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.seg button[aria-checked="true"].v-no{background:var(--sheet);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.18)}
+@media (max-width:420px){.prow{grid-template-columns:8px minmax(0,1fr) auto;row-gap:6px}.prow .seg{grid-column:2 / -1;justify-self:start}.seg button{min-width:52px}}
+.sumline{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:8px 2px;color:var(--ink-2);flex-wrap:wrap}
+.sumline b{color:var(--ink)}
+.warn{font-weight:600;color:var(--ink);border-bottom:1.5px solid var(--ink)}
+.addform{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.addform input{border:1px solid var(--rule);border-radius:999px;padding:7px 12px;background:var(--sheet);min-width:0}
+.addform input[type="text"]{flex:1 1 140px}
+.addform input[type="number"]{width:84px}
+.coal{margin-top:6px;display:grid;gap:10px}
+.coal-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.coal-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.cbox{border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:var(--sheet);display:grid;gap:8px;cursor:pointer;text-align:left}
+.cbox:hover{border-color:var(--ink)}
+.cbox .chips{display:flex;flex-wrap:wrap;gap:5px}
+.cbox .tot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:2px 10px;font-size:12.5px;color:var(--muted)}
+.cbox .tot b{color:var(--ink);font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;border-radius:999px;padding:3px 9px 3px 6px;background:var(--wash);white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+/* ---------- cards & grids ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{display:grid;gap:10px;align-content:start;padding:14px 16px 16px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);text-decoration:none;min-width:0}
+.card:hover{border-color:var(--ink)}
+.card h3{font-size:18px}
+.card .meta{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.card .gov{font-size:12.5px;color:var(--ink-2)}
+.minibar{position:relative;display:flex;gap:2px;height:12px;background:var(--sheet)}
+.minibar i{display:block;height:100%}
+.minibar i:first-child{border-radius:3px 0 0 3px}
+.minibar i:last-child{border-radius:0 3px 3px 0}
+.minibar .mk{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);transform:translateX(-1px)}
+.minilegend{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--ink-2)}
+.minilegend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.minilegend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.section{margin-top:40px;display:grid;gap:16px}
+.section-head{display:grid;gap:6px}
+.section-head p{max-width:72ch;color:var(--ink-2)}
+.group-label{margin-top:8px}
+
+/* ---------- tables ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}
+table.data{border-collapse:collapse;width:100%;font-size:14px}
+table.data th,table.data td{padding:8px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
+table.data tr:last-child td{border-bottom:0}
+table.data th{font:600 11px/1.2 var(--f-sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--paper);white-space:nowrap}
+table.data td.n,table.data th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data .sw{width:8px;height:18px;display:inline-block;vertical-align:middle;margin-right:8px;border-radius:2px}
+table.data tr.clickable{cursor:pointer}
+@media (max-width:600px){table.data .nm{display:none}}
+table.data tr.clickable:hover td{background:var(--wash)}
+details.more{border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}
+details.more > summary{cursor:pointer;padding:12px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:8px}
+details.more > summary::-webkit-details-marker{display:none}
+details.more > summary::after{content:"+";font-weight:400;color:var(--muted)}
+details.more[open] > summary::after{content:"–"}
+details.more > div{padding:0 14px 14px}
+
+/* ---------- history charts ---------- */
+.hbars{display:grid;gap:7px}
+.hbar{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center;text-decoration:none;border-radius:4px;padding:2px 4px;margin:0 -4px}
+.hbar:hover{background:var(--wash)}
+.hbar .lab{font-size:13px;line-height:1.2}
+.hbar .lab b{display:block;font-weight:700;font-variant-numeric:tabular-nums}
+.hbar .lab span{color:var(--muted);font-size:11.5px}
+.hbar .bar{position:relative;display:flex;gap:2px;height:22px;background:var(--sheet)}
+.hbar .bar i{position:relative;display:flex;align-items:center;justify-content:center;height:100%;font-style:normal;font:600 11px/1 var(--f-sans);font-variant-numeric:tabular-nums;overflow:visible;white-space:nowrap}
+.hbar .bar i:first-child{border-radius:4px 0 0 4px}
+.hbar .bar i:last-child{border-radius:0 4px 4px 0}
+.hbar .bar .mk{position:absolute;top:-5px;bottom:-5px;width:2px;transform:translateX(-1px);background:linear-gradient(var(--ink) 0 5px,transparent 5px calc(100% - 5px),var(--ink) calc(100% - 5px))}
+.hbar .bar .mk::after{content:"";position:absolute;left:0;right:0;top:5px;bottom:5px;background:var(--ink);opacity:.35}
+@media (max-width:520px){.hbar{grid-template-columns:70px minmax(0,1fr);gap:8px}}
+.tl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);padding:12px 10px 6px}
+.tl-wrap svg{display:block;min-width:760px;width:100%;height:auto}
+.tl-wrap text{font-family:var(--f-sans);fill:var(--ink-2)}
+.tl-wrap .cell{cursor:pointer}
+.tl-wrap .cell:hover{stroke:var(--ink);stroke-width:1.5}
+.legend-row{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--ink-2);align-items:center}
+.legend-row span{display:inline-flex;gap:6px;align-items:center}
+.legend-row i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.legend-row i.plural{opacity:.42}
+
+/* ---------- search ---------- */
+.search{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.search input[type="search"]{flex:1 1 280px;min-width:0;border:1.5px solid var(--ink);border-radius:999px;padding:12px 18px;font-size:16px;background:var(--sheet)}
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.result{display:grid;gap:6px;padding:11px 13px;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);text-decoration:none;min-width:0}
+.result:hover{border-color:var(--ink)}
+.result .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.result .t b{font-weight:700;overflow-wrap:anywhere}
+.result .t small{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.result .p{font-size:12.5px;color:var(--muted)}
+
+/* ---------- prose (sources) ---------- */
+.prose{max-width:72ch;display:grid;gap:14px;color:var(--ink-2)}
+.prose h2{color:var(--ink);margin-top:14px}
+.prose h3{color:var(--ink);margin-top:6px}
+.prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.prose code{font-size:13px;background:var(--wash);padding:1px 5px;border-radius:3px}
+.copy{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copy output{font-weight:600;color:var(--ink);user-select:all;overflow-wrap:anywhere}
+
+/* ---------- footer ---------- */
+.foot{border-top:1px solid var(--rule);background:var(--sheet)}
+.foot .wrap{padding-block:22px 30px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.foot b{color:var(--ink)}
+
+/* ---------- cuenta atrás 29-N ---------- */
+.notice.cd{align-items:center}
+.cd-main{flex:1 1 340px;min-width:0;display:grid;gap:8px}
+.cd-titulo{font-weight:700}
+.cd-nums{display:flex;gap:clamp(12px,2.4vw,26px);align-items:flex-end;flex-wrap:wrap}
+.cd-nums span{display:grid;gap:4px;justify-items:start}
+.cd-nums b{font:700 clamp(30px,4.8vw,46px)/.95 var(--f-sans);font-variation-settings:"wdth" 115;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.cd-nums i{font:600 10.5px/1 var(--f-sans);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.cd-txt{font-size:13.5px;color:var(--ink-2)}
+.cd-meta{font-size:12.5px;color:var(--muted)}
+.cd-hoy{font:700 19px/1.2 var(--f-display);color:var(--ink)}
+
+/* ---------- encuesta ---------- */
+.enc{display:grid;gap:26px}
+.enc-q{border:0;margin:0;padding:0;display:grid;gap:12px;min-width:0}
+.enc-q legend{padding:0;margin-bottom:12px;font:600 19px/1.25 var(--f-display);color:var(--ink);display:flex;gap:10px;align-items:flex-start;width:100%}
+.enc-q legend > span:last-child{flex:1;min-width:0}
+.enc-q legend .opt{margin-left:6px;white-space:nowrap}
+.enc-n{font:700 12px/1 var(--f-sans);font-variant-numeric:tabular-nums;border:1.5px solid var(--ink);border-radius:999px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
+.opt{font:600 10.5px/1 var(--f-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hint{font-size:12.5px;color:var(--muted)}
+.enc-ops{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+@media (max-width:520px){.enc-ops{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.enc-sub{font:600 11px/1 var(--f-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.enc-op{display:grid;grid-template-columns:auto 6px minmax(0,1fr);gap:10px;align-items:center;border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;cursor:pointer;background:var(--sheet);min-height:52px}
+.enc-op:hover{border-color:var(--ink)}
+.enc-op.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.enc-op[hidden]{display:none!important}
+.enc-op input{appearance:none;-webkit-appearance:none;margin:0;width:17px;height:17px;border:1.5px solid var(--ink);border-radius:50%;background:var(--sheet);display:grid;place-content:center;cursor:pointer}
+.enc-op input:checked{background:var(--ink);box-shadow:inset 0 0 0 3px var(--sheet)}
+.enc-op input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.enc-op .sw{width:6px;height:30px;border-radius:2px}
+.enc-op .sw.none{background:transparent;box-shadow:inset 0 0 0 1px var(--rule)}
+.enc-op .t{display:grid;min-width:0}
+.enc-op .t b{font-weight:700;font-size:14.5px;line-height:1.2;overflow-wrap:anywhere}
+.enc-op .t small{font-size:12px;color:var(--muted);line-height:1.3}
+.enc select.select{width:min(100%,420px)}
+.enc-foot{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:18px}
+.enc-foot p{flex:1 1 260px;min-width:0}
+.btn.solid{background:var(--ink);color:var(--paper);border-color:var(--ink);padding:10px 18px;font-size:15px}
+.btn.solid:hover{background:var(--ink-2);border-color:var(--ink-2);color:var(--paper)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.solid:disabled:hover{background:var(--ink);border-color:var(--ink)}
+.hp{position:absolute!important;left:-10000px;width:1px;height:1px;overflow:hidden}
+.enc-msg{display:grid;gap:10px;justify-items:start}
+.enc-msg p{max-width:62ch;color:var(--ink-2)}
+.enc-err{font-weight:600;color:var(--ink);border-left:3px solid var(--ink);padding-left:10px}
+.enc-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);align-items:start}
+@media (max-width:900px){.enc-layout{grid-template-columns:minmax(0,1fr)}}
+.enc-how{display:grid;gap:14px;padding:clamp(16px,2.4vw,24px);border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}
+.enc-how dl{margin:0;display:grid;gap:12px}
+.enc-how dt{font-weight:700;font-size:14px}
+.enc-how dd{margin:2px 0 0;font-size:13.5px;color:var(--ink-2)}
+.notice.prev .date{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.foot .mark{display:inline-flex;align-items:center;gap:8px}
+.foot .mark img{width:20px;height:20px;display:block}
+
+/* ---------- tooltip ---------- */
+.tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.35;max-width:260px;box-shadow:0 6px 20px -8px rgba(0,0,0,.45)}
+.tip strong{display:block;font-size:15px;font-weight:700}
+.loading{color:var(--muted);padding:40px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <a class="brand" href="#congreso" aria-label="pactómetro.es, inicio"><img class="logo-l" src="img/logo.png" alt="pactómetro.es" width="188" height="30"><img class="logo-d" src="img/logo-oscuro.png" alt="pactómetro.es" width="188" height="30"></a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#congreso" data-nav="congreso">Congreso</a>
+      <a href="#encuesta" data-nav="encuesta" hidden>Encuesta 29-N</a>
+      <a href="#autonomias" data-nav="autonomias">Autonomías</a>
+      <a href="#locales" data-nav="locales">Diputaciones y cabildos</a>
+      <a href="#ayuntamientos" data-nav="ayuntamientos">Ayuntamientos</a>
+      <a href="#historico" data-nav="historico">Histórico</a>
+      <a href="#fuentes" data-nav="fuentes">Fuentes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app" tabindex="-1">
+  <p class="loading">Cargando datos electorales…</p>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: pactometroes@gmail.com</span></p>
+    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y aviso legal</a></p>
+  </div>
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+
+<script src="config.js"></script>
+<script>
+'use strict';
+/* ================================================================ utilidades */
+const NF = new Intl.NumberFormat('es-ES');
+const fmt = n => (n === null || n === undefined || isNaN(n)) ? '—' : NF.format(n);
+const fmtPct = x => (x === null || x === undefined || !isFinite(x)) ? '—' : x.toLocaleString('es-ES', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + ' %';
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function fecha(iso){ if(!iso) return ''; const [y,m,d] = iso.split('-').map(Number); return d ? `${d} de ${MESES[m-1]} de ${y}` : String(y); }
+function fechaCorta(iso){ const [y,m,d] = iso.split('-').map(Number); return `${d}-${m}-${y}`; }
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const ACR = new Set(['PSOE','PP','IU','PSC','PSUC','ERC','CUP','BNG','PNV','EAJ','UPN','PAR','CHA','PRC','CDS','UCD','AP','PCE','EUPV','ICV','EUIA','PSPV','PSIB','PSN','PSE','EE','EA','HB','CC','NC','ASG','AHI','UPL','PDP','PL','UL','PDPC','JXCAT','PCPV','PCA','PCG','PSA','PA','UV','UPYD','CIU','IC','EUIB','PSM','UM','GBAI','EH','AV','PACMA','SALF','IULV','CA','PSDEG','PSG','EG','CG','CDN','IUN','NEB','RM','LV','IX','IAS','BA','CE','ICAN','AIC','ATI','AM','PSV','CM','CP','TE','XAV','SY','DO','CCN','PNC','NCA','FAC','UPCA','URAS','PAS','UNA','FIEF','AIPF','COP','EVIB','PCN','TC','CEX','SIEX','INME','EHAK','PCTV','ANV','MDYC','CPM','SML','UPV','EB','DL','CDC','JXSI','PDECAT','ECP','MM','VQ','AA','UXE']);
+const PART = new Set(['de','del','la','las','los','el','y','e','i','per','por','para','con','en','a','al','da','das','do','dos','les','els','o','u','pel','dels','amb','sin','pola','na','no']);
+function nice(s){
+  s = String(s || '');
+  if (!s || s !== s.toUpperCase() || !/[A-ZÁÉÍÓÚÑÇÀÈÒÏÜ]{3}/.test(s)) return s;
+  let first = true;
+  return s.toLowerCase().replace(/[\p{L}·'’]+/gu, w => {
+    const up = w.toUpperCase().replace(/[·'’]/g, '');
+    let out;
+    if (ACR.has(up)) out = w.toUpperCase();
+    else if (!first && PART.has(w)) out = w;
+    else if (/^(d|l)['’]./.test(w)) out = w.slice(0, 2) + w.charAt(2).toUpperCase() + w.slice(3);
+    else out = w.charAt(0).toUpperCase() + w.slice(1);
+    first = false;
+    return out;
+  });
+}
+const SIG_FIX = {'PSDEG-PSOE': 'PSdeG-PSOE', 'CCA': 'CCa', 'CCA-PNC': 'CCa-PNC', 'MÉS': 'Més', 'GXF': 'GxF', 'EH BILDU': 'EH Bildu', 'JXCAT': 'JxCat', 'MXME': 'MxMe', 'VOX': 'Vox', 'SUMAR': 'Sumar'};
+function niceSig(s){
+  s = String(s || '');
+  if (SIG_FIX[s.toUpperCase()]) return SIG_FIX[s.toUpperCase()];
+  return (/\s/.test(s) && s.length > 6 && s === s.toUpperCase()) ? nice(s) : s;
+}
+function ink(hex){ // readable text colour on a party fill
+  const h = hex.replace('#',''); const r = parseInt(h.substr(0,2),16)/255, g = parseInt(h.substr(2,2),16)/255, b = parseInt(h.substr(4,2),16)/255;
+  const L = c => c <= .03928 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
+  return (.2126*L(r) + .7152*L(g) + .0722*L(b)) > .42 ? '#17191e' : '#ffffff';
+}
+const app = document.getElementById('app');
+const tip = document.getElementById('tip');
+function showTip(ev, html){ tip.innerHTML = html; tip.hidden = false; moveTip(ev); }
+function moveTip(ev){
+  const pad = 14, w = tip.offsetWidth, hgt = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - pad;
+  if (y + hgt > innerHeight - 8) y = ev.clientY - hgt - pad;
+  tip.style.left = Math.max(8, x) + 'px'; tip.style.top = Math.max(8, y) + 'px';
+}
+function hideTip(){ tip.hidden = true; }
+const store = {
+  get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+
+/* ================================================================ datos */
+const cache = {};
+function load(path){
+  if (!cache[path]) cache[path] = fetch('data/' + path).then(r => {
+    if (!r.ok) throw new Error(`No se pudo cargar «${path}» (error ${r.status}). Recarga la página para intentarlo de nuevo.`);
+    return r.json();
+  }).catch(e => { delete cache[path]; throw e; });
+  return cache[path];
+}
+let FAM = {};
+const rowToParty = (r, i) => ({ id: String(i), sig: r[0], nom: r[1], color: r[2], fam: r[3], votos: r[4], esc: r[5] });
+
+/* ================================================================ hemiciclo */
+const layoutCache = {};
+function seatLayout(n){
+  if (layoutCache[n]) return layoutCache[n];
+  const cap = N => { let t = 0; for (let i = 1; i <= N; i++) t += Math.floor(Math.PI / (2 * Math.asin(2 / (3*N + 4*i - 2)))); return t; };
+  let rows = 1; while (cap(rows) < n) rows++;
+  const total = cap(rows), rad = 0.4 / rows, pos = [];
+  const arc = (J, R) => {
+    if (J <= 0) return;
+    if (J === 1) { pos.push([Math.PI/2, R]); return; }
+    for (let j = 0; j < J; j++) pos.push([j * (Math.PI - 2*Math.sin(rad/R)) / (J-1) + Math.sin(rad/R), R]);
+  };
+  for (let i = 1; i < rows; i++) arc(Math.floor(n / total * Math.PI / (2 * Math.asin(2 / (3*rows + 4*i - 2)))), (3*rows + 4*i - 2) / (4*rows));
+  arc(n - pos.length, (7*rows - 2) / (4*rows));
+  pos.sort((a, b) => (b[0] - a[0]) || (a[1] - b[1]));
+  return (layoutCache[n] = {pos, rad, rows});
+}
+
+/* ================================================================ coaliciones mínimas ganadoras */
+function minimalWinning(parties, maj){
+  const P = parties.filter(p => p.esc > 0).sort((a, b) => b.esc - a.esc).slice(0, 18);
+  const n = P.length, out = [];
+  for (let mask = 1; mask < (1 << n); mask++){
+    let s = 0, mn = Infinity, k = 0;
+    for (let i = 0; i < n; i++) if (mask & (1 << i)) { s += P[i].esc; k++; if (P[i].esc < mn) mn = P[i].esc; }
+    if (s >= maj && s - mn < maj) out.push({members: P.filter((_, i) => mask & (1 << i)), s, k});
+  }
+  out.sort((a, b) => a.k - b.k || a.s - b.s);
+  return out;
+}
+
+/* ================================================================ componente pactómetro */
+/* cfg: {total, partidos, regla:'congreso'|'parlamento'|'municipal'|'diputacion'|'insular', preset:{id:'si'|'abs'}, presetNota,
+         editable, simKey, masVotada, simBase} */
+function Pactometro(cfg){
+  const root = document.createElement('section');
+  root.className = 'pacto';
+  const st = { partidos: cfg.partidos.map(p => ({...p})), voto: new Map(), showAll: false };
+  st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no'));
+  const total = cfg.total, maj = Math.floor(total / 2) + 1;
+  root.innerHTML = `
+    <div class="stage">
+      <div class="hemi"></div>
+      <div class="stack" style="gap:8px">
+        <div class="tally" aria-hidden="true"></div>
+        <div class="tally-legend"></div>
+      </div>
+      <div class="verdict" aria-live="polite"></div>
+    </div>
+    <div class="side">
+      <div class="side-head">
+        <h3>Votos por candidatura</h3>
+        <div class="row">
+          <button class="btn ghost" type="button" data-act="nadie">Todos «no»</button>
+          ${cfg.preset ? '<button class="btn ghost" type="button" data-act="preset">Restaurar</button>' : ''}
+        </div>
+      </div>
+      ${cfg.presetNota ? `<p class="preset-note">${esc(cfg.presetNota)}</p>` : ''}
+      <div class="plist" role="list"></div>
+      ${cfg.editable ? `<div class="sumline"></div>
+        <form class="addform" autocomplete="off">
+          <input type="text" id="sim-nombre" placeholder="Nueva candidatura (p. ej. SALF)" maxlength="40" aria-label="Nombre de la nueva candidatura" required>
+          <input type="number" id="sim-escanos" min="0" max="${total}" value="1" aria-label="Escaños de la nueva candidatura">
+          <button class="btn" type="submit">Añadir</button>
+        </form>
+        <div class="row">
+          <button class="btn ghost" type="button" data-act="base-2023">Partir del 23-J</button>
+          <button class="btn ghost" type="button" data-act="base-dis">Partir de la disolución</button>
+          <button class="btn ghost" type="button" data-act="ceros">Poner a cero</button>
+        </div>` : ''}
+    </div>
+    <div class="coal" style="grid-column:1/-1"></div>`;
+  const $hemi = root.querySelector('.hemi'), $tally = root.querySelector('.tally'), $tleg = root.querySelector('.tally-legend');
+  const $ver = root.querySelector('.verdict'), $list = root.querySelector('.plist'), $coal = root.querySelector('.coal');
+  const $sum = root.querySelector('.sumline');
+
+  const seatsOf = p => Math.max(0, Math.round(+p.esc || 0));
+  function totals(){
+    let si = 0, no = 0, ab = 0;
+    for (const p of st.partidos){ const s = seatsOf(p), v = st.voto.get(p.id); if (v === 'si') si += s; else if (v === 'abs') ab += s; else no += s; }
+    return {si, no, ab, asig: si + no + ab};
+  }
+  function ordered(){
+    const rank = {si: 0, abs: 1, no: 2};
+    return st.partidos.filter(p => seatsOf(p) > 0).slice().sort((a, b) => rank[st.voto.get(a.id)] - rank[st.voto.get(b.id)] || seatsOf(b) - seatsOf(a));
+  }
+  function drawHemi(){
+    const {pos, rad} = seatLayout(total);
+    const cx = 180, cy = 178, S = 168 / 1.75, r = Math.max(1.2, rad * S * 0.86);
+    const seats = [];
+    for (const p of ordered()) for (let k = 0; k < seatsOf(p); k++) seats.push(p);
+    const t = totals();
+    let svg = `<svg viewBox="0 0 360 200" role="img" aria-label="Hemiciclo de ${total} escaños: ${t.si} sí, ${t.ab} abstención, ${t.no} no. Mayoría absoluta: ${maj}.">`;
+    pos.forEach(([a, R], i) => {
+      const x = cx + R * Math.cos(a) * S, y = cy - R * Math.sin(a) * S, p = seats[i];
+      svg += `<circle class="seat${p ? '' : ' empty'}" ${p ? `data-p="${p.id}"` : ''} cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}" fill="${p ? p.color : 'var(--seat-empty)'}" stroke="var(--seat-ring)" stroke-width="0.8"/>`;
+    });
+    if (maj < pos.length){
+      const a = (pos[maj - 1][0] + pos[maj][0]) / 2, R0 = pos.reduce((m, q) => Math.min(m, q[1]), 9) - rad * 1.7, R1 = pos.reduce((m, q) => Math.max(m, q[1]), 0) + rad * 1.9;
+      const x0 = cx + R0 * Math.cos(a) * S, y0 = cy - R0 * Math.sin(a) * S, x1 = cx + R1 * Math.cos(a) * S, y1 = cy - R1 * Math.sin(a) * S;
+      const xl = cx + (R1 + 0.06) * Math.cos(a) * S, yl = cy - (R1 + 0.06) * Math.sin(a) * S;
+      svg += `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/>`;
+      svg += `<text x="${xl.toFixed(1)}" y="${(yl - 2).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700">${maj}</text>`;
+    }
+    const innerR = pos.reduce((m, q) => Math.min(m, q[1]), 9) * S;
+    const big = Math.min(46, innerR * 0.62);
+    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="${big.toFixed(1)}" font-weight="700" style="font-variation-settings:'wdth' 112;letter-spacing:-.02em">${t.si}</text>`;
+    svg += `<text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="9.5" fill="var(--muted)" style="letter-spacing:.12em">SÍ DE ${total}</text></svg>`;
+    $hemi.innerHTML = svg;
+    const s = $hemi.querySelector('svg');
+    s.addEventListener('pointerover', ev => {
+      const id = ev.target.getAttribute && ev.target.getAttribute('data-p'); if (!id) return;
+      highlight(id, true);
+      const p = st.partidos.find(q => q.id === id);
+      const v = {si: 'Sí', abs: 'Abstención', no: 'No'}[st.voto.get(id)];
+      showTip(ev, `<strong>${fmt(seatsOf(p))} escaños</strong>${esc(niceSig(p.sig))} · vota ${v}`);
+    });
+    s.addEventListener('pointermove', ev => { if (!tip.hidden) moveTip(ev); });
+    s.addEventListener('pointerout', ev => { if (ev.target.getAttribute && ev.target.getAttribute('data-p')) { highlight(null); hideTip(); } });
+  }
+  function highlight(id){
+    const s = $hemi.querySelector('svg'); if (!s) return;
+    s.classList.toggle('dim', !!id);
+    s.querySelectorAll('.seat.hi').forEach(c => c.classList.remove('hi'));
+    if (id) s.querySelectorAll(`.seat[data-p="${id}"]`).forEach(c => c.classList.add('hi'));
+  }
+  function drawTally(){
+    const t = totals(), pc = x => (100 * x / Math.max(total, t.asig)).toFixed(3) + '%';
+    $tally.innerHTML = `<i class="t-si" style="width:${pc(t.si)}"></i><i class="t-ab" style="width:${pc(t.ab)}"></i><i class="t-no" style="width:${pc(t.no)}"></i><span class="mark" style="left:${(100 * maj / Math.max(total, t.asig)).toFixed(3)}%"></span>`;
+    $tleg.innerHTML = `<span>Sí <b>${t.si}</b></span><span>Abstención <b>${t.ab}</b></span><span>No <b>${t.no}</b></span>${total - t.asig > 0 ? `<span>Sin asignar <b>${total - t.asig}</b></span>` : ''}<span>Mayoría absoluta <b>${maj}</b></span>`;
+  }
+  function nombres(){
+    const si = ordered().filter(p => st.voto.get(p.id) === 'si');
+    if (!si.length) return 'Ninguna candidatura';
+    const n = si.map(p => niceSig(p.sig));
+    return n.length === 1 ? n[0] : n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1];
+  }
+  function drawVerdict(){
+    const t = totals(), abs = t.si >= maj, simple = t.si > t.no, falta = Math.max(0, maj - t.si);
+    let pill, why = '', law = '';
+    const who = nombres();
+    if (cfg.regla === 'municipal'){
+      const mv = cfg.masVotada;
+      pill = abs ? '<span class="pill on">Mayoría absoluta</span>' : '<span class="pill off">Sin mayoría absoluta</span>';
+      why = abs ? `${esc(who)} ${who.includes(' y ') ? 'suman' : 'suma'} ${t.si} de ${total} concejales: su candidato sería elegido alcalde o alcaldesa en la sesión constitutiva.`
+                : `Con ${t.si} concejales a favor faltan ${falta} para la mayoría absoluta (${maj}). Si ningún cabeza de lista la alcanza, es proclamado alcalde el de la lista más votada${mv ? `: <b>${esc(niceSig(mv.sig))}</b> (${fmt(mv.votos)} votos)` : ''}.`;
+      law = 'Elección del alcalde: art. 196 de la Ley Orgánica del Régimen Electoral General (LOREG).';
+    } else if (cfg.regla === 'diputacion'){
+      pill = abs ? '<span class="pill on">Presidencia en 1.ª votación</span>' : simple ? '<span class="pill on">Presidencia en 2.ª votación</span>' : '<span class="pill off">Sin mayoría</span>';
+      why = abs ? `${esc(who)} reúne ${t.si} de ${total} diputados provinciales: mayoría absoluta.` : simple ? `Faltan ${falta} para la mayoría absoluta, pero en la segunda votación basta la mayoría simple (${t.si} frente a ${t.no}).` : `No hay mayoría absoluta (faltan ${falta}) ni simple: los votos en contra (${t.no}) igualan o superan a los favorables (${t.si}).`;
+      law = 'Elección del presidente de la diputación: mayoría absoluta en primera votación y simple en segunda (art. 207 LOREG).';
+    } else if (cfg.regla === 'insular'){
+      pill = abs ? '<span class="pill on">Mayoría absoluta</span>' : '<span class="pill off">Sin mayoría absoluta</span>';
+      why = abs ? `${esc(who)} reúne ${t.si} de ${total} escaños.` : `Faltan ${falta} escaños para la mayoría absoluta (${maj}). ${simple ? `Hay mayoría simple: ${t.si} a favor frente a ${t.no} en contra.` : ''}`;
+      law = 'Cada institución insular o foral tiene su propio procedimiento de elección de presidencia; aquí se calcula la mayoría del pleno.';
+    } else {
+      pill = abs ? '<span class="pill on">Investidura en 1.ª votación</span>' : simple ? '<span class="pill on">Investidura en 2.ª votación</span>' : '<span class="pill off">Investidura fallida</span>';
+      why = abs ? `${esc(who)} ${who.includes(' y ') ? 'reúnen' : 'reúne'} ${t.si} síes: mayoría absoluta (${maj}) en la primera votación.`
+          : simple ? `En la primera votación faltan ${falta} síes. En la segunda basta con más síes que noes: ${t.si} frente a ${t.no}.`
+          : `Faltan ${falta} síes para la mayoría absoluta y en la segunda votación los noes (${t.no}) ${t.no === t.si ? 'empatan con' : 'superan a'} los síes (${t.si}).`;
+      law = cfg.regla === 'congreso'
+        ? 'Art. 99 de la Constitución: mayoría absoluta en la primera votación; simple en la segunda, 48 horas después. Si en dos meses nadie es investido, se disuelven las Cortes.'
+        : 'Regla general de los estatutos de autonomía: mayoría absoluta en la primera votación y simple en las siguientes. Algunos parlamentos tienen procedimientos propios.';
+    }
+    $ver.innerHTML = `<div class="figures">
+        <div class="fig"><span class="v">${t.si}</span><span class="k">Sí</span></div>
+        <div class="fig minor"><span class="v">${t.ab}</span><span class="k">Abstención</span></div>
+        <div class="fig minor"><span class="v">${t.no}</span><span class="k">No</span></div>
+        <div style="margin-left:auto">${pill}</div>
+      </div>
+      <p class="why">${why}</p><p class="law">${law}</p>`;
+  }
+  function drawList(){
+    const votosTot = cfg.votosValidos || 0;
+    const parts = st.partidos.slice().sort((a, b) => seatsOf(b) - seatsOf(a) || (b.votos || 0) - (a.votos || 0));
+    $list.innerHTML = '';
+    for (const p of parts){
+      if (!cfg.editable && seatsOf(p) === 0) continue;
+      const v = st.voto.get(p.id);
+      const row = document.createElement('div');
+      row.className = 'prow'; row.setAttribute('role', 'listitem'); row.dataset.p = p.id;
+      const pct = votosTot && p.votos ? fmtPct(100 * p.votos / votosTot) : (p.votos ? fmt(p.votos) + ' votos' : '');
+      row.innerHTML = `<span class="sw" style="background:${p.color}"></span>
+        <div class="pname"><b></b><small></small></div>
+        <div class="pseats">${cfg.editable ? `<input type="number" min="0" max="${total}" value="${seatsOf(p)}" id="esc-${p.id}" aria-label="Escaños de ${esc(p.sig)}">` : `<span class="e">${seatsOf(p)}</span>${pct ? `<small>${pct}</small>` : ''}`}</div>
+        <div class="seg" role="radiogroup" aria-label="Voto de ${esc(p.sig)}">
+          <button type="button" role="radio" class="v-si" data-v="si" aria-checked="${v === 'si'}">Sí</button>
+          <button type="button" role="radio" class="v-abs" data-v="abs" aria-checked="${v === 'abs'}">Abs.</button>
+          <button type="button" role="radio" class="v-no" data-v="no" aria-checked="${v === 'no'}">No</button>
+        </div>`;
+      row.querySelector('b').textContent = niceSig(p.sig);
+      const nm = p.nom && norm(p.nom) !== norm(p.sig) ? nice(p.nom) : '';
+      const sm = row.querySelector('small'); sm.textContent = nm; sm.title = nm;
+      row.addEventListener('pointerenter', () => highlight(p.id));
+      row.addEventListener('pointerleave', () => highlight(null));
+      $list.appendChild(row);
+    }
+    if (cfg.editable){
+      const t = totals();
+      $sum.innerHTML = t.asig === total ? `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span>Cuadra</span>`
+        : `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span class="warn">${t.asig < total ? `Faltan ${total - t.asig}` : `Sobran ${t.asig - total}`}</span>`;
+    }
+  }
+  function drawCoal(){
+    const parts = st.partidos.map(p => ({...p, esc: seatsOf(p)}));
+    const sol = parts.find(p => p.esc >= maj);
+    const list = minimalWinning(parts, maj);
+    const shown = st.showAll ? list.slice(0, 120) : list.slice(0, 9);
+    $coal.innerHTML = `<div class="coal-head"><h3>Mayorías absolutas posibles</h3><span class="small muted">${list.length ? `${list.length} combinaciones mínimas (si sale cualquiera de sus miembros, se pierde la mayoría)` : 'Ninguna combinación alcanza la mayoría absoluta'}</span></div>
+      ${sol ? `<p class="small">${esc(niceSig(sol.sig))} tiene mayoría absoluta en solitario (${sol.esc} de ${total}).</p>` : ''}
+      <div class="coal-list"></div>
+      ${list.length > 9 ? `<div><button class="btn ghost" type="button" data-act="todas">${st.showAll ? 'Ver menos' : `Ver las ${Math.min(list.length, 120)}${list.length > 120 ? ' primeras' : ''}`}</button></div>` : ''}`;
+    const box = $coal.querySelector('.coal-list');
+    for (const c of shown){
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'cbox';
+      b.innerHTML = `<span class="chips"></span><span class="tot"><span><b>${c.s}</b> escaños</span><span>${c.k === 1 ? 'en solitario' : c.k + ' candidaturas'} · ${c.s === maj ? 'justo la mayoría' : (c.s - maj) + ' por encima'}</span></span>`;
+      const chips = b.querySelector('.chips');
+      for (const m of c.members){ const ch = document.createElement('span'); ch.className = 'chip'; ch.innerHTML = `<i style="background:${m.color}"></i>`; ch.appendChild(document.createTextNode(`${niceSig(m.sig)} ${m.esc}`)); chips.appendChild(ch); }
+      b.setAttribute('aria-label', 'Probar esta coalición: ' + c.members.map(m => m.sig).join(', '));
+      b.addEventListener('click', () => { st.partidos.forEach(p => st.voto.set(p.id, c.members.some(m => m.id === p.id) ? 'si' : 'no')); refresh(false); root.querySelector('.stage').scrollIntoView({behavior: 'smooth', block: 'start'}); });
+      box.appendChild(b);
+    }
+  }
+  function save(){ if (cfg.simKey) store.set(cfg.simKey, {partidos: st.partidos.map(p => ({sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, esc: seatsOf(p)})), voto: st.partidos.map(p => st.voto.get(p.id))}); }
+  function refresh(coal = true){ drawHemi(); drawTally(); drawVerdict(); drawList(); if (coal) drawCoal(); save(); }
+  root.addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    const row = b.closest('.prow');
+    if (row && b.dataset.v){ st.voto.set(row.dataset.p, b.dataset.v); refresh(false); return; }
+    const act = b.dataset.act;
+    if (act === 'nadie'){ st.partidos.forEach(p => st.voto.set(p.id, 'no')); refresh(false); }
+    if (act === 'preset'){ st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no')); refresh(false); }
+    if (act === 'todas'){ st.showAll = !st.showAll; drawCoal(); }
+    if (act === 'ceros'){ st.partidos.forEach(p => p.esc = 0); refresh(); }
+    if ((act === 'base-2023' || act === 'base-dis') && cfg.simBase){
+      const base = cfg.simBase[act === 'base-2023' ? 'r2023' : 'dis'];
+      st.partidos = base.map((p, i) => ({...p, id: 'b' + i + '-' + Date.now()})); st.voto = new Map(st.partidos.map(p => [p.id, 'no'])); refresh();
+    }
+  });
+  root.addEventListener('input', ev => {
+    const inp = ev.target; if (!inp.id || !inp.id.startsWith('esc-')) return;
+    const p = st.partidos.find(q => 'esc-' + q.id === inp.id); if (!p) return;
+    p.esc = Math.max(0, Math.min(total, parseInt(inp.value, 10) || 0));
+    drawHemi(); drawTally(); drawVerdict(); drawCoal(); save();
+    const t = totals();
+    $sum.innerHTML = t.asig === total ? `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span>Cuadra</span>` : `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span class="warn">${t.asig < total ? `Faltan ${total - t.asig}` : `Sobran ${t.asig - total}`}</span>`;
+  });
+  const form = root.querySelector('.addform');
+  if (form) form.addEventListener('submit', ev => {
+    ev.preventDefault();
+    const name = root.querySelector('#sim-nombre').value.trim(); if (!name) return;
+    const seats = Math.max(0, Math.min(total, parseInt(root.querySelector('#sim-escanos').value, 10) || 0));
+    const palette = ['#8d6e63', '#5c7a99', '#7e8f3a', '#8c6f8f', '#9e7a4a', '#5f8a8b'];
+    const id = 'n' + Date.now();
+    st.partidos.push({id, sig: name, nom: 'Candidatura añadida en el simulador', color: palette[st.partidos.length % palette.length], fam: 'local', votos: null, esc: seats});
+    st.voto.set(id, 'no'); form.reset(); refresh();
+  });
+  refresh();
+  return root;
+}
+
+/* ================================================================ piezas compartidas */
+function miniBar(rows, total){
+  const maj = Math.floor(total / 2) + 1;
+  const segs = rows.filter(r => r[5] > 0).map(r => `<i style="width:${(100 * r[5] / total).toFixed(3)}%;background:${r[2]}" title="${esc(r[0])}: ${r[5]}"></i>`).join('');
+  return `<div class="minibar" role="img" aria-label="${esc(rows.filter(r => r[5] > 0).map(r => r[0] + ' ' + r[5]).join(', '))}">${segs}<span class="mk" style="left:${(100 * maj / total).toFixed(3)}%"></span></div>`;
+}
+function miniLegend(rows, max = 5){
+  const r = rows.filter(x => x[5] > 0).slice(0, max);
+  const rest = rows.filter(x => x[5] > 0).slice(max).reduce((a, x) => a + x[5], 0);
+  return `<div class="minilegend">${r.map(x => `<span><i style="background:${x[2]}"></i>${esc(niceSig(x[0]))} ${x[5]}</span>`).join('')}${rest ? `<span>otros ${rest}</span>` : ''}</div>`;
+}
+function hbar(label, sub, rows, total, href, opts = {}){
+  const maj = Math.floor(total / 2) + 1;
+  const segs = rows.filter(r => r[5] > 0).map(r => {
+    const w = 100 * r[5] / total, txt = w >= 7 ? r[5] : '';
+    return `<i style="width:${w.toFixed(3)}%;background:${r[2]};color:${ink(r[2])}" data-tip="${esc(niceSig(r[0]))}|${r[5]}|${esc(nice(r[1] || ''))}">${txt}</i>`;
+  }).join('');
+  return `<a class="hbar" href="${href}"><span class="lab"><b>${esc(label)}</b><span>${esc(sub)}</span></span><span class="bar">${segs}${opts.noMark ? '' : `<span class="mk" style="left:${(100 * maj / total).toFixed(3)}%"></span>`}</span></a>`;
+}
+function wireBarTips(container, unit = 'escaños'){
+  container.addEventListener('pointerover', ev => {
+    const i = ev.target.closest('[data-tip]'); if (!i) return;
+    const [sig, n, nom] = i.dataset.tip.split('|');
+    showTip(ev, `<strong>${fmt(+n)} ${unit}</strong>${esc(sig)}${nom && nom !== sig ? ' · ' + esc(nom) : ''}`);
+  });
+  container.addEventListener('pointermove', ev => { if (!tip.hidden) moveTip(ev); });
+  container.addEventListener('pointerout', ev => { if (ev.target.closest('[data-tip]')) hideTip(); });
+}
+function resultsTable(rows, opts = {}){
+  const validos = opts.validos || rows.reduce((a, r) => a + (r[4] || 0), 0);
+  const hasV = rows.some(r => r[4]);
+  return `<div class="tablewrap"><table class="data"><thead><tr><th>Candidatura</th>${hasV ? '<th class="n">Votos</th><th class="n">%</th>' : ''}<th class="n">${opts.unit || 'Escaños'}</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td><span class="sw" style="background:${r[2]}"></span><b>${esc(niceSig(r[0]))}</b>${r[1] && norm(r[1]) !== norm(r[0]) ? ` <span class="muted small nm">${esc(nice(r[1]))}</span>` : ''}</td>${hasV ? `<td class="n">${fmt(r[4])}</td><td class="n">${r[4] ? fmtPct(100 * r[4] / validos) : '—'}</td>` : ''}<td class="n"><b>${r[5]}</b></td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+function badge(fuente){
+  return fuente === 'compilada'
+    ? '<span class="badge compilado" title="Resultados recopilados de fuentes públicas y verificados (sumas de escaños)">Recopilado</span>'
+    : '<span class="badge" title="Ficheros oficiales del Ministerio del Interior o del Congreso">Dato oficial</span>';
+}
+function presetByFam(partidos, siFams, absFams = []){
+  const pr = {};
+  partidos.forEach(p => { if (siFams.includes(p.fam)) pr[p.id] = 'si'; else if (absFams.includes(p.fam)) pr[p.id] = 'abs'; });
+  return pr;
+}
+function presetLargest(partidos){
+  const p = partidos.filter(x => x.esc > 0).sort((a, b) => b.esc - a.esc)[0];
+  return p ? {[p.id]: 'si'} : {};
+}
+function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'; }
+
+/* ================================================================ vista: Congreso */
+const LEYENDA_ELECCION = k => k.includes('-') ? (k.endsWith('-04') ? 'abril de ' : 'noviembre de ') + k.slice(0, 4) : k;
+async function viewCongreso(modo, clave){
+  const G = await load('generales.json');
+  const conv = G.convocatoria;
+  const keys = Object.keys(G.congreso).sort();
+  const notice = `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(conv.decreto_boe)}) · campaña del 13 al 27 de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta las 20:00'}</a>` : ''}</div></div>`;
+  let data, partidos, preset, presetNota, editable = false, simKey = null, simBase = null, titulo, fuente = 'oficial', extra = '';
+  const base23 = G.congreso['2023'].r.map(rowToParty);
+  const baseDis = G.disolucion.r.map(rowToParty);
+  if (modo === 'disolucion'){
+    partidos = baseDis; titulo = 'Composición al disolverse las Cortes';
+    preset = presetByFam(partidos, ['psoe', 'sumar', 'erc', 'junts', 'bildu', 'pnv', 'podemos', 'bng', 'cc', 'compromis']);
+    presetNota = 'Referencia de partida: votan sí los partidos que apoyaron la investidura de noviembre de 2023. Cambia los votos para probar otras mayorías.';
+    extra = `<p class="small muted" style="margin-top:10px">${esc(G.disolucion.nota)}</p>`;
+    fuente = 'compilada';
+  } else if (modo === 'simulador'){
+    titulo = 'Simulador para el 29-N'; editable = true; simKey = 'pacto.sim.v1';
+    const saved = store.get(simKey);
+    const fromBase = base23.map(p => ({...p, votos: null}));
+    simBase = {r2023: fromBase, dis: baseDis.map(p => ({...p, votos: null}))};
+    if (saved && Array.isArray(saved.partidos) && saved.partidos.length){
+      partidos = saved.partidos.map((p, i) => ({id: 's' + i, sig: String(p.sig), nom: String(p.nom || ''), color: /^#[0-9a-f]{6}$/i.test(p.color) ? p.color : '#8a8f98', fam: p.fam || 'local', votos: null, esc: +p.esc || 0}));
+      preset = {}; partidos.forEach((p, i) => { const v = saved.voto && saved.voto[i]; if (v === 'si' || v === 'abs') preset[p.id] = v; });
+      presetNota = 'Tu último escenario se guarda en este navegador. Edita los escaños, añade candidaturas y marca el voto de cada una.';
+    } else {
+      partidos = fromBase; preset = {};
+      presetNota = 'Parte de los escaños del 23-J. Edita los números, añade candidaturas y marca el voto de cada una; el escenario se guarda en este navegador.';
+    }
+  } else {
+    const k = (modo === 'hist' && G.congreso[clave]) ? clave : '2023';
+    data = G.congreso[k];
+    partidos = data.r.map(rowToParty);
+    titulo = k === '2023' ? 'Elecciones del 23 de julio de 2023' : `Elecciones de ${LEYENDA_ELECCION(k)}`;
+    fuente = 'oficial';
+    if (k === '2023'){
+      preset = presetByFam(partidos, ['psoe', 'sumar', 'erc', 'junts', 'bildu', 'pnv', 'bng', 'cc']);
+      presetNota = 'Votación real de la investidura de Pedro Sánchez (16-11-2023): 179 sí y 171 no.';
+    } else {
+      preset = presetLargest(partidos);
+      presetNota = 'Empieza con la candidatura más votada a favor. Usa las combinaciones de abajo para probar mayorías.';
+    }
+  }
+  const validos = data ? (data.votantes - data.nulos) : 0;
+  const tabs = `<div class="tabs" role="tablist">
+      <a class="tab" href="#congreso" aria-current="${modo === '2023' || (modo === 'hist' && clave === '2023')}">23-J 2023</a>
+      <a class="tab" href="#congreso-disolucion" aria-current="${modo === 'disolucion'}">Al disolverse las Cortes</a>
+      <a class="tab" href="#congreso-simulador" aria-current="${modo === 'simulador'}">Simulador 29-N</a>
+      <select class="select" id="sel-congreso" aria-label="Otras elecciones generales">
+        <option value="">Otras elecciones…</option>
+        ${keys.slice().reverse().map(k => `<option value="${k}" ${modo === 'hist' && clave === k ? 'selected' : ''}>${G.congreso[k].leg === 'Constituyente' ? 'Constituyentes' : G.congreso[k].leg + ' Legislatura'} · ${fechaCorta(G.congreso[k].fecha)}</option>`).join('')}
+      </select>
+    </div>`;
+  app.innerHTML = `${notice}
+    <div class="page-head"><span class="eyebrow">Congreso de los Diputados · 350 escaños</span><h1>${esc(titulo)}</h1>
+    <div class="row">${badge(fuente)}${data ? `<span class="small muted">${data.leg === 'Constituyente' ? 'Legislatura constituyente' : data.leg + ' Legislatura'} · ${fecha(data.fecha)}${data.censo ? ` · censo ${fmt(data.censo)} · participación ${fmtPct(100 * data.votantes / data.censo)}` : ''}</span>` : ''}</div></div>
+    ${tabs}<div class="sheet pad" id="pacto-slot"></div>${extra}
+    <div class="section" id="detalle"></div>`;
+  iniciarCuenta();
+  app.querySelector('#sel-congreso').addEventListener('change', e => { if (e.target.value) location.hash = 'congreso-' + e.target.value; });
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBase, votosValidos: validos}));
+  const det = app.querySelector('#detalle');
+  if (data){
+    det.innerHTML = `<div class="section-head"><h2>Resultados por candidatura</h2><p>${data.fuente === 'oficial' ? 'Totales nacionales oficiales del Ministerio del Interior. Las candidaturas aparecen tal y como se agregan oficialmente (por ejemplo, las coaliciones con nombre propio en cada comunidad).' : esc(data.nota || '')}</p></div>
+      ${resultsTable(data.r, {validos})}
+      ${data.provincias ? `<details class="more"><summary>Escaños por provincia</summary><div>${provTable(data.provincias)}</div></details>` : ''}`;
+  } else if (modo === 'disolucion'){
+    det.innerHTML = `<div class="section-head"><h2>De dónde sale esta composición</h2><p>Escaños por partido según la composición de los grupos parlamentarios recogida en fuentes públicas y en la prensa al cierre de la legislatura. No es un dato del Ministerio del Interior: el resultado oficial de las elecciones es el de la pestaña «23-J 2023».</p></div>${resultsTable(G.disolucion.r)}`;
+  }
+}
+function provTable(provs){
+  const keys = Object.keys(provs).sort((a, b) => provs[a].n.localeCompare(provs[b].n, 'es'));
+  return `<div class="tablewrap" style="margin-top:4px"><table class="data"><thead><tr><th>Provincia</th><th class="n">Escaños</th><th>Reparto</th></tr></thead><tbody>
+    ${keys.map(k => { const p = provs[k]; return `<tr><td>${esc(p.n)}</td><td class="n">${p.escanos}</td><td>${p.r.filter(r => r[5] > 0).map(r => `<span class="chip"><i style="background:${r[2]}"></i>${esc(niceSig(r[0]))} ${r[5]}</span>`).join(' ')}</td></tr>`; }).join('')}
+  </tbody></table></div>`;
+}
+
+/* ================================================================ vista: autonomías */
+async function viewAutonomias(){
+  const A = await load('autonomicas.json');
+  const ids = Object.keys(A).sort((a, b) => A[a].n.localeCompare(A[b].n, 'es'));
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">17 parlamentos y 2 asambleas</span><h1>Parlamentos autonómicos</h1>
+    <p class="lede">Resultado de las últimas elecciones de cada comunidad y ciudad autónoma. Entra en cualquiera para probar pactos o recorrer todas sus elecciones desde 1980.</p></div>
+    <div class="cards">${ids.map(id => { const a = A[id], e = a.elecciones[a.elecciones.length - 1]; return `<a class="card" href="#auto-${id}">
+      <div class="stack" style="gap:2px"><span class="eyebrow">${esc(a.camara)}</span><h3>${esc(a.n)}</h3></div>
+      ${miniBar(e.r, e.escanos)}${miniLegend(e.r)}
+      <div class="meta"><span>${fecha(e.fecha)}</span><span>${e.escanos} escaños · mayoría ${Math.floor(e.escanos / 2) + 1}</span></div>
+      ${a.gobierno ? `<div class="gov">Presidencia: ${esc(a.gobierno.presidente)}</div>` : ''}</a>`; }).join('')}</div>
+    <div class="section"><div class="section-head"><h2>Quién ganó cada elección</h2><p>Cada franja es una legislatura, del día de las elecciones al de las siguientes, con el color de la candidatura con más escaños. Opaca si tuvo mayoría absoluta; translúcida si no. Pulsa una franja para abrir esa elección.</p></div>
+    <div id="tl"></div></div>`;
+  app.querySelector('#tl').appendChild(timeline(ids.map(id => ({label: A[id].n, href: x => `#auto-${id}.${x.fecha}`, items: A[id].elecciones.map(e => ({fecha: e.fecha, r: e.r, total: e.escanos}))})), '1980-01-01'));
+}
+async function viewAutonomia(id, fechaSel){
+  const A = await load('autonomicas.json');
+  const a = A[id]; if (!a) return notFound();
+  const els = a.elecciones;
+  const e = els.find(x => x.fecha === fechaSel) || els[els.length - 1];
+  const ultima = e === els[els.length - 1];
+  const partidos = e.r.map(rowToParty);
+  setTitle(a.n);
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">${esc(a.camara)} · ${e.escanos} escaños</span><h1>${esc(a.n)}</h1>
+    <div class="row">${badge(e.fuente)}<span class="small muted">Elecciones del ${fecha(e.fecha)}</span></div>
+    ${ultima && a.gobierno ? `<p class="lede">Presidencia actual: <b>${esc(a.gobierno.presidente)}</b>. ${esc(a.gobierno.nota)}</p>` : ''}
+    ${a.nota ? `<p class="small muted">${esc(a.nota)}</p>` : ''}</div>
+    <div class="tabs"><a class="tab" href="#autonomias">← Todas las autonomías</a>
+      <select class="select" id="sel-el" aria-label="Elección">${els.slice().reverse().map(x => `<option value="${x.fecha}" ${x === e ? 'selected' : ''}>${fecha(x.fecha)}</option>`).join('')}</select></div>
+    <div class="sheet pad" id="pacto-slot"></div>
+    <div class="section"><div class="section-head"><h2>Todas sus elecciones</h2><p>Escaños por candidatura en cada elección. La marca vertical indica la mayoría absoluta.</p></div><div class="hbars" id="hist"></div></div>
+    <div class="section"><div class="section-head"><h2>Resultado en escaños</h2></div>${resultsTable(e.r)}</div>`;
+  app.querySelector('#sel-el').addEventListener('change', ev => location.hash = `auto-${id}.${ev.target.value}`);
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: 'parlamento', preset: presetLargest(partidos), presetNota: 'Empieza con la candidatura con más escaños a favor. Cambia los votos o pulsa una de las combinaciones posibles.'}));
+  const h = app.querySelector('#hist');
+  h.innerHTML = els.slice().reverse().map(x => hbar(x.fecha.slice(0, 4), fechaCorta(x.fecha), x.r, x.escanos, `#auto-${id}.${x.fecha}`)).join('');
+  wireBarTips(h);
+}
+
+/* ================================================================ vista: diputaciones, cabildos, consells, juntas */
+const TIPOS = {
+  dip: {k: 'diputaciones', titulo: 'Diputaciones provinciales', regla: 'diputacion', pref: 'Diputación de '},
+  cab: {k: 'cabildos', titulo: 'Cabildos insulares', regla: 'insular', pref: 'Cabildo de '},
+  con: {k: 'consells', titulo: 'Consells insulars', regla: 'insular', pref: ''},
+  jjgg: {k: 'juntas', titulo: 'Juntas Generales', regla: 'insular', pref: ''},
+};
+const DIP_NOMBRE = {'03': 'Diputación de Alicante', '12': 'Diputación de Castellón', '46': 'Diputación de Valencia', '17': 'Diputació de Girona', '25': 'Diputació de Lleida', '43': 'Diputació de Tarragona', '08': 'Diputació de Barcelona', '15': 'Deputación da Coruña', '27': 'Deputación de Lugo', '32': 'Deputación de Ourense', '36': 'Deputación de Pontevedra'};
+const nombreLocal = (tipo, x) => tipo === 'dip' ? (DIP_NOMBRE[x.id] || 'Diputación de ' + x.n.split('/')[0]) : tipo === 'cab' ? 'Cabildo de ' + x.n : x.n;
+async function viewLocales(){
+  const [L, M] = await Promise.all([load('locales.json'), load('municipios.json')]);
+  const card = (tipo, x) => { const ys = Object.keys(x.e).sort(); const e = x.e[ys[ys.length - 1]]; return `<a class="card" href="#${tipo}-${x.id}">
+      <h3>${esc(nombreLocal(tipo, x))}</h3>${miniBar(e.r, e.escanos)}${miniLegend(e.r, 4)}
+      <div class="meta"><span>${fecha(e.fecha)}</span><span>${e.escanos} escaños</span></div></a>`; };
+  const dips = Object.values(L.diputaciones);
+  const byCa = {};
+  dips.forEach(d => (byCa[d.ca] = byCa[d.ca] || []).push(d));
+  const caOrder = Object.keys(byCa).sort((a, b) => M.ccaa[a].localeCompare(M.ccaa[b], 'es'));
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Gobiernos provinciales e insulares</span><h1>Diputaciones, cabildos, consells y juntas</h1>
+    <p class="lede">Las 38 diputaciones de régimen común se forman con los resultados municipales de cada partido judicial; los cabildos canarios, los consells baleares y las juntas generales vascas se eligen en urnas propias.</p></div>
+    <div class="tabs"><a class="tab" href="#locales">Todas</a><a class="tab" href="#sec-cab">Cabildos</a><a class="tab" href="#sec-con">Consells</a><a class="tab" href="#sec-jjgg">Juntas Generales</a></div>
+    <div class="stack" style="gap:26px">${caOrder.map(ca => `<div class="stack"><h2 class="group-label">${esc(M.ccaa[ca])}</h2><div class="cards">${byCa[ca].sort((a, b) => a.n.localeCompare(b.n, 'es')).map(d => card('dip', d)).join('')}</div></div>`).join('')}
+    <div class="stack" id="sec-cab"><h2 class="group-label">Cabildos insulares · Canarias</h2><div class="cards">${Object.values(L.cabildos).sort((a, b) => a.n.localeCompare(b.n, 'es')).map(c => card('cab', c)).join('')}</div></div>
+    <div class="stack" id="sec-con"><h2 class="group-label">Consells insulars · Illes Balears</h2><div class="cards">${Object.values(L.consells).map(c => card('con', c)).join('')}</div></div>
+    <div class="stack" id="sec-jjgg"><h2 class="group-label">Juntas Generales · País Vasco</h2><div class="cards">${Object.values(L.juntas).map(c => card('jjgg', c)).join('')}</div></div></div>`;
+  app.querySelectorAll('.tabs a[href^="#sec-"]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); app.querySelector(a.getAttribute('href')).scrollIntoView({behavior: 'smooth'}); }));
+}
+async function viewLocal(tipo, id, year){
+  const L = await load('locales.json');
+  const T = TIPOS[tipo]; const x = L[T.k][id]; if (!x) return notFound();
+  const ys = Object.keys(x.e).sort();
+  const y = (year && x.e[year]) ? year : ys[ys.length - 1];
+  const e = x.e[y];
+  const partidos = e.r.map(rowToParty);
+  const validos = e.r.reduce((a, r) => a + (r[4] || 0), 0);
+  const titulo = nombreLocal(tipo, x);
+  setTitle(titulo);
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">${esc(T.titulo)} · ${e.escanos} escaños</span><h1>${esc(titulo)}</h1>
+    <div class="row">${badge(e.fuente)}<span class="small muted">${tipo === 'dip' ? 'Constituida tras las elecciones municipales del ' : 'Elecciones del '}${fecha(e.fecha)}</span></div>
+    ${x.nota ? `<p class="small muted">${esc(x.nota)}</p>` : ''}
+    ${tipo === 'dip' ? '<p class="small muted">Los votos son la suma de los obtenidos por cada candidatura en los municipios de la provincia; los diputados se reparten por partidos judiciales.</p>' : ''}</div>
+    <div class="tabs"><a class="tab" href="#locales">← Todas</a>${ys.length > 1 ? `<select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>${fecha(x.e[k].fecha)}</option>`).join('')}</select>` : ''}</div>
+    <div class="sheet pad" id="pacto-slot"></div>
+    ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Todas sus elecciones</h2></div><div class="hbars" id="hist"></div></div>` : ''}
+    <div class="section"><div class="section-head"><h2>Resultado</h2></div>${resultsTable(e.r, {validos})}</div>`;
+  const sel = app.querySelector('#sel-el'); if (sel) sel.addEventListener('change', ev => location.hash = `${tipo}-${id}.${ev.target.value}`);
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: T.regla, preset: presetLargest(partidos), votosValidos: validos || 0, presetNota: 'Empieza con la candidatura con más escaños a favor.'}));
+  const h = app.querySelector('#hist');
+  if (h){ h.innerHTML = ys.slice().reverse().map(k => hbar(k, fechaCorta(x.e[k].fecha), x.e[k].r, x.e[k].escanos, `#${tipo}-${id}.${k}`)).join(''); wireBarTips(h); }
+}
+
+/* ================================================================ vista: ayuntamientos */
+async function viewAyuntamientos(){
+  const M = await load('municipios.json');
+  const idx = M.municipios;
+  if (!M._n) M._n = idx.map(r => norm(r[1]));
+  const byIne = {}; idx.forEach(r => byIne[r[0]] = r);
+  const provOpts = Object.entries(M.provincias).sort((a, b) => a[1].localeCompare(b[1], 'es')).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Todos los municipios de España</span><h1>Ayuntamientos</h1>
+    <p class="lede">Busca tu municipio para ver su pleno, calcular quién puede gobernar y recorrer sus elecciones municipales desde 1979. Resultados oficiales del Ministerio del Interior: 8.087 municipios con resultados en 2023; en el resto no hubo candidaturas o no constan resultados.</p></div>
+    <div class="search"><input type="search" id="q" placeholder="Escribe un municipio: Lugo, Getafe, Ponferrada…" aria-label="Buscar municipio" autocomplete="off">
+      <select class="select" id="prov" aria-label="Provincia"><option value="">Todas las provincias</option>${provOpts}</select></div>
+    <p class="small muted" id="count" style="margin:12px 0"></p>
+    <div class="results" id="res"></div>`;
+  const $q = app.querySelector('#q'), $p = app.querySelector('#prov'), $res = app.querySelector('#res'), $c = app.querySelector('#count');
+  const item = r => `<a class="result" href="#mun-${r[0]}"><span class="t"><b>${esc(r[1])}</b><small>${r[4] ? fmt(r[4]) + ' hab.' : ''}</small></span><span class="p">${esc(M.provincias[r[2]])} · ${r[3] === 2023 ? 'pleno de 2023' : 'último dato: ' + r[3]}</span></a>`;
+  function render(){
+    const q = norm($q.value.trim()), p = $p.value;
+    let list;
+    if (!q && !p){ list = M.capitales.map(c => byIne[c]).filter(Boolean); $c.textContent = 'Capitales de provincia y de comunidad. Escribe para buscar entre los ' + fmt(idx.length) + ' municipios con datos.'; }
+    else {
+      list = [];
+      for (let i = 0; i < idx.length; i++){ const r = idx[i]; if (p && r[2] !== p) continue; if (q && !M._n[i].includes(q)) continue; list.push(r); }
+      list.sort((a, b) => (q ? (norm(a[1]).startsWith(q) ? 0 : 1) - (norm(b[1]).startsWith(q) ? 0 : 1) : 0) || (b[3] - a[3]) || (b[4] - a[4]));
+      $c.textContent = list.length ? `${fmt(list.length)} municipio${list.length === 1 ? '' : 's'}${list.length > 60 ? ' · se muestran los 60 primeros' : ''}` : 'Ningún municipio coincide. Prueba sin tildes o con otra provincia.';
+      list = list.slice(0, 60);
+    }
+    $res.innerHTML = list.map(item).join('');
+  }
+  $q.addEventListener('input', render); $p.addEventListener('change', render);
+  render(); $q.focus({preventScroll: true});
+}
+async function viewMunicipio(ine, year){
+  const M = await load('municipios.json');
+  const prov = ine.slice(0, 2);
+  const P = await load('mun/' + prov + '.json');
+  const m = P.m[ine]; if (!m) return notFound();
+  const ys = Object.keys(m.e).sort();
+  const y = (year && m.e[year]) ? year : ys[ys.length - 1];
+  const rec = m.e[y];
+  const [tipo, escanos, censo, votantes, blancos, nulos, res] = rec;
+  const rows = res.map(([ci, v, s]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, s]; });
+  rows.sort((a, b) => b[5] - a[5] || b[4] - a[4]);
+  const validos = votantes - nulos;
+  const partidos = rows.map(rowToParty);
+  const masVotada = rows.slice().sort((a, b) => (b[4] || 0) - (a[4] || 0))[0];
+  const L = await load('locales.json').catch(() => null);
+  const dip = L && L.diputaciones[prov];
+  const ix = M.municipios.find(r => r[0] === ine);
+  setTitle(m.n);
+  const TIPO = {G: 'Listas cerradas', A: 'Listas abiertas (municipio de 100 a 250 habitantes)', C: 'Concejo abierto (menos de 100 habitantes)'};
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">${esc(M.provincias[prov])} · ${esc(M.ccaa[P.ca] || '')}</span><h1>${esc(m.n)}</h1>
+    <div class="row">${badge('oficial')}<span class="small muted">Elecciones municipales del ${y} · ${tipo === 'C' ? 'alcalde de elección directa' : escanos + ' concejales'}${ix && ix[4] ? ` · ${fmt(ix[4])} habitantes (${ix[3]})` : ''}</span></div>
+    <p class="small muted">${TIPO[tipo] || ''}${censo ? ` · censo ${fmt(censo)} · votantes ${fmt(votantes)} (${fmtPct(100 * votantes / censo)})` : ''}</p></div>
+    <div class="tabs"><a class="tab" href="#ayuntamientos">← Buscar otro municipio</a>
+      <select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>Municipales ${k}</option>`).join('')}</select>
+      ${dip ? `<a class="tab" href="#dip-${prov}">${esc(nombreLocal('dip', dip))} →</a>` : ''}</div>
+    <div class="sheet pad" id="pacto-slot"></div>
+    ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Su historia electoral</h2><p>Concejales por candidatura en cada elección municipal. Pulsa una fila para abrirla en el pactómetro.</p></div><div class="hbars" id="hist"></div></div>` : ''}
+    <div class="section"><div class="section-head"><h2>Resultado de ${y}</h2></div>${resultsTable(rows, {validos: validos - 0, unit: tipo === 'C' ? 'Electo' : 'Concejales'})}
+    <p class="small muted">Votos válidos: ${fmt(validos)} · en blanco: ${fmt(blancos)} · nulos: ${fmt(nulos)}.</p></div>`;
+  app.querySelector('#sel-el').addEventListener('change', ev => location.hash = `mun-${ine}.${ev.target.value}`);
+  const slot = app.querySelector('#pacto-slot');
+  if (tipo === 'C' || escanos < 2){
+    const el = rows.filter(r => r[5] > 0);
+    slot.innerHTML = `<div class="stack"><span class="eyebrow">Concejo abierto</span><h2>${el.length ? esc(el.map(r => niceSig(r[0])).join(', ')) : 'Sin candidato electo en los datos'}</h2><p class="muted">En los municipios de menos de 100 habitantes que funcionan en concejo abierto los vecinos eligen directamente al alcalde, sin pleno de concejales. No hay pactos que calcular.</p></div>`;
+  } else {
+    slot.appendChild(Pactometro({total: escanos, partidos, regla: 'municipal', preset: presetLargest(partidos), votosValidos: validos, masVotada: masVotada ? {sig: masVotada[0], votos: masVotada[4]} : null,
+      presetNota: tipo === 'A' ? 'Listas abiertas: los vecinos votan a personas; aquí se agrupan los concejales por candidatura.' : 'Empieza con la candidatura con más concejales a favor.'}));
+  }
+  const h = app.querySelector('#hist');
+  if (h){
+    h.innerHTML = ys.slice().reverse().map(k => { const r = m.e[k]; const rr = r[6].map(([ci, v, s]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, s]; }).sort((a, b) => b[5] - a[5]); return hbar(k, r[0] === 'C' ? 'concejo abierto' : r[1] + ' concejales', rr, Math.max(r[1], 1), `#mun-${ine}.${k}`, {noMark: r[0] === 'C'}); }).join('');
+    wireBarTips(h, 'concejales');
+  }
+}
+
+/* ================================================================ línea temporal (quién ganó) */
+function timeline(series, start){
+  const t0 = new Date(start).getTime(), t1 = new Date('2027-06-30').getTime();
+  const W = 1000, labelW = 150, rowH = 26, gap = 6, top = 22, H = top + series.length * (rowH + gap) + 4;
+  const X = d => labelW + (new Date(d).getTime() - t0) / (t1 - t0) * (W - labelW - 6);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Línea temporal de ganadores por elección">`;
+  for (let y = 1980; y <= 2026; y += 2){
+    if (new Date(y + '-01-01').getTime() < t0) continue;
+    const x = X(y + '-01-01');
+    svg += `<line x1="${x}" x2="${x}" y1="${top - 4}" y2="${H}" stroke="var(--rule)" stroke-width="1"/>`;
+    if (y % 6 === 0 || y === 2026) svg += `<text x="${x}" y="12" font-size="11" text-anchor="middle">${y}</text>`;
+  }
+  const wrap = document.createElement('div'); wrap.className = 'stack';
+  const famSeen = new Map();
+  series.forEach((s, i) => {
+    const y = top + i * (rowH + gap);
+    svg += `<text x="0" y="${y + rowH / 2 + 4}" font-size="12.5" font-weight="600" style="fill:var(--ink)">${esc(s.label)}</text>`;
+    s.items.forEach((it, j) => {
+      const next = s.items[j + 1];
+      const x0 = X(it.fecha), x1 = next ? X(next.fecha) : X('2027-05-31');
+      const w = it.r.filter(r => r[5] > 0).sort((a, b) => b[5] - a[5])[0]; if (!w) return;
+      const absm = w[5] >= Math.floor(it.total / 2) + 1;
+      famSeen.set(w[3] + '|' + w[2], [w[0], w[2], w[3]]);
+      const tipTxt = `${s.label} · ${fecha(it.fecha)}|${niceSig(w[0])} ${w[5]} de ${it.total}|${absm ? 'mayoría absoluta' : 'sin mayoría absoluta'}`;
+      svg += `<a href="${s.href(it)}"><rect class="cell" x="${(x0 + 1).toFixed(1)}" y="${y}" width="${Math.max(2, x1 - x0 - 2).toFixed(1)}" height="${rowH}" rx="3" fill="${w[2]}" fill-opacity="${absm ? 1 : .42}" data-t="${esc(tipTxt)}"></rect>`;
+      if (x1 - x0 > 30) svg += `<text x="${((x0 + x1) / 2).toFixed(1)}" y="${y + rowH / 2 + 4}" font-size="11" font-weight="700" text-anchor="middle" style="fill:${absm ? ink(w[2]) : 'var(--ink)'};pointer-events:none">${w[5]}</text>`;
+      svg += `</a>`;
+    });
+  });
+  svg += '</svg>';
+  const box = document.createElement('div'); box.className = 'tl-wrap'; box.innerHTML = svg;
+  box.addEventListener('pointerover', ev => { const t = ev.target.getAttribute && ev.target.getAttribute('data-t'); if (!t) return; const [a, b, c] = t.split('|'); showTip(ev, `<strong>${esc(b)}</strong>${esc(a)}<br>${esc(c)}`); });
+  box.addEventListener('pointermove', ev => { if (!tip.hidden) moveTip(ev); });
+  box.addEventListener('pointerout', ev => { if (ev.target.getAttribute && ev.target.getAttribute('data-t')) hideTip(); });
+  const leg = document.createElement('div'); leg.className = 'legend-row';
+  const fams = {}; famSeen.forEach(v => { fams[v[2]] = fams[v[2]] || v; });
+  leg.innerHTML = Object.values(fams).map(([sig, col, fam]) => `<span><i style="background:${col}"></i>${esc(fam !== 'local' && FAM[fam] ? FAM[fam].corto : sig)}</span>`).join('') +
+    '<span style="margin-left:auto"><i style="background:var(--ink)"></i>mayoría absoluta</span><span><i class="plural" style="background:var(--ink)"></i>sin mayoría absoluta</span><span class="muted">El número es el de escaños del ganador.</span>';
+  wrap.appendChild(leg); wrap.appendChild(box);
+  return wrap;
+}
+
+/* ================================================================ vista: histórico */
+async function viewHistorico(){
+  const [G, A, L, R] = await Promise.all([load('generales.json'), load('autonomicas.json'), load('locales.json'), load('resumen.json')]);
+  const keys = Object.keys(G.congreso).sort().reverse();
+  const famBar = (fams, total, top = 9) => {
+    const ent = Object.entries(fams).filter(([f]) => f !== 'local').sort((a, b) => b[1][0] - a[1][0]);
+    const rows = ent.slice(0, top).map(([f, v]) => [FAM[f].corto, FAM[f].largo, FAM[f].color, f, v[1], v[0]]);
+    const rest = total - rows.reduce((a, r) => a + r[5], 0);
+    if (rest > 0) rows.push(['Locales y otros', 'Candidaturas locales, independientes y otras', '#8a8f98', 'local', null, rest]);
+    return rows;
+  };
+  const munYears = Object.keys(R.municipales).sort().reverse();
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">De 1977 a 2026</span><h1>Histórico electoral</h1>
+    <p class="lede">Todas las elecciones generales, las investiduras y mociones de censura, el Senado, los parlamentos autonómicos, las diputaciones y el voto municipal, con los datos oficiales disponibles. Pulsa cualquier barra para abrirla en el pactómetro.</p></div>
+    <div class="tabs"><a class="tab" href="#h-congreso">Congreso</a><a class="tab" href="#h-inv">Investiduras</a><a class="tab" href="#h-senado">Senado</a><a class="tab" href="#h-auto">Autonomías</a><a class="tab" href="#h-dip">Diputaciones</a><a class="tab" href="#h-mun">Municipales</a></div>
+    <div class="section" id="h-congreso"><div class="section-head"><h2>Congreso de los Diputados, 1977-2023</h2><p>Escaños por candidatura en las 16 elecciones generales. La marca vertical señala la mayoría absoluta (176).</p></div><div class="hbars" id="hb-congreso"></div></div>
+    <div class="section" id="h-inv"><div class="section-head"><h2>Investiduras</h2><p>Votaciones de investidura del presidente del Gobierno según el archivo oficial del Congreso. En las votaciones fallidas de 2016 y 2019 se recoge la votación final de cada debate.</p></div>
+      <div class="tablewrap"><table class="data"><thead><tr><th>Leg.</th><th>Fecha</th><th>Candidato</th><th>Votación</th><th class="n">Sí</th><th class="n">No</th><th class="n">Abst.</th><th>Resultado</th></tr></thead><tbody>
+      ${G.investiduras.slice().reverse().map(r => `<tr><td>${r[0]}</td><td class="num">${fechaCorta(r[3])}</td><td><b>${esc(r[1])}</b> <span class="muted small">${esc(r[2])}</span></td><td>${r[4] === 'final' ? 'única/final' : r[4]}</td><td class="n">${r[5]}</td><td class="n">${r[6]}</td><td class="n">${r[7] ?? '—'}</td><td>${r[8] ? '<span class="pill on">Investido</span>' : '<span class="pill off">Rechazada</span>'}</td></tr>`).join('')}
+      </tbody></table></div>
+      <div class="section-head" style="margin-top:12px"><h3>Mociones de censura</h3></div>
+      <div class="tablewrap"><table class="data"><thead><tr><th>Fecha</th><th>Candidato</th><th>Contra</th><th class="n">Sí</th><th class="n">No</th><th class="n">Abst.</th><th>Resultado</th></tr></thead><tbody>
+      ${G.mociones.slice().reverse().map(r => `<tr><td class="num">${fechaCorta(r[0])}</td><td><b>${esc(r[1])}</b> <span class="muted small">${esc(r[2])}</span></td><td>${esc(r[3])}</td><td class="n">${r[4]}</td><td class="n">${r[5]}</td><td class="n">${r[6]}</td><td>${r[7] ? '<span class="pill on">Aprobada</span>' : '<span class="pill off">Rechazada</span>'}</td></tr>`).join('')}
+      </tbody></table></div></div>
+    <div class="section" id="h-senado"><div class="section-head"><h2>Senado: senadores electos</h2><p>Senadores elegidos en las urnas en cada elección general (208; 207 en 1977), agrupados por partido. No incluye los designados por los parlamentos autonómicos.</p></div><div class="hbars" id="hb-senado"></div></div>
+    <div class="section" id="h-auto"><div class="section-head"><h2>Parlamentos autonómicos, 1980-2026</h2><p>Partido con más escaños en cada elección autonómica. Opaco: mayoría absoluta; translúcido: sin ella.</p></div><div id="tl-auto"></div></div>
+    <div class="section" id="h-dip"><div class="section-head"><h2>Diputaciones provinciales, 1987-2023</h2><p>Partido con más diputados provinciales tras cada elección municipal (datos oficiales disponibles desde 1987).</p></div><div id="tl-dip"></div></div>
+    <div class="section" id="h-mun"><div class="section-head"><h2>Concejales en toda España, 1979-2023</h2><p>Concejales obtenidos por cada familia política en las elecciones municipales, sumando todos los municipios. Las candidaturas locales e independientes se agrupan.</p></div><div class="hbars" id="hb-mun"></div>
+      <details class="more"><summary>Tabla de concejales por familia política</summary><div>${munTable(R, munYears)}</div></details></div>`;
+  app.querySelectorAll('.tabs a[href^="#h-"]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); app.querySelector(a.getAttribute('href')).scrollIntoView({behavior: 'smooth'}); }));
+  const hc = app.querySelector('#hb-congreso');
+  hc.innerHTML = keys.map(k => { const e = G.congreso[k]; return hbar(LEYENDA_ELECCION(k).replace(/^\w/, c => c.toUpperCase()), e.leg === 'Constituyente' ? 'Constituyentes' : e.leg + ' Leg.', e.r, 350, `#congreso-${k}`); }).join('');
+  wireBarTips(hc);
+  const hs = app.querySelector('#hb-senado');
+  hs.innerHTML = Object.keys(G.senado).sort().reverse().map(k => { const e = G.senado[k]; return hbar(LEYENDA_ELECCION(k).replace(/^\w/, c => c.toUpperCase()), e.electos + ' electos', e.r, e.electos, '#h-senado', {noMark: true}); }).join('');
+  wireBarTips(hs, 'senadores');
+  hs.querySelectorAll('a').forEach(a => a.addEventListener('click', ev => ev.preventDefault()));
+  const aIds = Object.keys(A).sort((a, b) => A[a].n.localeCompare(A[b].n, 'es'));
+  app.querySelector('#tl-auto').appendChild(timeline(aIds.map(id => ({label: A[id].n, href: x => `#auto-${id}.${x.fecha}`, items: A[id].elecciones.map(e => ({fecha: e.fecha, r: e.r, total: e.escanos}))})), '1980-01-01'));
+  const dIds = Object.keys(L.diputaciones).sort((a, b) => L.diputaciones[a].n.localeCompare(L.diputaciones[b].n, 'es'));
+  app.querySelector('#tl-dip').appendChild(timeline(dIds.map(id => { const d = L.diputaciones[id]; return {label: d.n.split('/')[0], href: x => `#dip-${id}.${x.fecha.slice(0, 4)}`, items: Object.keys(d.e).sort().map(y => ({fecha: d.e[y].fecha, r: d.e[y].r, total: d.e[y].escanos}))}; }), '1986-01-01'));
+  const hm = app.querySelector('#hb-mun');
+  hm.innerHTML = munYears.map(y => { const e = R.municipales[y]; return hbar(y, fmt(e.concejales) + ' conc.', famBar(e.familias, e.concejales), e.concejales, '#h-mun', {noMark: true}); }).join('');
+  wireBarTips(hm, 'concejales');
+  hm.querySelectorAll('a').forEach(a => a.addEventListener('click', ev => ev.preventDefault()));
+}
+function munTable(R, years){
+  const fams = new Set(); years.forEach(y => Object.keys(R.municipales[y].familias).forEach(f => fams.add(f)));
+  const tot = f => years.reduce((a, y) => a + ((R.municipales[y].familias[f] || [0])[0]), 0);
+  const list = [...fams].sort((a, b) => tot(b) - tot(a));
+  return `<div class="tablewrap"><table class="data"><thead><tr><th>Familia</th>${years.map(y => `<th class="n">${y}</th>`).join('')}</tr></thead><tbody>
+    ${list.map(f => `<tr><td><span class="sw" style="background:${FAM[f].color}"></span>${esc(FAM[f].largo)}</td>${years.map(y => `<td class="n">${fmt((R.municipales[y].familias[f] || [null])[0])}</td>`).join('')}</tr>`).join('')}
+    <tr><td><b>Total concejales</b></td>${years.map(y => `<td class="n"><b>${fmt(R.municipales[y].concejales)}</b></td>`).join('')}</tr>
+  </tbody></table></div>`;
+}
+
+/* ================================================================ cuenta atrás 29-N */
+// Colegios electorales: abren a las 9:00 y cierran a las 20:00 (hora peninsular; en Canarias, a la misma hora local).
+const ELEC = {apertura: new Date('2026-11-29T08:00:00Z'), cierre: new Date('2026-11-29T19:00:00Z')};
+let relojCuenta = null;
+function pararCuenta(){ if (relojCuenta){ clearInterval(relojCuenta); relojCuenta = null; } }
+function cuentaContenido(t){
+  const pad = n => String(n).padStart(2, '0');
+  const partes = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return {d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60}; };
+  const nums = (p, conDias) => `<div class="cd-nums">${conDias ? `<span><b>${p.d}</b><i>${p.d === 1 ? 'día' : 'días'}</i></span>` : ''}<span><b>${pad(p.h)}</b><i>horas</i></span><span><b>${pad(p.m)}</b><i>min</i></span><span><b>${pad(p.s)}</b><i>seg</i></span></div>`;
+  const etiqueta = (p, que) => `Faltan ${p.d ? p.d + (p.d === 1 ? ' día, ' : ' días, ') : ''}${p.h} horas y ${p.m} minutos ${que}`;
+  if (t < ELEC.apertura){
+    const p = partes(ELEC.apertura - t);
+    return {html: nums(p, true) + '<p class="cd-txt">para que abran los colegios electorales, a las 9:00 hora peninsular (en Canarias, una hora después).</p>', label: etiqueta(p, 'para que abran los colegios electorales.')};
+  }
+  if (t < ELEC.cierre){
+    const p = partes(ELEC.cierre - t);
+    return {html: '<p class="cd-hoy">Hoy se vota</p>' + nums(p, false) + '<p class="cd-txt">para que cierren los colegios electorales, a las 20:00 hora peninsular (en Canarias, una hora después).</p>', label: 'Hoy se vota. ' + etiqueta(p, 'para que cierren los colegios electorales.')};
+  }
+  return {html: '<p class="cd-hoy">Los colegios electorales han cerrado</p><p class="cd-txt">Empieza el escrutinio. Los resultados oficiales se cargarán en pactómetro.es en cuanto los publique el Ministerio del Interior.</p>', label: 'Los colegios electorales han cerrado.', fin: true};
+}
+function iniciarCuenta(){
+  pararCuenta();
+  const el = document.getElementById('cuenta'); if (!el) return;
+  let ultimaEtiqueta = '';
+  const tick = () => {
+    if (!el.isConnected){ pararCuenta(); return; }
+    const c = cuentaContenido(ahoraReal());
+    el.innerHTML = c.html;
+    if (c.label !== ultimaEtiqueta){ el.setAttribute('aria-label', c.label); ultimaEtiqueta = c.label; }
+    if (c.fin) pararCuenta();
+  };
+  tick();
+  relojCuenta = setInterval(tick, 1000);
+}
+
+/* ================================================================ vista: encuesta 29-N */
+/* En pactómetro.es la encuesta solo aparece el domingo 22 de noviembre y admite respuestas de 00:00 a 20:00
+   (hora peninsular). Modos: «real» (config.js con la URL de la hoja de Google), «pendiente» (config.js sin URL)
+   y «previa» (enlace de Claude: siempre visible para revisarla; no guarda nada). La dirección #encuesta-prueba
+   deja al titular probar el envío cualquier día: esas respuestas van a la pestaña «Pruebas» y no cuentan. */
+const CFG = window.PACTOMETRO_CONFIG || {};
+let relojDesfase = 0;                                    // corrección con la hora del servidor de la web
+const ahoraReal = () => new Date(Date.now() + relojDesfase);
+const ENC = {
+  apertura: new Date('2026-11-21T23:00:00Z'),          // domingo 22-N, 00:00 hora peninsular
+  cierre: new Date('2026-11-22T19:00:00Z'),            // domingo 22-N, 20:00 hora peninsular
+  clave: 'pacto.encuesta29n.v1',
+  partidos: [
+    {k: 'pp', n: 'PP', f: 'pp'},
+    {k: 'psoe', n: 'PSOE', f: 'psoe'},
+    {k: 'vox', n: 'Vox', f: 'vox'},
+    {k: 'fa', n: 'Frente Amplio', nota: 'Sumar, IU, Más Madrid y Comuns', f: 'sumar'},
+    {k: 'podemos', n: 'Podemos', f: 'podemos'},
+    {k: 'erc', n: 'ERC', nota: 'Cataluña', f: 'erc', p: ['08', '17', '25', '43']},
+    {k: 'junts', n: 'Junts', nota: 'Cataluña', f: 'junts', p: ['08', '17', '25', '43']},
+    {k: 'bildu', n: 'EH Bildu', nota: 'País Vasco y Navarra', f: 'bildu', p: ['01', '20', '48', '31']},
+    {k: 'pnv', n: 'PNV', nota: 'País Vasco', f: 'pnv', p: ['01', '20', '48']},
+    {k: 'bng', n: 'BNG', nota: 'Galicia', f: 'bng', p: ['15', '27', '32', '36']},
+    {k: 'compromis', n: 'Compromís', nota: 'Comunitat Valenciana', f: 'compromis', p: ['03', '12', '46']},
+    {k: 'cc', n: 'Coalición Canaria', nota: 'Canarias', f: 'cc', p: ['35', '38']},
+    {k: 'upn', n: 'UPN', nota: 'Navarra', f: 'upn', p: ['31']},
+  ],
+  otras: [
+    {k: 'otro', n: 'Otro partido', marca: true}, {k: 'blanco', n: 'En blanco'}, {k: 'nulo', n: 'Nulo'},
+    {k: 'abst', n: 'No votaré'}, {k: 'nsnc', n: 'Aún no lo sé'},
+  ],
+  recuerdo: [['PP', 'PP'], ['PSOE', 'PSOE'], ['Vox', 'Vox'], ['Sumar', 'Sumar'], ['ERC', 'ERC'], ['Junts', 'Junts'],
+    ['EH Bildu', 'EH Bildu'], ['PNV', 'PNV'], ['BNG', 'BNG'], ['Coalición Canaria', 'Coalición Canaria'], ['UPN', 'UPN'],
+    ['Otro partido', 'Otro partido'], ['En blanco o nulo', 'En blanco o nulo'], ['No votó', 'No voté'],
+    ['No tenía edad para votar', 'No tenía edad para votar']],
+};
+const ENC_ORDEN = (() => { const a = ENC.partidos.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; })();
+// config.js only exists on the self-hosted site: with it the poll is live (or pending until its URL is set); without it, preview.
+const encModo = () => CFG.encuestaURL ? 'real' : ('encuestaURL' in CFG ? 'pendiente' : 'previa');
+const encEstado = () => { const t = ahoraReal(); return t < ENC.apertura ? 'antes' : t < ENC.cierre ? 'abierta' : 'cerrada'; };
+const encVisible = () => encModo() === 'previa' || encEstado() !== 'antes';      // enlace del menú
+const encVotable = () => encModo() === 'previa' || encEstado() === 'abierta';    // botones que invitan a votar
+function actualizarNavEncuesta(){ const a = document.querySelector('.nav a[data-nav="encuesta"]'); if (a) a.hidden = !encVisible(); }
+function sincronizarReloj(){
+  // Usa la hora del servidor (cabecera Date, más Age si viene de una caché) para no depender del reloj del visitante.
+  if (!('encuestaURL' in CFG)) return Promise.resolve();
+  return fetch(location.href.split('#')[0], {method: 'HEAD', cache: 'no-store'}).then(r => {
+    const t = Date.parse(r.headers.get('Date') || '') + (parseInt(r.headers.get('Age') || '0', 10) || 0) * 1000;
+    if (!isNaN(t) && Math.abs(t - Date.now()) > 60000) relojDesfase = t - Date.now();
+  }).catch(() => {});
+}
+const hoyISO = () => { const d = ahoraReal(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+
+async function viewEncuesta(prueba){
+  const M = await load('municipios.json');
+  const modo = encModo(), estado = encEstado();
+  const probando = prueba && modo === 'real';
+  const ya = modo === 'real' && !probando ? store.get(ENC.clave) : null;
+  const provs = Object.entries(M.provincias).sort((a, b) => a[1].localeCompare(b[1], 'es'));
+  const color = f => (FAM[f] || {}).color || '#8a8f98';
+  const opHTML = (o, party) => `<label class="enc-op" data-k="${o.k}"${o.p ? ` data-prov="${o.p.join(' ')}"` : ''}>
+      <input type="radio" name="intencion" value="${o.k}" id="enc-${o.k}">
+      <span class="sw${party || o.marca ? '' : ' none'}" style="${party ? `background:${color(o.f)}` : o.marca ? 'background:var(--seat-empty)' : ''}"></span>
+      <span class="t"><b>${esc(o.n)}</b>${o.nota ? `<small>${esc(o.nota)}</small>` : ''}</span></label>`;
+  const aviso = modo === 'previa'
+    ? '<div class="notice prev"><span class="date">Vista previa</span><p>En pactómetro.es la encuesta aparecerá el domingo 22 de noviembre y se podrá responder de 00:00 a 20:00. Aquí puedes probarla, pero no se guarda nada.</p></div>'
+    : probando ? '<div class="notice prev"><span class="date">Modo prueba</span><p>Esta respuesta se guarda en la pestaña «Pruebas» de la hoja de cálculo y no cuenta en la encuesta.</p></div>' : '';
+  const cabecera = `<div class="page-head"><span class="eyebrow">Encuesta de pactómetro.es · domingo 22 de noviembre, de 00:00 a 20:00</span>
+    <h1>¿A quién piensas votar el 29-N?</h1>
+    <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
+  const como = `<aside class="enc-how"><h3>Cómo funciona</h3><dl>
+      <div><dt>Solo el domingo 22 de noviembre</dt><dd>Se puede responder de 00:00 a 20:00 (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
+      <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, la provincia si la indicas y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP.</dd></div>
+      <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
+      <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta.</dd></div>
+      <div><dt>Abierta, no representativa</dt><dd>Responde quien quiere, así que no es una muestra representativa ni una estimación de voto.</dd></div>
+    </dl></aside>`;
+  const msg = (eyebrow, titulo, texto, boton = true) => `<div class="sheet pad enc-msg"><span class="eyebrow">${eyebrow}</span><h2>${titulo}</h2><p>${texto}</p>${boton ? '<a class="btn" href="#congreso-simulador">Mientras tanto, prueba el simulador del 29-N</a>' : ''}</div>`;
+  let cuerpo = null;
+  if (prueba && modo === 'pendiente'){
+    cuerpo = msg('Modo prueba', 'Falta conectar la hoja de cálculo', 'Pega la URL de tu aplicación web de Google en config.js y vuelve a publicar la web; después podrás probar aquí el envío.', false);
+  } else if (!probando && modo !== 'previa'){
+    if (estado === 'antes') cuerpo = msg('Próximamente', 'La encuesta abrirá el domingo 22 de noviembre', 'Se podrá responder solo ese día, de 00:00 a 20:00 (hora peninsular).');
+    else if (estado === 'cerrada') cuerpo = msg('Encuesta cerrada', 'Gracias a quienes participasteis', 'Se podía responder el domingo 22 de noviembre hasta las 20:00 (hora peninsular).', false);
+    else if (modo === 'pendiente') cuerpo = msg('En un momento', 'La encuesta todavía no está disponible', 'Estamos terminando de preparar la recogida de respuestas. Vuelve a entrar en unos minutos.');
+    else if (ya && ya.dia) cuerpo = `<div class="sheet pad enc-msg"><span class="eyebrow">Ya has respondido</span><h2>Gracias por participar</h2><p>Solo se admite una respuesta por navegador. Se puede responder hasta las 20:00.</p><div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
+  }
+  if (!cuerpo){
+    cuerpo = `<form class="sheet pad enc" id="enc-form" novalidate autocomplete="off">
+      <fieldset class="enc-q"><legend><span class="enc-n">1</span><span>¿En qué provincia votas?<span class="opt">Opcional</span></span></legend>
+        <select class="select" id="enc-prov" aria-describedby="enc-prov-h"><option value="">Prefiero no decirlo</option>${provs.map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select>
+        <p class="hint" id="enc-prov-h">Si la indicas, verás solo los partidos que se presentan allí.</p></fieldset>
+      <fieldset class="enc-q"><legend><span class="enc-n">2</span><span>¿A quién piensas votar el 29 de noviembre?</span></legend>
+        <div class="enc-ops">${ENC_ORDEN.map(o => opHTML(o, true)).join('')}</div>
+        <span class="enc-sub">Otras respuestas</span>
+        <div class="enc-ops">${ENC.otras.map(o => opHTML(o, false)).join('')}</div>
+        <p class="hint">Los partidos aparecen en orden aleatorio para no favorecer a ninguno.</p></fieldset>
+      <fieldset class="enc-q"><legend><span class="enc-n">3</span><span>¿A quién votaste en las generales del 23 de julio de 2023?<span class="opt">Opcional</span></span></legend>
+        <select class="select" id="enc-rec"><option value="">Prefiero no decirlo</option>${ENC.recuerdo.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select></fieldset>
+      <div class="hp" aria-hidden="true"><label for="enc-web">No rellenes este campo</label><input type="text" id="enc-web" name="web" tabindex="-1" autocomplete="off"></div>
+      <div class="enc-foot"><button class="btn solid" type="submit" id="enc-enviar" disabled>${probando ? 'Enviar respuesta de prueba' : 'Enviar mi respuesta'}</button>
+        <p class="small muted" id="enc-estado">Elige una respuesta en la pregunta 2 para poder enviar.</p></div>
+    </form>`;
+  }
+  app.innerHTML = `${cabecera}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
+  const form = app.querySelector('#enc-form');
+  if (!form) return;
+  const $prov = form.querySelector('#enc-prov'), $rec = form.querySelector('#enc-rec'), $btn = form.querySelector('#enc-enviar'), $est = form.querySelector('#enc-estado');
+  const etiquetaBoton = $btn.textContent;
+  const marcar = () => {
+    form.querySelectorAll('.enc-op').forEach(l => l.classList.toggle('sel', l.querySelector('input').checked));
+    const ok = !!form.querySelector('input[name="intencion"]:checked');
+    $btn.disabled = !ok;
+    $est.textContent = ok ? 'Respuesta anónima. Puedes cambiarla antes de enviar.' : 'Elige una respuesta en la pregunta 2 para poder enviar.';
+  };
+  form.addEventListener('change', ev => {
+    if (ev.target === $prov){
+      const pv = $prov.value;
+      form.querySelectorAll('.enc-op[data-prov]').forEach(l => {
+        const visible = !pv || l.dataset.prov.split(' ').includes(pv);
+        l.hidden = !visible;
+        if (!visible) l.querySelector('input').checked = false;
+      });
+    }
+    marcar();
+  });
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const sel = form.querySelector('input[name="intencion"]:checked'); if (!sel) return;
+    const main = app.querySelector('#enc-main');
+    if (modo === 'real' && !probando && encEstado() !== 'abierta'){ viewEncuesta(false); return; }   // cerró mientras rellenaba
+    const op = ENC.partidos.concat(ENC.otras).find(o => o.k === sel.value);
+    const datos = {intencion: op.n, recuerdo: $rec.value, provincia: $prov.value ? M.provincias[$prov.value] : '', web: form.querySelector('#enc-web').value, v: '1'};
+    if (probando) datos.prueba = '1';
+    if (modo === 'previa'){
+      main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Vista previa · no se ha guardado</span><h2>Así verá la confirmación quien responda</h2>
+        <p>Has elegido <b>${esc(op.n)}</b>${datos.provincia ? ` en ${esc(datos.provincia)}` : ''}${datos.recuerdo ? ` (recuerdo de voto: ${esc(datos.recuerdo)})` : ''}. En pactómetro.es esta respuesta se guardaría de forma anónima en la hoja de cálculo privada del titular.</p>
+        <button class="btn" type="button" id="enc-otra">Volver a probar</button></div>`;
+      main.querySelector('#enc-otra').addEventListener('click', () => viewEncuesta(prueba));
+      main.scrollIntoView({behavior: 'smooth', block: 'start'});
+      return;
+    }
+    $btn.disabled = true; $btn.textContent = 'Enviando…';
+    try {
+      await fetch(CFG.encuestaURL, {method: 'POST', mode: 'no-cors', body: new URLSearchParams(datos)});
+      if (probando){
+        main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Prueba enviada</span><h2>Comprueba la pestaña «Pruebas»</h2>
+          <p>Si la conexión con la hoja funciona, en unos segundos aparecerá una fila con <b>${esc(op.n)}</b> en la pestaña «Pruebas». No cuenta en la encuesta.</p>
+          <button class="btn" type="button" id="enc-otra">Enviar otra prueba</button></div>`;
+        main.querySelector('#enc-otra').addEventListener('click', () => viewEncuesta(true));
+        return;
+      }
+      store.set(ENC.clave, {dia: hoyISO()});
+      main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Respuesta registrada</span><h2>Gracias por participar</h2>
+        <p>Tu respuesta se ha guardado de forma anónima. Los resultados no se publican en la web.</p>
+        <div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
+      main.scrollIntoView({behavior: 'smooth', block: 'start'});
+    } catch(e){
+      $btn.disabled = false; $btn.textContent = etiquetaBoton;
+      $est.innerHTML = '<span class="enc-err">No se pudo enviar. Comprueba tu conexión a internet y vuelve a pulsar el botón.</span>';
+    }
+  });
+  marcar();
+}
+
+/* ================================================================ vista: fuentes y aviso legal */
+async function viewFuentes(){
+  setTitle('Fuentes y aviso legal');
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Metodología</span><h1>Fuentes y aviso legal</h1></div>
+  <div class="prose">
+    <h2>De dónde salen los datos</h2>
+    <ul>
+      <li><b>Ayuntamientos (1979-2023), diputaciones provinciales (1987-2023), cabildos insulares (1987-2023) y Congreso (1977-2023):</b> ficheros oficiales de resultados del Ministerio del Interior (área de descargas de <a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">infoelectoral.interior.gob.es</a>), leídos directamente con el formato oficial de registros. Los ficheros de 2023 son los publicados por el Ministerio; los de 1977 a 2019 proceden de la copia íntegra de esos mismos ficheros que mantiene el proyecto <a href="https://github.com/JaimeObregon/infoelectoral" target="_blank" rel="noopener">infoelectoral</a> de Jaime Gómez-Obregón.</li>
+      <li><b>Congreso, 1989 y 1993:</b> el Ministerio no ofrece ficheros de totales para esas dos elecciones; los escaños se obtienen de la relación oficial de candidatos electos, decodificada por el proyecto <a href="https://github.com/PucelaBits/listas-electorales" target="_blank" rel="noopener">listas-electorales</a> (licencia CC BY 4.0). No hay votos para esos dos años.</li>
+      <li><b>Senado:</b> senadores electos según la relación oficial de candidatos de cada elección.</li>
+      <li><b>Investiduras y mociones de censura:</b> archivo oficial del <a href="https://www.congreso.es/es/cem/sesiones-de-investidura" target="_blank" rel="noopener">Congreso de los Diputados</a>.</li>
+      <li><b>Parlamentos autonómicos:</b> las elecciones autonómicas no las publica el Ministerio del Interior sino cada comunidad. Los escaños de las 201 elecciones autonómicas celebradas entre 1980 y 2026 se han recopilado de fuentes públicas (Wikipedia) y se ha comprobado que cada elección suma exactamente el tamaño de su cámara. Ceuta y Melilla sí son datos oficiales, porque sus asambleas se eligen en las elecciones municipales. Se marcan como «Recopilado».</li>
+      <li><b>Juntas Generales vascas y consells de Mallorca, Menorca y Eivissa (2023):</b> resultados recopilados de fuentes públicas. El Consell de Formentera es dato oficial (se elige en las municipales).</li>
+      <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
+      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, solo el domingo 22 de noviembre de 2026 de 00:00 a 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
+    </ul>
+    <h2>Cómo se calcula</h2>
+    <ul>
+      <li>Mayoría absoluta = la mitad del número legal de miembros, redondeada hacia abajo, más uno (176 en el Congreso).</li>
+      <li>Investidura: mayoría absoluta en la primera votación; en la segunda basta con más votos a favor que en contra. Las abstenciones no cuentan como «no».</li>
+      <li>Alcaldías: si ningún cabeza de lista obtiene la mayoría absoluta de los concejales, es alcalde el de la lista más votada (art. 196 LOREG).</li>
+      <li>«Mayorías posibles» son las coaliciones mínimas ganadoras: suman mayoría absoluta y la pierden si sale cualquiera de sus miembros.</li>
+      <li>Los colores identifican familias políticas (PSOE y sus federaciones, PP y la antigua AP, etc.) solo para leer los gráficos; el nombre oficial de cada candidatura se mantiene siempre.</li>
+      <li>Los resultados reflejan lo que salió de las urnas. Cambios posteriores (tránsfugas, expulsiones, mociones de censura) no se recogen, salvo en la pestaña «Al disolverse las Cortes».</li>
+    </ul>
+    <h2>Aviso legal</h2>
+    <p>Titular del sitio web pactómetro.es: <b>Javier Pereiro Pérez</b>.</p>
+    <p class="copy">Contacto: <output id="mail">pactometroes@gmail.com</output> <button class="btn ghost" type="button" id="copy-mail">Copiar</button></p>
+    <p>© 2026 Javier Pereiro Pérez. El diseño, el código y la recopilación de datos de este sitio pertenecen a su titular; todos los derechos reservados.</p>
+    <p>Los resultados electorales oficiales son información del sector público reutilizada citando su fuente (Ministerio del Interior, Congreso de los Diputados). Este sitio no está vinculado a ninguna administración pública ni a ningún partido político. Los datos se ofrecen con fines informativos; para cualquier uso con efectos jurídicos, consulta las publicaciones oficiales (BOE y boletines oficiales).</p>
+    <p>Este sitio no usa cookies. El simulador guarda tu escenario solo en tu navegador.</p>
+    <p>La encuesta del 29-N es anónima: guarda tus respuestas, la provincia si la indicas y la fecha con la hora redondeada, sin nombre, correo, dirección IP ni ningún identificador. Las respuestas se almacenan en una hoja de cálculo privada del titular. Para evitar respuestas repetidas, tu navegador guarda una marca de «ya respondido» que no contiene tu respuesta y no sale de tu dispositivo.</p>
+    <p class="small muted">Datos actualizados a 8 de octubre de 2026.</p>
+  </div>`;
+  app.querySelector('#copy-mail').addEventListener('click', async ev => {
+    const out = app.querySelector('#mail');
+    try { await navigator.clipboard.writeText(out.textContent); ev.target.textContent = 'Copiado'; }
+    catch(e){ const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); ev.target.textContent = 'Seleccionado: pulsa Ctrl+C'; }
+  });
+}
+function notFound(){
+  app.innerHTML = `<div class="error"><h2>No encontramos esa página</h2><p class="muted">El enlace no corresponde a ninguna institución con datos. <a href="#congreso">Volver al Congreso</a> o <a href="#ayuntamientos">buscar un municipio</a>.</p></div>`;
+}
+
+/* ================================================================ router */
+async function dispatch(h){
+  let m;
+  if (!h || h === 'congreso'){ setTitle(''); return viewCongreso('2023'); }
+  if (h === 'congreso-disolucion'){ setTitle('Congreso al disolverse'); return viewCongreso('disolucion'); }
+  if (h === 'congreso-simulador'){ setTitle('Simulador 29-N'); return viewCongreso('simulador'); }
+  if ((m = h.match(/^congreso-(\d{4}(?:-\d{2})?)$/))){ setTitle('Congreso ' + m[1]); return viewCongreso('hist', m[1]); }
+  if (h === 'autonomias'){ setTitle('Autonomías'); return viewAutonomias(); }
+  if ((m = h.match(/^auto-([a-z-]+?)(?:\.(\d{4}-\d{2}-\d{2}))?$/))) return viewAutonomia(m[1], m[2]);
+  if (h === 'locales'){ setTitle('Diputaciones y cabildos'); return viewLocales(); }
+  if ((m = h.match(/^(dip|cab|con|jjgg)-([a-z0-9-]+?)(?:\.(\d{4}))?$/))) return viewLocal(m[1], m[2], m[3]);
+  if (h === 'ayuntamientos'){ setTitle('Ayuntamientos'); return viewAyuntamientos(); }
+  if ((m = h.match(/^mun-(\d{5})(?:\.(\d{4}))?$/))) return viewMunicipio(m[1], m[2]);
+  if (h === 'historico'){ setTitle('Histórico'); return viewHistorico(); }
+  if (h === 'encuesta' || h === 'encuesta-prueba'){ setTitle('Encuesta 29-N'); return viewEncuesta(h === 'encuesta-prueba'); }
+  if (h === 'fuentes') return viewFuentes();
+  return notFound();
+}
+const NAV = {congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', fuentes: 'fuentes', encuesta: 'encuesta'};
+let lastHash = null;
+async function route(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith('sec-') || h.startsWith('h-')) return;
+  const key = NAV[(h || 'congreso').split(/[-.]/)[0]] || '';
+  document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === key) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  hideTip();
+  pararCuenta();
+  actualizarNavEncuesta();
+  const sameView = lastHash !== null && lastHash.split('.')[0] === h.split('.')[0];
+  lastHash = h;
+  try { await dispatch(h); }
+  catch(e){ app.innerHTML = `<div class="error"><h2>No se pudieron cargar los datos</h2><p class="muted">${esc(e.message)}</p></div>`; }
+  if (!sameView) window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+Promise.all([load('resumen.json').then(R => { FAM = R.familias; }).catch(() => {}), sincronizarReloj()]).finally(route);
+</script>
+</body>
+</html>
