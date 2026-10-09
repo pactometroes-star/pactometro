@@ -402,7 +402,8 @@ table.cmp-gen td{text-align:right}
 #app.home{max-width:none;padding:0}
 .btn.lg{padding:10px 18px;font-size:15px;min-height:44px}
 .h-hero{background:var(--sheet);border-bottom:1px solid var(--rule)}
-.h-hero > .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,80px);align-items:center;padding-block:clamp(30px,5.5vw,72px) clamp(36px,6vw,80px)}
+.h-hero > .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,3.6vw,48px) clamp(28px,5vw,80px);align-items:center;padding-block:clamp(16px,2.4vw,28px) clamp(36px,6vw,80px)}
+.h-hero .notice{grid-column:1 / -1;margin:0}
 @media (max-width:980px){.h-hero > .wrap{grid-template-columns:minmax(0,1fr)}}
 .h-intro{display:grid;gap:22px;align-content:center;min-width:0}
 .h-intro,.h-demo,.h-search,.h-band-txt,.h-fig,.h-pick,.h-tool,.h-sec-head{grid-template-columns:minmax(0,1fr)}
@@ -460,10 +461,7 @@ table.cmp-gen td{text-align:right}
 .h-band{background:var(--band);color:#fff}
 .h-band > .wrap{padding-block:clamp(38px,5.5vw,68px);display:grid;gap:clamp(30px,4vw,48px)}
 .h-band :focus-visible{outline-color:#fff}
-.h-band-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:clamp(18px,3.4vw,48px);align-items:center}
-.h-days{display:grid;justify-items:start;gap:10px;margin:0}
-.h-days b{font:800 clamp(84px,11vw,150px)/.8 var(--f-sans);font-variation-settings:"wdth" 125;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
-.h-days span{font-size:15px;color:var(--band-2)}
+.h-band-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(18px,3.4vw,48px);align-items:center}
 .h-band-txt{display:grid;gap:12px;min-width:0}
 .h-band h2{font-size:clamp(27px,3.3vw,42px);color:#fff;line-height:1.05}
 .h-band-txt p{color:var(--band-2);font-size:17px;max-width:50ch}
@@ -473,8 +471,8 @@ table.cmp-gen td{text-align:right}
 .h-band .btn-l:hover{background:transparent;color:#fff}
 .h-band .btn-o{background:transparent;border-color:rgba(255,255,255,.7);color:#fff}
 .h-band .btn-o:hover{background:#fff;border-color:#fff;color:#051e3e}
-@media (max-width:900px){.h-band-top{grid-template-columns:auto minmax(0,1fr)}.h-band-acts{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap}}
-@media (max-width:560px){.h-band-top{grid-template-columns:minmax(0,1fr)}.h-band-acts{flex-direction:column}}
+@media (max-width:900px){.h-band-top{grid-template-columns:minmax(0,1fr)}.h-band-acts{flex-direction:row;flex-wrap:wrap}}
+@media (max-width:560px){.h-band-acts{flex-direction:column}}
 .h-cal{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
 .h-cal li{position:relative;padding:30px 14px 0 0;display:grid;gap:4px;align-content:start}
 .h-cal li::before{content:"";position:absolute;top:7px;left:0;right:0;height:2px;background:linear-gradient(90deg,#fff var(--f,0%),var(--band-rule) var(--f,0%))}
@@ -1188,13 +1186,21 @@ function alertaExcel(btn){ btn.dataset.err = '1'; btn.textContent = 'No se pudo 
 const cmpLink = (spec, txt = 'Comparar con otra →') => `<a class="tab" href="#comparar?s=${encodeURIComponent(spec)}">${txt}</a>`;
 function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'; }
 
+/* ================================================================ aviso del 29-N (portada y Congreso) */
+// Cuenta atrás con días, horas, minutos y segundos; iniciarCuenta() la pone en marcha. conv: G.convocatoria si ya se ha cargado.
+function avisoElecciones(conv){
+  const c = conv || {decreto_boe: '2026-10-06', campana: ['2026-11-13', '2026-11-27']};
+  const camp = c.campana || ['2026-11-13', '2026-11-27'];
+  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta las 20:00'}</a>` : ''}</div></div>`;
+}
+
 /* ================================================================ vista: Congreso */
 const LEYENDA_ELECCION = k => k.includes('-') ? (k.endsWith('-04') ? 'abril de ' : 'noviembre de ') + k.slice(0, 4) : k;
 async function viewCongreso(modo, clave){
   const G = await load('generales.json');
   const conv = G.convocatoria;
   const keys = Object.keys(G.congreso).sort();
-  const notice = `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(conv.decreto_boe)}) · campaña del 13 al 27 de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta las 20:00'}</a>` : ''}</div></div>`;
+  const notice = avisoElecciones(conv);
   let data, partidos, preset, presetNota, editable = false, simKey = null, simBase = null, titulo, fuente = 'oficial', extra = '';
   const base23 = G.congreso['2023'].r.map(rowToParty);
   const baseDis = G.disolucion.r.map(rowToParty);
@@ -2096,14 +2102,13 @@ const ICO_OK = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="tru
 const NUM_TXT = ['ninguna', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez'];
 const miles = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');   // 8.174, también con cuatro cifras
 const listaY = n => n.length < 2 ? (n[0] || '') : n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1];
-let relojInicio = null;
-function pararInicio(){ if (relojInicio){ clearInterval(relojInicio); relojInicio = null; } }
 
 async function viewInicio(){
   document.title = 'Pactómetro · Mayorías y pactos en todas las instituciones de España';
   app.className = 'home';
   app.innerHTML = `
   <section class="h-hero" aria-labelledby="h-titulo"><div class="wrap">
+    ${avisoElecciones()}
     <div class="h-intro">
       <h1 class="h-title" id="h-titulo">¿Quién puede gobernar?</h1>
       <p class="h-lede">Calcula las mayorías y los pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, los cabildos y los más de 8.000 ayuntamientos de España, con los resultados oficiales desde 1977.</p>
@@ -2130,8 +2135,7 @@ async function viewInicio(){
   </div></section>
   <section class="h-band" aria-labelledby="h-29n"><div class="wrap">
     <div class="h-band-top">
-      <p class="h-days" id="h-dias" aria-hidden="true"></p>
-      <div class="h-band-txt"><h2 id="h-29n">Elecciones generales del domingo 29 de noviembre</h2><p id="h-cuenta"></p></div>
+      <div class="h-band-txt"><h2 id="h-29n">Calendario del 29-N</h2><p>De la disolución de las Cortes a la constitución de las nuevas. La campaña va del 13 al 27 de noviembre y el domingo 29 se vota de 9:00 a 20:00, hora local.</p></div>
       <div class="h-band-acts">
         <a class="btn lg btn-l" href="#congreso-simulador">Simular el 29-N</a>
         <a class="btn lg btn-o" href="#congreso-disolucion">El Congreso al disolverse</a>
@@ -2175,7 +2179,7 @@ async function viewInicio(){
     </div>
   </div></section>`;
   Buscador(app.querySelector('#h-search'));
-  bandaInicio(app.querySelector('.h-band'));
+  iniciarCuenta();
   const aviso = (el, txt) => e => { console.error(e); if (el) el.innerHTML = `<p class="small muted">${txt} Recarga la página para intentarlo de nuevo.</p>`; };
   load('generales.json').then(G => {
     DemoCongreso(G, app.querySelector('.h-demo'));
@@ -2291,31 +2295,6 @@ function ciudadesInicio(M, R, ul, txt){
   ul.innerHTML = top.map(r => { const mj = Math.floor(r[5] / 2) + 1; return `<li><a href="#mun-${r[0]}" aria-label="${esc(`${r[1]}: ${r[5]} concejales, mayoría absoluta ${mj}`)}">${esc(r[1])}<small aria-hidden="true">${mj} de ${r[5]}</small></a></li>`; }).join('');
   const m23 = R && R.municipales && R.municipales['2023'];
   txt.textContent = `Los ${miles(M.municipios.length)} municipios con resultados y todas sus elecciones municipales desde 1979.${m23 ? ` En 2023 se eligieron ${miles(m23.concejales)} concejales.` : ''}`;
-}
-
-function bandaInicio(band){
-  const $d = band.querySelector('#h-dias'), $c = band.querySelector('#h-cuenta');
-  const pl = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
-  const tick = () => {
-    if (!$c.isConnected){ pararInicio(); return; }
-    const t = ahoraReal();
-    if (t < ELEC.apertura){
-      const s = Math.floor((ELEC.apertura - t) / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
-      $d.innerHTML = d >= 1 ? `<b>${d}</b><span>${d === 1 ? 'día' : 'días'}</span>` : `<b>${h}</b><span>${h === 1 ? 'hora' : 'horas'}</span>`;
-      $c.textContent = d >= 1 ? `Faltan ${pl(d, 'día', 'días')} y ${pl(h, 'hora', 'horas')} para que abran los colegios electorales. Se vota de 9:00 a 20:00, hora local.`
-        : `Faltan ${pl(h, 'hora', 'horas')} y ${pl(m, 'minuto', 'minutos')} para que abran los colegios electorales, a las 9:00.`;
-    } else if (t < ELEC.cierre){
-      const s = Math.floor((ELEC.cierre - t) / 1000), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60);
-      $d.innerHTML = '<b>Hoy</b><span>se vota</span>';
-      $c.textContent = `Los colegios electorales cierran a las 20:00, hora local: quedan ${pl(h, 'hora', 'horas')} y ${pl(m, 'minuto', 'minutos')}.`;
-    } else {
-      $d.hidden = true;
-      $c.textContent = 'Los colegios electorales han cerrado. Los resultados oficiales se cargarán en pactómetro.es en cuanto los publique el Ministerio del Interior.';
-      pararInicio();
-    }
-  };
-  pararInicio(); tick();
-  if (ahoraReal() < ELEC.cierre) relojInicio = setInterval(tick, 20000);
 }
 
 function calendarioInicio(G, ol){
@@ -2506,7 +2485,6 @@ async function route(){
   cerrarMenu();
   hideTip();
   pararCuenta();
-  pararInicio();
   actualizarNavEncuesta();
   const sameView = lastHash !== null && (lastHash.split('.')[0] === h.split('.')[0] || (lastHash.startsWith('comparar') && h.startsWith('comparar')));
   lastHash = h;
