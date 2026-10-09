@@ -335,6 +335,47 @@ details.more > div{padding:0 14px 14px}
 .foot .mark{display:inline-flex;align-items:center;gap:8px}
 .foot .mark img{width:20px;height:20px;display:block}
 
+/* ---------- recuento de votos ---------- */
+.rec-wrap{display:grid;gap:10px;border-top:1px solid var(--rule);padding-top:16px}
+.rec-wrap h3{font-size:17px}
+.recuento{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.recuento > div{padding:10px 12px;display:grid;gap:2px;align-content:start;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:0 -1px -1px 0}
+.recuento dt{font:600 10.5px/1.2 var(--f-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.recuento dd{margin:0;font:700 17px/1.2 var(--f-sans);font-variant-numeric:tabular-nums;display:grid;gap:1px}
+.recuento dd small{font:400 11.5px/1.3 var(--f-sans);color:var(--muted)}
+.cbox .tot .cv{flex-basis:100%;color:var(--ink-2)}
+
+/* ---------- comparar ---------- */
+.cmp-sels{display:grid;gap:8px}
+.cmp-sel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;border:1px solid var(--rule);border-radius:var(--r);background:var(--paper)}
+.cmp-sel .select{flex:1 1 180px;min-width:0}
+.cmp-sel .select[data-f="t"]{flex:1 1 230px}
+.cmp-sel .cmp-x{margin-left:auto}
+.cmp-letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);font:700 13px/1 var(--f-sans);flex:none}
+.cmp-letter.sm{width:19px;height:19px;font-size:11px;vertical-align:middle;margin-right:4px}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+#cmp-modo button[aria-checked="true"],.cmp-met .seg button[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+table.cmp-gen td{white-space:nowrap}
+.cmp-met{justify-content:space-between;gap:12px}
+.cmp-chart{display:grid;gap:12px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px}
+.cmp-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.cmp-row:last-child{border-bottom:0;padding-bottom:0}
+.cmp-lab{display:flex;gap:7px;align-items:center;font-weight:700;font-size:13.5px;line-height:1.2;min-width:0;overflow-wrap:anywhere}
+.cmp-lab i{width:10px;height:10px;border-radius:2px;flex:none}
+.cmp-bars{display:grid;gap:3px}
+.cmp-bar{display:grid;grid-template-columns:14px minmax(0,1fr) 62px;gap:8px;align-items:center;font-size:12.5px}
+.cmp-l{font:700 11px/1 var(--f-sans);color:var(--muted)}
+.cmp-track{height:12px;background:var(--wash);border-radius:3px;overflow:hidden;display:block}
+.cmp-track i{display:block;height:100%;border-radius:3px}
+.cmp-bar b{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.cmp-row{grid-template-columns:minmax(0,1fr)}.cmp-bar{grid-template-columns:14px minmax(0,1fr) 56px}}
+.cmp-sub{font-weight:400;letter-spacing:.04em;text-transform:none}
+table.cmp-tab th,table.cmp-tab td{padding:7px 10px}
+table.cmp-tab tr.tot td{background:var(--paper)}
+table.cmp-gen th[scope="row"]{background:var(--sheet);color:var(--ink-2);text-transform:none;letter-spacing:0;font:600 13px/1.3 var(--f-sans)}
+table.cmp-gen td{text-align:right}
+.cmp-notas{margin:0;padding-left:18px;display:grid;gap:4px;max-width:80ch}
+
 /* ---------- tooltip ---------- */
 .tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.35;max-width:260px;box-shadow:0 6px 20px -8px rgba(0,0,0,.45)}
 .tip strong{display:block;font-size:15px;font-weight:700}
@@ -353,6 +394,7 @@ details.more > div{padding:0 14px 14px}
       <a href="#locales" data-nav="locales">Diputaciones y cabildos</a>
       <a href="#ayuntamientos" data-nav="ayuntamientos">Ayuntamientos</a>
       <a href="#historico" data-nav="historico">Histórico</a>
+      <a href="#comparar" data-nav="comparar">Comparar</a>
       <a href="#fuentes" data-nav="fuentes">Fuentes</a>
     </nav>
   </div>
@@ -439,6 +481,161 @@ function load(path){
 let FAM = {};
 const rowToParty = (r, i) => ({ id: String(i), sig: r[0], nom: r[1], color: r[2], fam: r[3], votos: r[4], esc: r[5] });
 
+/* ================================================================ recuento de votos */
+// Devuelve {censo, votantes, validos, blancos, nulos, cand} con lo que haya en los datos, o null si no hay recuento.
+function recuentoDe(e){
+  if (!e) return null;
+  const n = v => (typeof v === 'number' && isFinite(v)) ? v : null;
+  const censo = n(e.censo), blancos = n(e.blancos), nulos = n(e.nulos);
+  let votantes = n(e.votantes), cand = n(e.votos_cand);
+  if (votantes === null && cand !== null && blancos !== null && nulos !== null) votantes = cand + blancos + nulos;
+  const validos = (votantes !== null && nulos !== null) ? votantes - nulos : (cand !== null && blancos !== null ? cand + blancos : null);
+  if (cand === null && validos !== null && blancos !== null) cand = validos - blancos;
+  if (votantes === null && validos === null) return null;
+  return {censo, votantes, validos, blancos, nulos, cand, suma: e.recuento === 'suma-municipal'};
+}
+const recuentoMun = rec => recuentoDe({censo: rec[2], votantes: rec[3], blancos: rec[4], nulos: rec[5], votos_cand: rec[6].reduce((a, x) => a + (x[1] || 0), 0)});
+// Votos de las candidaturas que no figuran una a una en los datos (sin escaño): votos a candidaturas menos los listados.
+function otrasFila(rows, rc){
+  if (!rc || rc.cand === null || !rows.some(r => r[4])) return null;
+  const resto = rc.cand - rows.reduce((a, r) => a + (r[4] || 0), 0);
+  return resto > 0 ? ['Otras', 'Resto de candidaturas (sin escaño)', '#b4bcc8', 'otras', resto, 0] : null;
+}
+const validosDe = (rows, rc) => (rc && rc.validos) || rows.reduce((a, r) => a + (r[4] || 0), 0) || 0;
+const famNombre = f => f === 'otras' ? 'Resto de candidaturas sin escaño' : f === 'local' ? 'Candidaturas locales, independientes y otras' : (FAM[f] ? FAM[f].largo : f || '');
+const famCorto = f => f === 'otras' ? 'Resto sin escaño' : f === 'local' ? 'Locales y otras' : (FAM[f] ? FAM[f].corto : f || '');
+const famColor = f => f === 'otras' ? '#b4bcc8' : f === 'local' ? '#8a8f98' : (FAM[f] ? FAM[f].color : '#8a8f98');
+const textoPlano = h => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.replace(/\s+/g, ' ').trim(); };
+function recuentoHTML(rc){
+  if (!rc) return '';
+  const it = (k, v, sub) => v === null || v === undefined ? '' : `<div><dt>${k}</dt><dd>${v}${sub ? `<small>${sub}</small>` : ''}</dd></div>`;
+  return `<dl class="recuento">${it('Censo', rc.censo !== null ? fmt(rc.censo) : null)}${it('Votantes', rc.votantes !== null ? fmt(rc.votantes) : null, rc.censo ? fmtPct(100 * rc.votantes / rc.censo) + ' de participación' : '')}${it('Votos válidos', rc.validos !== null ? fmt(rc.validos) : null)}${it('A candidaturas', rc.cand !== null ? fmt(rc.cand) : null)}${it('En blanco', rc.blancos !== null ? fmt(rc.blancos) : null, rc.validos && rc.blancos !== null ? fmtPct(100 * rc.blancos / rc.validos) + ' de los válidos' : '')}${it('Nulos', rc.nulos !== null ? fmt(rc.nulos) : null, rc.votantes && rc.nulos !== null ? fmtPct(100 * rc.nulos / rc.votantes) + ' de los votantes' : '')}${rc.censo && rc.votantes !== null ? it('Abstención', fmt(rc.censo - rc.votantes), fmtPct(100 * (rc.censo - rc.votantes) / rc.censo) + ' del censo') : ''}</dl>${rc.suma ? '<p class="small muted">Recuento: suma de los resultados municipales oficiales de los municipios de la provincia.</p>' : ''}`;
+}
+
+/* ================================================================ Excel (.xlsx) generado en el navegador, sin librerías */
+const XLSX = (() => {
+  const enc = new TextEncoder();
+  const T = new Uint32Array(256);
+  for (let n = 0; n < 256; n++){ let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; T[n] = c >>> 0; }
+  const crc32 = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = T[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  function zip(files){                       // ZIP sin compresión (método «stored»), válido para Excel, LibreOffice y Numbers
+    const parts = [], central = []; let off = 0;
+    const d = new Date();
+    const dt = ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1)) & 0xFFFF;
+    const dd = (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF;
+    for (const f of files){
+      const nm = enc.encode(f.name), data = enc.encode(f.text), c = crc32(data), n = data.length;
+      const h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(10, dt, true); h.setUint16(12, dd, true);
+      h.setUint32(14, c, true); h.setUint32(18, n, true); h.setUint32(22, n, true); h.setUint16(26, nm.length, true);
+      parts.push(new Uint8Array(h.buffer), nm, data);
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(12, dt, true); ch.setUint16(14, dd, true);
+      ch.setUint32(16, c, true); ch.setUint32(20, n, true); ch.setUint32(24, n, true); ch.setUint16(28, nm.length, true); ch.setUint32(42, off, true);
+      central.push(new Uint8Array(ch.buffer), nm);
+      off += 30 + nm.length + n;
+    }
+    const size = central.reduce((a, b) => a + b.length, 0);
+    const e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, size, true); e.setUint32(16, off, true);
+    return new Blob([...parts, ...central, new Uint8Array(e.buffer)], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  }
+  const x = s => String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]/g, '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+  const col = i => { let s = ''; i++; while (i > 0){ const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; };
+  // Estilos: b negrita · h cabecera · int miles · pct porcentaje · t título · intb/pctb en negrita · note nota · pp puntos con un decimal
+  const STY = {b: 1, h: 2, int: 3, pct: 4, t: 5, intb: 6, pctb: 7, note: 8, pp: 9, sub: 10};
+  const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="0.0%"/><numFmt numFmtId="165" formatCode="+0.0;-0.0;0.0"/></numFmts>
+<fonts count="6"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="11"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="15"/><color rgb="FF051E3E"/><name val="Calibri"/><family val="2"/></font><font><i/><sz val="10"/><color rgb="FF626E80"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="12"/><color rgb="FF051E3E"/><name val="Calibri"/><family val="2"/></font></fonts>
+<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF051E3E"/><bgColor indexed="64"/></patternFill></fill></fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="11"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="3" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="3" fontId="1" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1"/><xf numFmtId="164" fontId="1" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1"/><xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  function sheetXml(sh){
+    let rows = '';
+    sh.rows.forEach((r, ri) => {
+      if (!r || !r.length) return;
+      let cells = '';
+      r.forEach((c, ci) => {
+        let v = c, s = 0;
+        if (c && typeof c === 'object'){ v = c.v; s = STY[c.s] || 0; }
+        const ref = col(ci) + (ri + 1);
+        if (v === null || v === undefined || v === ''){ if (s) cells += `<c r="${ref}" s="${s}"/>`; return; }
+        if (typeof v === 'number'){
+          if (!isFinite(v)) return;
+          if (!s && Number.isInteger(v) && Math.abs(v) >= 1000) s = STY.int;
+          cells += `<c r="${ref}"${s ? ` s="${s}"` : ''}><v>${v}</v></c>`;
+        } else cells += `<c r="${ref}" t="inlineStr"${s ? ` s="${s}"` : ''}><is><t xml:space="preserve">${x(v)}</t></is></c>`;
+      });
+      if (cells) rows += `<row r="${ri + 1}">${cells}</row>`;
+    });
+    const cols = sh.cols ? `<cols>${sh.cols.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols>` : '';
+    const pane = sh.freeze ? `<sheetViews><sheetView workbookViewId="0"><pane ySplit="${sh.freeze}" topLeftCell="A${sh.freeze + 1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` : '';
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">${pane}${cols}<sheetData>${rows}</sheetData>${sh.filter ? `<autoFilter ref="${sh.filter}"/>` : ''}</worksheet>`;
+  }
+  // Rango A{fila}:{col}{fila final} para el autofiltro de una tabla que empieza en la fila `r0` (0-based) y tiene `nc` columnas
+  const rango = (r0, nc, r1) => `A${r0 + 1}:${col(nc - 1)}${r1 + 1}`;
+  function libro(hojas){
+    const used = new Set();
+    const names = hojas.map(h => {
+      let n = String(h.name).replace(/[\[\]:*?\/\\]/g, ' ').replace(/^'+|'+$/g, '').trim().slice(0, 31) || 'Hoja';
+      let k = n, i = 2; while (used.has(k.toLowerCase())){ const suf = ' (' + i++ + ')'; k = n.slice(0, 31 - suf.length) + suf; }
+      used.add(k.toLowerCase()); return k;
+    });
+    const files = [];
+    files.push({name: '[Content_Types].xml', text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${hojas.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`});
+    files.push({name: '_rels/.rels', text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`});
+    const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+    files.push({name: 'docProps/core.xml', text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>pactómetro.es</dc:title><dc:creator>pactómetro.es · Javier Pereiro Pérez</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">${now}</dcterms:modified></cp:coreProperties>`});
+    files.push({name: 'docProps/app.xml', text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>pactometro.es</Application></Properties>`});
+    const defs = hojas.map((h, i) => h.filter ? `<definedName name="_xlnm._FilterDatabase" localSheetId="${i}" hidden="1">'${names[i].replace(/'/g, "''")}'!${h.filter.replace(/([A-Z]+)(\d+)/g, '$$$1$$$2')}</definedName>` : '').join('');
+    files.push({name: 'xl/workbook.xml', text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView/></bookViews><sheets>${names.map((n, i) => `<sheet name="${x(n)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('')}</sheets>${defs ? `<definedNames>${defs}</definedNames>` : ''}</workbook>`});
+    files.push({name: 'xl/_rels/workbook.xml.rels', text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${hojas.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('')}<Relationship Id="rId${hojas.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`});
+    files.push({name: 'xl/styles.xml', text: STYLES});
+    hojas.forEach((h, i) => files.push({name: `xl/worksheets/sheet${i + 1}.xml`, text: sheetXml(h)}));
+    return zip(files);
+  }
+  function descargar(hojas, nombre){
+    const blob = libro(hojas);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = nombre.replace(/[^\w.-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') + '.xlsx';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  return {libro, descargar, rango};
+})();
+const archivoSlug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
+const hoyTexto = () => { const d = new Date(); return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`; };
+const pieExcel = fuente => [[], [{v: `Descargado de pactómetro.es el ${hoyTexto()} · ${location.href}`, s: 'note'}], [{v: `Datos: ${fuente || 'Ministerio del Interior y fuentes indicadas en pactómetro.es/#fuentes'}`, s: 'note'}], [{v: '© 2026 Javier Pereiro Pérez · pactómetro.es · Cita la fuente si reutilizas estos datos.', s: 'note'}]];
+const pct01 = (a, b) => (b ? a / b : null);
+const fuenteTexto = f => f === 'compilada' ? 'Resultados recopilados de fuentes públicas (no oficiales del Ministerio del Interior)' : 'Ministerio del Interior (ficheros oficiales de resultados) · Congreso de los Diputados';
+// Filas de una tabla de resultados para Excel: devuelve {filas, inicio, fin} con cabecera incluida
+function tablaResultadosExcel(rows, rc, total, extra){
+  const validos = validosDe(rows, rc), otras = otrasFila(rows, rc);
+  const hasV = rows.some(r => r[4]);
+  const cab = ['Candidatura', 'Nombre completo', 'Familia política', 'Votos', '% votos válidos', 'Escaños', '% escaños'].concat(extra ? extra.cab : []);
+  const out = [cab.map(v => ({v, s: 'h'}))];
+  const ord = rows.slice().sort((a, b) => (b[5] || 0) - (a[5] || 0) || (b[4] || 0) - (a[4] || 0));
+  ord.forEach((r, i) => out.push([niceSig(r[0]), r[1] ? nice(r[1]) : '', famNombre(r[3]), hasV ? r[4] ?? null : null, {v: hasV && r[4] ? pct01(r[4], validos) : null, s: 'pct'}, r[5] || 0, {v: pct01(r[5] || 0, total), s: 'pct'}].concat(extra ? extra.fila(r, i) : [])));
+  if (otras) out.push([otras[0], otras[1], famNombre('otras'), otras[4], {v: pct01(otras[4], validos), s: 'pct'}, 0, {v: 0, s: 'pct'}]);
+  if (rc && rc.blancos !== null) out.push(['En blanco', 'Votos en blanco', '', rc.blancos, {v: pct01(rc.blancos, validos), s: 'pct'}, '', '']);
+  const sumE = rows.reduce((a, r) => a + (r[5] || 0), 0);
+  out.push([{v: 'Total', s: 'b'}, '', '', {v: hasV ? (rc && rc.validos) || validos : null, s: 'intb'}, {v: hasV && rc && rc.validos ? 1 : null, s: 'pctb'}, {v: sumE, s: 'intb'}, {v: pct01(sumE, total), s: 'pctb'}]);
+  return out;
+}
+function bloqueRecuentoExcel(rc){
+  if (!rc) return [];
+  const f = [[{v: 'Recuento de votos', s: 'sub'}]];
+  const add = (k, v, s) => { if (v !== null && v !== undefined) f.push([k, s ? {v, s} : v]); };
+  add('Censo', rc.censo); add('Votantes', rc.votantes); if (rc.censo && rc.votantes !== null) add('Participación', rc.votantes / rc.censo, 'pct');
+  add('Votos válidos', rc.validos); add('Votos a candidaturas', rc.cand); add('Votos en blanco', rc.blancos); add('Votos nulos', rc.nulos);
+  if (rc.censo && rc.votantes !== null) add('Abstención', rc.censo - rc.votantes);
+  if (rc.suma) f.push([{v: 'Suma de los resultados municipales oficiales de la provincia.', s: 'note'}]);
+  return f;
+}
+
 /* ================================================================ hemiciclo */
 const layoutCache = {};
 function seatLayout(n){
@@ -494,6 +691,7 @@ function Pactometro(cfg){
         <div class="row">
           <button class="btn ghost" type="button" data-act="nadie">Todos «no»</button>
           ${cfg.preset ? '<button class="btn ghost" type="button" data-act="preset">Restaurar</button>' : ''}
+          ${cfg.exportar ? '<button class="btn" type="button" data-act="xlsx" title="Descarga los resultados, tu escenario, las mayorías posibles y el histórico en una hoja de Excel"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v9m0 0L4.5 6.5M8 10l3.5-3.5M2 12v2.5h12V12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Excel</button>' : ''}
         </div>
       </div>
       ${cfg.presetNota ? `<p class="preset-note">${esc(cfg.presetNota)}</p>` : ''}
@@ -510,12 +708,16 @@ function Pactometro(cfg){
           <button class="btn ghost" type="button" data-act="ceros">Poner a cero</button>
         </div>` : ''}
     </div>
+    ${cfg.recuento ? `<div class="rec-wrap" style="grid-column:1/-1"><h3>Recuento de votos</h3>${recuentoHTML(cfg.recuento)}</div>` : ''}
     <div class="coal" style="grid-column:1/-1"></div>`;
   const $hemi = root.querySelector('.hemi'), $tally = root.querySelector('.tally'), $tleg = root.querySelector('.tally-legend');
   const $ver = root.querySelector('.verdict'), $list = root.querySelector('.plist'), $coal = root.querySelector('.coal');
   const $sum = root.querySelector('.sumline');
 
   const seatsOf = p => Math.max(0, Math.round(+p.esc || 0));
+  const votosTot = cfg.editable ? 0 : (cfg.votosValidos || 0);
+  const hayVotos = !cfg.editable && st.partidos.some(p => p.votos);
+  const votosTexto = v => hayVotos && v ? `${fmt(v)} votos${votosTot ? ' · ' + fmtPct(100 * v / votosTot) : ''}` : '';
   function totals(){
     let si = 0, no = 0, ab = 0;
     for (const p of st.partidos){ const s = seatsOf(p), v = st.voto.get(p.id); if (v === 'si') si += s; else if (v === 'abs') ab += s; else no += s; }
@@ -545,8 +747,8 @@ function Pactometro(cfg){
     }
     const innerR = pos.reduce((m, q) => Math.min(m, q[1]), 9) * S;
     const big = Math.min(46, innerR * 0.62);
-    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="${big.toFixed(1)}" font-weight="700" style="font-variation-settings:'wdth' 112;letter-spacing:-.02em">${t.si}</text>`;
-    svg += `<text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="9.5" fill="var(--muted)" style="letter-spacing:.12em">SÍ DE ${total}</text></svg>`;
+    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="${big.toFixed(1)}" font-weight="700" style="font-variation-settings:'wdth' 112;letter-spacing:-.02em">${maj}</text>`;
+    svg += `<text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="9.5" fill="var(--muted)" style="letter-spacing:.12em">PARA LA MAYORÍA · ${total}</text></svg>`;
     $hemi.innerHTML = svg;
     const s = $hemi.querySelector('svg');
     s.addEventListener('pointerover', ev => {
@@ -554,7 +756,8 @@ function Pactometro(cfg){
       highlight(id, true);
       const p = st.partidos.find(q => q.id === id);
       const v = {si: 'Sí', abs: 'Abstención', no: 'No'}[st.voto.get(id)];
-      showTip(ev, `<strong>${fmt(seatsOf(p))} escaños</strong>${esc(niceSig(p.sig))} · vota ${v}`);
+      const vt = votosTexto(p.votos);
+      showTip(ev, `<strong>${fmt(seatsOf(p))} escaños</strong>${esc(niceSig(p.sig))} · vota ${v}${vt ? '<br>' + vt : ''}`);
     });
     s.addEventListener('pointermove', ev => { if (!tip.hidden) moveTip(ev); });
     s.addEventListener('pointerout', ev => { if (ev.target.getAttribute && ev.target.getAttribute('data-p')) { highlight(null); hideTip(); } });
@@ -603,16 +806,19 @@ function Pactometro(cfg){
         ? 'Art. 99 de la Constitución: mayoría absoluta en la primera votación; simple en la segunda, 48 horas después. Si en dos meses nadie es investido, se disuelven las Cortes.'
         : 'Regla general de los estatutos de autonomía: mayoría absoluta en la primera votación y simple en las siguientes. Algunos parlamentos tienen procedimientos propios.';
     }
+    const siVotos = hayVotos ? st.partidos.filter(p => st.voto.get(p.id) === 'si').reduce((a, p) => a + (p.votos || 0), 0) : 0;
+    const votosLinea = siVotos ? `<p class="small">Las candidaturas del sí sumaron <b>${fmt(siVotos)} votos</b>${votosTot ? `: el ${fmtPct(100 * siVotos / votosTot)} de los votos válidos` : ''}.</p>` : '';
     $ver.innerHTML = `<div class="figures">
-        <div class="fig"><span class="v">${t.si}</span><span class="k">Sí</span></div>
+        <div class="fig"><span class="v">${maj}</span><span class="k">Mayoría absoluta</span></div>
+        <div class="fig minor"><span class="v">${t.si}</span><span class="k">Sí</span></div>
         <div class="fig minor"><span class="v">${t.ab}</span><span class="k">Abstención</span></div>
         <div class="fig minor"><span class="v">${t.no}</span><span class="k">No</span></div>
         <div style="margin-left:auto">${pill}</div>
       </div>
-      <p class="why">${why}</p><p class="law">${law}</p>`;
+      <p class="why">${why}</p>${votosLinea}<p class="law">${law}</p>`;
+    st.veredicto = textoPlano(pill) + '. ' + textoPlano(why);
   }
   function drawList(){
-    const votosTot = cfg.votosValidos || 0;
     const parts = st.partidos.slice().sort((a, b) => seatsOf(b) - seatsOf(a) || (b.votos || 0) - (a.votos || 0));
     $list.innerHTML = '';
     for (const p of parts){
@@ -620,10 +826,11 @@ function Pactometro(cfg){
       const v = st.voto.get(p.id);
       const row = document.createElement('div');
       row.className = 'prow'; row.setAttribute('role', 'listitem'); row.dataset.p = p.id;
-      const pct = votosTot && p.votos ? fmtPct(100 * p.votos / votosTot) : (p.votos ? fmt(p.votos) + ' votos' : '');
+      const pct = hayVotos && votosTot && p.votos ? fmtPct(100 * p.votos / votosTot) : '';
+      const vts = hayVotos && p.votos ? fmt(p.votos) + ' votos' : '';
       row.innerHTML = `<span class="sw" style="background:${p.color}"></span>
         <div class="pname"><b></b><small></small></div>
-        <div class="pseats">${cfg.editable ? `<input type="number" min="0" max="${total}" value="${seatsOf(p)}" id="esc-${p.id}" aria-label="Escaños de ${esc(p.sig)}">` : `<span class="e">${seatsOf(p)}</span>${pct ? `<small>${pct}</small>` : ''}`}</div>
+        <div class="pseats">${cfg.editable ? `<input type="number" min="0" max="${total}" value="${seatsOf(p)}" id="esc-${p.id}" aria-label="Escaños de ${esc(p.sig)}">` : `<span class="e">${seatsOf(p)}</span>${vts ? `<small>${vts}</small>` : ''}${pct ? `<small>${pct}</small>` : ''}`}</div>
         <div class="seg" role="radiogroup" aria-label="Voto de ${esc(p.sig)}">
           <button type="button" role="radio" class="v-si" data-v="si" aria-checked="${v === 'si'}">Sí</button>
           <button type="button" role="radio" class="v-abs" data-v="abs" aria-checked="${v === 'abs'}">Abs.</button>
@@ -655,13 +862,63 @@ function Pactometro(cfg){
     for (const c of shown){
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'cbox';
-      b.innerHTML = `<span class="chips"></span><span class="tot"><span><b>${c.s}</b> escaños</span><span>${c.k === 1 ? 'en solitario' : c.k + ' candidaturas'} · ${c.s === maj ? 'justo la mayoría' : (c.s - maj) + ' por encima'}</span></span>`;
+      const cv = hayVotos ? c.members.reduce((a, m) => a + (m.votos || 0), 0) : 0;
+      b.innerHTML = `<span class="chips"></span><span class="tot"><span><b>${c.s}</b> escaños</span><span>${c.k === 1 ? 'en solitario' : c.k + ' candidaturas'} · ${c.s === maj ? 'justo la mayoría' : (c.s - maj) + ' por encima'}</span>${cv ? `<span class="cv">${votosTexto(cv)}</span>` : ''}</span>`;
       const chips = b.querySelector('.chips');
       for (const m of c.members){ const ch = document.createElement('span'); ch.className = 'chip'; ch.innerHTML = `<i style="background:${m.color}"></i>`; ch.appendChild(document.createTextNode(`${niceSig(m.sig)} ${m.esc}`)); chips.appendChild(ch); }
       b.setAttribute('aria-label', 'Probar esta coalición: ' + c.members.map(m => m.sig).join(', '));
       b.addEventListener('click', () => { st.partidos.forEach(p => st.voto.set(p.id, c.members.some(m => m.id === p.id) ? 'si' : 'no')); refresh(false); root.querySelector('.stage').scrollIntoView({behavior: 'smooth', block: 'start'}); });
       box.appendChild(b);
     }
+  }
+  function exportar(btn){
+    const E = cfg.exportar, rc = cfg.recuento || null;
+    const txt0 = btn.innerHTML; btn.disabled = true;
+    try {
+      const VOTO = {si: 'Sí', abs: 'Abstención', no: 'No'};
+      const rows = st.partidos.map(p => [p.sig, p.nom, p.color, p.fam, cfg.editable ? null : (p.votos ?? null), seatsOf(p), p.id]);
+      const t = totals();
+      const h1 = [[{v: 'pactómetro.es · ' + E.institucion, s: 't'}], [{v: E.eleccion, s: 'sub'}], [],
+        ['Escaños', total], ['Mayoría absoluta', maj], E.fecha ? ['Fecha', fecha(E.fecha)] : null, ['Fuente', fuenteTexto(E.fuente)], []].filter(Boolean);
+      const rec = bloqueRecuentoExcel(rc); if (rec.length) h1.push(...rec, []);
+      h1.push([{v: 'Resultados y escenario del pactómetro', s: 'sub'}]);
+      const r0 = h1.length;
+      const tabla = tablaResultadosExcel(rows, cfg.editable ? null : rc, total, {cab: ['Voto en el pactómetro'], fila: r => [VOTO[st.voto.get(r[6])] || 'No']});
+      h1.push(...tabla);
+      const fin = h1.length - 1;
+      h1.push([], [{v: 'Escenario', s: 'sub'}], ['Sí', t.si], ['Abstención', t.ab], ['No', t.no], ['Resultado', st.veredicto || '']);
+      h1.push(...pieExcel(fuenteTexto(E.fuente)));
+      const hojas = [{name: 'Pactómetro', rows: h1, cols: [30, 46, 34, 14, 15, 10, 11, 20], filter: XLSX.rango(r0, 8, r0 + tabla.length - 2)}];
+      // mayorías posibles
+      const parts = st.partidos.map(p => ({...p, esc: seatsOf(p)}));
+      const list = minimalWinning(parts, maj).slice(0, 5000);
+      const validos = validosDe(rows, rc);
+      const h2 = [[{v: 'Mayorías absolutas posibles · ' + E.institucion, s: 't'}], [{v: `${E.eleccion} · mayoría absoluta: ${maj} de ${total}. Coaliciones mínimas ganadoras: si sale cualquiera de sus miembros, se pierde la mayoría.`, s: 'note'}], [],
+        ['Nº', 'Candidaturas', 'Número de candidaturas', 'Escaños', 'Por encima de la mayoría', 'Votos', '% votos válidos'].map(v => ({v, s: 'h'}))];
+      list.forEach((c, i) => { const v = hayVotos ? c.members.reduce((a, m) => a + (m.votos || 0), 0) : null; h2.push([i + 1, c.members.map(m => `${niceSig(m.sig)} (${m.esc})`).join(' + '), c.k, c.s, c.s - maj, v, {v: v && validos ? v / validos : null, s: 'pct'}]); });
+      if (!list.length) h2.push(['', 'Ninguna combinación alcanza la mayoría absoluta']);
+      hojas.push({name: 'Mayorías posibles', rows: h2, cols: [6, 70, 12, 10, 14, 14, 14], freeze: 4, filter: list.length ? XLSX.rango(3, 7, 3 + list.length) : null});
+      // histórico de la institución
+      if (E.historico && E.historico.length){
+        const h3 = [[{v: 'Histórico · ' + E.institucion, s: 't'}], [], ['Elección', 'Fecha', 'Escaños de la cámara', 'Mayoría absoluta', 'Candidatura', 'Nombre completo', 'Familia política', 'Votos', '% votos válidos', 'Escaños', '% escaños'].map(v => ({v, s: 'h'}))];
+        const h4 = [[{v: 'Participación · ' + E.institucion, s: 't'}], [], ['Elección', 'Fecha', 'Censo', 'Votantes', 'Participación', 'Votos válidos', 'A candidaturas', 'En blanco', 'Nulos'].map(v => ({v, s: 'h'}))];
+        for (const el of E.historico){
+          const rcx = el.rc || null, vv = validosDe(el.r, rcx), filas = el.r.slice().sort((a, b) => (b[5] || 0) - (a[5] || 0) || (b[4] || 0) - (a[4] || 0));
+          const ot = otrasFila(el.r, rcx); if (ot) filas.push(ot);
+          for (const r of filas) h3.push([el.eleccion, el.fecha ? fechaCorta(el.fecha) : '', el.total, Math.floor(el.total / 2) + 1, niceSig(r[0]), r[1] ? nice(r[1]) : '', famNombre(r[3]), r[4] ?? null, {v: r[4] && vv ? r[4] / vv : null, s: 'pct'}, r[5] || 0, {v: pct01(r[5] || 0, el.total), s: 'pct'}]);
+          if (rcx) h4.push([el.eleccion, el.fecha ? fechaCorta(el.fecha) : '', rcx.censo, rcx.votantes, {v: rcx.censo && rcx.votantes !== null ? rcx.votantes / rcx.censo : null, s: 'pct'}, rcx.validos, rcx.cand, rcx.blancos, rcx.nulos]);
+        }
+        hojas.push({name: 'Histórico', rows: h3, cols: [16, 11, 10, 10, 22, 46, 32, 13, 12, 9, 10], freeze: 3, filter: XLSX.rango(2, 11, h3.length - 1)});
+        if (h4.length > 3) hojas.push({name: 'Participación', rows: h4, cols: [16, 11, 13, 13, 13, 13, 14, 12, 12], freeze: 3});
+      }
+      if (E.provincias){
+        const h5 = [[{v: 'Resultados por provincia · ' + E.eleccion, s: 't'}], [], ['Provincia', 'Escaños de la provincia', 'Candidatura', 'Nombre completo', 'Votos', '% votos (listados)', 'Escaños'].map(v => ({v, s: 'h'}))];
+        Object.keys(E.provincias).sort((a, b) => E.provincias[a].n.localeCompare(E.provincias[b].n, 'es')).forEach(k => { const pv = E.provincias[k], sv = pv.r.reduce((a, r) => a + (r[4] || 0), 0); pv.r.forEach(r => h5.push([pv.n, pv.escanos, niceSig(r[0]), r[1] ? nice(r[1]) : '', r[4] ?? null, {v: r[4] && sv ? r[4] / sv : null, s: 'pct'}, r[5] || 0])); });
+        hojas.push({name: 'Provincias', rows: h5, cols: [24, 12, 22, 46, 13, 12, 9], freeze: 3, filter: XLSX.rango(2, 7, h5.length - 1)});
+      }
+      XLSX.descargar(hojas, 'pactometro-' + (E.archivo || archivoSlug(E.institucion + ' ' + E.eleccion)));
+    } catch(e){ console.error(e); alertaExcel(btn); }
+    finally { setTimeout(() => { btn.disabled = false; btn.innerHTML = txt0; delete btn.dataset.err; }, btn.dataset.err ? 3500 : 600); }
   }
   function save(){ if (cfg.simKey) store.set(cfg.simKey, {partidos: st.partidos.map(p => ({sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, esc: seatsOf(p)})), voto: st.partidos.map(p => st.voto.get(p.id))}); }
   function refresh(coal = true){ drawHemi(); drawTally(); drawVerdict(); drawList(); if (coal) drawCoal(); save(); }
@@ -673,6 +930,7 @@ function Pactometro(cfg){
     if (act === 'nadie'){ st.partidos.forEach(p => st.voto.set(p.id, 'no')); refresh(false); }
     if (act === 'preset'){ st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no')); refresh(false); }
     if (act === 'todas'){ st.showAll = !st.showAll; drawCoal(); }
+    if (act === 'xlsx') exportar(b);
     if (act === 'ceros'){ st.partidos.forEach(p => p.esc = 0); refresh(); }
     if ((act === 'base-2023' || act === 'base-dis') && cfg.simBase){
       const base = cfg.simBase[act === 'base-2023' ? 'r2023' : 'dis'];
@@ -750,6 +1008,8 @@ function presetLargest(partidos){
   const p = partidos.filter(x => x.esc > 0).sort((a, b) => b.esc - a.esc)[0];
   return p ? {[p.id]: 'si'} : {};
 }
+function alertaExcel(btn){ btn.dataset.err = '1'; btn.textContent = 'No se pudo generar el Excel'; }
+const cmpLink = (spec, txt = 'Comparar con otra →') => `<a class="tab" href="#comparar?s=${encodeURIComponent(spec)}">${txt}</a>`;
 function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'; }
 
 /* ================================================================ vista: Congreso */
@@ -796,6 +1056,11 @@ async function viewCongreso(modo, clave){
     }
   }
   const validos = data ? (data.votantes - data.nulos) : 0;
+  const rcData = data ? recuentoDe(data) : null;
+  const kSel = data ? Object.keys(G.congreso).find(k => G.congreso[k] === data) : null;
+  const exportar = {institucion: 'Congreso de los Diputados', eleccion: titulo, fecha: data ? data.fecha : null, fuente,
+    archivo: 'congreso-' + (kSel || modo), provincias: data ? data.provincias : null,
+    historico: modo === 'simulador' ? null : keys.slice().reverse().map(k => ({eleccion: 'Generales ' + LEYENDA_ELECCION(k), fecha: G.congreso[k].fecha, total: 350, r: G.congreso[k].r, rc: recuentoDe(G.congreso[k])}))};
   const tabs = `<div class="tabs" role="tablist">
       <a class="tab" href="#congreso" aria-current="${modo === '2023' || (modo === 'hist' && clave === '2023')}">23-J 2023</a>
       <a class="tab" href="#congreso-disolucion" aria-current="${modo === 'disolucion'}">Al disolverse las Cortes</a>
@@ -804,6 +1069,7 @@ async function viewCongreso(modo, clave){
         <option value="">Otras elecciones…</option>
         ${keys.slice().reverse().map(k => `<option value="${k}" ${modo === 'hist' && clave === k ? 'selected' : ''}>${G.congreso[k].leg === 'Constituyente' ? 'Constituyentes' : G.congreso[k].leg + ' Legislatura'} · ${fechaCorta(G.congreso[k].fecha)}</option>`).join('')}
       </select>
+      ${kSel ? cmpLink('congreso::' + kSel) : modo === 'disolucion' ? '' : cmpLink('congreso::2023', 'Comparar elecciones →')}
     </div>`;
   app.innerHTML = `${notice}
     <div class="page-head"><span class="eyebrow">Congreso de los Diputados · 350 escaños</span><h1>${esc(titulo)}</h1>
@@ -812,7 +1078,7 @@ async function viewCongreso(modo, clave){
     <div class="section" id="detalle"></div>`;
   iniciarCuenta();
   app.querySelector('#sel-congreso').addEventListener('change', e => { if (e.target.value) location.hash = 'congreso-' + e.target.value; });
-  app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBase, votosValidos: validos}));
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBase, votosValidos: validos, recuento: rcData, exportar}));
   const det = app.querySelector('#detalle');
   if (data){
     det.innerHTML = `<div class="section-head"><h2>Resultados por candidatura</h2><p>${data.fuente === 'oficial' ? 'Totales nacionales oficiales del Ministerio del Interior. Las candidaturas aparecen tal y como se agregan oficialmente (por ejemplo, las coaliciones con nombre propio en cada comunidad).' : esc(data.nota || '')}</p></div>
@@ -851,18 +1117,23 @@ async function viewAutonomia(id, fechaSel){
   const e = els.find(x => x.fecha === fechaSel) || els[els.length - 1];
   const ultima = e === els[els.length - 1];
   const partidos = e.r.map(rowToParty);
+  const rc = recuentoDe(e), validos = validosDe(e.r, rc);
   setTitle(a.n);
   app.innerHTML = `<div class="page-head"><span class="eyebrow">${esc(a.camara)} · ${e.escanos} escaños</span><h1>${esc(a.n)}</h1>
     <div class="row">${badge(e.fuente)}<span class="small muted">Elecciones del ${fecha(e.fecha)}</span></div>
     ${ultima && a.gobierno ? `<p class="lede">Presidencia actual: <b>${esc(a.gobierno.presidente)}</b>. ${esc(a.gobierno.nota)}</p>` : ''}
     ${a.nota ? `<p class="small muted">${esc(a.nota)}</p>` : ''}</div>
     <div class="tabs"><a class="tab" href="#autonomias">← Todas las autonomías</a>
-      <select class="select" id="sel-el" aria-label="Elección">${els.slice().reverse().map(x => `<option value="${x.fecha}" ${x === e ? 'selected' : ''}>${fecha(x.fecha)}</option>`).join('')}</select></div>
+      <select class="select" id="sel-el" aria-label="Elección">${els.slice().reverse().map(x => `<option value="${x.fecha}" ${x === e ? 'selected' : ''}>${fecha(x.fecha)}</option>`).join('')}</select>
+      ${cmpLink(`auto:${id}:${e.fecha}`)}</div>
     <div class="sheet pad" id="pacto-slot"></div>
     <div class="section"><div class="section-head"><h2>Todas sus elecciones</h2><p>Escaños por candidatura en cada elección. La marca vertical indica la mayoría absoluta.</p></div><div class="hbars" id="hist"></div></div>
-    <div class="section"><div class="section-head"><h2>Resultado en escaños</h2></div>${resultsTable(e.r)}</div>`;
+    <div class="section"><div class="section-head"><h2>${e.r.some(r => r[4]) ? 'Resultado' : 'Resultado en escaños'}</h2></div>${resultsTable(e.r, {validos})}</div>`;
   app.querySelector('#sel-el').addEventListener('change', ev => location.hash = `auto-${id}.${ev.target.value}`);
-  app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: 'parlamento', preset: presetLargest(partidos), presetNota: 'Empieza con la candidatura con más escaños a favor. Cambia los votos o pulsa una de las combinaciones posibles.'}));
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: 'parlamento', preset: presetLargest(partidos), votosValidos: validos, recuento: rc,
+    exportar: {institucion: a.camara, eleccion: 'Elecciones del ' + fecha(e.fecha), fecha: e.fecha, fuente: e.fuente, archivo: `${id}-${e.fecha}`,
+      historico: els.slice().reverse().map(x => ({eleccion: 'Autonómicas ' + x.fecha.slice(0, 4), fecha: x.fecha, total: x.escanos, r: x.r, rc: recuentoDe(x)}))},
+    presetNota: 'Empieza con la candidatura con más escaños a favor. Cambia los votos o pulsa una de las combinaciones posibles.'}));
   const h = app.querySelector('#hist');
   h.innerHTML = els.slice().reverse().map(x => hbar(x.fecha.slice(0, 4), fechaCorta(x.fecha), x.r, x.escanos, `#auto-${id}.${x.fecha}`)).join('');
   wireBarTips(h);
@@ -902,19 +1173,22 @@ async function viewLocal(tipo, id, year){
   const y = (year && x.e[year]) ? year : ys[ys.length - 1];
   const e = x.e[y];
   const partidos = e.r.map(rowToParty);
-  const validos = e.r.reduce((a, r) => a + (r[4] || 0), 0);
+  const rc = recuentoDe(e), validos = validosDe(e.r, rc);
   const titulo = nombreLocal(tipo, x);
   setTitle(titulo);
   app.innerHTML = `<div class="page-head"><span class="eyebrow">${esc(T.titulo)} · ${e.escanos} escaños</span><h1>${esc(titulo)}</h1>
     <div class="row">${badge(e.fuente)}<span class="small muted">${tipo === 'dip' ? 'Constituida tras las elecciones municipales del ' : 'Elecciones del '}${fecha(e.fecha)}</span></div>
     ${x.nota ? `<p class="small muted">${esc(x.nota)}</p>` : ''}
     ${tipo === 'dip' ? '<p class="small muted">Los votos son la suma de los obtenidos por cada candidatura en los municipios de la provincia; los diputados se reparten por partidos judiciales.</p>' : ''}</div>
-    <div class="tabs"><a class="tab" href="#locales">← Todas</a>${ys.length > 1 ? `<select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>${fecha(x.e[k].fecha)}</option>`).join('')}</select>` : ''}</div>
+    <div class="tabs"><a class="tab" href="#locales">← Todas</a>${ys.length > 1 ? `<select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>${fecha(x.e[k].fecha)}</option>`).join('')}</select>` : ''}${cmpLink(`${tipo}:${id}:${y}`)}</div>
     <div class="sheet pad" id="pacto-slot"></div>
     ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Todas sus elecciones</h2></div><div class="hbars" id="hist"></div></div>` : ''}
     <div class="section"><div class="section-head"><h2>Resultado</h2></div>${resultsTable(e.r, {validos})}</div>`;
   const sel = app.querySelector('#sel-el'); if (sel) sel.addEventListener('change', ev => location.hash = `${tipo}-${id}.${ev.target.value}`);
-  app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: T.regla, preset: presetLargest(partidos), votosValidos: validos || 0, presetNota: 'Empieza con la candidatura con más escaños a favor.'}));
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: T.regla, preset: presetLargest(partidos), votosValidos: validos || 0, recuento: rc,
+    exportar: {institucion: titulo, eleccion: (tipo === 'dip' ? 'Tras las municipales del ' : 'Elecciones del ') + fecha(e.fecha), fecha: e.fecha, fuente: e.fuente, archivo: `${archivoSlug(titulo)}-${y}`,
+      historico: ys.slice().reverse().map(k => ({eleccion: (tipo === 'dip' ? 'Municipales ' : 'Elecciones ') + k, fecha: x.e[k].fecha, total: x.e[k].escanos, r: x.e[k].r, rc: recuentoDe(x.e[k])}))},
+    presetNota: 'Empieza con la candidatura con más escaños a favor.'}));
   const h = app.querySelector('#hist');
   if (h){ h.innerHTML = ys.slice().reverse().map(k => hbar(k, fechaCorta(x.e[k].fecha), x.e[k].r, x.e[k].escanos, `#${tipo}-${id}.${k}`)).join(''); wireBarTips(h); }
 }
@@ -974,7 +1248,7 @@ async function viewMunicipio(ine, year){
     <p class="small muted">${TIPO[tipo] || ''}${censo ? ` · censo ${fmt(censo)} · votantes ${fmt(votantes)} (${fmtPct(100 * votantes / censo)})` : ''}</p></div>
     <div class="tabs"><a class="tab" href="#ayuntamientos">← Buscar otro municipio</a>
       <select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>Municipales ${k}</option>`).join('')}</select>
-      ${dip ? `<a class="tab" href="#dip-${prov}">${esc(nombreLocal('dip', dip))} →</a>` : ''}</div>
+      ${dip ? `<a class="tab" href="#dip-${prov}">${esc(nombreLocal('dip', dip))} →</a>` : ''}${cmpLink(`mun:${ine}:${y}`)}</div>
     <div class="sheet pad" id="pacto-slot"></div>
     ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Su historia electoral</h2><p>Concejales por candidatura en cada elección municipal. Pulsa una fila para abrirla en el pactómetro.</p></div><div class="hbars" id="hist"></div></div>` : ''}
     <div class="section"><div class="section-head"><h2>Resultado de ${y}</h2></div>${resultsTable(rows, {validos: validos - 0, unit: tipo === 'C' ? 'Electo' : 'Concejales'})}
@@ -985,7 +1259,11 @@ async function viewMunicipio(ine, year){
     const el = rows.filter(r => r[5] > 0);
     slot.innerHTML = `<div class="stack"><span class="eyebrow">Concejo abierto</span><h2>${el.length ? esc(el.map(r => niceSig(r[0])).join(', ')) : 'Sin candidato electo en los datos'}</h2><p class="muted">En los municipios de menos de 100 habitantes que funcionan en concejo abierto los vecinos eligen directamente al alcalde, sin pleno de concejales. No hay pactos que calcular.</p></div>`;
   } else {
+    const filasDe = r => r[6].map(([ci, v, s2]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, s2]; });
     slot.appendChild(Pactometro({total: escanos, partidos, regla: 'municipal', preset: presetLargest(partidos), votosValidos: validos, masVotada: masVotada ? {sig: masVotada[0], votos: masVotada[4]} : null,
+      recuento: recuentoMun(rec),
+      exportar: {institucion: 'Ayuntamiento de ' + m.n + ' (' + M.provincias[prov] + ')', eleccion: 'Elecciones municipales de ' + y, fecha: null, fuente: 'oficial', archivo: `${archivoSlug(m.n)}-${ine}-${y}`,
+        historico: ys.slice().reverse().map(k => ({eleccion: 'Municipales ' + k, fecha: null, total: Math.max(m.e[k][1], 1), r: filasDe(m.e[k]), rc: recuentoMun(m.e[k])}))},
       presetNota: tipo === 'A' ? 'Listas abiertas: los vecinos votan a personas; aquí se agrupan los concejales por candidatura.' : 'Empieza con la candidatura con más concejales a favor.'}));
   }
   const h = app.querySelector('#hist');
@@ -993,6 +1271,295 @@ async function viewMunicipio(ine, year){
     h.innerHTML = ys.slice().reverse().map(k => { const r = m.e[k]; const rr = r[6].map(([ci, v, s]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, s]; }).sort((a, b) => b[5] - a[5]); return hbar(k, r[0] === 'C' ? 'concejo abierto' : r[1] + ' concejales', rr, Math.max(r[1], 1), `#mun-${ine}.${k}`, {noMark: r[0] === 'C'}); }).join('');
     wireBarTips(h, 'concejales');
   }
+}
+
+/* ================================================================ vista: comparar */
+const CMP_TIPOS = [
+  ['congreso', 'Congreso · toda España'],
+  ['congreso-ca', 'Congreso · en una comunidad'],
+  ['congreso-prov', 'Congreso · en una provincia'],
+  ['auto', 'Parlamento autonómico'],
+  ['dip', 'Diputación provincial'],
+  ['cab', 'Cabildo insular'],
+  ['con', 'Consell insular'],
+  ['jjgg', 'Juntas Generales'],
+  ['mun', 'Ayuntamiento'],
+];
+const CMP_LETRAS = ['A', 'B', 'C', 'D'];
+const cmpSpec = s => `${s.t}:${s.id || ''}:${s.y || ''}`;
+const cmpParse = str => { const [t, id, y] = String(str || '').split(':'); return CMP_TIPOS.some(x => x[0] === t) ? {t, id: id || '', y: y || ''} : null; };
+// Territorios y elecciones disponibles para un tipo (y territorio)
+async function cmpOpciones(t, id){
+  const M = await load('municipios.json');
+  if (t.startsWith('congreso')){
+    const G = await load('generales.json');
+    const ks = Object.keys(G.congreso).sort().reverse().filter(k => t === 'congreso' || G.congreso[k].provincias);
+    let terr = [];
+    if (t === 'congreso-prov') terr = Object.entries(M.provincias).sort((a, b) => a[1].localeCompare(b[1], 'es'));
+    if (t === 'congreso-ca') terr = Object.entries(M.ccaa).filter(([k]) => Object.values(M.prov_ccaa).includes(k)).sort((a, b) => a[1].localeCompare(b[1], 'es'));
+    return {terr, elecciones: ks.map(k => [k, 'Generales ' + LEYENDA_ELECCION(k)])};
+  }
+  if (t === 'auto'){
+    const A = await load('autonomicas.json');
+    const terr = Object.keys(A).sort((a, b) => A[a].n.localeCompare(A[b].n, 'es')).map(k => [k, A[k].n]);
+    const a = A[id] || A[terr[0][0]];
+    return {terr, elecciones: a.elecciones.slice().reverse().map(e => [e.fecha, fecha(e.fecha)])};
+  }
+  if (TIPOS[t]){
+    const L = await load('locales.json'); const grp = L[TIPOS[t].k];
+    const terr = Object.values(grp).sort((a, b) => nombreLocal(t, a).localeCompare(nombreLocal(t, b), 'es')).map(x => [x.id, nombreLocal(t, x)]);
+    const x = grp[id] || grp[terr[0][0]];
+    return {terr, elecciones: Object.keys(x.e).sort().reverse().map(k => [k, (t === 'dip' ? 'Municipales ' : 'Elecciones ') + k])};
+  }
+  if (t === 'mun'){
+    const prov = (id || '15078').slice(0, 2);
+    const terr = M.municipios.filter(r => r[2] === prov).sort((a, b) => a[1].localeCompare(b[1], 'es')).map(r => [r[0], r[1]]);
+    const P = await load('mun/' + prov + '.json');
+    const m = P.m[id] || P.m[terr[0][0]];
+    return {terr, provincias: Object.entries(M.provincias).sort((a, b) => a[1].localeCompare(b[1], 'es')), elecciones: m ? Object.keys(m.e).sort().reverse().map(k => [k, 'Municipales ' + k]) : []};
+  }
+  return {terr: [], elecciones: []};
+}
+// Normaliza una selección: {titulo, lugar, eleccion, total, conMayoria, rows, rc, fuente, href}
+async function cmpDatos(s){
+  const M = await load('municipios.json');
+  if (s.t.startsWith('congreso')){
+    const G = await load('generales.json'); const e = G.congreso[s.y]; if (!e) return null;
+    const base = {eleccion: 'Generales ' + LEYENDA_ELECCION(s.y), fecha: e.fecha, fuente: e.fuente || 'oficial', href: '#congreso-' + s.y};
+    if (s.t === 'congreso') return {...base, titulo: 'Congreso de los Diputados', lugar: 'España', total: e.escanos || 350, conMayoria: true, rows: e.r, rc: recuentoDe(e)};
+    if (!e.provincias) return null;
+    const provs = s.t === 'congreso-prov' ? [s.id] : Object.keys(e.provincias).filter(p => M.prov_ccaa[p] === s.id);
+    const map = new Map(); let total = 0;
+    for (const pk of provs){
+      const pv = e.provincias[pk]; if (!pv) continue; total += pv.escanos;
+      for (const r of pv.r){ const k = r[0]; const cur = map.get(k); if (cur){ cur[4] = (cur[4] || 0) + (r[4] || 0); cur[5] += r[5] || 0; } else map.set(k, [r[0], r[1], r[2], r[3], r[4] || 0, r[5] || 0]); }
+    }
+    if (!map.size) return null;
+    const lugar = s.t === 'congreso-prov' ? M.provincias[s.id] : M.ccaa[s.id];
+    return {...base, titulo: 'Congreso · voto en ' + lugar, lugar, total, conMayoria: false, rows: [...map.values()].sort((a, b) => b[5] - a[5] || b[4] - a[4]), rc: null,
+      nota: 'Diputados elegidos en ' + (s.t === 'congreso-prov' ? 'la provincia' : 'las provincias de la comunidad') + '; votos de las candidaturas que figuran en los datos provinciales.'};
+  }
+  if (s.t === 'auto'){
+    const A = await load('autonomicas.json'); const a = A[s.id]; if (!a) return null;
+    const e = a.elecciones.find(x => x.fecha === s.y); if (!e) return null;
+    return {titulo: a.camara, lugar: a.n, eleccion: 'Autonómicas ' + fecha(e.fecha), fecha: e.fecha, total: e.escanos, conMayoria: true, rows: e.r, rc: recuentoDe(e), fuente: e.fuente, href: `#auto-${s.id}.${e.fecha}`};
+  }
+  if (TIPOS[s.t]){
+    const L = await load('locales.json'); const x = L[TIPOS[s.t].k][s.id]; if (!x) return null;
+    const e = x.e[s.y]; if (!e) return null;
+    return {titulo: nombreLocal(s.t, x), lugar: x.n, eleccion: (s.t === 'dip' ? 'Municipales ' : 'Elecciones ') + fecha(e.fecha), fecha: e.fecha, total: e.escanos, conMayoria: true, rows: e.r, rc: recuentoDe(e), fuente: e.fuente, href: `#${s.t}-${s.id}.${s.y}`};
+  }
+  if (s.t === 'mun'){
+    const P = await load('mun/' + s.id.slice(0, 2) + '.json'); const m = P.m[s.id]; if (!m) return null;
+    const rec = m.e[s.y]; if (!rec) return null;
+    const rows = rec[6].map(([ci, v, sx]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, sx]; }).sort((a, b) => b[5] - a[5] || b[4] - a[4]);
+    return {titulo: 'Ayuntamiento de ' + m.n, lugar: m.n + ' (' + M.provincias[s.id.slice(0, 2)] + ')', eleccion: 'Municipales ' + s.y, fecha: null, total: Math.max(rec[1], 1), conMayoria: rec[0] !== 'C', rows, rc: recuentoMun(rec), fuente: 'oficial', href: `#mun-${s.id}.${s.y}`};
+  }
+  return null;
+}
+// Agrupa los resultados por familia política o por candidatura para poder compararlos
+function cmpAgrupar(datos, modo){
+  const claves = new Map();
+  const vals = datos.map(d => {
+    const out = new Map(); if (!d) return out;
+    const filas = d.rows.slice(); const ot = otrasFila(d.rows, d.rc); if (ot) filas.push(ot);
+    for (const r of filas){
+      const k = modo === 'fam' ? (r[3] || 'local') : (r[3] === 'otras' ? '~otras' : norm(niceSig(r[0])));
+      if (!claves.has(k)) claves.set(k, modo === 'fam' ? {k, label: famCorto(k), largo: famNombre(k), color: famColor(k)} : {k, label: r[3] === 'otras' ? 'Resto sin escaño' : niceSig(r[0]), largo: r[1] ? nice(r[1]) : '', color: r[2]});
+      const c = out.get(k) || {votos: 0, esc: 0, tieneV: false};
+      c.votos += r[4] || 0; c.esc += r[5] || 0; c.tieneV = c.tieneV || !!r[4];
+      out.set(k, c);
+    }
+    return out;
+  });
+  const tot = datos.map(d => d ? {validos: validosDe(d.rows, d.rc), total: d.total, hayV: d.rows.some(r => r[4])} : null);
+  const share = (k, i, met) => { const v = vals[i].get(k), t = tot[i]; if (!v || !t) return 0; return met === 'votos' ? (t.hayV && t.validos ? v.votos / t.validos : 0) : met === 'escp' ? v.esc / t.total : v.esc; };
+  const keys = [...claves.values()];
+  keys.forEach(c => { c.peso = Math.max(...datos.map((_, i) => Math.max(share(c.k, i, 'votos'), share(c.k, i, 'escp')))); });
+  keys.sort((a, b) => (a.k === 'otras' || a.k === '~otras') - (b.k === 'otras' || b.k === '~otras') || (a.k === 'local') - (b.k === 'local') || b.peso - a.peso);
+  return {keys, vals, tot, share};
+}
+const CMP_ESTADO = {sels: null, modo: 'fam', met: null};
+async function viewComparar(query){
+  setTitle('Comparar');
+  const q = new URLSearchParams(query || '');
+  let sels = (q.get('s') || '').split('|').map(cmpParse).filter(Boolean).slice(0, 4);
+  if (sels.length === 1) sels.push(sels[0].t === 'congreso' && sels[0].y !== '2023' ? {t: 'congreso', id: '', y: '2023'} : {t: 'congreso', id: '', y: sels[0].t === 'congreso' ? '2019-11' : '2023'});
+  if (!sels.length) sels = [{t: 'congreso', id: '', y: '2023'}, {t: 'congreso', id: '', y: '2019-11'}];
+  const st = {sels, modo: q.get('m') === 'cand' ? 'cand' : 'fam', met: ['votos', 'escp', 'esc'].includes(q.get('v')) ? q.get('v') : null};
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Cruce de datos</span><h1>Comparar</h1>
+    <p class="lede">Elige hasta cuatro instituciones y elecciones (el Congreso, un parlamento autonómico, una diputación, un cabildo, un consell, unas juntas generales o cualquier ayuntamiento) y compara votos y escaños. Puedes cruzar dimensiones distintas, la misma institución en dos elecciones o dos territorios entre sí.</p></div>
+    <div class="sheet pad stack" style="gap:14px"><div class="cmp-sels" id="cmp-sels"></div>
+      <div class="row" style="justify-content:space-between"><div class="row"><button class="btn ghost" type="button" id="cmp-add">+ Añadir otra</button></div>
+      <div class="row"><span class="small muted">Agrupar por</span><div class="seg" role="radiogroup" aria-label="Agrupar por" id="cmp-modo"><button type="button" role="radio" data-m="fam">Familia política</button><button type="button" role="radio" data-m="cand">Candidatura</button></div>
+      <button class="btn" type="button" id="cmp-xlsx"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v9m0 0L4.5 6.5M8 10l3.5-3.5M2 12v2.5h12V12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Descargar Excel</button></div></div></div>
+    <div id="cmp-out" class="stack" style="gap:0"></div>`;
+  const $sels = app.querySelector('#cmp-sels'), $out = app.querySelector('#cmp-out');
+  let datos = [], gen = 0;
+  async function drawSel(i){
+    const s = st.sels[i];
+    const o = await cmpOpciones(s.t, s.id);
+    if (!s.id && o.terr.length) s.id = o.terr[0][0];
+    if (s.t === 'mun' && !o.terr.some(t => t[0] === s.id) && o.terr.length) s.id = o.terr[0][0];
+    if (s.t !== 'mun' && o.terr.length && !o.terr.some(t => t[0] === s.id)) s.id = o.terr[0][0];
+    let el = o.elecciones;
+    if (s.t === 'mun' || s.t === 'auto' || TIPOS[s.t]){ const o2 = await cmpOpciones(s.t, s.id); el = o2.elecciones; }
+    if (!el.some(e => e[0] === s.y)){ const same = el.find(e => String(e[0]).slice(0, 4) === String(s.y).slice(0, 4)); s.y = (same || el[0] || [''])[0]; }
+    const box = document.createElement('div'); box.className = 'cmp-sel'; box.dataset.i = i;
+    const opt = (list, v) => list.map(([k, n]) => `<option value="${esc(k)}" ${k === v ? 'selected' : ''}>${esc(n)}</option>`).join('');
+    box.innerHTML = `<span class="cmp-letter" aria-hidden="true">${CMP_LETRAS[i]}</span>
+      <select class="select" data-f="t" aria-label="Institución ${CMP_LETRAS[i]}">${opt(CMP_TIPOS, s.t)}</select>
+      ${s.t === 'mun' ? `<select class="select" data-f="mprov" aria-label="Provincia ${CMP_LETRAS[i]}">${opt(o.provincias, s.id.slice(0, 2))}</select>` : ''}
+      ${o.terr.length ? `<select class="select" data-f="id" aria-label="Territorio ${CMP_LETRAS[i]}">${opt(o.terr, s.id)}</select>` : ''}
+      <select class="select" data-f="y" aria-label="Elección ${CMP_LETRAS[i]}">${opt(el, s.y)}</select>
+      ${st.sels.length > 2 ? `<button class="btn ghost cmp-x" type="button" data-f="x" aria-label="Quitar ${CMP_LETRAS[i]}">Quitar</button>` : ''}`;
+    return box;
+  }
+  async function drawSels(){
+    const boxes = [];
+    for (let i = 0; i < st.sels.length; i++) boxes.push(await drawSel(i));
+    $sels.replaceChildren(...boxes);
+    app.querySelector('#cmp-add').hidden = st.sels.length >= 4;
+  }
+  $sels.addEventListener('change', async ev => {
+    const f = ev.target.dataset.f; const box = ev.target.closest('.cmp-sel'); if (!f || !box) return;
+    const s = st.sels[+box.dataset.i];
+    if (f === 't'){ s.t = ev.target.value; s.id = s.t === 'mun' ? '15078' : ''; }
+    if (f === 'mprov'){ const M = await load('municipios.json'); const first = M.municipios.filter(r => r[2] === ev.target.value).sort((a, b) => b[4] - a[4])[0]; s.id = first ? first[0] : ''; }
+    if (f === 'id') s.id = ev.target.value;
+    if (f === 'y') s.y = ev.target.value;
+    await drawSels(); await compute();
+  });
+  $sels.addEventListener('click', async ev => {
+    const b = ev.target.closest('[data-f="x"]'); if (!b) return;
+    st.sels.splice(+b.closest('.cmp-sel').dataset.i, 1); await drawSels(); await compute();
+  });
+  app.querySelector('#cmp-add').addEventListener('click', async () => {
+    if (st.sels.length >= 4) return;
+    const last = st.sels[st.sels.length - 1]; st.sels.push({...last}); await drawSels(); await compute();
+  });
+  const $modo = app.querySelector('#cmp-modo');
+  const syncModo = () => $modo.querySelectorAll('button').forEach(b => b.setAttribute('aria-checked', b.dataset.m === st.modo));
+  $modo.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; st.modo = b.dataset.m; syncModo(); render(); });
+  syncModo();
+  app.querySelector('#cmp-xlsx').addEventListener('click', ev => { const btn = ev.currentTarget; try { exportarComparacion(st, datos); } catch(e){ console.error(e); alertaExcel(btn); setTimeout(() => { btn.innerHTML = btn.dataset.html; delete btn.dataset.err; }, 3500); } });
+  app.querySelector('#cmp-xlsx').dataset.html = app.querySelector('#cmp-xlsx').innerHTML;
+  function syncHash(){
+    const p = new URLSearchParams(); p.set('s', st.sels.map(cmpSpec).join('|')); if (st.modo !== 'fam') p.set('m', st.modo); if (st.met) p.set('v', st.met);
+    const h = '#comparar?' + p.toString().replace(/%3A/g, ':').replace(/%7C/g, '|');
+    history.replaceState(null, '', h); lastHash = decodeURIComponent(h.slice(1));
+  }
+  async function compute(){
+    const my = ++gen;
+    $out.innerHTML = '<p class="loading">Cargando…</p>';
+    const d = await Promise.all(st.sels.map(s => cmpDatos(s).catch(() => null)));
+    if (my !== gen) return;
+    datos = d; render();
+  }
+  function render(){
+    syncHash();
+    const ok = datos.map(Boolean);
+    const allV = datos.every(d => d && d.rows.some(r => r[4]));
+    const met = st.met || (allV ? 'votos' : 'escp');
+    const G = cmpAgrupar(datos, st.modo);
+    const L = i => `<span class="cmp-letter sm" aria-hidden="true">${CMP_LETRAS[i]}</span>`;
+    const head = datos.map((d, i) => `<th class="n" colspan="3">${L(i)} ${d ? esc(d.lugar) : 'Sin datos'}<br><span class="cmp-sub">${d ? esc(d.eleccion) : ''}</span></th>`).join('');
+    const nDif = datos.length - 1;
+    const pp = x => (x >= 0 ? '+' : '−') + Math.abs(x * 100).toLocaleString('es-ES', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+    const cuerpo = G.keys.map(c => {
+      const celdas = datos.map((d, i) => {
+        const v = G.vals[i].get(c.k), t = G.tot[i];
+        if (!d) return '<td class="n">—</td><td class="n">—</td><td class="n">—</td>';
+        return `<td class="n">${v && v.tieneV ? fmt(v.votos) : '—'}</td><td class="n">${v && v.tieneV && t.validos ? fmtPct(100 * v.votos / t.validos) : '—'}</td><td class="n"><b>${v ? v.esc : 0}</b> <span class="muted small">${fmtPct(100 * (v ? v.esc : 0) / t.total)}</span></td>`;
+      }).join('');
+      const difs = datos.slice(1).map((d, j) => {
+        const i = j + 1; if (!d || !datos[0]) return '<td class="n">—</td>';
+        const m = met === 'esc' ? 'escp' : met;
+        if (m === 'votos' && !(G.tot[0].hayV && G.tot[i].hayV)) return '<td class="n">—</td>';
+        return `<td class="n">${pp(G.share(c.k, i, m) - G.share(c.k, 0, m))}</td>`;
+      }).join('');
+      return `<tr><td><span class="sw" style="background:${c.color}"></span><b>${esc(c.label)}</b>${c.largo && norm(c.largo) !== norm(c.label) ? ` <span class="muted small nm">${esc(c.largo)}</span>` : ''}</td>${celdas}${difs}</tr>`;
+    }).join('');
+    const totales = datos.map((d, i) => { const t = G.tot[i]; if (!d) return '<td></td><td></td><td></td>'; const sv = [...G.vals[i].values()].reduce((a, v) => a + v.votos, 0); return `<td class="n"><b>${t.hayV ? fmt(sv) : '—'}</b></td><td class="n"></td><td class="n"><b>${d.total}</b></td>`; }).join('');
+    // gráfico de barras agrupadas
+    const metLabel = {votos: '% de votos válidos', escp: '% de escaños', esc: 'Escaños'}[met];
+    const max = Math.max(1e-9, ...G.keys.flatMap(c => datos.map((_, i) => G.share(c.k, i, met))));
+    const opac = [1, .62, .38, .2];
+    const chartKeys = G.keys.filter(c => datos.some((_, i) => G.share(c.k, i, met) > 0)).slice(0, 16);
+    const chart = chartKeys.map(c => `<div class="cmp-row"><span class="cmp-lab" title="${esc(c.largo)}"><i style="background:${c.color}"></i>${esc(c.label)}</span><div class="cmp-bars">${datos.map((d, i) => {
+        const v = G.share(c.k, i, met); const txt = !d ? '—' : met === 'esc' ? fmt(v) : fmtPct(100 * v);
+        return `<div class="cmp-bar"><span class="cmp-l">${CMP_LETRAS[i]}</span><span class="cmp-track"><i style="width:${(100 * v / max).toFixed(2)}%;background:${c.color};opacity:${opac[i]}"></i></span><b>${txt}</b></div>`;
+      }).join('')}</div></div>`).join('');
+    // datos generales
+    const filaG = (k, f) => `<tr><th scope="row">${k}</th>${datos.map(d => `<td class="n">${d ? f(d) : '—'}</td>`).join('')}</tr>`;
+    const ganador = d => { const w = d.rows.slice().sort((a, b) => b[5] - a[5] || (b[4] || 0) - (a[4] || 0))[0]; return w ? `${esc(niceSig(w[0]))} (${w[5]})` : '—'; };
+    const rcv = (d, k) => d.rc && d.rc[k] !== null && d.rc[k] !== undefined ? fmt(d.rc[k]) : '—';
+    const generales = `<div class="tablewrap"><table class="data cmp-gen"><thead><tr><th></th>${datos.map((d, i) => `<th class="n">${L(i)} ${d ? esc(d.lugar) : ''}</th>`).join('')}</tr></thead><tbody>
+      ${filaG('Institución', d => esc(d.titulo))}${filaG('Elección', d => esc(d.eleccion))}${filaG('Escaños', d => fmt(d.total))}${filaG('Mayoría absoluta', d => d.conMayoria ? fmt(Math.floor(d.total / 2) + 1) : '—')}
+      ${filaG('Más escaños', ganador)}${filaG('Censo', d => rcv(d, 'censo'))}${filaG('Votantes', d => rcv(d, 'votantes'))}${filaG('Participación', d => d.rc && d.rc.censo && d.rc.votantes !== null ? fmtPct(100 * d.rc.votantes / d.rc.censo) : '—')}
+      ${filaG('Votos válidos', d => rcv(d, 'validos'))}${filaG('En blanco', d => rcv(d, 'blancos'))}${filaG('Nulos', d => rcv(d, 'nulos'))}${filaG('Fuente', d => d.fuente === 'compilada' ? 'Recopilado' : 'Dato oficial')}
+      ${filaG('', d => `<a href="${d.href}">Abrir en el pactómetro →</a>`)}</tbody></table></div>`;
+    const notas = datos.map((d, i) => d && d.nota ? `<li>${CMP_LETRAS[i]}: ${esc(d.nota)}</li>` : '').join('') + (datos.some(d => d && !d.rows.some(r => r[4])) ? '<li>En las elecciones sin votos en los datos solo se comparan escaños.</li>' : '') + (st.modo === 'fam' ? '<li>Las familias agrupan a cada partido con sus federaciones, coaliciones y nombres anteriores (PSOE con PSdeG, PSC…; PP con AP…) para poder comparar instituciones distintas. Cambia a «Candidatura» para ver las siglas exactas.</li>' : '');
+    $out.innerHTML = `
+      <div class="section"><div class="section-head"><h2>${metLabel}</h2></div>
+        <div class="row cmp-met"><div class="seg" role="radiogroup" aria-label="Métrica del gráfico">${[['votos', '% votos'], ['escp', '% escaños'], ['esc', 'Escaños']].map(([k, n]) => `<button type="button" role="radio" data-met="${k}" aria-checked="${met === k}" ${k === 'votos' && !datos.some(d => d && d.rows.some(r => r[4])) ? 'disabled' : ''}>${n}</button>`).join('')}</div>
+        <div class="legend-row">${datos.map((d, i) => `<span><span class="cmp-letter sm">${CMP_LETRAS[i]}</span>${d ? esc(d.lugar + ' · ' + d.eleccion) : 'Sin datos'}</span>`).join('')}</div></div>
+        <div class="cmp-chart">${chart || '<p class="muted">No hay datos para comparar.</p>'}</div></div>
+      <div class="section"><div class="section-head"><h2>Votos y escaños ${st.modo === 'fam' ? 'por familia política' : 'por candidatura'}</h2><p>${nDif ? `Las últimas columnas son la diferencia con ${CMP_LETRAS[0]} en puntos de ${met === 'votos' ? 'porcentaje de voto' : 'porcentaje de escaños'}.` : ''}</p></div>
+        <div class="tablewrap"><table class="data cmp-tab"><thead><tr><th rowspan="2">${st.modo === 'fam' ? 'Familia política' : 'Candidatura'}</th>${head}${datos.slice(1).map((_, j) => `<th class="n" rowspan="2">${CMP_LETRAS[j + 1]} − ${CMP_LETRAS[0]}<br><span class="cmp-sub">puntos</span></th>`).join('')}</tr>
+          <tr>${datos.map(() => '<th class="n">Votos</th><th class="n">%</th><th class="n">Escaños</th>').join('')}</tr></thead>
+          <tbody>${cuerpo}<tr class="tot"><td><b>Total</b></td>${totales}${datos.slice(1).map(() => '<td></td>').join('')}</tr></tbody></table></div></div>
+      <div class="section"><div class="section-head"><h2>Datos generales</h2></div>${generales}
+        ${notas ? `<ul class="small muted cmp-notas">${notas}</ul>` : ''}</div>`;
+    $out.querySelector('.cmp-met .seg').addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b || b.disabled) return; st.met = b.dataset.met; render(); });
+  }
+  await drawSels(); await compute();
+}
+function exportarComparacion(st, datos){
+  const G = cmpAgrupar(datos, st.modo);
+  const desc = (d, i) => d ? `${CMP_LETRAS[i]}: ${d.titulo} · ${d.eleccion}` : `${CMP_LETRAS[i]}: sin datos`;
+  const h = [[{v: 'pactómetro.es · Comparativa', s: 't'}], [{v: st.modo === 'fam' ? 'Agrupado por familia política' : 'Agrupado por candidatura', s: 'note'}], []];
+  datos.forEach((d, i) => h.push([{v: desc(d, i), s: 'b'}]));
+  h.push([]);
+  const cab = [st.modo === 'fam' ? 'Familia política' : 'Candidatura'];
+  datos.forEach((_, i) => cab.push(`${CMP_LETRAS[i]} · Votos`, `${CMP_LETRAS[i]} · % votos válidos`, `${CMP_LETRAS[i]} · Escaños`, `${CMP_LETRAS[i]} · % escaños`));
+  datos.slice(1).forEach((_, j) => cab.push(`${CMP_LETRAS[j + 1]} − ${CMP_LETRAS[0]} · % votos (puntos)`, `${CMP_LETRAS[j + 1]} − ${CMP_LETRAS[0]} · % escaños (puntos)`));
+  const r0 = h.length;
+  h.push(cab.map(v => ({v, s: 'h'})));
+  for (const c of G.keys){
+    const f = [c.label + (c.largo && norm(c.largo) !== norm(c.label) ? ' · ' + c.largo : '')];
+    datos.forEach((d, i) => { const v = G.vals[i].get(c.k), t = G.tot[i]; if (!d){ f.push(null, null, null, null); return; }
+      f.push(v && v.tieneV ? v.votos : null, {v: v && v.tieneV && t.validos ? v.votos / t.validos : null, s: 'pct'}, v ? v.esc : 0, {v: (v ? v.esc : 0) / t.total, s: 'pct'}); });
+    datos.slice(1).forEach((d, j) => { const i = j + 1; const ok = d && datos[0];
+      f.push({v: ok && G.tot[0].hayV && G.tot[i].hayV ? +(100 * (G.share(c.k, i, 'votos') - G.share(c.k, 0, 'votos'))).toFixed(2) : null, s: 'pp'}, {v: ok ? +(100 * (G.share(c.k, i, 'escp') - G.share(c.k, 0, 'escp'))).toFixed(2) : null, s: 'pp'}); });
+    h.push(f);
+  }
+  const fin = h.length - 1;
+  const tf = [{v: 'Total', s: 'b'}]; datos.forEach((d, i) => { if (!d){ tf.push(null, null, null, null); return; } const sv = [...G.vals[i].values()].reduce((a, v) => a + v.votos, 0); tf.push({v: G.tot[i].hayV ? sv : null, s: 'intb'}, null, {v: d.total, s: 'intb'}, null); });
+  h.push(tf);
+  h.push(...pieExcel('Ministerio del Interior, Congreso de los Diputados y fuentes recopiladas indicadas en pactómetro.es/#fuentes'));
+  const hojas = [{name: 'Comparativa', rows: h, cols: [40].concat(datos.flatMap(() => [13, 12, 10, 11]), datos.slice(1).flatMap(() => [16, 16])), freeze: r0 + 1, filter: XLSX.rango(r0, cab.length, fin)}];
+  // datos generales
+  const g = [[{v: 'Datos generales', s: 't'}], [], ['', ...datos.map((d, i) => CMP_LETRAS[i])].map(v => ({v, s: 'h'}))];
+  const fila = (k, f) => g.push([{v: k, s: 'b'}, ...datos.map(d => d ? f(d) : null)]);
+  fila('Institución', d => d.titulo); fila('Territorio', d => d.lugar); fila('Elección', d => d.eleccion); fila('Fecha', d => d.fecha ? fechaCorta(d.fecha) : '');
+  fila('Escaños', d => d.total); fila('Mayoría absoluta', d => d.conMayoria ? Math.floor(d.total / 2) + 1 : null);
+  fila('Censo', d => d.rc ? d.rc.censo : null); fila('Votantes', d => d.rc ? d.rc.votantes : null);
+  fila('Participación', d => ({v: d.rc && d.rc.censo && d.rc.votantes !== null ? d.rc.votantes / d.rc.censo : null, s: 'pct'}));
+  fila('Votos válidos', d => d.rc ? d.rc.validos : null); fila('Votos a candidaturas', d => d.rc ? d.rc.cand : null); fila('En blanco', d => d.rc ? d.rc.blancos : null); fila('Nulos', d => d.rc ? d.rc.nulos : null);
+  fila('Fuente', d => fuenteTexto(d.fuente)); fila('Enlace', d => location.origin + location.pathname + d.href);
+  hojas.push({name: 'Datos generales', rows: g, cols: [22, ...datos.map(() => 40)]});
+  // una hoja por selección
+  datos.forEach((d, i) => {
+    if (!d) return;
+    const hh = [[{v: `${CMP_LETRAS[i]} · ${d.titulo}`, s: 't'}], [{v: d.eleccion, s: 'sub'}], [], ['Escaños', d.total]];
+    if (d.conMayoria) hh.push(['Mayoría absoluta', Math.floor(d.total / 2) + 1]);
+    hh.push([]); const rec = bloqueRecuentoExcel(d.rc); if (rec.length) hh.push(...rec, []);
+    const r1 = hh.length; const tabla = tablaResultadosExcel(d.rows, d.rc, d.total); hh.push(...tabla);
+    if (d.nota) hh.push([], [{v: d.nota, s: 'note'}]);
+    hojas.push({name: `${CMP_LETRAS[i]} · ${d.lugar} ${d.fecha ? d.fecha.slice(0, 4) : d.eleccion.replace(/\D+/g, '')}`, rows: hh, cols: [30, 46, 34, 14, 15, 10, 11], filter: XLSX.rango(r1, 7, r1 + tabla.length - 2)});
+  });
+  XLSX.descargar(hojas, 'pactometro-comparativa-' + datos.map(d => d ? archivoSlug(d.lugar + '-' + (d.fecha ? d.fecha.slice(0, 4) : d.eleccion.replace(/\D+/g, ''))) : 'x').join('-vs-').slice(0, 120));
 }
 
 /* ================================================================ línea temporal (quién ganó) */
@@ -1315,6 +1882,9 @@ async function viewFuentes(){
       <li>Investidura: mayoría absoluta en la primera votación; en la segunda basta con más votos a favor que en contra. Las abstenciones no cuentan como «no».</li>
       <li>Alcaldías: si ningún cabeza de lista obtiene la mayoría absoluta de los concejales, es alcalde el de la lista más votada (art. 196 LOREG).</li>
       <li>«Mayorías posibles» son las coaliciones mínimas ganadoras: suman mayoría absoluta y la pierden si sale cualquiera de sus miembros.</li>
+      <li>Recuento de votos: los porcentajes de voto se calculan sobre los votos válidos (votos a candidaturas más votos en blanco), como en los resultados oficiales. En las diputaciones provinciales, el censo, los votantes, los votos en blanco y los nulos son la suma de los resultados municipales oficiales de los municipios de la provincia. «Resto de candidaturas sin escaño» son los votos a candidaturas que no figuran una a una en los datos.</li>
+      <li>Comparar: las familias políticas agrupan a cada partido con sus federaciones, coaliciones y nombres anteriores para poder comparar instituciones distintas. «Congreso en una comunidad» suma los resultados del Congreso en las provincias de esa comunidad.</li>
+      <li>Descargas en Excel: cada pactómetro y cada comparación se pueden descargar en una hoja de cálculo (.xlsx) generada en tu navegador con los mismos datos de la web. Si reutilizas los datos, cita pactómetro.es y la fuente oficial.</li>
       <li>Los colores identifican familias políticas (PSOE y sus federaciones, PP y la antigua AP, etc.) solo para leer los gráficos; el nombre oficial de cada candidatura se mantiene siempre.</li>
       <li>Los resultados reflejan lo que salió de las urnas. Cambios posteriores (tránsfugas, expulsiones, mociones de censura) no se recogen, salvo en la pestaña «Al disolverse las Cortes».</li>
     </ul>
@@ -1352,20 +1922,21 @@ async function dispatch(h){
   if ((m = h.match(/^mun-(\d{5})(?:\.(\d{4}))?$/))) return viewMunicipio(m[1], m[2]);
   if (h === 'historico'){ setTitle('Histórico'); return viewHistorico(); }
   if (h === 'encuesta' || h === 'encuesta-prueba'){ setTitle('Encuesta 29-N'); return viewEncuesta(h === 'encuesta-prueba'); }
+  if (h === 'comparar' || h.startsWith('comparar?')) return viewComparar(h.slice(9));
   if (h === 'fuentes') return viewFuentes();
   return notFound();
 }
-const NAV = {congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', fuentes: 'fuentes', encuesta: 'encuesta'};
+const NAV = {congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', encuesta: 'encuesta'};
 let lastHash = null;
 async function route(){
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('sec-') || h.startsWith('h-')) return;
-  const key = NAV[(h || 'congreso').split(/[-.]/)[0]] || '';
+  const key = NAV[(h || 'congreso').split(/[-.?]/)[0]] || '';
   document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === key) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   hideTip();
   pararCuenta();
   actualizarNavEncuesta();
-  const sameView = lastHash !== null && lastHash.split('.')[0] === h.split('.')[0];
+  const sameView = lastHash !== null && (lastHash.split('.')[0] === h.split('.')[0] || (lastHash.startsWith('comparar') && h.startsWith('comparar')));
   lastHash = h;
   try { await dispatch(h); }
   catch(e){ app.innerHTML = `<div class="error"><h2>No se pudieron cargar los datos</h2><p class="muted">${esc(e.message)}</p></div>`; }
