@@ -2269,7 +2269,7 @@ async function viewEncuesta(prueba){
   const cabecera = `<div class="page-head"><span class="eyebrow">Encuesta de pactómetro.es · abierta hasta el 22 de noviembre a las 20:00</span>
     <h1>¿A quién piensas votar el 29-N?</h1>
     <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
-  const como = `<aside class="enc-how"><h3>Cómo funciona</h3><dl>
+  const como = `<aside class="enc-how"><h2 class="h3">Cómo funciona</h2><dl>
       <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
       <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, tu provincia y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP.</dd></div>
       <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
@@ -2289,7 +2289,7 @@ async function viewEncuesta(prueba){
   if (!cuerpo){
     cuerpo = `<form class="sheet pad enc" id="enc-form" novalidate autocomplete="off">
       <fieldset class="enc-q"><legend><span class="enc-n">1</span><span>¿En qué provincia votas?</span></legend>
-        <select class="select" id="enc-prov" aria-describedby="enc-prov-h" required aria-required="true"><option value="" disabled selected>Elige tu provincia</option>${provs.map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select>
+        <select class="select" id="enc-prov" aria-label="¿En qué provincia votas? (obligatoria)" aria-describedby="enc-prov-h" required aria-required="true"><option value="" disabled selected>Elige tu provincia</option>${provs.map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select>
         <p class="hint" id="enc-prov-h">Obligatoria. Así verás solo los partidos que se presentan allí. Si votas desde el extranjero, elige la provincia en la que estás inscrito.</p></fieldset>
       <fieldset class="enc-q"><legend><span class="enc-n">2</span><span>¿A quién piensas votar el 29 de noviembre?</span></legend>
         <div class="enc-ops">${ENC_ORDEN.map(o => opHTML(o, true)).join('')}</div>
@@ -2297,7 +2297,7 @@ async function viewEncuesta(prueba){
         <div class="enc-ops">${ENC.otras.map(o => opHTML(o, false)).join('')}</div>
         <p class="hint">Los partidos aparecen en orden aleatorio para no favorecer a ninguno.</p></fieldset>
       <fieldset class="enc-q"><legend><span class="enc-n">3</span><span>¿A quién votaste en las generales del 23 de julio de 2023?<span class="opt">Opcional</span></span></legend>
-        <select class="select" id="enc-rec"><option value="">Prefiero no decirlo</option>${ENC.recuerdo.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select></fieldset>
+        <select class="select" id="enc-rec" aria-label="¿A quién votaste en las generales del 23 de julio de 2023? (opcional)"><option value="">Prefiero no decirlo</option>${ENC.recuerdo.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select></fieldset>
       <div class="hp" aria-hidden="true"><label for="enc-web">No rellenes este campo</label><input type="text" id="enc-web" name="web" tabindex="-1" autocomplete="off"></div>
       <div class="enc-foot"><button class="btn solid" type="submit" id="enc-enviar" disabled>${probando ? 'Enviar respuesta de prueba' : 'Enviar mi respuesta'}</button>
         <p class="small muted" id="enc-estado">Elige una respuesta en la pregunta 2 para poder enviar.</p></div>
