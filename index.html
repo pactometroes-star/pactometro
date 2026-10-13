@@ -2240,7 +2240,7 @@ function bloqueEncuesta(){
   const estado = encModo() === 'previa' ? 'abierta' : encEstado();
   if (estado === 'cerrada') return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">La encuesta del 29-N está cerrada</p><p>Se pudo responder hasta el domingo 22 de noviembre a las 20:00. Gracias a quienes participasteis.</p></section>';
   if (encYaRespondida()) return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">Ya has respondido la encuesta del 29-N</p><p>Gracias por participar. Puedes compartirla para que responda más gente: está abierta hasta el domingo 22 de noviembre a las 20:00.</p></section>';
-  return `<section class="enc-promo" aria-labelledby="t-enc"><div class="enc-promo-txt"><p class="enc-promo-k">Encuesta de pactómetro.es</p><h2 id="t-enc">¿A quién piensas votar el 29-N?</h2><p>Es anónima, se responde en un minuto y está abierta hasta el domingo 22 de noviembre a las 20:00. Solo te preguntamos tu intención de voto y, si quieres, tu provincia y lo que votaste el 23-J.</p></div><a class="btn lg btn-l" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a></section>`;
+  return `<section class="enc-promo" aria-labelledby="t-enc"><div class="enc-promo-txt"><p class="enc-promo-k">Encuesta de pactómetro.es</p><h2 id="t-enc">¿A quién piensas votar el 29-N?</h2><p>Es anónima, se responde en un minuto y está abierta hasta el domingo 22 de noviembre a las 20:00. Te preguntamos tu provincia, tu intención de voto y, si quieres, lo que votaste el 23-J.</p></div><a class="btn lg btn-l" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a></section>`;
 }
 function sincronizarReloj(){
   // Usa la hora del servidor (cabecera Date, más Age si viene de una caché) para no depender del reloj del visitante.
@@ -2271,7 +2271,7 @@ async function viewEncuesta(prueba){
     <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
   const como = `<aside class="enc-how"><h3>Cómo funciona</h3><dl>
       <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
-      <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, la provincia si la indicas y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP.</dd></div>
+      <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, tu provincia y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP.</dd></div>
       <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
       <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta.</dd></div>
       <div><dt>Abierta, no representativa</dt><dd>Responde quien quiere, así que no es una muestra representativa ni una estimación de voto.</dd></div>
@@ -2288,9 +2288,9 @@ async function viewEncuesta(prueba){
   }
   if (!cuerpo){
     cuerpo = `<form class="sheet pad enc" id="enc-form" novalidate autocomplete="off">
-      <fieldset class="enc-q"><legend><span class="enc-n">1</span><span>¿En qué provincia votas?<span class="opt">Opcional</span></span></legend>
-        <select class="select" id="enc-prov" aria-describedby="enc-prov-h"><option value="">Prefiero no decirlo</option>${provs.map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select>
-        <p class="hint" id="enc-prov-h">Si la indicas, verás solo los partidos que se presentan allí.</p></fieldset>
+      <fieldset class="enc-q"><legend><span class="enc-n">1</span><span>¿En qué provincia votas?</span></legend>
+        <select class="select" id="enc-prov" aria-describedby="enc-prov-h" required aria-required="true"><option value="" disabled selected>Elige tu provincia</option>${provs.map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select>
+        <p class="hint" id="enc-prov-h">Obligatoria. Así verás solo los partidos que se presentan allí. Si votas desde el extranjero, elige la provincia en la que estás inscrito.</p></fieldset>
       <fieldset class="enc-q"><legend><span class="enc-n">2</span><span>¿A quién piensas votar el 29 de noviembre?</span></legend>
         <div class="enc-ops">${ENC_ORDEN.map(o => opHTML(o, true)).join('')}</div>
         <span class="enc-sub">Otras respuestas</span>
@@ -2310,9 +2310,11 @@ async function viewEncuesta(prueba){
   const etiquetaBoton = $btn.textContent;
   const marcar = () => {
     form.querySelectorAll('.enc-op').forEach(l => l.classList.toggle('sel', l.querySelector('input').checked));
-    const ok = !!form.querySelector('input[name="intencion"]:checked');
+    const conVoto = !!form.querySelector('input[name="intencion"]:checked'), conProv = !!$prov.value, ok = conVoto && conProv;
     $btn.disabled = !ok;
-    $est.textContent = ok ? 'Respuesta anónima. Puedes cambiarla antes de enviar.' : 'Elige una respuesta en la pregunta 2 para poder enviar.';
+    $est.textContent = ok ? 'Respuesta anónima. Puedes cambiarla antes de enviar.'
+      : !conProv && !conVoto ? 'Elige tu provincia (pregunta 1) y una respuesta en la pregunta 2 para poder enviar.'
+      : !conProv ? 'Elige tu provincia en la pregunta 1 para poder enviar.' : 'Elige una respuesta en la pregunta 2 para poder enviar.';
   };
   form.addEventListener('change', ev => {
     if (ev.target === $prov){
@@ -2327,7 +2329,7 @@ async function viewEncuesta(prueba){
   });
   form.addEventListener('submit', async ev => {
     ev.preventDefault();
-    const sel = form.querySelector('input[name="intencion"]:checked'); if (!sel) return;
+    const sel = form.querySelector('input[name="intencion"]:checked'); if (!sel || !$prov.value){ marcar(); ($prov.value ? form.querySelector('input[name="intencion"]') : $prov).focus(); return; }
     const main = app.querySelector('#enc-main');
     if (modo === 'real' && !probando && encEstado() !== 'abierta'){ viewEncuesta(false); return; }   // cerró mientras rellenaba
     const op = ENC.partidos.concat(ENC.otras).find(o => o.k === sel.value);
@@ -2398,7 +2400,7 @@ async function viewFuentes(){
     <p>© 2026 Javier Pereiro Pérez. El diseño, el código y la recopilación de datos de este sitio pertenecen a su titular; todos los derechos reservados.</p>
     <p>Los resultados electorales oficiales son información del sector público reutilizada citando su fuente (Ministerio del Interior, Congreso de los Diputados). Este sitio no está vinculado a ninguna administración pública ni a ningún partido político. Los datos se ofrecen con fines informativos; para cualquier uso con efectos jurídicos, consulta las publicaciones oficiales (BOE y boletines oficiales).</p>
     <p>Este sitio no usa cookies ni herramientas de analítica o publicidad, y no carga contenido de terceros: las tipografías se sirven desde el propio pactómetro.es. Tu navegador solo guarda, en su almacenamiento local y sin salir de tu dispositivo, el escenario del simulador si lo usas, la marca de «encuesta ya respondida» y, si cierras el aviso de la encuesta, que no vuelva a salir ese día.</p>
-    <p>La encuesta del 29-N es anónima: guarda tus respuestas, la provincia si la indicas y la fecha con la hora redondeada, sin nombre, correo, dirección IP ni ningún identificador. Las respuestas se almacenan en una hoja de cálculo privada del titular. Para evitar respuestas repetidas, tu navegador guarda una marca de «ya respondido» que no contiene tu respuesta y no sale de tu dispositivo.</p>
+    <p>La encuesta del 29-N es anónima: guarda tus respuestas, la provincia y la fecha con la hora redondeada, sin nombre, correo, dirección IP ni ningún identificador. Las respuestas se almacenan en una hoja de cálculo privada del titular. Para evitar respuestas repetidas, tu navegador guarda una marca de «ya respondido» que no contiene tu respuesta y no sale de tu dispositivo.</p>
     <p class="small muted">Datos actualizados a 8 de octubre de 2026.</p>
   </div>`;
   app.querySelector('#copy-mail').addEventListener('click', async ev => {
