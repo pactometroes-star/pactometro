@@ -1191,7 +1191,7 @@ function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'
 function avisoElecciones(conv){
   const c = conv || {decreto_boe: '2026-10-06', campana: ['2026-11-13', '2026-11-27']};
   const camp = c.campana || ['2026-11-13', '2026-11-27'];
-  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta las 20:00'}</a>` : ''}</div></div>`;
+  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta el 22-N'}</a>` : ''}</div></div>`;
 }
 
 /* ================================================================ vista: Congreso */
@@ -1881,7 +1881,7 @@ function iniciarCuenta(){
 }
 
 /* ================================================================ vista: encuesta 29-N */
-/* En pactómetro.es la encuesta solo aparece el domingo 22 de noviembre y admite respuestas de 00:00 a 20:00
+/* En pactómetro.es la encuesta está abierta desde que se publica (config.js con la URL de la hoja) hasta el domingo 22 de noviembre a las 20:00
    (hora peninsular). Modos: «real» (config.js con la URL de la hoja de Google), «pendiente» (config.js sin URL)
    y «previa» (enlace de Claude: siempre visible para revisarla; no guarda nada). La dirección #encuesta-prueba
    deja al titular probar el envío cualquier día: esas respuestas van a la pestaña «Pruebas» y no cuentan. */
@@ -1889,7 +1889,7 @@ const CFG = window.PACTOMETRO_CONFIG || {};
 let relojDesfase = 0;                                    // corrección con la hora del servidor de la web
 const ahoraReal = () => new Date(Date.now() + relojDesfase);
 const ENC = {
-  apertura: new Date('2026-11-21T23:00:00Z'),          // domingo 22-N, 00:00 hora peninsular
+  apertura: new Date('2026-10-12T22:00:00Z'),          // 13-X: abierta desde que se publica (cuando config.js tiene la URL)
   cierre: new Date('2026-11-22T19:00:00Z'),            // domingo 22-N, 20:00 hora peninsular
   clave: 'pacto.encuesta29n.v1',
   partidos: [
@@ -1897,6 +1897,7 @@ const ENC = {
     {k: 'psoe', n: 'PSOE', f: 'psoe'},
     {k: 'vox', n: 'Vox', f: 'vox'},
     {k: 'fa', n: 'Frente Amplio', nota: 'Sumar, IU, Más Madrid y Comuns', f: 'sumar'},
+    {k: 'd21', n: 'Democracia 21'},
     {k: 'podemos', n: 'Podemos', f: 'podemos'},
     {k: 'erc', n: 'ERC', nota: 'Cataluña', f: 'erc', p: ['08', '17', '25', '43']},
     {k: 'junts', n: 'Junts', nota: 'Cataluña', f: 'junts', p: ['08', '17', '25', '43']},
@@ -1920,7 +1921,7 @@ const ENC_ORDEN = (() => { const a = ENC.partidos.slice(); for (let i = a.length
 // config.js only exists on the self-hosted site: with it the poll is live (or pending until its URL is set); without it, preview.
 const encModo = () => CFG.encuestaURL ? 'real' : ('encuestaURL' in CFG ? 'pendiente' : 'previa');
 const encEstado = () => { const t = ahoraReal(); return t < ENC.apertura ? 'antes' : t < ENC.cierre ? 'abierta' : 'cerrada'; };
-const encVisible = () => encModo() === 'previa' || encEstado() !== 'antes';      // enlace del menú
+const encVisible = () => encModo() === 'previa' || (encModo() === 'real' && encEstado() !== 'antes');      // enlace del menú
 const encVotable = () => encModo() === 'previa' || encEstado() === 'abierta';    // botones que invitan a votar
 function actualizarNavEncuesta(){ const a = document.querySelector('.nav a[data-nav="encuesta"]'); if (a) a.hidden = !encVisible(); }
 function sincronizarReloj(){
@@ -1945,13 +1946,13 @@ async function viewEncuesta(prueba){
       <span class="sw${party || o.marca ? '' : ' none'}" style="${party ? `background:${color(o.f)}` : o.marca ? 'background:var(--seat-empty)' : ''}"></span>
       <span class="t"><b>${esc(o.n)}</b>${o.nota ? `<small>${esc(o.nota)}</small>` : ''}</span></label>`;
   const aviso = modo === 'previa'
-    ? '<div class="notice prev"><span class="date">Vista previa</span><p>En pactómetro.es la encuesta aparecerá el domingo 22 de noviembre y se podrá responder de 00:00 a 20:00. Aquí puedes probarla, pero no se guarda nada.</p></div>'
+    ? '<div class="notice prev"><span class="date">Vista previa</span><p>En pactómetro.es la encuesta se podrá responder hasta el domingo 22 de noviembre a las 20:00. Aquí puedes probarla, pero no se guarda nada.</p></div>'
     : probando ? '<div class="notice prev"><span class="date">Modo prueba</span><p>Esta respuesta se guarda en la pestaña «Pruebas» de la hoja de cálculo y no cuenta en la encuesta.</p></div>' : '';
-  const cabecera = `<div class="page-head"><span class="eyebrow">Encuesta de pactómetro.es · domingo 22 de noviembre, de 00:00 a 20:00</span>
+  const cabecera = `<div class="page-head"><span class="eyebrow">Encuesta de pactómetro.es · abierta hasta el 22 de noviembre a las 20:00</span>
     <h1>¿A quién piensas votar el 29-N?</h1>
     <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
   const como = `<aside class="enc-how"><h3>Cómo funciona</h3><dl>
-      <div><dt>Solo el domingo 22 de noviembre</dt><dd>Se puede responder de 00:00 a 20:00 (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
+      <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
       <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, la provincia si la indicas y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP.</dd></div>
       <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
       <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta.</dd></div>
@@ -1962,8 +1963,8 @@ async function viewEncuesta(prueba){
   if (prueba && modo === 'pendiente'){
     cuerpo = msg('Modo prueba', 'Falta conectar la hoja de cálculo', 'Pega la URL de tu aplicación web de Google en config.js y vuelve a publicar la web; después podrás probar aquí el envío.', false);
   } else if (!probando && modo !== 'previa'){
-    if (estado === 'antes') cuerpo = msg('Próximamente', 'La encuesta abrirá el domingo 22 de noviembre', 'Se podrá responder solo ese día, de 00:00 a 20:00 (hora peninsular).');
-    else if (estado === 'cerrada') cuerpo = msg('Encuesta cerrada', 'Gracias a quienes participasteis', 'Se podía responder el domingo 22 de noviembre hasta las 20:00 (hora peninsular).', false);
+    if (estado === 'antes') cuerpo = msg('Próximamente', 'La encuesta abrirá muy pronto', 'Se podrá responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).');
+    else if (estado === 'cerrada') cuerpo = msg('Encuesta cerrada', 'Gracias a quienes participasteis', 'Se podía responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).', false);
     else if (modo === 'pendiente') cuerpo = msg('En un momento', 'La encuesta todavía no está disponible', 'Estamos terminando de preparar la recogida de respuestas. Vuelve a entrar en unos minutos.');
     else if (ya && ya.dia) cuerpo = `<div class="sheet pad enc-msg"><span class="eyebrow">Ya has respondido</span><h2>Gracias por participar</h2><p>Solo se admite una respuesta por navegador. Se puede responder hasta las 20:00.</p><div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
   }
@@ -2059,7 +2060,7 @@ async function viewFuentes(){
       <li><b>Parlamentos autonómicos:</b> las elecciones autonómicas no las publica el Ministerio del Interior sino cada comunidad. Los escaños de las 201 elecciones autonómicas celebradas entre 1980 y 2026 se han recopilado de fuentes públicas (Wikipedia) y se ha comprobado que cada elección suma exactamente el tamaño de su cámara. Ceuta y Melilla sí son datos oficiales, porque sus asambleas se eligen en las elecciones municipales. Se marcan como «Recopilado».</li>
       <li><b>Juntas Generales vascas y consells de Mallorca, Menorca y Eivissa (2023):</b> resultados recopilados de fuentes públicas. El Consell de Formentera es dato oficial (se elige en las municipales).</li>
       <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
-      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, solo el domingo 22 de noviembre de 2026 de 00:00 a 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
+      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
     </ul>
     <h2>Cómo se calcula</h2>
     <ul>
@@ -2303,7 +2304,7 @@ function calendarioInicio(G, ol){
   const items = [
     {ini: c.decreto_boe || '2026-10-06', t: 'Disolución de las Cortes'},
     {ini: campana[0], fin: campana[1], t: `Campaña electoral, hasta el ${+campana[1].slice(8)} de noviembre`},
-    {ini: '2026-11-22', t: 'Encuesta de pactómetro.es, de 0:00 a 20:00'},     // misma fecha que ENC.apertura
+    {ini: '2026-11-22', t: 'Cierra la encuesta de pactómetro.es, a las 20:00'},     // misma fecha que ENC.cierre
     {ini: '2026-11-28', t: 'Jornada de reflexión'},
     {ini: c.fecha_eleccion || '2026-11-29', t: 'Votación, de 9:00 a 20:00'},
     {ini: c.constitucion_cortes || '2026-12-23', t: 'Se constituyen las nuevas Cortes'},
