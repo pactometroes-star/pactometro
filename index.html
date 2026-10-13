@@ -109,7 +109,7 @@ p{margin:0}
 .menu-btn .x{display:none}
 .mast.open .menu-btn .x{display:block}
 .mast.open .menu-btn .ham{display:none}
-@media (max-width:1060px){
+@media (max-width:1140px){
   .mast .wrap{gap:8px}
   .menu-btn{display:inline-flex}
   .nav{display:none;width:100%;flex-direction:column;gap:2px;margin:0;padding:4px 0 14px;justify-content:flex-start}
@@ -233,7 +233,7 @@ main{padding-block:28px 56px}
 .group-label{margin-top:8px}
 
 /* ---------- tables ---------- */
-.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}
+.tablewrap{position:relative;overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}  /* relative: hidden labels inside stay in the scroller */
 table.data{border-collapse:collapse;width:100%;font-size:14px}
 table.data th,table.data td{padding:8px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
 table.data tr:last-child td{border-bottom:0}
@@ -301,6 +301,7 @@ details.more > div{padding:0 14px 14px}
 
 /* ---------- cuenta atrás 29-N ---------- */
 .notice.cd{align-items:center}
+@media (min-width:760px){.notice.cd > .row{flex-direction:column;align-items:stretch}.notice.cd > .row .btn{justify-content:center}}
 .cd-main{flex:1 1 340px;min-width:0;display:grid;gap:8px}
 .cd-titulo{font-weight:700}
 .cd-nums{display:flex;gap:clamp(12px,2.4vw,26px);align-items:flex-end;flex-wrap:wrap}
@@ -540,6 +541,61 @@ table.cmp-gen td{text-align:right}
 .h-tool p{color:var(--ink-2)}
 .h-tool a{font-weight:600;justify-self:start;margin-top:2px}
 
+/* ---------- elecciones 29-N ---------- */
+.e-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:6px}
+.e-fact{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:16px 18px;display:grid;gap:6px;align-content:start}
+.e-fact b{font:800 38px/1 var(--f-sans);font-variation-settings:"wdth" 118;letter-spacing:-.02em}
+.e-fact span{color:var(--ink-2);font-size:15px;line-height:1.45}
+.e-cal{list-style:none;margin:0;padding:0;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);overflow:hidden}
+.e-cal li{display:grid;grid-template-columns:minmax(0,14em) minmax(0,12em) minmax(0,1fr);gap:4px 20px;padding:12px 18px;border-top:1px solid var(--rule);align-items:baseline}
+.e-cal li:first-child{border-top:0}
+.e-cal time{font-weight:700;font-variant-numeric:tabular-nums}
+.e-cal b{font-weight:600}
+.e-cal span{color:var(--ink-2)}
+.e-cal li.past time,.e-cal li.past b,.e-cal li.past span{color:var(--muted)}
+.e-cal li.now{background:var(--wash);box-shadow:inset 4px 0 0 var(--ink)}
+.e-cal li.next{box-shadow:inset 4px 0 0 var(--ink)}
+.e-cal .e-tag{display:inline-block;margin-left:6px;padding:3px 8px;border-radius:999px;background:var(--ink);color:var(--paper);font:700 12px/1 var(--f-sans);vertical-align:2px}
+@media (max-width:760px){.e-cal li{grid-template-columns:minmax(0,1fr);gap:2px}}
+.e-steps{margin:0;padding:0;list-style:none;display:grid;gap:30px}
+.e-steps > li{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+.e-dh,.e-fact,.e-steps{grid-template-columns:minmax(0,1fr)}
+.e-steps p{max-width:72ch;color:var(--ink-2)}
+.e-list{margin:0;padding-left:20px;display:grid;gap:8px;max-width:76ch;color:var(--ink-2)}
+.e-list b{color:var(--ink)}
+.e-prov{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.e-prov li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);font-size:14.5px}
+.e-prov b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.e-prov .chg{margin-left:6px;font-size:12px;font-weight:600;color:var(--ink-2)}
+table.e-dh-t td.win{background:var(--ink);color:var(--paper);font-weight:700}
+table.e-dh-t td.out{color:var(--muted)}
+table.e-dh-t th[scope="row"]{background:var(--sheet);color:var(--ink);text-transform:none;letter-spacing:0;font:700 14px/1.3 var(--f-sans)}
+.e-dh{display:grid;gap:16px}
+.e-dh-cfg{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end}
+.e-dh-cfg label{display:grid;gap:6px;font-weight:600;font-size:14.5px}
+.e-dh-cfg input{width:9em;border:1px solid var(--rule);border-radius:8px;padding:9px 12px;background:var(--sheet);font-variant-numeric:tabular-nums;min-height:44px}
+.e-dh-cfg .select{min-height:44px}
+table.e-dh-in input{border:1px solid var(--rule);border-radius:6px;padding:7px 10px;background:var(--sheet);min-height:40px;width:100%;min-width:7em}
+table.e-dh-in input[type="number"]{text-align:right;font-variant-numeric:tabular-nums;max-width:11em}
+table.e-dh-in td{padding:6px 10px}
+.e-dh-sum{font-size:16px;max-width:80ch}
+.e-tree,.e-tree ul{list-style:none;margin:0;padding:0}
+.e-tree{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px}
+.e-tree ul{margin-left:12px;padding-left:20px;border-left:2px solid var(--rule)}
+.e-tree li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 12px;padding:8px 0;align-items:baseline}
+.e-tree li > b{font-weight:700}
+.e-tree li > .n{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:14.5px}
+.e-tree li > .d{grid-column:1 / -1;color:var(--muted);font-size:14px;max-width:70ch}
+.e-tree li > ul{grid-column:1 / -1;margin-top:6px}
+@media (max-width:560px){.e-tree li{grid-template-columns:minmax(0,1fr)}.e-tree ul{margin-left:4px;padding-left:12px}.e-tree{padding:12px}}
+.e-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 36px}
+.e-two h3{margin-bottom:10px}
+@media (max-width:760px){.e-two{grid-template-columns:minmax(0,1fr)}}
+.e-dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.e-dl > div{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px}
+.e-dl dt{font-weight:700}
+.e-dl dd{margin:4px 0 0;color:var(--ink-2);font-size:15px}
+
 /* ---------- tooltip ---------- */
 .tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.35;max-width:260px;box-shadow:0 6px 20px -8px rgba(0,0,0,.45)}
 .tip strong{display:block;font-size:15px;font-weight:700}
@@ -556,9 +612,10 @@ table.cmp-gen td{text-align:right}
     <nav class="nav" id="nav" aria-label="Secciones">
       <a href="#inicio" data-nav="inicio" class="nav-home">Portada</a>
       <a href="#congreso" data-nav="congreso">Congreso</a>
-      <a href="#encuesta" data-nav="encuesta" hidden>Encuesta 29-N</a>
+      <a href="#29n" data-nav="29n">29-N</a>
+      <a href="#encuesta" data-nav="encuesta" hidden>Encuesta</a>
       <a href="#autonomias" data-nav="autonomias">Autonomías</a>
-      <a href="#locales" data-nav="locales">Diputaciones y cabildos</a>
+      <a href="#locales" data-nav="locales">Diputaciones</a>
       <a href="#ayuntamientos" data-nav="ayuntamientos">Ayuntamientos</a>
       <a href="#historico" data-nav="historico">Histórico</a>
       <a href="#comparar" data-nav="comparar">Comparar</a>
@@ -1191,7 +1248,7 @@ function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'
 function avisoElecciones(conv){
   const c = conv || {decreto_boe: '2026-10-06', campana: ['2026-11-13', '2026-11-27']};
   const camp = c.campana || ['2026-11-13', '2026-11-27'];
-  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta el 22-N'}</a>` : ''}</div></div>`;
+  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a><a class="btn ghost" href="#29n">Calendario y cómo se vota</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta el 22-N'}</a>` : ''}</div></div>`;
 }
 
 /* ================================================================ vista: Congreso */
@@ -1275,6 +1332,210 @@ function provTable(provs){
   return `<div class="tablewrap" style="margin-top:4px"><table class="data"><thead><tr><th>Provincia</th><th class="n">Escaños</th><th>Reparto</th></tr></thead><tbody>
     ${keys.map(k => { const p = provs[k]; return `<tr><td>${esc(p.n)}</td><td class="n">${p.escanos}</td><td>${p.r.filter(r => r[5] > 0).map(r => `<span class="chip"><i style="background:${r[2]}"></i>${esc(niceSig(r[0]))} ${r[5]}</span>`).join(' ')}</td></tr>`; }).join('')}
   </tbody></table></div>`;
+}
+
+/* ================================================================ vista: elecciones del 29-N */
+// Información oficial: Constitución (arts. 68-69), LOREG (arts. 85, 96, 162-166), Real Decreto 806/2026 de convocatoria
+// (BOE de 6-10-2026) y calendario de la Junta Electoral Central.
+const ESC_2026 = {"02":4,"03":12,"04":6,"01":4,"33":7,"05":3,"06":5,"07":8,"08":32,"48":8,"09":4,"10":4,"11":8,"39":5,"12":5,"13":5,"14":6,"15":8,"16":3,"20":6,"17":6,"18":7,"19":3,"21":5,"22":3,"23":5,"24":4,"25":4,"27":4,"28":38,"29":11,"30":10,"31":5,"32":4,"34":3,"35":8,"36":7,"26":4,"37":4,"38":7,"40":3,"41":12,"42":2,"43":6,"44":3,"45":6,"46":16,"47":5,"49":3,"50":7,"51":1,"52":1};   // anexo del Real Decreto 806/2026
+const CAL_29N = [   // [inicio, fin, qué, detalle] — calendario electoral de la Junta Electoral Central
+  ['2026-10-06', null, 'Convocatoria', 'El BOE publica el Real Decreto 806/2026, de disolución de las Cortes y convocatoria de elecciones.'],
+  ['2026-10-06', '2026-11-19', 'Voto por correo', 'Plazo para pedir el voto por correo (electores residentes en España).'],
+  ['2026-10-07', '2026-10-16', 'Coaliciones', 'Los partidos comunican a la Junta Electoral las coaliciones con las que se presentarán.'],
+  ['2026-10-12', '2026-10-19', 'Censo electoral', 'Consulta del censo en ayuntamientos y consulados, y plazo para reclamar inclusiones o exclusiones.'],
+  ['2026-10-21', '2026-10-26', 'Candidaturas', 'Presentación de las candidaturas ante las juntas electorales provinciales.'],
+  ['2026-10-24', '2026-10-30', 'Residentes en el extranjero', 'La Oficina del Censo Electoral envía la documentación para votar a los españoles inscritos como residentes en el extranjero (CERA).'],
+  ['2026-10-28', null, 'Candidaturas', 'El BOE publica las candidaturas presentadas.'],
+  ['2026-10-31', '2026-11-04', 'Mesas electorales', 'Sorteo de los presidentes, vocales y suplentes de las mesas electorales.'],
+  ['2026-11-02', null, 'Candidaturas', 'Las juntas electorales provinciales proclaman las candidaturas. El BOE las publica al día siguiente.'],
+  ['2026-11-09', '2026-11-22', 'Voto por correo', 'La Oficina del Censo Electoral envía la documentación a quienes pidieron votar por correo.'],
+  ['2026-11-10', '2026-11-25', 'Voto por correo', 'Plazo para enviar el voto por correo.'],
+  ['2026-11-13', '2026-11-27', 'Campaña electoral', 'Quince días de campaña: desde las 0:00 del viernes 13 hasta las 24:00 del viernes 27.'],
+  ['2026-11-21', '2026-11-26', 'Residentes en el extranjero', 'Quien reside en el extranjero puede depositar su voto en una urna de su consulado.'],
+  ['2026-11-24', '2026-11-28', 'Sondeos', 'Prohibido publicar, difundir o reproducir sondeos electorales.'],
+  ['2026-11-28', null, 'Jornada de reflexión', 'No se puede hacer campaña.'],
+  ['2026-11-29', null, 'Votación', 'Se vota de 9:00 a 20:00, hora local. Al cerrar, cada mesa cuenta sus votos en público.'],
+  ['2026-12-04', '2026-12-07', 'Escrutinio general', 'Las juntas electorales provinciales hacen el escrutinio oficial, con los votos llegados del extranjero, y después proclaman a los electos.'],
+  ['2026-12-23', null, 'Nuevas Cortes', 'Sesiones constitutivas del Congreso y del Senado, a las 10:00.'],
+];
+const DH_EJEMPLO = [['A', 168000], ['B', 104000], ['C', 72000], ['D', 64000], ['E', 40000], ['F', 32000]];   // ejemplo del art. 163 LOREG
+// Reparto de escaños: barrera del 3 % de los votos válidos y ley D'Hondt (art. 163 LOREG)
+function dhondt(cands, blancos, escanos){
+  const validos = cands.reduce((a, c) => a + c.v, 0) + blancos, barrera = validos * .03;
+  const ok = cands.filter(c => c.v > 0 && c.v >= barrera);
+  const cocientes = [];
+  ok.forEach(c => { for (let d = 1; d <= escanos; d++) cocientes.push({c, d, q: c.v / d}); });
+  cocientes.sort((a, b) => b.q - a.q || b.c.v - a.c.v);
+  const gana = cocientes.slice(0, escanos);
+  const sig = cocientes[escanos], ult = gana[gana.length - 1];
+  const sorteo = !!(sig && ult && sig.q === ult.q && sig.c.v === ult.c.v);
+  const res = new Map(cands.map(c => [c, 0])); gana.forEach(g => res.set(g.c, res.get(g.c) + 1));
+  return {validos, barrera, ok, gana: new Set(gana.map(g => g.c.i + ':' + g.d)), res, ult, sorteo};
+}
+const fmtQ = q => q.toLocaleString('es-ES', {maximumFractionDigits: 2, useGrouping: 'always'});
+
+async function view29N(){
+  setTitle('Elecciones del 29-N');
+  const [G, M] = await Promise.all([load('generales.json').catch(() => null), load('municipios.json').catch(() => null)]);
+  const conv = G && G.convocatoria;
+  const e23 = G && G.congreso['2023'];
+  // calendario
+  const dia = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).getTime(); };
+  const fechaTxt = (a, b) => { if (!b) return fecha(a).replace(/ de 2026$/, ''); const [, ma, da] = a.split('-').map(Number), [, mb, db] = b.split('-').map(Number); return ma === mb ? `Del ${da} al ${db} de ${MESES[mb - 1]}` : `Del ${da} de ${MESES[ma - 1]} al ${db} de ${MESES[mb - 1]}`; };
+  const ahora = ahoraReal().getTime();
+  const proximo = CAL_29N.findIndex(r => ahora < dia(r[0]));
+  const cal = CAL_29N.map((r, i) => {
+    const ini = dia(r[0]), fin = dia(r[1] || r[0]) + 864e5;
+    const est = ahora >= fin ? 'past' : ahora >= ini ? 'now' : i === proximo ? 'next' : '';
+    const tag = est === 'now' ? (r[1] ? 'En curso' : 'Hoy') : est === 'next' ? 'Lo próximo' : '';
+    return `<li class="${est}"><time datetime="${r[0]}">${fechaTxt(r[0], r[1])}</time><b>${esc(r[2])}${tag ? ` <span class="e-tag">${tag}</span>` : ''}${est === 'past' ? '<span class="vh"> (ya pasó)</span>' : ''}</b><span>${esc(r[3])}</span></li>`;
+  }).join('');
+  // escaños por provincia
+  const provs = Object.entries(ESC_2026).map(([k, s]) => {
+    const n = (M && M.provincias[k]) || k, antes = e23 && e23.provincias && e23.provincias[k] ? e23.provincias[k].escanos : s;
+    return {k, n, s, d: s - antes};
+  }).sort((a, b) => b.s - a.s || a.n.localeCompare(b.n, 'es'));
+  const cambios = provs.filter(p => p.d);
+  // tipos de voto con los datos oficiales del 23-J
+  const rc = e23 ? recuentoDe(e23) : null;
+  const pc = (a, b) => fmtPct(100 * a / b);
+  app.innerHTML = `${avisoElecciones(conv)}
+  <div class="page-head"><span class="eyebrow">Elecciones generales · 29 de noviembre de 2026</span><h1>Cómo funcionan las elecciones del 29-N</h1>
+    <p class="lede">El calendario oficial, cómo se reparten los escaños del Congreso y del Senado y qué significa cada tipo de voto, según la Constitución, la Ley Orgánica del Régimen Electoral General (LOREG), el Real Decreto de convocatoria y la Junta Electoral Central.</p></div>
+  <nav class="tabs" aria-label="En esta página"><a class="tab" href="#sec-cal">Calendario</a><a class="tab" href="#sec-congreso">Escaños del Congreso</a><a class="tab" href="#sec-dhondt">Calculadora D'Hondt</a><a class="tab" href="#sec-senado">Senado</a><a class="tab" href="#sec-votos">Tipos de voto</a><a class="tab" href="#sec-como">Cómo votar</a><a class="tab" href="#sec-fuentes">Fuentes</a></nav>
+  <div class="e-facts">
+    <div class="e-fact"><b>350</b><span>diputados del Congreso, elegidos en 52 circunscripciones: las 50 provincias, Ceuta y Melilla.</span></div>
+    <div class="e-fact"><b>176</b><span>escaños son la mayoría absoluta del Congreso, la que hace falta para investir en primera votación.</span></div>
+    <div class="e-fact"><b>209</b><span>senadores se eligen en las urnas. Los parlamentos autonómicos designan después a otros.</span></div>
+    <div class="e-fact"><b>4 años</b><span>dura la legislatura. Las nuevas Cortes se constituyen el 23 de diciembre.</span></div>
+  </div>
+
+  <section class="section" id="sec-cal" aria-labelledby="t-cal"><div class="section-head"><h2 id="t-cal">Calendario electoral</h2><p>Plazos oficiales de la Junta Electoral Central para las elecciones del 29 de noviembre.</p></div>
+    <ol class="e-cal">${cal}</ol></section>
+
+  <section class="section" id="sec-congreso" aria-labelledby="t-congreso"><div class="section-head"><h2 id="t-congreso">Cómo se reparten los escaños del Congreso</h2><p>El reparto se hace en dos pasos: primero se decide cuántos diputados elige cada provincia y, después, cómo se reparten entre las candidaturas según los votos de esa provincia.</p></div>
+    <ol class="e-steps">
+      <li><h3>Paso 1. Cuántos diputados elige cada provincia</h3>
+        <p>La Constitución fija la provincia como circunscripción (art. 68) y la LOREG reparte los 350 escaños así (art. 162):</p>
+        <ul class="e-list"><li>Cada provincia tiene un mínimo de <b>2 diputados</b>, y Ceuta y Melilla, <b>1 cada una</b>.</li><li>Los <b>248 restantes</b> se reparten según la población: se divide la población de las provincias entre 248, cada provincia recibe tantos diputados como veces contiene ese cociente y los que sobran van a las provincias con los decimales más altos.</li><li>El decreto de convocatoria fija el resultado. Para el 29-N es el anexo del <b>Real Decreto 806/2026</b>.</li></ul>
+        ${cambios.length ? `<p class="small">Respecto a 2023 cambian ${listaY(cambios.map(p => `${p.n} (${p.d > 0 ? 'gana' : 'pierde'} ${Math.abs(p.d)}: ${p.s} diputados)`))}.</p>` : ''}
+        <ul class="e-prov" aria-label="Diputados por circunscripción en 2026">${provs.map(p => `<li><span>${esc(p.n)}</span><b>${p.s}${p.d ? `<span class="chg">${p.d > 0 ? '+' : '−'}${Math.abs(p.d)}</span>` : ''}</b></li>`).join('')}</ul>
+      </li>
+      <li><h3>Paso 2. Quién se queda los escaños de cada provincia</h3>
+        <p>Dentro de cada provincia, los escaños se reparten con estas reglas (art. 163 LOREG):</p>
+        <ul class="e-list">
+          <li><b>Barrera del 3 %.</b> No entran en el reparto las candidaturas con menos del 3 % de los votos válidos de la provincia (incluidos los votos en blanco). La barrera se aplica en cada provincia, no en toda España.</li>
+          <li><b>Ley D'Hondt.</b> Los votos de cada candidatura se dividen entre 1, 2, 3… hasta el número de escaños de la provincia. Los escaños van a los cocientes más altos.</li>
+          <li><b>Empates.</b> Si dos cocientes coinciden, el escaño es para la candidatura con más votos en total; si también empatan en votos, se sortea.</li>
+          <li><b>Listas cerradas.</b> Cada candidatura recibe sus escaños en el orden de su lista: no se puede votar a personas sueltas.</li>
+          <li><b>Ceuta y Melilla.</b> Eligen un solo diputado, que es el candidato más votado.</li>
+        </ul>
+        <p>Este es el ejemplo que trae la propia ley: 480.000 votos válidos en una provincia que elige 8 diputados.</p>
+        <div id="dh-ej"></div>
+        <p class="small muted">En las provincias que eligen pocos diputados hace falta mucho más del 3 % para conseguir escaño. En la práctica, la barrera legal solo llega a dejar fuera a alguna candidatura en las circunscripciones más grandes, como Madrid y Barcelona.</p>
+      </li>
+    </ol></section>
+
+  <section class="section" id="sec-dhondt" aria-labelledby="t-dh"><div class="section-head"><h2 id="t-dh">Calculadora D'Hondt</h2><p>Escribe los votos de cada candidatura y los escaños en juego para ver cómo se reparten. Empieza con el ejemplo de la ley.</p></div>
+    <div class="sheet pad e-dh">
+      <div class="e-dh-cfg">
+        <label>Escaños en juego <input type="number" id="dh-esc" min="1" max="60" value="8" inputmode="numeric"></label>
+        <label>Usar los de una provincia <select class="select" id="dh-prov"><option value="">Elige una provincia</option>${provs.slice().sort((a, b) => a.n.localeCompare(b.n, 'es')).map(p => `<option value="${p.s}">${esc(p.n)} (${p.s})</option>`).join('')}</select></label>
+        <label>Votos en blanco <input type="number" id="dh-bl" min="0" value="0" inputmode="numeric"></label>
+      </div>
+      <div class="tablewrap"><table class="data e-dh-in"><caption class="vh">Candidaturas y votos de la calculadora</caption><thead><tr><th>Candidatura</th><th class="n">Votos</th><th><span class="vh">Quitar</span></th></tr></thead><tbody id="dh-rows"></tbody></table></div>
+      <div class="row"><button class="btn ghost" type="button" id="dh-add">Añadir candidatura</button><button class="btn ghost" type="button" id="dh-reset">Volver al ejemplo de la ley</button></div>
+      <p class="e-dh-sum" id="dh-sum" aria-live="polite"></p>
+      <div id="dh-out"></div>
+    </div></section>
+
+  <section class="section" id="sec-senado" aria-labelledby="t-senado"><div class="section-head"><h2 id="t-senado">Cómo se elige el Senado</h2></div>
+    <div class="prose">
+      <p>El 29-N se eligen en las urnas <b>209 senadores</b> (art. 69 de la Constitución, art. 165 LOREG y art. 3 del Real Decreto 806/2026):</p>
+      <ul><li><b>4</b> en cada provincia, salvo en Illes Balears, Las Palmas y Santa Cruz de Tenerife, donde se vota por islas.</li><li><b>3</b> en Gran Canaria, Mallorca y Tenerife.</li><li><b>1</b> en Ibiza, Formentera, Menorca, Fuerteventura, La Gomera, El Hierro, Lanzarote y La Palma.</li><li><b>2</b> en Ceuta y otros <b>2</b> en Melilla.</li></ul>
+      <p>Aquí se vota a personas, no a listas cerradas: en una papeleta común con todos los candidatos se marcan con una cruz hasta <b>3 nombres</b> en las provincias, <b>2</b> en Gran Canaria, Mallorca, Tenerife, Ceuta y Melilla, y <b>1</b> en las demás islas. Ganan los más votados hasta cubrir los puestos (art. 166 LOREG). En las provincias, como cada elector marca 3 nombres para 4 puestos, lo habitual es que la candidatura más votada saque 3 senadores y la segunda, 1.</p>
+      <p>Además, cada parlamento autonómico designa un senador y otro más por cada millón de habitantes de su comunidad (art. 69.5 de la Constitución). Esos senadores se nombran después de las elecciones autonómicas, no el 29-N.</p>
+    </div></section>
+
+  <section class="section" id="sec-votos" aria-labelledby="t-votos"><div class="section-head"><h2 id="t-votos">Tipos de voto y qué significan</h2>${rc ? '<p>Con las cifras oficiales de las generales del 23 de julio de 2023 como ejemplo.</p>' : ''}</div>
+    ${rc ? `<ul class="e-tree" aria-label="Del censo a los votos a candidaturas, 23-J de 2023">
+      <li><b>Censo electoral</b> <span class="n">${fmt(rc.censo)}</span><span class="d">Todas las personas con derecho a votar.</span>
+        <ul>
+          <li><b>Votantes</b> <span class="n">${fmt(rc.votantes)} · ${pc(rc.votantes, rc.censo)} del censo</span><span class="d">Quienes votaron. Su porcentaje sobre el censo es la participación.</span>
+            <ul>
+              <li><b>Votos válidos</b> <span class="n">${fmt(rc.validos)}</span><span class="d">Los votos a candidaturas más los votos en blanco. Son la base de los porcentajes y de la barrera del 3 %.</span>
+                <ul>
+                  <li><b>Votos a candidaturas</b> <span class="n">${fmt(rc.cand)} · ${pc(rc.cand, rc.validos)} de los válidos</span><span class="d">Los únicos que dan escaños.</span></li>
+                  <li><b>Votos en blanco</b> <span class="n">${fmt(rc.blancos)} · ${pc(rc.blancos, rc.validos)} de los válidos</span><span class="d">Cuentan como válidos, así que suben la barrera del 3 %, pero no dan escaños a nadie.</span></li>
+                </ul></li>
+              <li><b>Votos nulos</b> <span class="n">${fmt(rc.nulos)} · ${pc(rc.nulos, rc.votantes)} de los votantes</span><span class="d">Cuentan como participación, pero no entran en ningún reparto ni en la barrera.</span></li>
+            </ul></li>
+          <li><b>Abstención</b> <span class="n">${fmt(rc.censo - rc.votantes)} · ${pc(rc.censo - rc.votantes, rc.censo)} del censo</span><span class="d">Quienes no votaron. No cuenta para nada en el reparto.</span></li>
+        </ul></li></ul>` : ''}
+    <div class="tablewrap"><table class="data e-cuenta"><caption class="vh">Qué cuenta cada tipo de voto</caption><thead><tr><th>Tipo</th><th>¿Cuenta para la barrera del 3 %?</th><th>¿Puede dar escaños?</th></tr></thead><tbody>
+      <tr><td><b>A una candidatura</b></td><td>Sí</td><td>Sí</td></tr>
+      <tr><td><b>En blanco</b></td><td>Sí: es un voto válido y sube la barrera</td><td>No</td></tr>
+      <tr><td><b>Nulo</b></td><td>No</td><td>No</td></tr>
+      <tr><td><b>Abstención</b></td><td>No</td><td>No</td></tr></tbody></table></div>
+    <div class="e-two">
+      <div><h3>Cuándo un voto es en blanco</h3><ul class="e-list"><li>Cuando el sobre está <b>vacío</b>, sin papeleta.</li><li>En el Senado, también cuando la papeleta <b>no tiene ninguna cruz</b>.</li><li>Ojo: un papel en blanco metido en el sobre no es voto en blanco sino <b>nulo</b>, porque no es una papeleta oficial (Junta Electoral Central).</li></ul></div>
+      <div><h3>Cuándo un voto es nulo</h3><ul class="e-list"><li>El sobre o la papeleta no son los oficiales.</li><li>La papeleta va sin sobre.</li><li>En el sobre hay papeletas de candidaturas distintas. Si son varias de la misma, cuenta como un solo voto válido.</li><li>La papeleta tiene nombres tachados, añadidos o cambiados de orden, o cualquier frase, dibujo o alteración hecha a propósito.</li><li>En el Senado, se marcan más nombres de los permitidos.</li></ul><p class="small muted">Art. 96 LOREG.</p></div>
+    </div></section>
+
+  <section class="section" id="sec-como" aria-labelledby="t-como"><div class="section-head"><h2 id="t-como">Formas de votar</h2></div>
+    <dl class="e-dl">
+      <div><dt>En tu colegio electoral</dt><dd>El domingo 29, de 9:00 a 20:00. Lleva el DNI, el pasaporte o el carné de conducir con fotografía (art. 85 LOREG). La papeleta y el sobre del Congreso son blancos; los del Senado, de color sepia.</dd></div>
+      <div><dt>Por correo</dt><dd>Se pide en cualquier oficina de Correos, o en su web con certificado digital, hasta el 19 de noviembre. La documentación llega a casa entre el 9 y el 22, y el voto hay que enviarlo hasta el 25.</dd></div>
+      <div><dt>Desde el extranjero</dt><dd>Los inscritos como residentes en el extranjero (CERA) reciben la documentación sin pedirla y pueden votar por correo o en una urna de su consulado entre el 21 y el 26 de noviembre.</dd></div>
+      <div><dt>Fuera de España por unos días</dt><dd>Quien vaya a estar temporalmente en el extranjero puede pedir el voto del 6 al 31 de octubre.</dd></div>
+      <div><dt>En braille</dt><dd>Las personas ciegas o con discapacidad visual pueden pedir hasta el 2 de noviembre la documentación en braille para votar de forma autónoma.</dd></div>
+    </dl></section>
+
+  <section class="section" id="sec-fuentes" aria-labelledby="t-fuentes"><div class="section-head"><h2 id="t-fuentes">Fuentes oficiales</h2></div>
+    <ul class="e-list">
+      <li><a href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742" target="_blank" rel="noopener">Real Decreto 806/2026, de 5 de octubre, de disolución del Congreso de los Diputados y del Senado y de convocatoria de elecciones</a> (BOE de 6 de octubre de 2026): fecha, campaña, constitución de las Cortes, diputados por provincia y senadores.</li>
+      <li><a href="https://www.juntaelectoralcentral.es/cs/jec/documentos/eg2026_calendario.pdf" target="_blank" rel="noopener">Calendario electoral de las elecciones generales de 29 de noviembre de 2026</a> (Junta Electoral Central).</li>
+      <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672" target="_blank" rel="noopener">Ley Orgánica 5/1985, del Régimen Electoral General</a> (texto consolidado en el BOE): arts. 85 (identificación), 96 (votos nulos y en blanco), 162 y 163 (Congreso), 165 y 166 (Senado).</li>
+      <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229" target="_blank" rel="noopener">Constitución Española</a>: arts. 68 (Congreso) y 69 (Senado).</li>
+    </ul>
+    <p class="small muted">Resumen informativo de pactómetro.es. Para cualquier trámite valen siempre el BOE y las resoluciones de la Junta Electoral Central.</p></section>`;
+  iniciarCuenta();
+  app.querySelectorAll('.tabs a[href^="#sec-"]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const t = app.querySelector(a.getAttribute('href')); t.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); const h = t.querySelector('h2'); if (h){ h.tabIndex = -1; h.focus({preventScroll: true}); } }));
+  // ejemplo de la ley (fijo) y calculadora
+  const tabla = (cands, blancos, escanos, r) => {
+    const cols = Math.min(escanos, 12);
+    const filas = cands.slice().sort((a, b) => b.v - a.v).map(c => {
+      const dentro = r.ok.includes(c);
+      const celdas = Array.from({length: cols}, (_, j) => { const d = j + 1, g = dentro && r.gana.has(c.i + ':' + d); return `<td class="n${g ? ' win' : ''}${dentro ? '' : ' out'}">${dentro ? fmtQ(c.v / d) : '—'}${g ? '<span class="vh"> (escaño)</span>' : ''}</td>`; }).join('');
+      return `<tr><th scope="row">${esc(c.n || 'Sin nombre')}</th><td class="n">${fmtQ(c.v)}</td><td class="n">${r.validos ? fmtPct(100 * c.v / r.validos) : '—'}</td>${celdas}<td class="n"><b>${dentro ? r.res.get(c) : '—'}</b></td></tr>`;
+    }).join('');
+    return `<div class="tablewrap"><table class="data e-dh-t"><caption class="vh">Cocientes de la ley D'Hondt. Las celdas marcadas obtienen escaño.</caption><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">% válidos</th>${Array.from({length: cols}, (_, j) => `<th class="n">÷ ${j + 1}</th>`).join('')}<th class="n">Escaños</th></tr></thead><tbody>${filas}</tbody></table></div>${escanos > 12 ? '<p class="small muted">Se muestran los doce primeros divisores; el reparto usa todos.</p>' : ''}`;
+  };
+  const ej = DH_EJEMPLO.map(([n, v], i) => ({i, n, v}));
+  const rej = dhondt(ej, 0, 8);
+  app.querySelector('#dh-ej').innerHTML = tabla(ej, 0, 8, rej).replace('<caption class="vh">Cocientes', '<caption class="vh">Ejemplo del artículo 163 de la LOREG: cocientes') + `<p class="small">Resultado: A, 4 escaños; B, 2; C, 1, y D, 1. E y F superan el 3 % (14.400 votos) pero sus cocientes no llegan a los ocho más altos.</p>`;
+  const $rows = app.querySelector('#dh-rows'), $esc = app.querySelector('#dh-esc'), $bl = app.querySelector('#dh-bl'), $out = app.querySelector('#dh-out'), $sum = app.querySelector('#dh-sum');
+  let filas = DH_EJEMPLO.map(([n, v]) => ({n, v}));
+  const pintarFilas = () => {
+    $rows.innerHTML = filas.map((f, i) => `<tr><td><input type="text" data-i="${i}" data-f="n" value="${esc(f.n)}" aria-label="Nombre de la candidatura ${i + 1}" maxlength="30"></td><td class="n"><input type="number" data-i="${i}" data-f="v" value="${f.v}" min="0" inputmode="numeric" aria-label="Votos de la candidatura ${i + 1}"></td><td><button class="btn ghost" type="button" data-q="${i}" aria-label="Quitar la candidatura ${i + 1}"${filas.length < 2 ? ' disabled' : ''}>Quitar</button></td></tr>`).join('');
+  };
+  const calcular = () => {
+    const escanos = Math.max(1, Math.min(60, parseInt($esc.value, 10) || 1)), blancos = Math.max(0, parseInt($bl.value, 10) || 0);
+    const cands = filas.map((f, i) => ({i, n: f.n.trim(), v: Math.max(0, Math.round(+f.v) || 0)}));
+    const r = dhondt(cands, blancos, escanos);
+    if (!r.validos){ $out.innerHTML = ''; $sum.textContent = 'Escribe los votos de al menos una candidatura.'; return; }
+    const reparto = cands.filter(c => r.res.get(c) > 0).sort((a, b) => r.res.get(b) - r.res.get(a)).map(c => `${c.n || 'Sin nombre'} (${r.res.get(c)})`);
+    const fuera = cands.filter(c => c.v > 0 && !r.ok.includes(c)).map(c => c.n || 'Sin nombre');
+    $sum.innerHTML = `<b>Reparto de ${escanos} ${escanos === 1 ? 'escaño' : 'escaños'}:</b> ${esc(listaY(reparto)) || 'ninguno'}. La barrera del 3 % es de ${fmt(Math.ceil(r.barrera))} votos (sobre ${fmt(r.validos)} válidos).${fuera.length ? ` No llegan: ${esc(listaY(fuera))}.` : ''}${r.ult ? ` El último escaño se adjudica con un cociente de ${fmtQ(r.ult.q)}.` : ''}${r.sorteo ? ' Hay un empate exacto en el último escaño: se resolvería por sorteo.' : ''}`;
+    $out.innerHTML = tabla(cands, blancos, escanos, r);
+  };
+  $rows.addEventListener('input', ev => { const t = ev.target, i = +t.dataset.i; if (!filas[i]) return; filas[i][t.dataset.f] = t.dataset.f === 'v' ? t.value : t.value; calcular(); });
+  $rows.addEventListener('click', ev => { const b = ev.target.closest('[data-q]'); if (!b || filas.length < 2) return; filas.splice(+b.dataset.q, 1); pintarFilas(); calcular(); const f = $rows.querySelector('input'); if (f) f.focus(); });
+  app.querySelector('#dh-add').addEventListener('click', () => { filas.push({n: String.fromCharCode(65 + filas.length % 26), v: 0}); pintarFilas(); calcular(); const nf = $rows.querySelector('tr:last-child input'); nf.focus(); nf.select(); });
+  app.querySelector('#dh-reset').addEventListener('click', () => { filas = DH_EJEMPLO.map(([n, v]) => ({n, v})); $esc.value = 8; $bl.value = 0; app.querySelector('#dh-prov').value = ''; pintarFilas(); calcular(); });
+  app.querySelector('#dh-prov').addEventListener('change', ev => { if (ev.target.value){ $esc.value = ev.target.value; calcular(); } });
+  $esc.addEventListener('input', calcular); $bl.addEventListener('input', calcular);
+  pintarFilas(); calcular();
 }
 
 /* ================================================================ vista: autonomías */
@@ -2139,6 +2400,7 @@ async function viewInicio(){
       <div class="h-band-txt"><h2 id="h-29n">Calendario del 29-N</h2><p>De la disolución de las Cortes a la constitución de las nuevas. La campaña va del 13 al 27 de noviembre y el domingo 29 se vota de 9:00 a 20:00, hora local.</p></div>
       <div class="h-band-acts">
         <a class="btn lg btn-l" href="#congreso-simulador">Simular el 29-N</a>
+        <a class="btn lg btn-o" href="#29n">Calendario completo y cómo se vota</a>
         <a class="btn lg btn-o" href="#congreso-disolucion">El Congreso al disolverse</a>
         ${encVotable() ? `<a class="btn lg btn-o" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a>` : ''}
       </div>
@@ -2441,10 +2703,11 @@ async function dispatch(h){
   if (h === 'historico'){ setTitle('Histórico'); return viewHistorico(); }
   if (h === 'encuesta' || h === 'encuesta-prueba'){ setTitle('Encuesta 29-N'); return viewEncuesta(h === 'encuesta-prueba'); }
   if (h === 'comparar' || h.startsWith('comparar?')) return viewComparar(h.slice(9));
+  if (h === '29n') return view29N();
   if (h === 'fuentes') return viewFuentes();
   return notFound();
 }
-const NAV = {inicio: 'inicio', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', encuesta: 'encuesta'};
+const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', encuesta: 'encuesta'};
 const $mast = document.querySelector('.mast'), $menu = document.getElementById('menu-btn');
 function cerrarMenu(){ $mast.classList.remove('open'); $menu.setAttribute('aria-expanded', 'false'); }
 $menu.addEventListener('click', () => { const abrir = !$mast.classList.contains('open'); $mast.classList.toggle('open', abrir); $menu.setAttribute('aria-expanded', String(abrir)); });
@@ -2467,7 +2730,8 @@ function marcarDesplazables(){
       // named after the closest heading before it (each scrolling region needs its own name)
       const h = [...app.querySelectorAll('h1, h2, h3, summary')].filter(x => x.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING).pop();
       el.tabIndex = 0; el.setAttribute('role', 'region');
-      el.setAttribute('aria-label', (h ? h.textContent.trim() : 'Tabla de datos') + ' (se desplaza en horizontal)');
+      const cap = el.querySelector('caption');
+      el.setAttribute('aria-label', (cap ? cap.textContent.trim() : h ? h.textContent.trim() : 'Tabla de datos') + ' (se desplaza en horizontal)');
     } else if (!desborda && el.getAttribute('role') === 'region'){
       el.removeAttribute('tabindex'); el.removeAttribute('role'); el.removeAttribute('aria-label');
     }
