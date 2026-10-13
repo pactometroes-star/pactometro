@@ -17,17 +17,31 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#051e3e">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="img/icono-32.png">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://pactometro.es/img/icono-192.png">
+<link rel="icon" type="image/png" sizes="144x144" href="https://pactometro.es/img/icono-144.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://pactometro.es/img/icono-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="https://pactometro.es/img/icono-48.png">
+<link rel="icon" href="https://pactometro.es/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="https://pactometro.es/img/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"pactómetro.es","alternateName":["Pactómetro","pactometro.es"],"url":"https://pactometro.es/","inLanguage":"es-ES","publisher":{"@type":"Person","name":"Javier Pereiro Pérez"}}</script>
 <link rel="manifest" href="site.webmanifest">
-<title>Pactómetro</title>
+<title>Pactómetro · Mayorías y pactos en todas las instituciones de España</title>
 <meta name="description" content="Calcula mayorías y pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, cabildos, consells y todos los ayuntamientos de España, con el histórico electoral oficial desde 1977.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Fonts served from pactometro.es itself (SIL Open Font License, see fonts/): no request to third parties. */
+@font-face{font-family:'Archivo';font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(fonts/archivo-latin-ext-wdth-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Archivo';font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(fonts/archivo-latin-wdth-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Ibarra Real Nova';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/ibarra-real-nova-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Ibarra Real Nova';font-style:normal;font-display:swap;font-weight:600;src:url(fonts/ibarra-real-nova-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Ibarra Real Nova';font-style:normal;font-display:swap;font-weight:700;src:url(fonts/ibarra-real-nova-latin-ext-700-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Ibarra Real Nova';font-style:italic;font-display:swap;font-weight:400;src:url(fonts/ibarra-real-nova-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Ibarra Real Nova';font-style:italic;font-display:swap;font-weight:600;src:url(fonts/ibarra-real-nova-latin-ext-600-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Ibarra Real Nova';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/ibarra-real-nova-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Ibarra Real Nova';font-style:normal;font-display:swap;font-weight:600;src:url(fonts/ibarra-real-nova-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Ibarra Real Nova';font-style:normal;font-display:swap;font-weight:700;src:url(fonts/ibarra-real-nova-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Ibarra Real Nova';font-style:italic;font-display:swap;font-weight:400;src:url(fonts/ibarra-real-nova-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Ibarra Real Nova';font-style:italic;font-display:swap;font-weight:600;src:url(fonts/ibarra-real-nova-latin-600-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* Layout: a monochrome "acta" (official record) — masthead, then one working sheet per institution.
    Party colours are the only colour on the page; all chrome is ink on paper, so no UI colour reads as partisan. */
 :root{
@@ -596,6 +610,27 @@ table.e-dh-in td{padding:6px 10px}
 .e-dl dt{font-weight:700}
 .e-dl dd{margin:4px 0 0;color:var(--ink-2);font-size:15px}
 
+/* ---------- promoción de la encuesta ---------- */
+.promo{background:var(--band);color:#fff}
+.promo-in{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding-block:10px}
+.promo-in p{flex:1 1 320px;min-width:0;font-size:15px;color:#dfe6ef}
+.promo-in p b{color:#fff}
+.promo :focus-visible{outline-color:#fff}
+.promo .promo-go{background:#fff;border-color:#fff;color:#051e3e;min-height:40px;padding-inline:16px}
+.promo .promo-go:hover{background:transparent;color:#fff}
+.promo-x{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;cursor:pointer}
+.promo-x:hover{background:rgba(255,255,255,.12)}
+@media (max-width:600px){.promo-mas{display:none}.promo-in p{font-size:14.5px}}
+.enc-promo{display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap;background:var(--band);color:#fff;border-radius:12px;padding:clamp(20px,3vw,32px);margin-bottom:22px}
+.enc-promo :focus-visible{outline-color:#fff}
+.enc-promo-txt{flex:1 1 420px;min-width:0;display:grid;gap:10px}
+.enc-promo-k{font-size:14px;color:var(--band-2)}
+.enc-promo h2,.enc-promo-q{font:600 clamp(26px,3.4vw,40px)/1.08 var(--f-display);color:#fff;margin:0}
+.enc-promo p:not(.enc-promo-k):not(.enc-promo-q){color:#dfe6ef;max-width:62ch}
+.enc-promo .btn-l{background:#fff;border-color:#fff;color:#051e3e;padding:12px 24px;font-size:16px}
+.enc-promo .btn-l:hover{background:transparent;color:#fff}
+.nav a[data-nav="encuesta"]:not([aria-current]){box-shadow:inset 0 0 0 1.5px var(--ink);color:var(--ink);font-weight:600}
+
 /* ---------- tooltip ---------- */
 .tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.35;max-width:260px;box-shadow:0 6px 20px -8px rgba(0,0,0,.45)}
 .tip strong{display:block;font-size:15px;font-weight:700}
@@ -623,6 +658,11 @@ table.e-dh-in td{padding:6px 10px}
     </nav>
   </div>
 </header>
+<aside class="promo" id="promo" aria-label="Encuesta del 29-N" hidden>
+  <div class="wrap promo-in"><p><b>Encuesta del 29-N:</b> ¿a quién piensas votar? Es anónima y se responde en un minuto.<span class="promo-mas"> Abierta hasta el 22 de noviembre a las 20:00.</span></p>
+    <a class="btn promo-go" href="#encuesta">Responder la encuesta</a>
+    <button class="promo-x" type="button" id="promo-x" aria-label="Ocultar el aviso de la encuesta hasta mañana"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+</aside>
 
 <main class="wrap" id="app" tabindex="-1">
   <p class="loading">Cargando datos electorales…</p>
@@ -631,7 +671,7 @@ table.e-dh-in td{padding:6px 10px}
 <footer class="foot">
   <div class="wrap">
     <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a></span></p>
-    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y aviso legal</a></p>
+    <p><a href="#encuesta">Encuesta del 29-N</a> · Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y aviso legal</a></p>
   </div>
 </footer>
 
@@ -1245,10 +1285,10 @@ function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'
 
 /* ================================================================ aviso del 29-N (portada y Congreso) */
 // Cuenta atrás con días, horas, minutos y segundos; iniciarCuenta() la pone en marcha. conv: G.convocatoria si ya se ha cargado.
-function avisoElecciones(conv){
+function avisoElecciones(conv, sinEncuesta){
   const c = conv || {decreto_boe: '2026-10-06', campana: ['2026-11-13', '2026-11-27']};
   const camp = c.campana || ['2026-11-13', '2026-11-27'];
-  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a><a class="btn ghost" href="#29n">Calendario y cómo se vota</a>${encVotable() ? `<a class="btn" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta el 22-N'}</a>` : ''}</div></div>`;
+  return `<div class="notice cd"><span class="date">29-N</span><div class="cd-main"><p class="cd-titulo">Elecciones generales · domingo 29 de noviembre de 2026</p><div class="cuenta" id="cuenta" role="timer" aria-live="off"></div><p class="cd-meta">Cortes disueltas por decreto (BOE del ${fechaCorta(c.decreto_boe)}) · campaña del ${+camp[0].slice(8)} al ${+camp[1].slice(8)} de noviembre</p></div><div class="row"><a class="btn" href="#congreso-simulador">Simular el 29-N</a><a class="btn ghost" href="#29n">Calendario y cómo se vota</a>${encPromo() && !sinEncuesta ? `<a class="btn solid" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta · hasta el 22-N'}</a>` : ''}</div></div>`;
 }
 
 /* ================================================================ vista: Congreso */
@@ -1399,7 +1439,7 @@ async function view29N(){
   // tipos de voto con los datos oficiales del 23-J
   const rc = e23 ? recuentoDe(e23) : null;
   const pc = (a, b) => fmtPct(100 * a / b);
-  app.innerHTML = `${avisoElecciones(conv)}
+  app.innerHTML = `${bloqueEncuesta()}${avisoElecciones(conv, true)}
   <div class="page-head"><span class="eyebrow">Elecciones generales · 29 de noviembre de 2026</span><h1>Cómo funcionan las elecciones del 29-N</h1>
     <p class="lede">El calendario oficial, cómo se reparten los escaños del Congreso y del Senado y qué significa cada tipo de voto, según la Constitución, la Ley Orgánica del Régimen Electoral General (LOREG), el Real Decreto de convocatoria y la Junta Electoral Central.</p></div>
   <nav class="tabs" aria-label="En esta página"><a class="tab" href="#sec-cal">Calendario</a><a class="tab" href="#sec-congreso">Escaños del Congreso</a><a class="tab" href="#sec-dhondt">Calculadora D'Hondt</a><a class="tab" href="#sec-senado">Senado</a><a class="tab" href="#sec-votos">Tipos de voto</a><a class="tab" href="#sec-como">Cómo votar</a><a class="tab" href="#sec-fuentes">Fuentes</a></nav>
@@ -2185,6 +2225,23 @@ const encEstado = () => { const t = ahoraReal(); return t < ENC.apertura ? 'ante
 const encVisible = () => encModo() === 'previa' || (encModo() === 'real' && encEstado() !== 'antes');      // enlace del menú
 const encVotable = () => encModo() === 'previa' || encEstado() === 'abierta';    // botones que invitan a votar
 function actualizarNavEncuesta(){ const a = document.querySelector('.nav a[data-nav="encuesta"]'); if (a) a.hidden = !encVisible(); }
+// Promoción de la encuesta: mientras se pueda responder y esta persona no haya respondido ya.
+const encYaRespondida = () => encModo() === 'real' && !!store.get(ENC.clave);
+const encPromo = () => encModo() !== 'pendiente' && encVotable() && !encYaRespondida();
+const PROMO_KEY = 'pacto.promo.oculta';
+function actualizarPromo(h){
+  const el = document.getElementById('promo'); if (!el) return;
+  const pag = (h || 'inicio').split(/[-.?]/)[0];
+  el.hidden = !encPromo() || store.get(PROMO_KEY) === hoyISO() || pag === 'encuesta' || pag === '29n';
+}
+// Bloque destacado de la encuesta (página del 29-N)
+function bloqueEncuesta(){
+  if (encModo() === 'pendiente') return '';
+  const estado = encModo() === 'previa' ? 'abierta' : encEstado();
+  if (estado === 'cerrada') return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">La encuesta del 29-N está cerrada</p><p>Se pudo responder hasta el domingo 22 de noviembre a las 20:00. Gracias a quienes participasteis.</p></section>';
+  if (encYaRespondida()) return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">Ya has respondido la encuesta del 29-N</p><p>Gracias por participar. Puedes compartirla para que responda más gente: está abierta hasta el domingo 22 de noviembre a las 20:00.</p></section>';
+  return `<section class="enc-promo" aria-labelledby="t-enc"><div class="enc-promo-txt"><p class="enc-promo-k">Encuesta de pactómetro.es</p><h2 id="t-enc">¿A quién piensas votar el 29-N?</h2><p>Es anónima, se responde en un minuto y está abierta hasta el domingo 22 de noviembre a las 20:00. Solo te preguntamos tu intención de voto y, si quieres, tu provincia y lo que votaste el 23-J.</p></div><a class="btn lg btn-l" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a></section>`;
+}
 function sincronizarReloj(){
   // Usa la hora del servidor (cabecera Date, más Age si viene de una caché) para no depender del reloj del visitante.
   if (!('encuestaURL' in CFG)) return Promise.resolve();
@@ -2340,7 +2397,7 @@ async function viewFuentes(){
     <p class="copy">Contacto: <output id="mail">pactometroes@gmail.com</output> <button class="btn ghost" type="button" id="copy-mail">Copiar</button></p>
     <p>© 2026 Javier Pereiro Pérez. El diseño, el código y la recopilación de datos de este sitio pertenecen a su titular; todos los derechos reservados.</p>
     <p>Los resultados electorales oficiales son información del sector público reutilizada citando su fuente (Ministerio del Interior, Congreso de los Diputados). Este sitio no está vinculado a ninguna administración pública ni a ningún partido político. Los datos se ofrecen con fines informativos; para cualquier uso con efectos jurídicos, consulta las publicaciones oficiales (BOE y boletines oficiales).</p>
-    <p>Este sitio no usa cookies. El simulador guarda tu escenario solo en tu navegador.</p>
+    <p>Este sitio no usa cookies ni herramientas de analítica o publicidad, y no carga contenido de terceros: las tipografías se sirven desde el propio pactómetro.es. Tu navegador solo guarda, en su almacenamiento local y sin salir de tu dispositivo, el escenario del simulador si lo usas, la marca de «encuesta ya respondida» y, si cierras el aviso de la encuesta, que no vuelva a salir ese día.</p>
     <p>La encuesta del 29-N es anónima: guarda tus respuestas, la provincia si la indicas y la fecha con la hora redondeada, sin nombre, correo, dirección IP ni ningún identificador. Las respuestas se almacenan en una hoja de cálculo privada del titular. Para evitar respuestas repetidas, tu navegador guarda una marca de «ya respondido» que no contiene tu respuesta y no sale de tu dispositivo.</p>
     <p class="small muted">Datos actualizados a 8 de octubre de 2026.</p>
   </div>`;
@@ -2399,10 +2456,10 @@ async function viewInicio(){
     <div class="h-band-top">
       <div class="h-band-txt"><h2 id="h-29n">Calendario del 29-N</h2><p>De la disolución de las Cortes a la constitución de las nuevas. La campaña va del 13 al 27 de noviembre y el domingo 29 se vota de 9:00 a 20:00, hora local.</p></div>
       <div class="h-band-acts">
-        <a class="btn lg btn-l" href="#congreso-simulador">Simular el 29-N</a>
+        ${encPromo() ? `<a class="btn lg btn-l" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a>` : ''}
+        <a class="btn lg ${encPromo() ? 'btn-o' : 'btn-l'}" href="#congreso-simulador">Simular el 29-N</a>
         <a class="btn lg btn-o" href="#29n">Calendario completo y cómo se vota</a>
         <a class="btn lg btn-o" href="#congreso-disolucion">El Congreso al disolverse</a>
-        ${encVotable() ? `<a class="btn lg btn-o" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a>` : ''}
       </div>
     </div>
     <ol class="h-cal" id="h-cal" aria-label="Calendario electoral"></ol>
@@ -2713,6 +2770,7 @@ function cerrarMenu(){ $mast.classList.remove('open'); $menu.setAttribute('aria-
 $menu.addEventListener('click', () => { const abrir = !$mast.classList.contains('open'); $mast.classList.toggle('open', abrir); $menu.setAttribute('aria-expanded', String(abrir)); });
 document.getElementById('nav').addEventListener('click', ev => { if (ev.target.closest('a')) cerrarMenu(); });
 document.getElementById('saltar').addEventListener('click', ev => { ev.preventDefault(); cerrarMenu(); app.focus(); });
+document.getElementById('promo-x').addEventListener('click', () => { store.set(PROMO_KEY, hoyISO()); document.getElementById('promo').hidden = true; app.focus({preventScroll: true}); });
 document.addEventListener('keydown', ev => {
   if (ev.key === 'Escape' && $mast.classList.contains('open')){ cerrarMenu(); $menu.focus(); return; }
   // radio groups made of buttons (Sí / Abs. / No, métricas…): arrows move the choice, like native radios
@@ -2751,6 +2809,7 @@ async function route(){
   hideTip();
   pararCuenta();
   actualizarNavEncuesta();
+  actualizarPromo(h);
   const sameView = lastHash !== null && (lastHash.split('.')[0] === h.split('.')[0] || (lastHash.startsWith('comparar') && h.startsWith('comparar')));
   lastHash = h;
   app.className = 'wrap';
