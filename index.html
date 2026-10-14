@@ -215,6 +215,40 @@ main{padding-block:28px 56px}
 .addform input{border:1px solid var(--rule);border-radius:999px;padding:7px 12px;background:var(--sheet);min-width:0}
 .addform input[type="text"]{flex:1 1 140px}
 .addform input[type="number"]{width:84px}
+.simctl{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--paper)}
+.simctl-b{display:flex;flex-wrap:wrap;gap:6px}
+.simctl-b .btn{min-height:36px}
+.simctl-b .btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.simctl-b .cero{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;font-size:11px;line-height:1}
+.simctl-o{font-size:12.5px;color:var(--ink-2);margin:0}
+.pseats.step{display:flex;align-items:center;gap:4px}
+.pseats.step input{width:50px;-moz-appearance:textfield;appearance:textfield}
+.pseats.step input::-webkit-inner-spin-button,.pseats.step input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.stp{width:30px;height:32px;display:inline-grid;place-items:center;border:1px solid var(--rule);border-radius:4px;background:var(--sheet);color:var(--ink);font:600 18px/1 var(--f-sans);cursor:pointer;padding:0}
+.stp:hover{border-color:var(--ink);background:var(--wash)}
+.stp:active{background:var(--ink);color:var(--paper)}
+/* CIS: punto de partida del simulador */
+.cis{display:grid;gap:14px;margin-bottom:16px}
+.cis-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 24px;align-items:start}
+@media (max-width:760px){.cis-head{grid-template-columns:minmax(0,1fr)}}
+.cis-head h2{margin:4px 0 6px}
+.cis-head p{max-width:70ch;color:var(--ink-2)}
+.cis-head p + p{margin-top:6px}
+.cis-acc{display:grid;gap:8px;justify-items:start}
+.cis-acc .btn.solid{gap:8px}
+.cis-acc a.small{color:var(--ink-2)}
+.cis-dl{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:6px 16px;margin:0 0 12px;font-size:14px}
+.cis-dl dt{font-weight:600;color:var(--ink)}
+.cis-dl dd{margin:0;color:var(--ink-2)}
+@media (max-width:560px){.cis-dl{grid-template-columns:minmax(0,1fr)}.cis-dl dd{margin-bottom:6px}}
+.cis details.more > div{display:grid;gap:12px}
+.cis details.more h3{font-size:16px;margin-top:4px}
+.cis details.more p,.cis details.more li{max-width:72ch;color:var(--ink-2);font-size:14px}
+.cis details.more ol,.cis details.more ul{padding-left:20px;display:grid;gap:6px;margin:0}
+.cis table.data td.z{color:var(--muted)}
+.cis table.data tr.sep td{border-top:2px solid var(--rule)}
+.veda{border:1.5px solid var(--ink);border-radius:var(--r);padding:12px 14px;background:var(--sheet);margin-bottom:16px}
+.veda p{max-width:72ch}
 .coal{margin-top:6px;display:grid;gap:10px}
 .coal-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
 .coal-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
@@ -875,7 +909,7 @@ const archivoSlug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '
 const hoyTexto = () => { const d = new Date(); return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`; };
 const pieExcel = fuente => [[], [{v: `Descargado de pactómetro.es el ${hoyTexto()} · ${location.href}`, s: 'note'}], [{v: `Datos: ${fuente || 'Ministerio del Interior y fuentes indicadas en pactómetro.es/#fuentes'}`, s: 'note'}], [{v: '© 2026 Javier Pereiro Pérez · pactómetro.es · Cita la fuente si reutilizas estos datos.', s: 'note'}]];
 const pct01 = (a, b) => (b ? a / b : null);
-const fuenteTexto = f => f === 'compilada' ? 'Resultados recopilados de fuentes públicas (no oficiales del Ministerio del Interior)' : 'Ministerio del Interior (ficheros oficiales de resultados) · Congreso de los Diputados';
+const fuenteTexto = f => f === 'simulacion' ? 'Escenario creado en el simulador de pactómetro.es (no es un resultado electoral)' : f === 'compilada' ? 'Resultados recopilados de fuentes públicas (no oficiales del Ministerio del Interior)' : 'Ministerio del Interior (ficheros oficiales de resultados) · Congreso de los Diputados';
 // Filas de una tabla de resultados para Excel: devuelve {filas, inicio, fin} con cabecera incluida
 function tablaResultadosExcel(rows, rc, total, extra){
   const validos = validosDe(rows, rc), otras = otrasFila(rows, rc);
@@ -934,11 +968,13 @@ function minimalWinning(parties, maj){
 
 /* ================================================================ componente pactómetro */
 /* cfg: {total, partidos, regla:'congreso'|'parlamento'|'municipal'|'diputacion'|'insular', preset:{id:'si'|'abs'}, presetNota,
-         editable, simKey, masVotada, simBase} */
+         editable, simKey, masVotada,
+         simBases: [{k, label, origen, partidos}] (simulator starting points), simEstado: {base, mod}} */
 function Pactometro(cfg){
   const root = document.createElement('section');
   root.className = 'pacto';
-  const st = { partidos: cfg.partidos.map(p => ({...p})), voto: new Map(), showAll: false };
+  const st = { partidos: cfg.partidos.map(p => ({...p})), voto: new Map(), showAll: false,
+    base: cfg.simEstado ? cfg.simEstado.base : null, mod: !!(cfg.simEstado && cfg.simEstado.mod) };
   st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no'));
   const total = cfg.total, maj = Math.floor(total / 2) + 1;
   root.innerHTML = `
@@ -951,6 +987,14 @@ function Pactometro(cfg){
       <div class="verdict" aria-live="polite"></div>
     </div>
     <div class="side">
+      ${cfg.simBases ? `<div class="simctl" role="group" aria-labelledby="simctl-t">
+        <h2 class="h3" id="simctl-t">Punto de partida</h2>
+        <div class="simctl-b">
+          ${cfg.simBases.map(b => `<button class="btn ghost" type="button" data-act="base" data-base="${b.k}" aria-pressed="false">${esc(b.label)}</button>`).join('')}
+          <button class="btn ghost" type="button" data-act="ceros" data-base="cero" aria-pressed="false"><span class="cero" aria-hidden="true">0</span>Empezar de cero</button>
+        </div>
+        <p class="simctl-o" aria-live="polite"></p>
+      </div>` : ''}
       <div class="side-head">
         <h2 class="h3">Votos por candidatura</h2>
         <div class="row">
@@ -966,18 +1010,13 @@ function Pactometro(cfg){
           <input type="text" id="sim-nombre" placeholder="Nueva candidatura (p. ej. SALF)" maxlength="40" aria-label="Nombre de la nueva candidatura" required>
           <input type="number" id="sim-escanos" min="0" max="${total}" value="1" aria-label="Escaños de la nueva candidatura">
           <button class="btn" type="submit">Añadir</button>
-        </form>
-        <div class="row">
-          <button class="btn ghost" type="button" data-act="base-2023">Partir del 23-J</button>
-          <button class="btn ghost" type="button" data-act="base-dis">Partir de la disolución</button>
-          <button class="btn ghost" type="button" data-act="ceros">Poner a cero</button>
-        </div>` : ''}
+        </form>` : ''}
     </div>
     ${cfg.recuento ? `<div class="rec-wrap" style="grid-column:1/-1"><h2 class="h3">Recuento de votos</h2>${recuentoHTML(cfg.recuento)}</div>` : ''}
     <div class="coal" style="grid-column:1/-1"></div>`;
   const $hemi = root.querySelector('.hemi'), $tally = root.querySelector('.tally'), $tleg = root.querySelector('.tally-legend');
   const $ver = root.querySelector('.verdict'), $list = root.querySelector('.plist'), $coal = root.querySelector('.coal');
-  const $sum = root.querySelector('.sumline');
+  const $sum = root.querySelector('.sumline'), $orig = root.querySelector('.simctl-o');
 
   const seatsOf = p => Math.max(0, Math.round(+p.esc || 0));
   const votosTot = cfg.editable ? 0 : (cfg.votosValidos || 0);
@@ -1022,7 +1061,7 @@ function Pactometro(cfg){
       const p = st.partidos.find(q => q.id === id);
       const v = {si: 'Sí', abs: 'Abstención', no: 'No'}[st.voto.get(id)];
       const vt = votosTexto(p.votos);
-      showTip(ev, `<strong>${fmt(seatsOf(p))} escaños</strong>${esc(niceSig(p.sig))} · vota ${v}${vt ? '<br>' + vt : ''}`);
+      showTip(ev, `<strong>${fmt(seatsOf(p))} escaños</strong>${esc(niceSig(p.sig))} · vota ${v}${vt ? '<br>' + vt : ''}${p.nota ? '<br>' + esc(p.nota) : ''}`);
     });
     s.addEventListener('pointermove', ev => { if (!tip.hidden) moveTip(ev); });
     s.addEventListener('pointerout', ev => { if (ev.target.getAttribute && ev.target.getAttribute('data-p')) { highlight(null); hideTip(); } });
@@ -1095,24 +1134,39 @@ function Pactometro(cfg){
       const vts = hayVotos && p.votos ? fmt(p.votos) + ' votos' : '';
       row.innerHTML = `<span class="sw" style="background:${p.color}"></span>
         <div class="pname"><b></b><small></small></div>
-        <div class="pseats">${cfg.editable ? `<input type="number" min="0" max="${total}" value="${seatsOf(p)}" id="esc-${p.id}" aria-label="Escaños de ${esc(p.sig)}">` : `<span class="e">${seatsOf(p)}</span>${vts ? `<small>${vts}</small>` : ''}${pct ? `<small>${pct}</small>` : ''}`}</div>
+        ${cfg.editable ? `<div class="pseats step">
+          <button type="button" class="stp" data-step="-1" tabindex="-1" aria-label="Un escaño menos para ${esc(niceSig(p.sig))}">−</button>
+          <input type="number" inputmode="numeric" min="0" max="${total}" value="${seatsOf(p)}" id="esc-${p.id}" aria-label="Escaños de ${esc(niceSig(p.sig))}">
+          <button type="button" class="stp" data-step="1" tabindex="-1" aria-label="Un escaño más para ${esc(niceSig(p.sig))}">+</button>
+        </div>` : `<div class="pseats"><span class="e">${seatsOf(p)}</span>${vts ? `<small>${vts}</small>` : ''}${pct ? `<small>${pct}</small>` : ''}</div>`}
         <div class="seg" role="radiogroup" aria-label="Voto de ${esc(p.sig)}">
           <button type="button" role="radio" class="v-si" data-v="si" aria-checked="${v === 'si'}" tabindex="${v === 'si' ? 0 : -1}">Sí</button>
           <button type="button" role="radio" class="v-abs" data-v="abs" aria-checked="${v === 'abs'}" tabindex="${v === 'abs' ? 0 : -1}" aria-label="Abstención">Abs.</button>
           <button type="button" role="radio" class="v-no" data-v="no" aria-checked="${v === 'no'}" tabindex="${v === 'no' ? 0 : -1}">No</button>
         </div>`;
       row.querySelector('b').textContent = niceSig(p.sig);
-      const nm = p.nom && norm(p.nom) !== norm(p.sig) ? nice(p.nom) : '';
+      const nm = p.nota ? p.nota : p.nom && norm(p.nom) !== norm(p.sig) ? nice(p.nom) : '';
       const sm = row.querySelector('small'); sm.textContent = nm; sm.title = nm;
       row.addEventListener('pointerenter', () => highlight(p.id));
       row.addEventListener('pointerleave', () => highlight(null));
       $list.appendChild(row);
     }
-    if (cfg.editable){
-      const t = totals();
-      $sum.innerHTML = t.asig === total ? `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span>Cuadra</span>`
-        : `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span class="warn">${t.asig < total ? `Faltan ${total - t.asig}` : `Sobran ${t.asig - total}`}</span>`;
-    }
+    drawSum();
+  }
+  function drawSum(){
+    if (!$sum) return;
+    const t = totals();
+    $sum.innerHTML = t.asig === total ? `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span>Cuadra</span>`
+      : `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span class="warn">${t.asig < total ? `Faltan ${total - t.asig}` : `Sobran ${t.asig - total}`}</span>`;
+  }
+  function drawOrigen(){
+    if (!$orig) return;
+    root.querySelectorAll('.simctl-b [data-base]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.base === st.base)));
+    const b = (cfg.simBases || []).find(x => x.k === st.base);
+    const txt = st.base === 'cero' ? `Todas las candidaturas empiezan con 0 escaños. Escribe el número de cada una o usa − y + hasta repartir los ${total}.`
+      : b ? b.origen : 'Escenario guardado en este navegador.';
+    const o = txt + (st.mod && st.base !== null ? ' Incluye tus cambios.' : '');
+    if ($orig.textContent !== o) $orig.textContent = o;
   }
   function drawCoal(){
     const parts = st.partidos.map(p => ({...p, esc: seatsOf(p)}));
@@ -1144,7 +1198,7 @@ function Pactometro(cfg){
       const rows = st.partidos.map(p => [p.sig, p.nom, p.color, p.fam, cfg.editable ? null : (p.votos ?? null), seatsOf(p), p.id]);
       const t = totals();
       const h1 = [[{v: 'pactómetro.es · ' + E.institucion, s: 't'}], [{v: E.eleccion, s: 'sub'}], [],
-        ['Escaños', total], ['Mayoría absoluta', maj], E.fecha ? ['Fecha', fecha(E.fecha)] : null, ['Fuente', fuenteTexto(E.fuente)], []].filter(Boolean);
+        ['Escaños', total], ['Mayoría absoluta', maj], E.fecha ? ['Fecha', fecha(E.fecha)] : null, ['Fuente', fuenteTexto(E.fuente)], $orig ? ['Punto de partida', $orig.textContent] : null, []].filter(Boolean);
       const rec = bloqueRecuentoExcel(rc); if (rec.length) h1.push(...rec, []);
       h1.push([{v: 'Resultados y escenario del pactómetro', s: 'sub'}]);
       const r0 = h1.length;
@@ -1185,11 +1239,28 @@ function Pactometro(cfg){
     } catch(e){ console.error(e); alertaExcel(btn); }
     finally { setTimeout(() => { btn.disabled = false; btn.innerHTML = txt0; delete btn.dataset.err; }, btn.dataset.err ? 3500 : 600); }
   }
-  function save(){ if (cfg.simKey) store.set(cfg.simKey, {partidos: st.partidos.map(p => ({sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, esc: seatsOf(p)})), voto: st.partidos.map(p => st.voto.get(p.id))}); }
-  function refresh(coal = true){ drawHemi(); drawTally(); drawVerdict(); drawList(); if (coal) drawCoal(); save(); }
+  function save(){ if (cfg.simKey) store.set(cfg.simKey, {base: st.base, mod: st.mod, partidos: st.partidos.map(p => ({sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, esc: seatsOf(p), nota: p.nota || ''})), voto: st.partidos.map(p => st.voto.get(p.id))}); }
+  function refresh(coal = true){ drawHemi(); drawTally(); drawVerdict(); drawList(); if (coal) drawCoal(); drawOrigen(); save(); }
+  function escanosCambiados(){ st.mod = true; drawHemi(); drawTally(); drawVerdict(); drawCoal(); drawSum(); drawOrigen(); save(); }
+  function cargarBase(k){
+    if (k === 'cero'){ st.partidos.forEach(p => p.esc = 0); st.voto = new Map(st.partidos.map(p => [p.id, 'no'])); }
+    else {
+      const b = (cfg.simBases || []).find(x => x.k === k); if (!b) return;
+      const t = Date.now();
+      st.partidos = b.partidos.map((p, i) => ({...p, id: 'b' + i + '-' + t})); st.voto = new Map(st.partidos.map(p => [p.id, 'no']));
+    }
+    st.base = k; st.mod = false; st.showAll = false; refresh();
+  }
   root.addEventListener('click', ev => {
     const b = ev.target.closest('button'); if (!b) return;
     const row = b.closest('.prow');
+    if (row && b.dataset.step){
+      const p = st.partidos.find(q => q.id === row.dataset.p); if (!p) return;
+      p.esc = Math.max(0, Math.min(total, seatsOf(p) + (+b.dataset.step)));
+      const inp = row.querySelector('input'); if (inp) inp.value = p.esc;
+      escanosCambiados();
+      return;
+    }
     if (row && b.dataset.v){
       const id = row.dataset.p, v = b.dataset.v, foco = row.contains(document.activeElement);
       st.voto.set(id, v); refresh(false);
@@ -1201,19 +1272,17 @@ function Pactometro(cfg){
     if (act === 'preset'){ st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no')); refresh(false); }
     if (act === 'todas'){ st.showAll = !st.showAll; drawCoal(); }
     if (act === 'xlsx') exportar(b);
-    if (act === 'ceros'){ st.partidos.forEach(p => p.esc = 0); refresh(); }
-    if ((act === 'base-2023' || act === 'base-dis') && cfg.simBase){
-      const base = cfg.simBase[act === 'base-2023' ? 'r2023' : 'dis'];
-      st.partidos = base.map((p, i) => ({...p, id: 'b' + i + '-' + Date.now()})); st.voto = new Map(st.partidos.map(p => [p.id, 'no'])); refresh();
-    }
+    if (act === 'ceros' || act === 'base'){ cargarBase(b.dataset.base); b.focus(); }
   });
   root.addEventListener('input', ev => {
     const inp = ev.target; if (!inp.id || !inp.id.startsWith('esc-')) return;
     const p = st.partidos.find(q => 'esc-' + q.id === inp.id); if (!p) return;
     p.esc = Math.max(0, Math.min(total, parseInt(inp.value, 10) || 0));
-    drawHemi(); drawTally(); drawVerdict(); drawCoal(); save();
-    const t = totals();
-    $sum.innerHTML = t.asig === total ? `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span>Cuadra</span>` : `<span>Escaños repartidos: <b>${t.asig} de ${total}</b></span><span class="warn">${t.asig < total ? `Faltan ${total - t.asig}` : `Sobran ${t.asig - total}`}</span>`;
+    escanosCambiados();
+  });
+  root.addEventListener('focusout', ev => {   // normalise what was typed (empty, negative or over the total)
+    const inp = ev.target; if (!inp.id || !inp.id.startsWith('esc-')) return;
+    const p = st.partidos.find(q => 'esc-' + q.id === inp.id); if (p && inp.value !== String(seatsOf(p))) inp.value = seatsOf(p);
   });
   const form = root.querySelector('.addform');
   if (form) form.addEventListener('submit', ev => {
@@ -1223,7 +1292,7 @@ function Pactometro(cfg){
     const palette = ['#8d6e63', '#5c7a99', '#7e8f3a', '#8c6f8f', '#9e7a4a', '#5f8a8b'];
     const id = 'n' + Date.now();
     st.partidos.push({id, sig: name, nom: 'Candidatura añadida en el simulador', color: palette[st.partidos.length % palette.length], fam: 'local', votos: null, esc: seats});
-    st.voto.set(id, 'no'); form.reset(); refresh();
+    st.voto.set(id, 'no'); st.mod = true; form.reset(); refresh();
   });
   refresh();
   return root;
@@ -1266,6 +1335,7 @@ function resultsTable(rows, opts = {}){
   </tbody></table></div>`;
 }
 function badge(fuente){
+  if (fuente === 'simulacion') return '<span class="badge compilado" title="Escenario que puedes cambiar; no es un resultado electoral">Simulación</span>';
   return fuente === 'compilada'
     ? '<span class="badge compilado" title="Resultados recopilados de fuentes públicas y verificados (sumas de escaños)">Recopilado</span>'
     : '<span class="badge" title="Ficheros oficiales del Ministerio del Interior o del Congreso">Dato oficial</span>';
@@ -1292,13 +1362,81 @@ function avisoElecciones(conv, sinEncuesta){
 }
 
 /* ================================================================ vista: Congreso */
+/* Encuesta del CIS como punto de partida del simulador (data/cis.json, scripts/cis_proyeccion.py).
+   Art. 69.7 LOREG: durante los cinco días anteriores a la votación no se pueden publicar sondeos. Se oculta del 24 al 28 de noviembre
+   (hora peninsular) y el 29 hasta que cierren todos los colegios (20:00 en Canarias = 21:00 peninsular). */
+const VEDA_SONDEOS = ['2026-11-23T23:00:00Z', '2026-11-29T20:00:00Z'];
+const enVedaSondeos = (t = Date.now()) => t >= Date.parse(VEDA_SONDEOS[0]) && t < Date.parse(VEDA_SONDEOS[1]);
+const VEDA_AVISO = `<div class="veda" role="note"><p><b>Del 24 al 28 de noviembre no se pueden publicar encuestas electorales</b> (art. 69.7 de la Ley Orgánica del Régimen Electoral General). Por eso el simulador no muestra ahora la encuesta del CIS y parte del resultado del 23-J. La encuesta vuelve cuando cierren los colegios electorales el 29 de noviembre.</p></div>`;
+function cisPanel(C){
+  const E = C.estudio, F = C.ficha, P = C.proyeccion.provincias;
+  const dec = x => x === null || x === undefined ? '' : x.toLocaleString('es-ES', {minimumFractionDigits: 1, maximumFractionDigits: 2});
+  const nueva = '<span class="vh"> (se abre en una pestaña nueva)</span>';
+  const enlace = (u, t) => `<a href="${esc(u)}" target="_blank" rel="noopener">${t}${nueva}</a>`;
+  const fichaFilas = [
+    ['Organismo', 'Centro de Investigaciones Sociológicas (CIS), calle Montalbán 8, 28014 Madrid'],
+    ['Estudio', `n.º ${E.numero}, «${E.titulo}» (avance de resultados publicado el ${fecha(E.publicado)})`],
+    ['Ámbito', F.ambito], ['Universo', F.universo], ['Tamaño de la muestra', F.muestra], ['Afijación', F.afijacion],
+    ['Ponderación', F.ponderacion], ['Puntos de muestreo', F.puntos], ['Procedimiento de muestreo', F.procedimiento],
+    ['Modo de entrevista', F.modo], ['Error muestral', F.error], ['Trabajo de campo', F.fechas], ['Pregunta de intención de voto', F.pregunta]];
+  const est = C.partidos.map(p => `<tr><td><span class="sw" style="background:${p.color}"></span><b>${esc(p.sig)}</b></td><td class="n">${dec(p.directo)}</td><td class="n">±${dec(p.margen)}</td><td class="n"><b>${dec(p.est)}</b></td><td class="n">${p.esc}</td></tr>`).join('')
+    + C.resto.map((r, i) => `<tr${i === 0 ? ' class="sep"' : ''}><td>${esc(r.n)}</td><td class="n">${dec(r.directo)}</td><td class="n">±${dec(r.margen)}</td><td class="n">${r.est === null ? '' : dec(r.est)}</td><td class="n"></td></tr>`).join('')
+    + `<tr class="sep"><td>Entrevistas (N)</td><td class="n">${fmtQ(C.n)}</td><td></td><td></td><td class="n"><b>350</b></td></tr>`;
+  const conEsc = C.partidos.filter(p => p.esc > 0);
+  const corto = p => p.k === 'fa' ? 'SUMAR / FA' : niceSig(p.sig);
+  const provs = Object.keys(P).sort((a, b) => P[a].n.localeCompare(P[b].n, 'es'));
+  const provTabla = `<div class="tablewrap"><table class="data"><caption class="vh">Proyección de escaños por provincia de pactómetro.es a partir de la estimación del CIS</caption>
+    <thead><tr><th>Provincia</th><th class="n">Escaños</th>${conEsc.map(p => `<th class="n" title="${esc(p.sig)}">${esc(corto(p))}</th>`).join('')}</tr></thead>
+    <tbody>${provs.map(k => `<tr><td>${esc(P[k].n)}</td><td class="n"><b>${P[k].escanos}</b></td>${conEsc.map(p => P[k].r[p.k] ? `<td class="n">${P[k].r[p.k]}</td>` : '<td class="n z"><span aria-hidden="true">·</span><span class="vh">0</span></td>').join('')}</tr>`).join('')}
+    <tr class="sep"><td><b>Total</b></td><td class="n"><b>350</b></td>${conEsc.map(p => `<td class="n"><b>${p.esc}</b></td>`).join('')}</tr></tbody></table></div>`;
+  return `<section class="sheet pad cis" aria-labelledby="cis-t">
+    <div class="cis-head">
+      <div>
+        <span class="eyebrow">Punto de partida del simulador</span>
+        <h2 class="h3" id="cis-t">Encuesta del CIS: ${esc(E.titulo)}</h2>
+        <p>El simulador arranca con la <b>estimación de voto del Centro de Investigaciones Sociológicas (CIS)</b>: estudio n.º ${E.numero}, publicado el ${fecha(E.publicado)}, con trabajo de campo del 1 al 6 de octubre, ${fmtQ(C.n)} entrevistas telefónicas y un error muestral de ±1,4 %.</p>
+        <p class="small">El CIS estima porcentajes de voto, no escaños: los escaños de partida son una proyección de pactómetro.es a partir de esos porcentajes.</p>
+      </div>
+      <div class="cis-acc">
+        <a class="btn solid" href="${esc(E.url)}" target="_blank" rel="noopener">Ver el estudio en la web del CIS${nueva}<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        ${enlace(E.estimacion_pdf, 'Tabla de estimación de voto (PDF)').replace('<a ', '<a class="small" ')}
+      </div>
+    </div>
+    <details class="more"><summary>Cómo hizo el CIS el estudio</summary><div>
+      <h3>Ficha técnica</h3>
+      <dl class="cis-dl">${fichaFilas.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+      <h3>De las respuestas a la estimación</h3>
+      <p>El <b>voto directo</b> es lo que contestan los entrevistados a la pregunta de intención de voto, en porcentaje sobre el total de entrevistados («sobre censo», en palabras del CIS). La <b>estimación de voto</b> es el porcentaje sobre el voto válido que calcula el CIS: una ${esc(C.metodo_cis.charAt(0).toLowerCase() + C.metodo_cis.slice(1))}</p>
+      <div class="tablewrap"><table class="data"><caption class="vh">Estimación de voto del CIS, estudio ${E.numero}</caption>
+        <thead><tr><th>Candidatura</th><th class="n">Voto directo<br>(% sobre censo)</th><th class="n">Margen de error<br>(IC 95 %)</th><th class="n">Estimación CIS<br>(% voto válido)</th><th class="n">Escaños<br>(pactómetro.es)</th></tr></thead>
+        <tbody>${est}</tbody></table></div>
+      <h3>Notas del CIS</h3>
+      <ul>${C.notas_cis.map(n => `<li>${esc(n)}</li>`).join('')}<li>El margen teórico de error del voto directo es un intervalo de confianza del 95 %.</li></ul>
+      <p>Documentos oficiales: ${enlace(E.url, 'avance de resultados')} · ${enlace(E.estimacion_pdf, 'estimación de voto (PDF)')} · ${enlace(E.frecuencias_pdf, 'frecuencias y ficha técnica (PDF)')} · ${enlace(E.excel, 'documentación completa (Excel)')}.</p>
+      <p class="small muted">Cita: Centro de Investigaciones Sociológicas, Estudio n.º ${E.numero}, «${esc(E.titulo)}». Avance de resultados, Madrid, ${fecha(E.publicado)}.</p>
+    </div></details>
+    <details class="more"><summary>Cómo calcula pactómetro.es los escaños</summary><div>
+      <p>El CIS no estima escaños. Para convertir su estimación nacional en escaños, pactómetro.es aplica un método sencillo y transparente:</p>
+      <ol>
+        <li>Parte de los votos de cada partido en cada provincia el 23 de julio de 2023 (resultados oficiales del Ministerio del Interior).</li>
+        <li>Cada partido sube o baja en todas las provincias en la misma proporción en que lo hace en el conjunto de España según el CIS: si la estimación le da un 10 % más de voto que el que logró en 2023, se le suma un 10 % en cada provincia.</li>
+        <li>SUMAR / Frente Amplio y Podemos, que en 2023 se presentaron juntos en Sumar, siguen el reparto provincial de Sumar. Se Acabó la Fiesta no se presentó al Congreso en 2023: recibe el mismo porcentaje en todas las provincias.</li>
+        <li>«Otros partidos» (7,9 %) y el voto en blanco (0,3 %) se reparten por igual en todas las provincias: cuentan para la barrera del 3 %, pero no obtienen escaños.</li>
+        <li>En cada provincia los porcentajes se ajustan para sumar el 100 % del voto válido y se reparten los escaños del Real Decreto 806/2026 con la barrera del 3 % y la ley D'Hondt (art. 163 LOREG), como se explica en <a href="#29n">Elecciones 29-N</a>.</li>
+      </ol>
+      <p>Es una aproximación orientativa: supone que el voto cambia igual en todo el territorio, algo que no suele ocurrir, sobre todo con los partidos que solo se presentan en algunas provincias. Úsala como punto de partida y cambia los escaños como quieras.</p>
+      <h3>Escaños por provincia</h3>
+      ${provTabla}
+    </div></details>
+  </section>`;
+}
 const LEYENDA_ELECCION = k => k.includes('-') ? (k.endsWith('-04') ? 'abril de ' : 'noviembre de ') + k.slice(0, 4) : k;
 async function viewCongreso(modo, clave){
   const G = await load('generales.json');
   const conv = G.convocatoria;
   const keys = Object.keys(G.congreso).sort();
   const notice = avisoElecciones(conv);
-  let data, partidos, preset, presetNota, editable = false, simKey = null, simBase = null, titulo, fuente = 'oficial', extra = '';
+  let data, partidos, preset, presetNota, editable = false, simKey = null, simBases = null, simEstado = null, titulo, fuente = 'oficial', extra = '', cabecera = '';
   const base23 = G.congreso['2023'].r.map(rowToParty);
   const baseDis = G.disolucion.r.map(rowToParty);
   if (modo === 'disolucion'){
@@ -1308,18 +1446,31 @@ async function viewCongreso(modo, clave){
     extra = `<p class="small muted" style="margin-top:10px">${esc(G.disolucion.nota)}</p>`;
     fuente = 'compilada';
   } else if (modo === 'simulador'){
-    titulo = 'Simulador para el 29-N'; editable = true; simKey = 'pacto.sim.v1';
+    titulo = 'Simulador para el 29-N'; editable = true; simKey = 'pacto.sim.v2'; fuente = 'simulacion';
+    const veda = enVedaSondeos();
+    const C = veda ? null : await load('cis.json').catch(() => null);
+    const from23 = base23.map(p => ({...p, votos: null})), fromDis = baseDis.map(p => ({...p, votos: null}));
+    const deCis = C ? C.partidos.map((p, i) => ({id: 'c' + i, sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, votos: null, esc: p.esc, nota: 'CIS: ' + fmtPct(p.est) + ' del voto'})) : null;
+    simBases = [
+      deCis && {k: 'cis', label: 'Encuesta del CIS', partidos: deCis,
+        origen: 'Escaños estimados por pactómetro.es a partir de la estimación de voto del barómetro del CIS de octubre de 2026 (estudio 3582).'},
+      {k: 'r2023', label: 'Resultado del 23-J', partidos: from23, origen: 'Escaños que obtuvo cada candidatura en las elecciones generales del 23 de julio de 2023.'},
+      {k: 'dis', label: 'Al disolverse las Cortes', partidos: fromDis, origen: 'Composición del Congreso al disolverse las Cortes, con los cambios de la legislatura.'}].filter(Boolean);
     const saved = store.get(simKey);
-    const fromBase = base23.map(p => ({...p, votos: null}));
-    simBase = {r2023: fromBase, dis: baseDis.map(p => ({...p, votos: null}))};
-    if (saved && Array.isArray(saved.partidos) && saved.partidos.length){
-      partidos = saved.partidos.map((p, i) => ({id: 's' + i, sig: String(p.sig), nom: String(p.nom || ''), color: /^#[0-9a-f]{6}$/i.test(p.color) ? p.color : '#8a8f98', fam: p.fam || 'local', votos: null, esc: +p.esc || 0}));
-      preset = {}; partidos.forEach((p, i) => { const v = saved.voto && saved.voto[i]; if (v === 'si' || v === 'abs') preset[p.id] = v; });
-      presetNota = 'Tu último escenario se guarda en este navegador. Edita los escaños, añade candidaturas y marca el voto de cada una.';
+    const ok = saved && Array.isArray(saved.partidos) && saved.partidos.length && !(veda && saved.base === 'cis');
+    const bSaved = ok ? simBases.find(b => b.k === saved.base) : null;
+    const votoGuardado = (lista, n) => { const pr = {}; if (saved && Array.isArray(saved.voto) && saved.voto.length === n) lista.forEach((p, i) => { const v = saved.voto[i]; if (v === 'si' || v === 'abs') pr[p.id] = v; }); return pr; };
+    if (bSaved && !saved.mod){             // untouched starting point: reload it, so updated data reach returning visitors
+      partidos = bSaved.partidos; preset = votoGuardado(partidos, partidos.length); simEstado = {base: bSaved.k, mod: false};
+    } else if (ok){
+      partidos = saved.partidos.map((p, i) => ({id: 's' + i, sig: String(p.sig), nom: String(p.nom || ''), color: /^#[0-9a-f]{6}$/i.test(p.color) ? p.color : '#8a8f98', fam: p.fam || 'local', votos: null, esc: +p.esc || 0, nota: typeof p.nota === 'string' ? p.nota.slice(0, 80) : ''}));
+      preset = votoGuardado(partidos, partidos.length);
+      simEstado = {base: bSaved || saved.base === 'cero' ? saved.base : null, mod: !!saved.mod};
     } else {
-      partidos = fromBase; preset = {};
-      presetNota = 'Parte de los escaños del 23-J. Edita los números, añade candidaturas y marca el voto de cada una; el escenario se guarda en este navegador.';
+      partidos = simBases[0].partidos; preset = {}; simEstado = {base: simBases[0].k, mod: false};
     }
+    presetNota = 'Cambia los escaños con − y + o escribiendo el número, añade candidaturas y marca el voto de cada una. El escenario se guarda solo en este navegador.';
+    cabecera = C ? cisPanel(C) : veda ? VEDA_AVISO : '';
   } else {
     const k = (modo === 'hist' && G.congreso[clave]) ? clave : '2023';
     data = G.congreso[k];
@@ -1352,12 +1503,12 @@ async function viewCongreso(modo, clave){
     </div>`;
   app.innerHTML = `${notice}
     <div class="page-head"><span class="eyebrow">Congreso de los Diputados · 350 escaños</span><h1>${esc(titulo)}</h1>
-    <div class="row">${badge(fuente)}${data ? `<span class="small muted">${data.leg === 'Constituyente' ? 'Legislatura constituyente' : data.leg + ' Legislatura'} · ${fecha(data.fecha)}${data.censo ? ` · censo ${fmt(data.censo)} · participación ${fmtPct(100 * data.votantes / data.censo)}` : ''}</span>` : ''}</div></div>
-    ${tabs}<div class="sheet pad" id="pacto-slot"></div>${extra}
+    <div class="row">${badge(fuente)}${modo === 'simulador' ? '<span class="small muted">Escenario editable para las elecciones generales del 29 de noviembre de 2026</span>' : ''}${data ? `<span class="small muted">${data.leg === 'Constituyente' ? 'Legislatura constituyente' : data.leg + ' Legislatura'} · ${fecha(data.fecha)}${data.censo ? ` · censo ${fmt(data.censo)} · participación ${fmtPct(100 * data.votantes / data.censo)}` : ''}</span>` : ''}</div></div>
+    ${tabs}${cabecera}<div class="sheet pad" id="pacto-slot"></div>${extra}
     <div class="section" id="detalle"></div>`;
   iniciarCuenta();
   app.querySelector('#sel-congreso').addEventListener('change', e => { if (e.target.value) location.hash = 'congreso-' + e.target.value; });
-  app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBase, votosValidos: validos, recuento: rcData, exportar}));
+  app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBases, simEstado, votosValidos: validos, recuento: rcData, exportar}));
   const det = app.querySelector('#detalle');
   if (data){
     det.innerHTML = `<div class="section-head"><h2>Resultados por candidatura</h2><p>${data.fuente === 'oficial' ? 'Totales nacionales oficiales del Ministerio del Interior. Las candidaturas aparecen tal y como se agregan oficialmente (por ejemplo, las coaliciones con nombre propio en cada comunidad).' : esc(data.nota || '')}</p></div>
@@ -2380,6 +2531,7 @@ async function viewFuentes(){
       <li><b>Parlamentos autonómicos:</b> las elecciones autonómicas no las publica el Ministerio del Interior sino cada comunidad. Los escaños de las 201 elecciones autonómicas celebradas entre 1980 y 2026 se han recopilado de fuentes públicas (Wikipedia) y se ha comprobado que cada elección suma exactamente el tamaño de su cámara. Ceuta y Melilla sí son datos oficiales, porque sus asambleas se eligen en las elecciones municipales. Se marcan como «Recopilado».</li>
       <li><b>Juntas Generales vascas y consells de Mallorca, Menorca y Eivissa (2023):</b> resultados recopilados de fuentes públicas. El Consell de Formentera es dato oficial (se elige en las municipales).</li>
       <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
+      <li><b>Simulador del 29-N, encuesta del CIS:</b> estimación de voto del <a href="https://www.cis.es/gl/w/avance-de-resultados-del-estudio-3582-bar%C3%B3metro-de-octubre-2026-" target="_blank" rel="noopener">Barómetro de octubre 2026</a> del Centro de Investigaciones Sociológicas (estudio n.º 3582; trabajo de campo del 1 al 6 de octubre de 2026; 5.025 entrevistas; publicado el 14 de octubre de 2026). El CIS no estima escaños: los escaños de partida son una proyección de pactómetro.es (variación proporcional sobre los resultados provinciales del 23-J, barrera del 3 % y ley D'Hondt con los escaños por provincia del Real Decreto 806/2026). No se muestra durante los cinco días anteriores a la votación ni el 29 de noviembre hasta el cierre de los colegios (art. 69.7 LOREG).</li>
       <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
     </ul>
     <h2>Cómo se calcula</h2>
