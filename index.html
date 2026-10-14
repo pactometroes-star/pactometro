@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-d62oJE+bcN1wtcSsaZ588oVfpMoxHH+x+ybMbwAxSKk='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pactometro.es; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-aEEg+5II5SdYhwTB+2FZKQ1b72v+qy9PLrBAR0lDhCg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pactometro.es; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="author" content="Javier Pereiro Pérez">
@@ -693,6 +693,27 @@ table.e-dh-in td{padding:6px 10px}
 .enc-promo .btn-l:hover{background:transparent;color:#fff}
 .nav a[data-nav="encuesta"]:not([aria-current]){box-shadow:inset 0 0 0 1.5px var(--ink);color:var(--ink);font-weight:600}
 
+/* ---------- aviso de cookies ---------- */
+.ck{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--sheet);color:var(--ink);border-top:2px solid var(--ink);box-shadow:0 -10px 30px -18px rgba(0,0,0,.45);max-height:85vh;overflow-y:auto}
+.ck-in{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 28px;align-items:center;padding-block:16px}
+.ck-h{font:700 16px/1.3 var(--f-sans);letter-spacing:0;margin:0 0 4px}
+.ck-h:focus{outline:none}
+.ck-txt p{font-size:14.5px;color:var(--ink-2);max-width:78ch}
+.ck-txt a{color:var(--ink);font-weight:600}
+.ck-cfg{grid-column:1/-1;border:0;margin:0;padding:0;display:grid;gap:8px}
+.ck-op{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--rule);border-radius:var(--r);font-size:14px;color:var(--ink-2);cursor:pointer}
+.ck-op b{color:var(--ink)}
+.ck-op input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--ink)}
+.ck-op input:disabled{cursor:not-allowed}
+.ck-acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.ck-acts .btn{min-height:44px;padding-inline:20px;font-size:15px;justify-content:center}
+.ck .ck-b{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ck .ck-b:hover{background:var(--ink-2);border-color:var(--ink-2)}
+.ck.cfg .ck-acts{grid-column:1/-1}
+@media (max-width:760px){.ck-in{grid-template-columns:minmax(0,1fr);padding-block:12px}.ck-acts{justify-content:stretch}.ck-acts .btn{flex:1 1 0;padding-inline:8px}.ck.cfg .ck-acts .btn[data-ck="guardar"]{flex-basis:100%}.ck-txt p{font-size:14px}}
+.linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer}
+.linkbtn:hover{text-decoration-thickness:2px}
+
 /* ---------- tooltip ---------- */
 .tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.35;max-width:260px;box-shadow:0 6px 20px -8px rgba(0,0,0,.45)}
 .tip strong{display:block;font-size:15px;font-weight:700}
@@ -702,6 +723,25 @@ table.e-dh-in td{padding:6px 10px}
 </head>
 <body>
 <a class="skip" href="#app" id="saltar">Saltar al contenido</a>
+<section class="ck" id="ck" aria-labelledby="ck-t" hidden>
+  <div class="wrap ck-in">
+    <div class="ck-txt">
+      <h2 class="ck-h" id="ck-t" tabindex="-1">Cookies y datos en tu navegador</h2>
+      <p>pactómetro.es <b>no usa cookies</b>, ni analítica, ni publicidad. Guarda en tu navegador lo imprescindible para funcionar y, si lo aceptas, tus preferencias: el escenario del simulador y el aviso de la encuesta cerrado. Nada sale de tu dispositivo. <a href="#cookies">Política de cookies</a></p>
+    </div>
+    <fieldset class="ck-cfg" id="ck-cfg" hidden>
+      <legend class="vh">Elige qué puede guardar la web</legend>
+      <label class="ck-op"><input type="checkbox" checked disabled><span><b>Necesarios</b> · siempre activos. Recuerdan tu elección en este aviso y, si respondes la encuesta, que ya lo has hecho.</span></label>
+      <label class="ck-op"><input type="checkbox" id="ck-pref"><span><b>Preferencias</b> · opcionales. Guardan tu escenario del simulador y que has cerrado el aviso de la encuesta.</span></label>
+    </fieldset>
+    <div class="ck-acts">
+      <button class="btn ck-b" type="button" data-ck="si">Aceptar</button>
+      <button class="btn ck-b" type="button" data-ck="no">Rechazar</button>
+      <button class="btn ghost" type="button" data-ck="cfg" aria-expanded="false" aria-controls="ck-cfg">Configurar</button>
+      <button class="btn ck-b" type="button" data-ck="guardar" hidden>Guardar mi elección</button>
+    </div>
+  </div>
+</section>
 <header class="mast">
   <div class="wrap">
     <a class="brand" href="#inicio" aria-label="pactómetro.es, ir a la portada"><img class="logo-l" src="img/logo.png" alt="" width="188" height="30"><img class="logo-d" src="img/logo-oscuro.png" alt="" width="188" height="30"></a>
@@ -734,7 +774,7 @@ table.e-dh-in td{padding:6px 10px}
   <div class="wrap">
     <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a></span></p>
     <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y metodología</a></p>
-    <nav class="foot-legal" aria-label="Enlaces del pie de página"><a href="#encuesta">Encuesta del 29-N</a><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a></nav>
+    <nav class="foot-legal" aria-label="Enlaces del pie de página"><a href="#encuesta">Encuesta del 29-N</a><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><button class="linkbtn" type="button" data-ck-abrir>Configurar cookies</button></nav>
   </div>
 </footer>
 
@@ -793,10 +833,30 @@ function moveTip(ev){
   tip.style.left = Math.max(8, x) + 'px'; tip.style.top = Math.max(8, y) + 'px';
 }
 function hideTip(){ tip.hidden = true; }
+// Consent (cookie notice). Necessary items (the consent itself, the «poll answered» mark) are always stored;
+// preferences (simulator scenario, poll notice closed) only after the visitor accepts them. Asked again after 24 months
+// or when CONSENT_V changes.
+const CONSENT_KEY = 'pacto.consentimiento', CONSENT_V = 1, CONSENT_MESES = 24;
+const esPreferencia = k => k.startsWith('pacto.sim') || k.startsWith('pacto.promo');
+const memoria = {};   // preferences kept only while the page is open
+function leerConsentimiento(){
+  let c = null; try { c = JSON.parse(localStorage.getItem(CONSENT_KEY)); } catch(e){}
+  if (!c || c.v !== CONSENT_V || !c.fecha || isNaN(Date.parse(c.fecha))) return null;
+  const caduca = new Date(c.fecha); caduca.setMonth(caduca.getMonth() + CONSENT_MESES);
+  return Date.now() < caduca.getTime() ? c : null;
+}
+const prefsAceptadas = () => { const c = leerConsentimiento(); return !!(c && c.pref); };
 const store = {
-  get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
-  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  get(k){ if (esPreferencia(k) && !prefsAceptadas()) return k in memoria ? memoria[k] : null; try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
+  set(k, v){ if (esPreferencia(k) && !prefsAceptadas()){ memoria[k] = v; return; } try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
 };
+function guardarConsentimiento(pref){
+  try {
+    localStorage.setItem(CONSENT_KEY, JSON.stringify({v: CONSENT_V, pref: !!pref, fecha: new Date().toISOString()}));
+    if (pref) Object.keys(memoria).forEach(k => localStorage.setItem(k, JSON.stringify(memoria[k])));   // keep what was done before accepting
+    else Object.keys(localStorage).filter(esPreferencia).forEach(k => localStorage.removeItem(k));
+  } catch(e){}
+}
 
 /* ================================================================ datos */
 const cache = {};
@@ -1499,7 +1559,7 @@ async function viewCongreso(modo, clave){
     } else {
       partidos = simBases[0].partidos; preset = {}; simEstado = {base: simBases[0].k, mod: false};
     }
-    presetNota = 'Cambia los escaños con − y + o escribiendo el número, añade candidaturas y marca el voto de cada una. El escenario se guarda solo en este navegador.';
+    presetNota = 'Cambia los escaños con − y + o escribiendo el número, añade candidaturas y marca el voto de cada una. ' + (prefsAceptadas() ? 'El escenario se guarda solo en este navegador.' : 'Tu escenario no se guardará al cerrar la página porque no has aceptado guardar preferencias (puedes cambiarlo en «Configurar cookies», al pie).');
     cabecera = C ? cisPanel(C) : veda ? VEDA_AVISO : '';
   } else {
     const k = (modo === 'hist' && G.congreso[clave]) ? clave : '2023';
@@ -2566,9 +2626,10 @@ const LEGAL_FECHA = '14 de octubre de 2026';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
 const DATOS_LOCALES = [
-  ['pacto.sim.v2', 'El escenario del simulador del 29-N: los escaños y el voto que pones a cada candidatura.', 'Cuando usas el simulador.', 'Hasta que lo borres.'],
-  ['pacto.encuesta29n.v1', 'La fecha en que respondiste la encuesta, para admitir una respuesta por navegador y no volver a pedírtela. No guarda tu respuesta.', 'Cuando envías la encuesta.', 'Hasta que lo borres.'],
-  ['pacto.promo.oculta', 'El día en que cerraste el aviso de la encuesta, para no volver a enseñártelo ese día.', 'Cuando cierras el aviso.', 'Solo tiene efecto ese día; se queda guardado hasta que lo borres.'],
+  ['pacto.consentimiento', 'Necesario', 'Tu elección en el aviso de cookies y su fecha, para no preguntarte en cada visita.', 'Cuando eliges en el aviso.', '24 meses; después se te vuelve a preguntar.'],
+  ['pacto.encuesta29n.v1', 'Necesario', 'La fecha en que respondiste la encuesta, para admitir una respuesta por navegador y no volver a pedírtela. No guarda tu respuesta.', 'Cuando envías la encuesta.', 'Hasta que lo borres.'],
+  ['pacto.sim.v2', 'Preferencias', 'El escenario del simulador del 29-N: los escaños y el voto que pones a cada candidatura.', 'Cuando usas el simulador, si has aceptado las preferencias.', 'Hasta que lo borres o rechaces las preferencias.'],
+  ['pacto.promo.oculta', 'Preferencias', 'El día en que cerraste el aviso de la encuesta, para no volver a enseñártelo ese día.', 'Cuando cierras el aviso, si has aceptado las preferencias.', 'Solo tiene efecto ese día; se borra si rechazas las preferencias.'],
 ];
 const MAIL = '<a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a>';
 const EXT = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}<span class="vh"> (se abre en una pestaña nueva)</span></a>`;
@@ -2636,15 +2697,19 @@ function legalPrivacidad(){
 function legalCookies(){
   return `<p class="lede"><b>pactómetro.es no usa cookies</b>: ni propias ni de terceros, ni de analítica, ni de publicidad, ni de redes sociales.</p>
     <h2>Lo que sí guarda tu navegador</h2>
-    <p>Para que algunas funciones recuerden lo que has hecho, la web usa el almacenamiento local de tu navegador (localStorage). Solo se guarda algo cuando haces la acción correspondiente, se queda en tu dispositivo y la web no lo envía a ningún sitio.</p>
+    <p>Para que algunas funciones recuerden lo que has hecho, la web usa el almacenamiento local de tu navegador (localStorage). Solo se guarda algo cuando haces la acción correspondiente, se queda en tu dispositivo y la web no lo envía a ningún sitio. Los datos <b>necesarios</b> se guardan siempre; los de <b>preferencias</b>, solo si los aceptas en el aviso de cookies.</p>
     <div class="tablewrap"><table class="data"><caption class="vh">Datos que pactómetro.es guarda en tu navegador</caption>
-      <thead><tr><th>Dato</th><th>Para qué sirve</th><th>Cuándo se guarda</th><th>Cuánto dura</th></tr></thead>
-      <tbody>${DATOS_LOCALES.map(([k, a, b, c]) => `<tr><td data-l="Dato"><code>${k}</code></td><td data-l="Para qué sirve">${a}</td><td data-l="Cuándo se guarda">${b}</td><td data-l="Cuánto dura">${c}</td></tr>`).join('')}</tbody></table></div>
-    <h2>Por qué no hay aviso de cookies</h2>
-    <p>El artículo 22.2 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), obliga a pedir consentimiento para guardar o leer datos en el dispositivo de quien visita una web, salvo cuando sea estrictamente necesario para prestar un servicio que esa persona ha pedido expresamente. Los tres datos de la tabla son de ese tipo: los crea una acción tuya, solo sirven para esa función y no se usan para seguirte ni con fines publicitarios. Por eso no hace falta pedir consentimiento ni mostrar un aviso.</p>
-    <p>Si algún día la web incorpora publicidad o analítica, esta política se actualizará y, antes de instalar nada, se te pedirá permiso con la opción de aceptar o rechazar.</p>
+      <thead><tr><th>Dato</th><th>Tipo</th><th>Para qué sirve</th><th>Cuándo se guarda</th><th>Cuánto dura</th></tr></thead>
+      <tbody>${DATOS_LOCALES.map(([k, t, a, b, c]) => `<tr><td data-l="Dato"><code>${k}</code></td><td data-l="Tipo">${t}</td><td data-l="Para qué sirve">${a}</td><td data-l="Cuándo se guarda">${b}</td><td data-l="Cuánto dura">${c}</td></tr>`).join('')}</tbody></table></div>
+    <h2>El aviso de cookies</h2>
+    <p>La primera vez que entras, la web te pregunta si puede guardar tus preferencias. Puedes aceptarlas, rechazarlas o configurarlas, con la misma facilidad, y cambiar de opinión cuando quieras desde «Configurar cookies», al pie de todas las páginas. Rechazar no te impide usar nada: solo hace que el simulador no recuerde tu escenario cuando cierras la página. Tu elección se vuelve a pedir pasados 24 meses.</p>
+    <p>El artículo 22.2 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), exige consentimiento para guardar o leer datos en el dispositivo de quien visita una web, salvo cuando sea estrictamente necesario para un servicio que ha pedido expresamente. Los datos necesarios de la tabla son de ese tipo; para los de preferencias, la web pide tu permiso aunque solo sirvan para funciones que tú usas y nunca para seguirte ni con fines publicitarios.</p>
+    <p>Si algún día la web incorpora publicidad o analítica, esta política se actualizará y el aviso te pedirá permiso para cada uso, con la opción de rechazarlo.</p>
+    <h2>Tu elección</h2>
+    <p id="ck-estado" role="status">${textoConsentimiento()}</p>
+    <div class="row"><button class="btn" type="button" data-ck-abrir>Cambiar mi elección</button></div>
     <h2>Cómo borrarlos</h2>
-    <p>Puedes borrarlos con este botón o desde la configuración de tu navegador (datos de los sitios web). Se borrarán el escenario del simulador y la marca de encuesta respondida.</p>
+    <p>Puedes borrarlos con este botón o desde la configuración de tu navegador (datos de los sitios web). Se borrarán el escenario del simulador, la marca de encuesta respondida y tu elección en el aviso de cookies, que se te volverá a preguntar.</p>
     <div class="row"><button class="btn" type="button" id="borrar-local">Borrar los datos de pactómetro.es de este navegador</button></div>
     <p class="small" id="borrar-estado" role="status"></p>`;
 }
@@ -2667,6 +2732,8 @@ function viewLegal(pag){
     try { Object.keys(localStorage).filter(k => k.startsWith('pacto.')).forEach(k => { localStorage.removeItem(k); n++; }); } catch(e){}
     app.querySelector('#borrar-estado').textContent = n === 1 ? 'Hecho: se ha borrado el dato de pactómetro.es que había en este navegador.' : n ? `Hecho: se han borrado los ${n} datos de pactómetro.es que había en este navegador.` : 'Este navegador no tenía ningún dato de pactómetro.es guardado.';
     actualizarPromo('cookies');
+    const est = app.querySelector('#ck-estado'); if (est) est.textContent = textoConsentimiento();
+    abrirAvisoCookies(false);
   });
 }
 
@@ -3136,6 +3203,46 @@ async function route(){
   }
   primeraVista = false;
 }
+// Aviso de cookies: Aceptar y Rechazar en la primera capa, con el mismo peso; Configurar abre las dos categorías.
+const $ck = document.getElementById('ck');
+let ckVolver = null;
+function ajustarHuecoCk(){ document.body.style.paddingBottom = $ck.hidden ? '' : $ck.offsetHeight + 'px'; }
+function abrirAvisoCookies(configurar, desde){
+  ckVolver = desde || null;
+  const c = leerConsentimiento();
+  $ck.querySelector('#ck-pref').checked = !!(c && c.pref);
+  $ck.classList.toggle('cfg', !!configurar);
+  $ck.querySelector('#ck-cfg').hidden = !configurar;
+  $ck.querySelector('[data-ck="guardar"]').hidden = !configurar;
+  $ck.querySelector('[data-ck="cfg"]').hidden = !!configurar;
+  $ck.querySelector('[data-ck="cfg"]').setAttribute('aria-expanded', String(!!configurar));
+  $ck.hidden = false; ajustarHuecoCk();
+  if (desde) $ck.querySelector(configurar ? '#ck-pref' : '#ck-t').focus();
+}
+function cerrarAvisoCookies(){
+  const dentro = $ck.contains(document.activeElement);
+  $ck.hidden = true; ajustarHuecoCk();
+  if (ckVolver && ckVolver.isConnected) ckVolver.focus(); else if (dentro) app.focus({preventScroll: true});
+  ckVolver = null;
+  const est = document.getElementById('ck-estado'); if (est) est.textContent = textoConsentimiento();
+}
+function textoConsentimiento(){
+  const c = leerConsentimiento();
+  if (!c) return 'Todavía no has elegido: solo se guardan los datos necesarios.';
+  const f = new Date(c.fecha).toLocaleDateString('es-ES', {day: 'numeric', month: 'long', year: 'numeric'});
+  return c.pref ? `Aceptaste guardar tus preferencias el ${f}.` : `Rechazaste guardar tus preferencias el ${f}: solo se guardan los datos necesarios.`;
+}
+$ck.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-ck]'); if (!b) return;
+  const a = b.dataset.ck;
+  if (a === 'si' || a === 'no'){ guardarConsentimiento(a === 'si'); cerrarAvisoCookies(); }
+  else if (a === 'guardar'){ guardarConsentimiento($ck.querySelector('#ck-pref').checked); cerrarAvisoCookies(); }
+  else if (a === 'cfg'){ abrirAvisoCookies(true, ckVolver); $ck.querySelector('#ck-pref').focus(); }
+});
+document.addEventListener('click', ev => { const b = ev.target.closest('[data-ck-abrir]'); if (b) abrirAvisoCookies(true, b); });
+if (window.ResizeObserver) new ResizeObserver(ajustarHuecoCk).observe($ck);
+if (!leerConsentimiento()) abrirAvisoCookies(false);
+
 window.addEventListener('hashchange', route);
 Promise.all([load('resumen.json').then(R => { FAM = R.familias; }).catch(() => {}), sincronizarReloj()]).finally(route);
 </script>
