@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-d62oJE+bcN1wtcSsaZ588oVfpMoxHH+x+ybMbwAxSKk='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pactometro.es; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="author" content="Javier Pereiro Pérez">
 <meta name="copyright" content="© 2026 Javier Pereiro Pérez">
@@ -339,6 +341,30 @@ details.more > div{padding:0 14px 14px}
 .prose h3{color:var(--ink);margin-top:6px}
 .prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
 .prose code{font-size:13px;background:var(--wash);padding:1px 5px;border-radius:3px}
+.prose .lede{font-size:17px;color:var(--ink)}
+.enc-rgpd{border:1px solid var(--rule);border-radius:var(--r);background:var(--paper);padding:14px 16px;display:grid;gap:10px;font-size:13.5px;color:var(--ink-2)}
+.enc-rgpd-t{font:700 14.5px/1.3 var(--f-sans);letter-spacing:0;color:var(--ink)}
+.enc-rgpd dl{display:grid;gap:6px;margin:0}
+.enc-rgpd dl > div{display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr);gap:2px 12px}
+@media (max-width:520px){.enc-rgpd dl > div{grid-template-columns:minmax(0,1fr)}}
+.enc-rgpd dt{font-weight:600;color:var(--ink)}
+.enc-rgpd dd{margin:0}
+.enc-rgpd p{margin:0}
+.enc-ok{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--ink);border-radius:var(--r);background:var(--sheet);color:var(--ink);font-size:14.5px;cursor:pointer}
+.enc-ok input{width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:var(--ink)}
+.legal-dl{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:8px 18px;margin:0}
+.legal-dl dt{font-weight:600;color:var(--ink)}
+.legal-dl dd{margin:0}
+@media (max-width:560px){.legal-dl{grid-template-columns:minmax(0,1fr);gap:2px}.legal-dl dd{margin-bottom:10px}}
+.prose.legal .tablewrap{max-width:100%}
+.prose.legal table.data td{vertical-align:top}
+@media (max-width:600px){.prose.legal table.data thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .prose.legal table.data tr{display:block;padding:10px 12px;border-bottom:1px solid var(--rule)}
+  .prose.legal table.data tr:last-child{border-bottom:0}
+  .prose.legal table.data td{display:grid;grid-template-columns:minmax(0,96px) minmax(0,1fr);gap:10px;padding:4px 0;border:0}
+  .prose.legal table.data td::before{content:attr(data-l);font:600 12px/1.4 var(--f-sans);color:var(--muted)}}
+.foot-legal{display:flex;flex-wrap:wrap;gap:6px 18px}
+.tab[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .copy{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}
 .copy output{font-weight:600;color:var(--ink);user-select:all;overflow-wrap:anywhere}
 
@@ -505,6 +531,8 @@ table.cmp-gen td{text-align:right}
 .hchip[aria-pressed="true"] .n{color:inherit}
 .hchip[aria-pressed="true"] .dot{box-shadow:0 0 0 2px var(--paper)}
 .hchip[aria-pressed="true"] svg{display:block}
+.h-demo-src{font-size:13px;line-height:1.45;color:var(--ink-2);margin:0;max-width:62ch}
+.h-demo-src a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .h-demo-foot{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:15px}
 .h-demo-foot a{font-weight:600}
 .h-band{background:var(--band);color:#fff}
@@ -705,7 +733,8 @@ table.e-dh-in td{padding:6px 10px}
 <footer class="foot">
   <div class="wrap">
     <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a></span></p>
-    <p><a href="#encuesta">Encuesta del 29-N</a> · Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y aviso legal</a></p>
+    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y metodología</a></p>
+    <nav class="foot-legal" aria-label="Enlaces del pie de página"><a href="#encuesta">Encuesta del 29-N</a><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a></nav>
   </div>
 </footer>
 
@@ -721,6 +750,7 @@ const fmtPct = x => (x === null || x === undefined || !isFinite(x)) ? '—' : x.
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 function fecha(iso){ if(!iso) return ''; const [y,m,d] = iso.split('-').map(Number); return d ? `${d} de ${MESES[m-1]} de ${y}` : String(y); }
 function fechaCorta(iso){ const [y,m,d] = iso.split('-').map(Number); return `${d}-${m}-${y}`; }
+const own = (o, k) => o && Object.prototype.hasOwnProperty.call(o, k) ? o[k] : undefined;   // lookups with ids taken from the URL
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const ACR = new Set(['PSOE','PP','IU','PSC','PSUC','ERC','CUP','BNG','PNV','EAJ','UPN','PAR','CHA','PRC','CDS','UCD','AP','PCE','EUPV','ICV','EUIA','PSPV','PSIB','PSN','PSE','EE','EA','HB','CC','NC','ASG','AHI','UPL','PDP','PL','UL','PDPC','JXCAT','PCPV','PCA','PCG','PSA','PA','UV','UPYD','CIU','IC','EUIB','PSM','UM','GBAI','EH','AV','PACMA','SALF','IULV','CA','PSDEG','PSG','EG','CG','CDN','IUN','NEB','RM','LV','IX','IAS','BA','CE','ICAN','AIC','ATI','AM','PSV','CM','CP','TE','XAV','SY','DO','CCN','PNC','NCA','FAC','UPCA','URAS','PAS','UNA','FIEF','AIPF','COP','EVIB','PCN','TC','CEX','SIEX','INME','EHAK','PCTV','ANV','MDYC','CPM','SML','UPV','EB','DL','CDC','JXSI','PDECAT','ECP','MM','VQ','AA','UXE']);
@@ -1747,7 +1777,7 @@ async function viewAutonomias(){
 }
 async function viewAutonomia(id, fechaSel){
   const A = await load('autonomicas.json');
-  const a = A[id]; if (!a) return notFound();
+  const a = own(A, id); if (!a) return notFound();
   const els = a.elecciones;
   const e = els.find(x => x.fecha === fechaSel) || els[els.length - 1];
   const ultima = e === els[els.length - 1];
@@ -1803,7 +1833,7 @@ async function viewLocales(){
 }
 async function viewLocal(tipo, id, year){
   const L = await load('locales.json');
-  const T = TIPOS[tipo]; const x = L[T.k][id]; if (!x) return notFound();
+  const T = TIPOS[tipo]; const x = own(L[T.k], id); if (!x) return notFound();
   const ys = Object.keys(x.e).sort();
   const y = (year && x.e[year]) ? year : ys[ys.length - 1];
   const e = x.e[y];
@@ -1960,14 +1990,14 @@ async function cmpOpciones(t, id){
 async function cmpDatos(s){
   const M = await load('municipios.json');
   if (s.t.startsWith('congreso')){
-    const G = await load('generales.json'); const e = G.congreso[s.y]; if (!e) return null;
+    const G = await load('generales.json'); const e = own(G.congreso, s.y); if (!e) return null;
     const base = {eleccion: 'Generales ' + LEYENDA_ELECCION(s.y), fecha: e.fecha, fuente: e.fuente || 'oficial', href: '#congreso-' + s.y};
     if (s.t === 'congreso') return {...base, titulo: 'Congreso de los Diputados', lugar: 'España', total: e.escanos || 350, conMayoria: true, rows: e.r, rc: recuentoDe(e)};
     if (!e.provincias) return null;
     const provs = s.t === 'congreso-prov' ? [s.id] : Object.keys(e.provincias).filter(p => M.prov_ccaa[p] === s.id);
     const map = new Map(); let total = 0;
     for (const pk of provs){
-      const pv = e.provincias[pk]; if (!pv) continue; total += pv.escanos;
+      const pv = own(e.provincias, pk); if (!pv) continue; total += pv.escanos;
       for (const r of pv.r){ const k = r[0]; const cur = map.get(k); if (cur){ cur[4] = (cur[4] || 0) + (r[4] || 0); cur[5] += r[5] || 0; } else map.set(k, [r[0], r[1], r[2], r[3], r[4] || 0, r[5] || 0]); }
     }
     if (!map.size) return null;
@@ -1976,18 +2006,19 @@ async function cmpDatos(s){
       nota: 'Diputados elegidos en ' + (s.t === 'congreso-prov' ? 'la provincia' : 'las provincias de la comunidad') + '; votos de las candidaturas que figuran en los datos provinciales.'};
   }
   if (s.t === 'auto'){
-    const A = await load('autonomicas.json'); const a = A[s.id]; if (!a) return null;
+    const A = await load('autonomicas.json'); const a = own(A, s.id); if (!a) return null;
     const e = a.elecciones.find(x => x.fecha === s.y); if (!e) return null;
     return {titulo: a.camara, lugar: a.n, eleccion: 'Autonómicas ' + fecha(e.fecha), fecha: e.fecha, total: e.escanos, conMayoria: true, rows: e.r, rc: recuentoDe(e), fuente: e.fuente, href: `#auto-${s.id}.${e.fecha}`};
   }
   if (TIPOS[s.t]){
-    const L = await load('locales.json'); const x = L[TIPOS[s.t].k][s.id]; if (!x) return null;
-    const e = x.e[s.y]; if (!e) return null;
+    const L = await load('locales.json'); const x = own(L[TIPOS[s.t].k], s.id); if (!x) return null;
+    const e = own(x.e, s.y); if (!e) return null;
     return {titulo: nombreLocal(s.t, x), lugar: x.n, eleccion: (s.t === 'dip' ? 'Municipales ' : 'Elecciones ') + fecha(e.fecha), fecha: e.fecha, total: e.escanos, conMayoria: true, rows: e.r, rc: recuentoDe(e), fuente: e.fuente, href: `#${s.t}-${s.id}.${s.y}`};
   }
   if (s.t === 'mun'){
-    const P = await load('mun/' + s.id.slice(0, 2) + '.json'); const m = P.m[s.id]; if (!m) return null;
-    const rec = m.e[s.y]; if (!rec) return null;
+    if (!/^\d{5}$/.test(s.id)) return null;
+    const P = await load('mun/' + s.id.slice(0, 2) + '.json'); const m = own(P.m, s.id); if (!m) return null;
+    const rec = own(m.e, s.y); if (!rec) return null;
     const rows = rec[6].map(([ci, v, sx]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, sx]; }).sort((a, b) => b[5] - a[5] || b[4] - a[4]);
     return {titulo: 'Ayuntamiento de ' + m.n, lugar: m.n + ' (' + M.provincias[s.id.slice(0, 2)] + ')', eleccion: 'Municipales ' + s.y, fecha: null, total: Math.max(rec[1], 1), conMayoria: rec[0] !== 'C', rows, rc: recuentoMun(rec), fuente: 'oficial', href: `#mun-${s.id}.${s.y}`};
   }
@@ -2422,9 +2453,9 @@ async function viewEncuesta(prueba){
     <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
   const como = `<aside class="enc-how"><h2 class="h3">Cómo funciona</h2><dl>
       <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
-      <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, tu provincia y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP.</dd></div>
+      <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, tu provincia y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP. Más en la <a href="#privacidad">política de privacidad</a>.</dd></div>
       <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
-      <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta.</dd></div>
+      <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta (<a href="#cookies">política de cookies</a>).</dd></div>
       <div><dt>Abierta, no representativa</dt><dd>Responde quien quiere, así que no es una muestra representativa ni una estimación de voto.</dd></div>
     </dl></aside>`;
   const msg = (eyebrow, titulo, texto, boton = true) => `<div class="sheet pad enc-msg"><span class="eyebrow">${eyebrow}</span><h2>${titulo}</h2><p>${texto}</p>${boton ? '<a class="btn" href="#congreso-simulador">Mientras tanto, prueba el simulador del 29-N</a>' : ''}</div>`;
@@ -2450,6 +2481,18 @@ async function viewEncuesta(prueba){
       <fieldset class="enc-q"><legend><span class="enc-n">3</span><span>¿A quién votaste en las generales del 23 de julio de 2023?<span class="opt">Opcional</span></span></legend>
         <select class="select" id="enc-rec" aria-label="¿A quién votaste en las generales del 23 de julio de 2023? (opcional)"><option value="">Prefiero no decirlo</option>${ENC.recuerdo.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select></fieldset>
       <div class="hp" aria-hidden="true"><label for="enc-web">No rellenes este campo</label><input type="text" id="enc-web" name="web" tabindex="-1" autocomplete="off"></div>
+      <section class="enc-rgpd" aria-labelledby="enc-rgpd-t">
+        <h2 class="enc-rgpd-t" id="enc-rgpd-t">Antes de enviar: protección de datos</h2>
+        <dl>
+          <div><dt>Responsable</dt><dd>Javier Pereiro Pérez, titular de pactómetro.es (pactometroes@gmail.com).</dd></div>
+          <div><dt>Qué se guarda</dt><dd>Tus respuestas, tu provincia y la hora redondeada. Sin nombre, correo, dirección IP ni cookies: no se puede saber qué respuesta es la tuya.</dd></div>
+          <div><dt>Para qué</dt><dd>Recuentos estadísticos de uso interno. Las respuestas individuales no se publican.</dd></div>
+          <div><dt>Base jurídica</dt><dd>Tu consentimiento explícito, porque la intención de voto es una opinión política (art. 9 del RGPD).</dd></div>
+          <div><dt>Dónde</dt><dd>En una hoja de cálculo privada de Google, hasta el 31 de mayo de 2027 como máximo.</dd></div>
+        </dl>
+        <p>Más detalles y tus derechos en la <a href="#privacidad">política de privacidad</a>.</p>
+        <label class="enc-ok"><input type="checkbox" id="enc-acepto" required aria-required="true"><span>Tengo 18 años o más y acepto enviar mi respuesta anónima, que incluye mi opinión política, para la encuesta de pactómetro.es.</span></label>
+      </section>
       <div class="enc-foot"><button class="btn solid" type="submit" id="enc-enviar" disabled>${probando ? 'Enviar respuesta de prueba' : 'Enviar mi respuesta'}</button>
         <p class="small muted" id="enc-estado">Elige una respuesta en la pregunta 2 para poder enviar.</p></div>
     </form>`;
@@ -2457,15 +2500,15 @@ async function viewEncuesta(prueba){
   app.innerHTML = `${cabecera}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
   const form = app.querySelector('#enc-form');
   if (!form) return;
-  const $prov = form.querySelector('#enc-prov'), $rec = form.querySelector('#enc-rec'), $btn = form.querySelector('#enc-enviar'), $est = form.querySelector('#enc-estado');
+  const $prov = form.querySelector('#enc-prov'), $rec = form.querySelector('#enc-rec'), $btn = form.querySelector('#enc-enviar'), $est = form.querySelector('#enc-estado'), $ok = form.querySelector('#enc-acepto');
   const etiquetaBoton = $btn.textContent;
   const marcar = () => {
     form.querySelectorAll('.enc-op').forEach(l => l.classList.toggle('sel', l.querySelector('input').checked));
-    const conVoto = !!form.querySelector('input[name="intencion"]:checked'), conProv = !!$prov.value, ok = conVoto && conProv;
+    const conVoto = !!form.querySelector('input[name="intencion"]:checked'), conProv = !!$prov.value, conOk = $ok.checked, ok = conVoto && conProv && conOk;
     $btn.disabled = !ok;
+    const falta = [!conProv && 'elige tu provincia (pregunta 1)', !conVoto && 'elige una respuesta en la pregunta 2', !conOk && 'marca la casilla de protección de datos'].filter(Boolean);
     $est.textContent = ok ? 'Respuesta anónima. Puedes cambiarla antes de enviar.'
-      : !conProv && !conVoto ? 'Elige tu provincia (pregunta 1) y una respuesta en la pregunta 2 para poder enviar.'
-      : !conProv ? 'Elige tu provincia en la pregunta 1 para poder enviar.' : 'Elige una respuesta en la pregunta 2 para poder enviar.';
+      : 'Para poder enviar, ' + (falta.length === 1 ? falta[0] : falta.slice(0, -1).join(', ') + ' y ' + falta[falta.length - 1]) + '.';
   };
   form.addEventListener('change', ev => {
     if (ev.target === $prov){
@@ -2480,11 +2523,12 @@ async function viewEncuesta(prueba){
   });
   form.addEventListener('submit', async ev => {
     ev.preventDefault();
-    const sel = form.querySelector('input[name="intencion"]:checked'); if (!sel || !$prov.value){ marcar(); ($prov.value ? form.querySelector('input[name="intencion"]') : $prov).focus(); return; }
+    const sel = form.querySelector('input[name="intencion"]:checked');
+    if (!sel || !$prov.value || !$ok.checked){ marcar(); (!$prov.value ? $prov : !sel ? form.querySelector('input[name="intencion"]') : $ok).focus(); return; }
     const main = app.querySelector('#enc-main');
     if (modo === 'real' && !probando && encEstado() !== 'abierta'){ viewEncuesta(false); return; }   // cerró mientras rellenaba
     const op = ENC.partidos.concat(ENC.otras).find(o => o.k === sel.value);
-    const datos = {intencion: op.n, recuerdo: $rec.value, provincia: $prov.value ? M.provincias[$prov.value] : '', web: form.querySelector('#enc-web').value, v: '1'};
+    const datos = {intencion: op.n, recuerdo: $rec.value, provincia: $prov.value ? M.provincias[$prov.value] : '', consentimiento: '1', web: form.querySelector('#enc-web').value, v: '2'};
     if (probando) datos.prueba = '1';
     if (modo === 'previa'){
       main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Vista previa · no se ha guardado</span><h2>Así verá la confirmación quien responda</h2>
@@ -2517,10 +2561,119 @@ async function viewEncuesta(prueba){
   marcar();
 }
 
-/* ================================================================ vista: fuentes y aviso legal */
+/* ================================================================ vista: aviso legal, privacidad y cookies */
+const LEGAL_FECHA = '14 de octubre de 2026';
+const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
+// What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
+const DATOS_LOCALES = [
+  ['pacto.sim.v2', 'El escenario del simulador del 29-N: los escaños y el voto que pones a cada candidatura.', 'Cuando usas el simulador.', 'Hasta que lo borres.'],
+  ['pacto.encuesta29n.v1', 'La fecha en que respondiste la encuesta, para admitir una respuesta por navegador y no volver a pedírtela. No guarda tu respuesta.', 'Cuando envías la encuesta.', 'Hasta que lo borres.'],
+  ['pacto.promo.oculta', 'El día en que cerraste el aviso de la encuesta, para no volver a enseñártelo ese día.', 'Cuando cierras el aviso.', 'Solo tiene efecto ese día; se queda guardado hasta que lo borres.'],
+];
+const MAIL = '<a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a>';
+const EXT = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}<span class="vh"> (se abre en una pestaña nueva)</span></a>`;
+function legalAviso(){
+  return `<h2>Titular del sitio web</h2>
+    <dl class="legal-dl">
+      <dt>Titular</dt><dd>Javier Pereiro Pérez</dd>
+      <dt>Sitio web</dt><dd>pactómetro.es (https://pactometro.es)</dd>
+      <dt>Contacto</dt><dd class="copy"><output id="mail">pactometroes@gmail.com</output> <button class="btn ghost" type="button" id="copy-mail">Copiar</button></dd>
+      <dt>Naturaleza</dt><dd>Proyecto personal, informativo y sin ánimo de lucro. La web no vende productos ni servicios, no tiene publicidad y su acceso es gratuito.</dd>
+    </dl>
+    <p>pactómetro.es no está vinculado a ninguna administración pública, partido político ni medio de comunicación.</p>
+    <h2>Condiciones de uso</h2>
+    <p>El acceso a la web es libre, gratuito y sin registro. Al usarla te comprometes a hacerlo de forma lícita y, en particular, a no:</p>
+    <ul>
+      <li>dañar, sobrecargar o impedir el funcionamiento de la web, ni intentar acceder a sus partes no públicas;</li>
+      <li>enviar a la encuesta respuestas automatizadas, masivas o falsas, ni intentar manipular sus resultados;</li>
+      <li>presentar los datos, las simulaciones o las capturas de la web como resultados oficiales.</li>
+    </ul>
+    <h2>Exactitud de los datos y responsabilidad</h2>
+    <p>Los resultados electorales proceden de las fuentes oficiales que se indican en <a href="#fuentes">Fuentes y metodología</a> o, cuando no hay datos oficiales descargables, se han recopilado de fuentes públicas y llevan la marca «Recopilado». Se revisan con cuidado, pero pueden contener errores u omisiones.</p>
+    <p>Los cálculos de mayorías y pactos, el simulador y la proyección de escaños a partir de encuestas son herramientas orientativas: no son resultados oficiales ni predicciones. Para cualquier uso con efectos jurídicos, consulta las publicaciones oficiales (Boletín Oficial del Estado, boletines autonómicos y provinciales, y juntas electorales).</p>
+    <p>El titular no garantiza que la web esté siempre disponible o libre de errores y no responde de los daños que puedan derivarse de su uso o de las decisiones tomadas a partir de su contenido, salvo en los casos en que la ley lo establezca.</p>
+    <h2>Encuestas</h2>
+    <p>La encuesta del 29-N de pactómetro.es es abierta: responde quien quiere, así que no es representativa ni una estimación de voto, y sus resultados no se publican en la web. Cómo se tratan las respuestas se explica en la <a href="#privacidad">política de privacidad</a>.</p>
+    <p>Las encuestas de otros organismos, como el Centro de Investigaciones Sociológicas (CIS), se reproducen citando la fuente y con su ficha técnica, y no se muestran durante los cinco días anteriores a la votación ni el día de las elecciones hasta el cierre de los colegios (artículo 69 de la Ley Orgánica 5/1985, del Régimen Electoral General).</p>
+    <h2>Propiedad intelectual</h2>
+    <p>El diseño, el código, los textos y la recopilación y organización de los datos de pactómetro.es pertenecen a su titular. © 2026 Javier Pereiro Pérez. Todos los derechos reservados.</p>
+    <p>Los resultados electorales oficiales son información del sector público, que se reutiliza citando su origen (Ley 37/2007, sobre reutilización de la información del sector público). Puedes reutilizar los datos que descargas en Excel citando pactómetro.es y la fuente oficial. Los datos de terceros se citan con su licencia en <a href="#fuentes">Fuentes y metodología</a>, y las tipografías Archivo e Ibarra Real Nova se usan con licencia SIL Open Font License 1.1.</p>
+    <h2>Enlaces a otras webs</h2>
+    <p>La web enlaza a fuentes oficiales y a otros sitios para que puedas comprobar los datos. El titular no controla esos sitios ni responde de su contenido.</p>
+    <h2>Legislación aplicable</h2>
+    <p>Este aviso legal se rige por la legislación española.</p>`;
+}
+function legalPrivacidad(){
+  return `<p class="lede">pactómetro.es no pide ni guarda datos que te identifiquen: no hay registro ni cuentas de usuario, y la web no usa cookies, analítica ni publicidad. Esta política explica los pocos casos en que se trata alguna información.</p>
+    <h2>Responsable</h2>
+    <p>Javier Pereiro Pérez, titular de pactómetro.es. Contacto: ${MAIL}.</p>
+    <h2>1. Cuando visitas la web</h2>
+    <p>pactómetro.es está alojada en GitHub Pages, un servicio de GitHub, Inc. Como en cualquier web, tu navegador se conecta con los servidores del alojamiento, y GitHub registra la dirección IP de quienes visitan las páginas por motivos de seguridad. pactómetro.es no tiene acceso a esos registros ni los usa. Más información en la ${EXT('https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement', 'declaración de privacidad de GitHub')}.</p>
+    <p>La web no carga contenidos de terceros: el código, los datos y las tipografías se sirven desde el propio pactómetro.es.</p>
+    <h2>2. La encuesta del 29-N</h2>
+    <dl class="legal-dl">
+      <dt>Qué datos se recogen</dt><dd>Tu provincia y tu intención de voto (obligatorias), tu voto en las generales del 23 de julio de 2023 (opcional) y la fecha y la hora de la respuesta, redondeada a la hora en punto. Nada más: ni nombre, ni correo, ni dirección IP, ni identificadores de tu dispositivo.</dd>
+      <dt>Por qué con especial cuidado</dt><dd>La intención y el recuerdo de voto son opiniones políticas, una categoría especial de datos según el artículo 9 del Reglamento General de Protección de Datos (RGPD). La encuesta está pensada para que las respuestas no se puedan asociar a ninguna persona y, además, solo se envían si lo aceptas expresamente marcando la casilla del formulario.</dd>
+      <dt>Para qué</dt><dd>Para elaborar recuentos y cruces estadísticos (por provincia y según el recuerdo de voto) de uso interno. Las respuestas individuales no se publican nunca y los resultados no se muestran en la web.</dd>
+      <dt>Base jurídica</dt><dd>Tu consentimiento explícito (artículos 6.1.a y 9.2.a del RGPD), que das al marcar la casilla y enviar. Responder es voluntario.</dd>
+      <dt>Quién puede responder</dt><dd>Personas de 18 años o más.</dd>
+      <dt>Dónde se guardan</dt><dd>En una hoja de cálculo privada de Google Sheets de la cuenta del titular, que recibe las respuestas a través de Google Apps Script. Al enviar, tu navegador se conecta con los servidores de Google LLC, que reciben tu dirección IP como en cualquier conexión a internet; el envío no lleva cookies y la hoja no guarda la IP. Más información en la ${EXT('https://policies.google.com/privacy?hl=es', 'política de privacidad de Google')}.</dd>
+      <dt>Quién las ve</dt><dd>Solo el titular. No se ceden a nadie.</dd>
+      <dt>Cuánto tiempo</dt><dd>Las respuestas individuales se borran como tarde el 31 de mayo de 2027. Después solo se conservan los totales agregados.</dd>
+      <dt>Una respuesta por navegador</dt><dd>Tu navegador guarda la fecha en que respondiste, sin tu respuesta, para no volver a pedírtela. Se explica en la <a href="#cookies">política de cookies</a>.</dd>
+    </dl>
+    <h2>3. Si escribes al correo de contacto</h2>
+    <p>Tu dirección y tu mensaje se usan solo para responderte y se conservan mientras haga falta para atender tu consulta. El correo se gestiona con Gmail, de Google LLC.</p>
+    <h2>Transferencias internacionales</h2>
+    <p>GitHub, Inc. y Google LLC tienen su sede en Estados Unidos. Según sus políticas de privacidad, las transferencias de datos desde la Unión Europea se amparan en el Marco de Privacidad de Datos UE-EE. UU. y en las demás garantías que prevé el RGPD.</p>
+    <h2>Tus derechos</h2>
+    <p>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad, y retirar tu consentimiento, escribiendo a ${MAIL}.</p>
+    <p>Las respuestas de la encuesta no llevan ningún dato que permita saber cuál es la tuya, así que no es posible localizarla para consultarla o borrarla (artículo 11 del RGPD). Por la misma razón, nunca podrá vincularse a ti.</p>
+    <p>Si crees que no se han respetado tus derechos, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (${EXT('https://www.aepd.es', 'aepd.es')}).</p>
+    <h2>Seguridad</h2>
+    <p>La web solo funciona con conexión cifrada (HTTPS), no carga código de terceros y tiene una política de seguridad de contenidos que impide ejecutar scripts ajenos. La hoja de respuestas es privada y solo se puede abrir desde la cuenta del titular.</p>`;
+}
+function legalCookies(){
+  return `<p class="lede"><b>pactómetro.es no usa cookies</b>: ni propias ni de terceros, ni de analítica, ni de publicidad, ni de redes sociales.</p>
+    <h2>Lo que sí guarda tu navegador</h2>
+    <p>Para que algunas funciones recuerden lo que has hecho, la web usa el almacenamiento local de tu navegador (localStorage). Solo se guarda algo cuando haces la acción correspondiente, se queda en tu dispositivo y la web no lo envía a ningún sitio.</p>
+    <div class="tablewrap"><table class="data"><caption class="vh">Datos que pactómetro.es guarda en tu navegador</caption>
+      <thead><tr><th>Dato</th><th>Para qué sirve</th><th>Cuándo se guarda</th><th>Cuánto dura</th></tr></thead>
+      <tbody>${DATOS_LOCALES.map(([k, a, b, c]) => `<tr><td data-l="Dato"><code>${k}</code></td><td data-l="Para qué sirve">${a}</td><td data-l="Cuándo se guarda">${b}</td><td data-l="Cuánto dura">${c}</td></tr>`).join('')}</tbody></table></div>
+    <h2>Por qué no hay aviso de cookies</h2>
+    <p>El artículo 22.2 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), obliga a pedir consentimiento para guardar o leer datos en el dispositivo de quien visita una web, salvo cuando sea estrictamente necesario para prestar un servicio que esa persona ha pedido expresamente. Los tres datos de la tabla son de ese tipo: los crea una acción tuya, solo sirven para esa función y no se usan para seguirte ni con fines publicitarios. Por eso no hace falta pedir consentimiento ni mostrar un aviso.</p>
+    <p>Si algún día la web incorpora publicidad o analítica, esta política se actualizará y, antes de instalar nada, se te pedirá permiso con la opción de aceptar o rechazar.</p>
+    <h2>Cómo borrarlos</h2>
+    <p>Puedes borrarlos con este botón o desde la configuración de tu navegador (datos de los sitios web). Se borrarán el escenario del simulador y la marca de encuesta respondida.</p>
+    <div class="row"><button class="btn" type="button" id="borrar-local">Borrar los datos de pactómetro.es de este navegador</button></div>
+    <p class="small" id="borrar-estado" role="status"></p>`;
+}
+function viewLegal(pag){
+  const [, , titulo] = LEGAL_PAGS.find(x => x[0] === pag);
+  setTitle(titulo);
+  const cuerpo = pag === 'privacidad' ? legalPrivacidad() : pag === 'cookies' ? legalCookies() : legalAviso();
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Información legal</span><h1>${titulo}</h1></div>
+    <nav class="tabs" aria-label="Páginas de información legal">${LEGAL_PAGS.map(([k, n]) => `<a class="tab" href="#${k}"${k === pag ? ' aria-current="page"' : ''}>${n}</a>`).join('')}<a class="tab" href="#fuentes">Fuentes y metodología</a></nav>
+    <div class="prose legal">${cuerpo}<p class="small muted">Última actualización: ${LEGAL_FECHA}.</p></div>`;
+  const cm = app.querySelector('#copy-mail');
+  if (cm) cm.addEventListener('click', async ev => {
+    const out = app.querySelector('#mail');
+    try { await navigator.clipboard.writeText(out.textContent); ev.target.textContent = 'Copiado'; }
+    catch(e){ const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); ev.target.textContent = 'Seleccionado: pulsa Ctrl+C'; }
+  });
+  const bl = app.querySelector('#borrar-local');
+  if (bl) bl.addEventListener('click', () => {
+    let n = 0;
+    try { Object.keys(localStorage).filter(k => k.startsWith('pacto.')).forEach(k => { localStorage.removeItem(k); n++; }); } catch(e){}
+    app.querySelector('#borrar-estado').textContent = n === 1 ? 'Hecho: se ha borrado el dato de pactómetro.es que había en este navegador.' : n ? `Hecho: se han borrado los ${n} datos de pactómetro.es que había en este navegador.` : 'Este navegador no tenía ningún dato de pactómetro.es guardado.';
+    actualizarPromo('cookies');
+  });
+}
+
+/* ================================================================ vista: fuentes y metodología */
 async function viewFuentes(){
-  setTitle('Fuentes y aviso legal');
-  app.innerHTML = `<div class="page-head"><span class="eyebrow">Metodología</span><h1>Fuentes y aviso legal</h1></div>
+  setTitle('Fuentes y metodología');
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Metodología</span><h1>Fuentes y metodología</h1></div>
   <div class="prose">
     <h2>De dónde salen los datos</h2>
     <ul>
@@ -2546,20 +2699,10 @@ async function viewFuentes(){
       <li>Los colores identifican familias políticas (PSOE y sus federaciones, PP y la antigua AP, etc.) solo para leer los gráficos; el nombre oficial de cada candidatura se mantiene siempre.</li>
       <li>Los resultados reflejan lo que salió de las urnas. Cambios posteriores (tránsfugas, expulsiones, mociones de censura) no se recogen, salvo en la pestaña «Al disolverse las Cortes».</li>
     </ul>
-    <h2>Aviso legal</h2>
-    <p>Titular del sitio web pactómetro.es: <b>Javier Pereiro Pérez</b>.</p>
-    <p class="copy">Contacto: <output id="mail">pactometroes@gmail.com</output> <button class="btn ghost" type="button" id="copy-mail">Copiar</button></p>
-    <p>© 2026 Javier Pereiro Pérez. El diseño, el código y la recopilación de datos de este sitio pertenecen a su titular; todos los derechos reservados.</p>
-    <p>Los resultados electorales oficiales son información del sector público reutilizada citando su fuente (Ministerio del Interior, Congreso de los Diputados). Este sitio no está vinculado a ninguna administración pública ni a ningún partido político. Los datos se ofrecen con fines informativos; para cualquier uso con efectos jurídicos, consulta las publicaciones oficiales (BOE y boletines oficiales).</p>
-    <p>Este sitio no usa cookies ni herramientas de analítica o publicidad, y no carga contenido de terceros: las tipografías se sirven desde el propio pactómetro.es. Tu navegador solo guarda, en su almacenamiento local y sin salir de tu dispositivo, el escenario del simulador si lo usas, la marca de «encuesta ya respondida» y, si cierras el aviso de la encuesta, que no vuelva a salir ese día.</p>
-    <p>La encuesta del 29-N es anónima: guarda tus respuestas, la provincia y la fecha con la hora redondeada, sin nombre, correo, dirección IP ni ningún identificador. Las respuestas se almacenan en una hoja de cálculo privada del titular. Para evitar respuestas repetidas, tu navegador guarda una marca de «ya respondido» que no contiene tu respuesta y no sale de tu dispositivo.</p>
+    <h2>Información legal</h2>
+    <p>Quién está detrás de la web, cómo se tratan las respuestas de la encuesta y qué guarda tu navegador: <a href="#aviso-legal">aviso legal</a>, <a href="#privacidad">política de privacidad</a> y <a href="#cookies">política de cookies</a>. La web no usa cookies.</p>
     <p class="small muted">Datos actualizados a 8 de octubre de 2026.</p>
   </div>`;
-  app.querySelector('#copy-mail').addEventListener('click', async ev => {
-    const out = app.querySelector('#mail');
-    try { await navigator.clipboard.writeText(out.textContent); ev.target.textContent = 'Copiado'; }
-    catch(e){ const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); ev.target.textContent = 'Seleccionado: pulsa Ctrl+C'; }
-  });
 }
 function notFound(){
   setTitle('Página no encontrada');
@@ -2603,7 +2746,8 @@ async function viewInicio(){
       <div class="h-hemi" id="h-hemi"><p class="loading">Cargando el Congreso…</p></div>
       <p class="h-status" id="h-status" aria-live="polite"></p>
       <div class="h-chips" id="h-chips" role="group" aria-label="Partidos del Congreso: púlsalos para sumar sus escaños"></div>
-      <div class="h-demo-foot"><a href="#congreso">Abrir el pactómetro del Congreso</a><button class="btn ghost" type="button" id="h-vaciar" hidden>Vaciar la suma</button></div>
+      <p class="h-demo-src" id="h-demo-src" hidden></p>
+      <div class="h-demo-foot"><a href="#congreso" id="h-demo-link">Abrir el pactómetro del Congreso</a><button class="btn ghost" type="button" id="h-vaciar" hidden>Vaciar la suma</button></div>
     </div>
   </div></section>
   <section class="h-band" aria-labelledby="h-29n"><div class="wrap">
@@ -2655,8 +2799,9 @@ async function viewInicio(){
   Buscador(app.querySelector('#h-search'));
   iniciarCuenta();
   const aviso = (el, txt) => e => { console.error(e); if (el) el.innerHTML = `<p class="small muted">${txt} Recarga la página para intentarlo de nuevo.</p>`; };
-  load('generales.json').then(G => {
-    DemoCongreso(G, app.querySelector('.h-demo'));
+  // the demo shows the latest CIS poll until the 29-N results are loaded (hidden during the legal blackout, art. 69.7 LOREG)
+  Promise.all([load('generales.json'), enVedaSondeos() ? null : load('cis.json').catch(() => null)]).then(([G, C]) => {
+    DemoCongreso(G, app.querySelector('.h-demo'), C);
     ganadoresCongreso(G, app.querySelector('#h-wins'), app.querySelector('#h-l1'));
     calendarioInicio(G, app.querySelector('#h-cal'));
   }).catch(aviso(app.querySelector('#h-hemi'), 'No se pudo cargar el Congreso.'));
@@ -2665,14 +2810,28 @@ async function viewInicio(){
   Promise.all([load('municipios.json'), load('resumen.json')]).then(([M, R]) => ciudadesInicio(M, R, app.querySelector('#h-cities'), app.querySelector('#h-l4'))).catch(aviso(app.querySelector('#h-cities'), 'No se pudieron cargar los municipios.'));
 }
 
-// Hemiciclo del Congreso del 23-J: los partidos elegidos se colocan a la izquierda con su color y el resto pasa a gris.
-function DemoCongreso(G, box){
+// Hemiciclo del Congreso: los partidos elegidos se colocan a la izquierda con su color y el resto pasa a gris.
+// Muestra la proyección de la última encuesta del CIS (C) mientras no haya resultados del 29-N; si no, la última elección general.
+function DemoCongreso(G, box, C){
   if (!box || !box.isConnected) return;
   const ult = Object.keys(G.congreso).sort((a, b) => G.congreso[a].fecha.localeCompare(G.congreso[b].fecha)).pop();   // newest general election
   const e = G.congreso[ult];
-  box.querySelector('.h-demo-head span').textContent = 'Escaños del ' + fecha(e.fecha);
-  const total = e.escanos || 350, maj = Math.floor(total / 2) + 1;
-  const P = e.r.filter(r => r[5] > 0).map((r, i) => ({id: 'p' + i, sig: niceSig(r[0]), nom: r[1] ? nice(r[1]) : '', color: r[2], esc: r[5]})).sort((a, b) => b.esc - a.esc);
+  const cis = C && Array.isArray(C.partidos) && e.fecha < '2026-11-29';
+  let total, P;
+  if (cis){
+    total = 350;
+    P = C.partidos.filter(p => p.esc > 0).map((p, i) => ({id: 'p' + i, sig: niceSig(p.sig), nom: `${p.nom}: ${fmtPct(p.est)} en la estimación de voto del CIS`, color: p.color, esc: p.esc})).sort((a, b) => b.esc - a.esc);
+    box.querySelector('.h-demo-head span').textContent = 'Encuesta del CIS · octubre de 2026';
+    const src = box.querySelector('#h-demo-src'), lk = box.querySelector('#h-demo-link');
+    src.innerHTML = `Escaños estimados por pactómetro.es a partir de la estimación de voto del <a href="${esc(C.estudio.url)}" target="_blank" rel="noopener">barómetro de octubre de 2026 del CIS<span class="vh"> (se abre en una pestaña nueva)</span></a> (estudio n.º ${C.estudio.numero}). El CIS publica porcentajes de voto, no escaños.`;
+    src.hidden = false;
+    lk.href = '#congreso-simulador'; lk.textContent = 'Abrir el simulador con la encuesta del CIS';
+  } else {
+    total = e.escanos || 350;
+    P = e.r.filter(r => r[5] > 0).map((r, i) => ({id: 'p' + i, sig: niceSig(r[0]), nom: r[1] ? nice(r[1]) : '', color: r[2], esc: r[5]})).sort((a, b) => b.esc - a.esc);
+    box.querySelector('.h-demo-head span').textContent = 'Escaños del ' + fecha(e.fecha);
+  }
+  const maj = Math.floor(total / 2) + 1;
   const sel = [];
   const $h = box.querySelector('#h-hemi'), $st = box.querySelector('#h-status'), $ch = box.querySelector('#h-chips'), $vac = box.querySelector('#h-vaciar');
   const {pos, rad} = seatLayout(total);
@@ -2915,10 +3074,11 @@ async function dispatch(h){
   if (h === 'encuesta' || h === 'encuesta-prueba'){ setTitle('Encuesta 29-N'); return viewEncuesta(h === 'encuesta-prueba'); }
   if (h === 'comparar' || h.startsWith('comparar?')) return viewComparar(h.slice(9));
   if (h === '29n') return view29N();
-  if (h === 'fuentes') return viewFuentes();
+  if (h === 'fuentes'){ setTitle('Fuentes y metodología'); return viewFuentes(); }
+  if (LEGAL_PAGS.some(x => x[0] === h)) return viewLegal(h);
   return notFound();
 }
-const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', encuesta: 'encuesta'};
+const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta'};
 const $mast = document.querySelector('.mast'), $menu = document.getElementById('menu-btn');
 function cerrarMenu(){ $mast.classList.remove('open'); $menu.setAttribute('aria-expanded', 'false'); }
 $menu.addEventListener('click', () => { const abrir = !$mast.classList.contains('open'); $mast.classList.toggle('open', abrir); $menu.setAttribute('aria-expanded', String(abrir)); });
