@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-aEEg+5II5SdYhwTB+2FZKQ1b72v+qy9PLrBAR0lDhCg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pactometro.es; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-1bnDgML13/hVzzFNyqb928YxcYKch58IK3DKgyDE+Bc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pactometro.es; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="author" content="Javier Pereiro Pérez">
@@ -25,7 +25,7 @@
 <link rel="icon" type="image/png" sizes="48x48" href="https://pactometro.es/img/icono-48.png">
 <link rel="icon" href="https://pactometro.es/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="apple-touch-icon" href="https://pactometro.es/img/apple-touch-icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"pactómetro.es","alternateName":["Pactómetro","pactometro.es"],"url":"https://pactometro.es/","inLanguage":"es-ES","publisher":{"@type":"Person","name":"Javier Pereiro Pérez"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"pactómetro.es","alternateName":["Pactómetro","pactometro.es"],"url":"https://pactometro.es/","inLanguage":"es-ES","publisher":{"@type":"Person","name":"Javier Pereiro Pérez","sameAs":["https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/"]}}</script>
 <link rel="manifest" href="site.webmanifest">
 <title>Pactómetro · Mayorías y pactos en todas las instituciones de España</title>
 <meta name="description" content="Calcula mayorías y pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, cabildos, consells y todos los ayuntamientos de España, con el histórico electoral oficial desde 1977.">
@@ -711,6 +711,8 @@ table.e-dh-in td{padding:6px 10px}
 .ck .ck-b:hover{background:var(--ink-2);border-color:var(--ink-2)}
 .ck.cfg .ck-acts{grid-column:1/-1}
 @media (max-width:760px){.ck-in{grid-template-columns:minmax(0,1fr);padding-block:12px}.ck-acts{justify-content:stretch}.ck-acts .btn{flex:1 1 0;padding-inline:8px}.ck.cfg .ck-acts .btn[data-ck="guardar"]{flex-basis:100%}.ck-txt p{font-size:14px}}
+.in-link{display:inline-flex;align-items:center;gap:5px;min-height:26px;padding:2px 10px;border:1px solid var(--rule);border-radius:999px;background:var(--sheet);color:var(--ink);font-weight:600;text-decoration:none;white-space:nowrap;vertical-align:middle}
+.in-link:hover{border-color:var(--ink);background:var(--wash)}
 .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer}
 .linkbtn:hover{text-decoration-thickness:2px}
 
@@ -772,8 +774,8 @@ table.e-dh-in td{padding:6px 10px}
 
 <footer class="foot">
   <div class="wrap">
-    <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a></span></p>
-    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y metodología</a></p>
+    <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a> <a class="in-link" href="https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/" target="_blank" rel="noopener me" aria-label="Perfil de LinkedIn de Javier Pereiro Pérez (se abre en una pestaña nueva)">LinkedIn<svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span></p>
+    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y metodología</a> · Actualizado el <time datetime="2026-10-15">15 de octubre de 2026</time></p>
     <nav class="foot-legal" aria-label="Enlaces del pie de página"><a href="#encuesta">Encuesta del 29-N</a><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><button class="linkbtn" type="button" data-ck-abrir>Configurar cookies</button></nav>
   </div>
 </footer>
@@ -1779,7 +1781,7 @@ async function view29N(){
       <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672" target="_blank" rel="noopener">Ley Orgánica 5/1985, del Régimen Electoral General</a> (texto consolidado en el BOE): arts. 85 (identificación), 96 (votos nulos y en blanco), 162 y 163 (Congreso), 165 y 166 (Senado).</li>
       <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229" target="_blank" rel="noopener">Constitución Española</a>: arts. 68 (Congreso) y 69 (Senado).</li>
     </ul>
-    <p class="small muted">Resumen informativo de pactómetro.es. Para cualquier trámite valen siempre el BOE y las resoluciones de la Junta Electoral Central.</p></section>`;
+    <p class="small muted">Resumen informativo de pactómetro.es, actualizado a ${ACTUALIZADO}. Para cualquier trámite valen siempre el BOE y las resoluciones de la Junta Electoral Central.</p></section>`;
   iniciarCuenta();
   app.querySelectorAll('.tabs a[href^="#sec-"]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const t = app.querySelector(a.getAttribute('href')); t.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); const h = t.querySelector('h2'); if (h){ h.tabIndex = -1; h.focus({preventScroll: true}); } }));
   // ejemplo de la ley (fijo) y calculadora
@@ -2622,7 +2624,9 @@ async function viewEncuesta(prueba){
 }
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
-const LEGAL_FECHA = '14 de octubre de 2026';
+const LEGAL_FECHA = '15 de octubre de 2026';          // last change of the legal texts
+const ACTUALIZADO = '15 de octubre de 2026';                // date of the last publication, set by scripts/build_dist.py
+const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
 const DATOS_LOCALES = [
@@ -2639,6 +2643,7 @@ function legalAviso(){
       <dt>Titular</dt><dd>Javier Pereiro Pérez</dd>
       <dt>Sitio web</dt><dd>pactómetro.es (https://pactometro.es)</dd>
       <dt>Contacto</dt><dd class="copy"><output id="mail">pactometroes@gmail.com</output> <button class="btn ghost" type="button" id="copy-mail">Copiar</button></dd>
+      <dt>Perfil profesional</dt><dd><a class="in-link" href="${LINKEDIN}" target="_blank" rel="noopener me" aria-label="Perfil de LinkedIn de Javier Pereiro Pérez (se abre en una pestaña nueva)">LinkedIn<svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></dd>
       <dt>Naturaleza</dt><dd>Proyecto personal, informativo y sin ánimo de lucro. La web no vende productos ni servicios, no tiene publicidad y su acceso es gratuito.</dd>
     </dl>
     <p>pactómetro.es no está vinculado a ninguna administración pública, partido político ni medio de comunicación.</p>
@@ -2768,7 +2773,7 @@ async function viewFuentes(){
     </ul>
     <h2>Información legal</h2>
     <p>Quién está detrás de la web, cómo se tratan las respuestas de la encuesta y qué guarda tu navegador: <a href="#aviso-legal">aviso legal</a>, <a href="#privacidad">política de privacidad</a> y <a href="#cookies">política de cookies</a>. La web no usa cookies.</p>
-    <p class="small muted">Datos actualizados a 8 de octubre de 2026.</p>
+    <p class="small muted">Datos actualizados a ${ACTUALIZADO}.</p>
   </div>`;
 }
 function notFound(){
