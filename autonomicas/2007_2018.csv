@@ -1,0 +1,233 @@
+region,date,party,seats
+Extremadura,2025-12-21,PP,29
+Extremadura,2025-12-21,PSOE,18
+Extremadura,2025-12-21,Vox,11
+Extremadura,2025-12-21,UxE (Podemos–IU–AV),7
+Catalonia,2017-12-21,Cs,36
+Catalonia,2017-12-21,JuntsxCat,34
+Catalonia,2017-12-21,ERC–CatSí,32
+Catalonia,2017-12-21,PSC–PSOE,17
+Catalonia,2017-12-21,CatComú–Podem,8
+Catalonia,2017-12-21,CUP,4
+Catalonia,2017-12-21,PP,4
+Basque Country,2016-09-25,EAJ/PNV,28
+Basque Country,2016-09-25,EH Bildu,18
+Basque Country,2016-09-25,Elkarrekin Podemos,11
+Basque Country,2016-09-25,PSE–EE (PSOE),9
+Basque Country,2016-09-25,PP,9
+Galicia,2016-09-25,PP,41
+Galicia,2016-09-25,En Marea,14
+Galicia,2016-09-25,PSdeG–PSOE,14
+Galicia,2016-09-25,BNG–Nós,6
+Andalusia,2015-03-22,PSOE–A,47
+Andalusia,2015-03-22,PP,33
+Andalusia,2015-03-22,Podemos,15
+Andalusia,2015-03-22,C's,9
+Andalusia,2015-03-22,IULV–CA,5
+Aragon,2015-05-24,PP,21
+Aragon,2015-05-24,PSOE,18
+Aragon,2015-05-24,Podemos,14
+Aragon,2015-05-24,PAR,6
+Aragon,2015-05-24,C's,5
+Aragon,2015-05-24,CHA,2
+Aragon,2015-05-24,IU,1
+Asturias,2015-05-24,PSOE,14
+Asturias,2015-05-24,PP,11
+Asturias,2015-05-24,Podemos,9
+Asturias,2015-05-24,IU/IX,5
+Asturias,2015-05-24,FAC,3
+Asturias,2015-05-24,C's,3
+Balearic Islands,2015-05-24,PP,20
+Balearic Islands,2015-05-24,PSIB–PSOE,14
+Balearic Islands,2015-05-24,Podemos/Podem,10
+Balearic Islands,2015-05-24,Més,6
+Balearic Islands,2015-05-24,El Pi,3
+Balearic Islands,2015-05-24,MpM,3
+Balearic Islands,2015-05-24,C's,2
+Balearic Islands,2015-05-24,GxF+PSOE,1
+Canary Islands,2015-05-24,CCa–PNC,18
+Canary Islands,2015-05-24,PSOE,15
+Canary Islands,2015-05-24,PP,12
+Canary Islands,2015-05-24,Podemos,7
+Canary Islands,2015-05-24,NCa,5
+Canary Islands,2015-05-24,ASG,3
+Cantabria,2015-05-24,PP,13
+Cantabria,2015-05-24,PRC,12
+Cantabria,2015-05-24,PSOE,5
+Cantabria,2015-05-24,Podemos,3
+Cantabria,2015-05-24,C's,2
+Castile and León,2015-05-24,PP,42
+Castile and León,2015-05-24,PSOE,25
+Castile and León,2015-05-24,Podemos,10
+Castile and León,2015-05-24,C's,5
+Castile and León,2015-05-24,IU–Equo,1
+Castile and León,2015-05-24,UPL,1
+Castilla–La Mancha,2015-05-24,PP,16
+Castilla–La Mancha,2015-05-24,PSOE,15
+Castilla–La Mancha,2015-05-24,Podemos,2
+Catalonia,2015-09-27,JxSí,62
+Catalonia,2015-09-27,C's,25
+Catalonia,2015-09-27,PSC–PSOE,16
+Catalonia,2015-09-27,CatSíqueesPot,11
+Catalonia,2015-09-27,PP,11
+Catalonia,2015-09-27,CUP,10
+Extremadura,2015-05-24,PSOE–SIEx,30
+Extremadura,2015-05-24,PP,28
+Extremadura,2015-05-24,Podemos,6
+Extremadura,2015-05-24,C's,1
+La Rioja,2015-05-24,PP,15
+La Rioja,2015-05-24,PSOE,10
+La Rioja,2015-05-24,Podemos,4
+La Rioja,2015-05-24,C's,4
+Madrid,2015-05-24,PP,48
+Madrid,2015-05-24,PSOE,37
+Madrid,2015-05-24,Podemos,27
+Madrid,2015-05-24,C's,17
+Murcia,2015-05-24,PP,22
+Murcia,2015-05-24,PSOE,13
+Murcia,2015-05-24,Podemos,6
+Murcia,2015-05-24,C's,4
+Navarre,2015-05-24,UPN,15
+Navarre,2015-05-24,GBai,9
+Navarre,2015-05-24,EH Bildu,8
+Navarre,2015-05-24,Podemos,7
+Navarre,2015-05-24,PSN–PSOE,7
+Navarre,2015-05-24,PP,2
+Navarre,2015-05-24,I–E,2
+Valencian Community,2015-05-24,PP,31
+Valencian Community,2015-05-24,PSPV–PSOE,23
+Valencian Community,2015-05-24,Compromís,19
+Valencian Community,2015-05-24,C's,13
+Valencian Community,2015-05-24,Podemos,13
+Andalusia,2012-03-25,PP,50
+Andalusia,2012-03-25,PSOE–A,47
+Andalusia,2012-03-25,IULV–CA,12
+Asturias,2012-03-25,PSOE,17
+Asturias,2012-03-25,FAC,12
+Asturias,2012-03-25,PP,10
+Asturias,2012-03-25,IU/IX,5
+Asturias,2012-03-25,UPyD,1
+Basque Country,2012-10-21,EAJ/PNV,27
+Basque Country,2012-10-21,EH Bildu,21
+Basque Country,2012-10-21,PSE–EE (PSOE),16
+Basque Country,2012-10-21,PP,10
+Basque Country,2012-10-21,UPyD,1
+Galicia,2012-10-21,PP,41
+Galicia,2012-10-21,PSdeG–PSOE,18
+Galicia,2012-10-21,AGE,9
+Galicia,2012-10-21,BNG,7
+Catalonia,2012-11-25,CiU,50
+Catalonia,2012-11-25,ERC–CatSí,21
+Catalonia,2012-11-25,PSC–PSOE,20
+Catalonia,2012-11-25,PP,19
+Catalonia,2012-11-25,ICV–EUiA,13
+Catalonia,2012-11-25,C's,9
+Catalonia,2012-11-25,CUP,3
+Aragon,2011-05-22,PP,30
+Aragon,2011-05-22,PSOE,22
+Aragon,2011-05-22,PAR,7
+Aragon,2011-05-22,CHA,4
+Aragon,2011-05-22,IU,4
+Asturias,2011-05-22,FAC,16
+Asturias,2011-05-22,PSOE,15
+Asturias,2011-05-22,PP,10
+Asturias,2011-05-22,IU–LV,4
+Balearic Islands,2011-05-22,PP,35
+Balearic Islands,2011-05-22,PSIB–PSOE,18
+Balearic Islands,2011-05-22,PSM–IV–ExM,4
+Balearic Islands,2011-05-22,PSM–EN,1
+Balearic Islands,2011-05-22,GxF+PSOE,1
+Canary Islands,2011-05-22,PP,21
+Canary Islands,2011-05-22,CC–PNC–CCN,21
+Canary Islands,2011-05-22,PSOE,15
+Canary Islands,2011-05-22,NC,3
+Cantabria,2011-05-22,PP,20
+Cantabria,2011-05-22,PRC,12
+Cantabria,2011-05-22,PSOE,7
+Castile and León,2011-05-22,PP,53
+Castile and León,2011-05-22,PSOE,29
+Castile and León,2011-05-22,IUCyL,1
+Castile and León,2011-05-22,UPL,1
+Castilla–La Mancha,2011-05-22,PP,25
+Castilla–La Mancha,2011-05-22,PSOE,24
+Extremadura,2011-05-22,PP–EU,32
+Extremadura,2011-05-22,PSOE–r,30
+Extremadura,2011-05-22,IU–SIEx,3
+La Rioja,2011-05-22,PP,20
+La Rioja,2011-05-22,PSOE,11
+La Rioja,2011-05-22,PR,2
+Madrid,2011-05-22,PP,72
+Madrid,2011-05-22,PSOE,36
+Madrid,2011-05-22,IUCM–LV,13
+Madrid,2011-05-22,UPyD,8
+Murcia,2011-05-22,PP,33
+Murcia,2011-05-22,PSOE,11
+Murcia,2011-05-22,IU–V–RM,1
+Navarre,2011-05-22,UPN,19
+Navarre,2011-05-22,PSN–PSOE,9
+Navarre,2011-05-22,NaBai 2011,8
+Navarre,2011-05-22,B–EA/AE–EA,7
+Navarre,2011-05-22,PP,4
+Navarre,2011-05-22,I–E,3
+Valencian Community,2011-05-22,PP,55
+Valencian Community,2011-05-22,PSPV–PSOE,33
+Valencian Community,2011-05-22,Compromís,6
+Valencian Community,2011-05-22,EUPV,5
+Basque Country,2009-03-01,EAJ/PNV,30
+Basque Country,2009-03-01,PSE–EE (PSOE),25
+Basque Country,2009-03-01,PP,13
+Basque Country,2009-03-01,Aralar,4
+Basque Country,2009-03-01,EA,1
+Basque Country,2009-03-01,EB–B,1
+Basque Country,2009-03-01,UPyD,1
+Galicia,2009-03-01,PP,38
+Galicia,2009-03-01,PSdeG–PSOE,25
+Galicia,2009-03-01,BNG,12
+Andalusia,2008-03-09,PSOE–A,56
+Andalusia,2008-03-09,PP,47
+Andalusia,2008-03-09,IULV–CA,6
+Aragon,2007-05-27,PSOE,30
+Aragon,2007-05-27,PP,23
+Aragon,2007-05-27,PAR,9
+Aragon,2007-05-27,CHA,4
+Aragon,2007-05-27,IU,1
+Asturias,2007-05-27,PSOE,21
+Asturias,2007-05-27,PP,20
+Asturias,2007-05-27,IU–BA–LV,4
+Balearic Islands,2007-05-27,PP,28
+Balearic Islands,2007-05-27,PSIB–PSOE,16
+Balearic Islands,2007-05-27,PSOE–ExC,6
+Balearic Islands,2007-05-27,Bloc,4
+Balearic Islands,2007-05-27,UM,3
+Balearic Islands,2007-05-27,PSM–EN,1
+Balearic Islands,2007-05-27,AIPF,1
+Canary Islands,2007-05-27,PSOE,26
+Canary Islands,2007-05-27,CC–PNC,19
+Canary Islands,2007-05-27,PP,15
+Cantabria,2007-05-27,PP,17
+Cantabria,2007-05-27,PRC,12
+Cantabria,2007-05-27,PSOE,10
+Castile and León,2007-05-27,PP,48
+Castile and León,2007-05-27,PSOE,33
+Castile and León,2007-05-27,UPL,2
+Castilla–La Mancha,2007-05-27,PSOE,26
+Castilla–La Mancha,2007-05-27,PP,21
+Extremadura,2007-05-27,PSOE–r,38
+Extremadura,2007-05-27,PP–EU,27
+La Rioja,2007-05-27,PP,17
+La Rioja,2007-05-27,PSOE,14
+La Rioja,2007-05-27,PR,2
+Madrid,2007-05-27,PP,67
+Madrid,2007-05-27,PSOE,42
+Madrid,2007-05-27,IUCM,11
+Murcia,2007-05-27,PP,29
+Murcia,2007-05-27,PSOE,15
+Murcia,2007-05-27,IU–LV–RM,1
+Navarre,2007-05-27,UPN,22
+Navarre,2007-05-27,NaBai,12
+Navarre,2007-05-27,PSN–PSOE,12
+Navarre,2007-05-27,CDN,2
+Navarre,2007-05-27,IUN/NEB,2
+Valencian Community,2007-05-27,PP,54
+Valencian Community,2007-05-27,PSPV–PSOE,38
+Valencian Community,2007-05-27,Compromís PV,7

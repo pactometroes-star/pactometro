@@ -1,0 +1,496 @@
+region,date,party,seats
+Andalusia,2018-12-02,PSOE–A,33
+Andalusia,2018-12-02,PP,26
+Andalusia,2018-12-02,Cs,21
+Andalusia,2018-12-02,AA,17
+Andalusia,2018-12-02,Vox,12
+Catalonia,2010-11-28,CiU,62
+Catalonia,2010-11-28,PSC–PSOE,28
+Catalonia,2010-11-28,PP,18
+Catalonia,2010-11-28,ICV–EUiA,10
+Catalonia,2010-11-28,ERC,10
+Catalonia,2010-11-28,SI,4
+Catalonia,2010-11-28,C's,3
+Catalonia,2006-11-01,CiU,48
+Catalonia,2006-11-01,PSC–CpC,37
+Catalonia,2006-11-01,ERC,21
+Catalonia,2006-11-01,PP,14
+Catalonia,2006-11-01,ICV–EUiA,12
+Catalonia,2006-11-01,C's,3
+Basque Country,2005-04-17,PNV–EA,29
+Basque Country,2005-04-17,PSE–EE (PSOE),18
+Basque Country,2005-04-17,PP,15
+Basque Country,2005-04-17,PCTV/EHAK,9
+Basque Country,2005-04-17,EB–B,3
+Basque Country,2005-04-17,Aralar,1
+Galicia,2005-06-19,PP,37
+Galicia,2005-06-19,PSdeG–PSOE,25
+Galicia,2005-06-19,BNG,13
+Andalusia,2004-03-14,PSOE–A,61
+Andalusia,2004-03-14,PP,37
+Andalusia,2004-03-14,IULV–CA,6
+Andalusia,2004-03-14,PA,5
+Aragon,2003-05-25,PSOE,27
+Aragon,2003-05-25,PP,22
+Aragon,2003-05-25,CHA,9
+Aragon,2003-05-25,PAR,8
+Aragon,2003-05-25,IU,1
+Asturias,2003-05-25,PSOE,22
+Asturias,2003-05-25,PP,19
+Asturias,2003-05-25,IU–BA,4
+Balearic Islands,2003-05-25,PP,29
+Balearic Islands,2003-05-25,PSIB–PSOE,15
+Balearic Islands,2003-05-25,Pacte+COP,5
+Balearic Islands,2003-05-25,PSM–EN,4
+Balearic Islands,2003-05-25,UM,3
+Balearic Islands,2003-05-25,EU–EV,2
+Balearic Islands,2003-05-25,AIPF,1
+Canary Islands,2003-05-25,CC,23
+Canary Islands,2003-05-25,PP,17
+Canary Islands,2003-05-25,PSOE,17
+Canary Islands,2003-05-25,FNC,3
+Cantabria,2003-05-25,PP,18
+Cantabria,2003-05-25,PSOE,13
+Cantabria,2003-05-25,PRC,8
+Castile and León,2003-05-25,PP,48
+Castile and León,2003-05-25,PSOE,32
+Castile and León,2003-05-25,UPL,2
+Castilla–La Mancha,2003-05-25,PSOE,29
+Castilla–La Mancha,2003-05-25,PP,18
+Extremadura,2003-05-25,PSOE–p,36
+Extremadura,2003-05-25,PP,26
+Extremadura,2003-05-25,IU–SIEx,3
+La Rioja,2003-05-25,PP,17
+La Rioja,2003-05-25,PSOE,14
+La Rioja,2003-05-25,PR,2
+Madrid,2003-05-25,PP,55
+Madrid,2003-05-25,PSOE,47
+Madrid,2003-05-25,IUCM,9
+Madrid,2003-10-26,PP,57
+Madrid,2003-10-26,PSOE,45
+Madrid,2003-10-26,IUCM,9
+Murcia,2003-05-25,PP,28
+Murcia,2003-05-25,PSOE,16
+Murcia,2003-05-25,IURM,1
+Navarre,2003-05-25,UPN,23
+Navarre,2003-05-25,PSN–PSOE,11
+Navarre,2003-05-25,IUN/NEB,4
+Navarre,2003-05-25,Aralar,4
+Navarre,2003-05-25,CDN,4
+Navarre,2003-05-25,EA–PNV,4
+Valencian Community,2003-05-25,PP,48
+Valencian Community,2003-05-25,PSPV–PSOE,35
+Valencian Community,2003-05-25,Entesa,6
+Catalonia,2003-11-16,CiU,46
+Catalonia,2003-11-16,PSC–CpC,42
+Catalonia,2003-11-16,ERC,23
+Catalonia,2003-11-16,PP,15
+Catalonia,2003-11-16,ICV–EA,9
+Basque Country,2001-05-13,PNV–EA,33
+Basque Country,2001-05-13,PP,19
+Basque Country,2001-05-13,PSE–EE (PSOE),13
+Basque Country,2001-05-13,EH,7
+Basque Country,2001-05-13,IU/EB,3
+Galicia,2001-10-21,PP,41
+Galicia,2001-10-21,BNG,17
+Galicia,2001-10-21,PSdeG–PSOE,17
+Andalusia,2000-03-12,PSOE–A,52
+Andalusia,2000-03-12,PP,46
+Andalusia,2000-03-12,IULV–CA,6
+Andalusia,2000-03-12,PA,5
+Aragon,1999-06-13,PP,28
+Aragon,1999-06-13,PSOE,23
+Aragon,1999-06-13,PAR,10
+Aragon,1999-06-13,CHA,5
+Aragon,1999-06-13,IU,1
+Asturias,1999-06-13,PSOE,24
+Asturias,1999-06-13,PP,15
+Asturias,1999-06-13,IU,3
+Asturias,1999-06-13,URAS,3
+Balearic Islands,1999-06-13,PP,28
+Balearic Islands,1999-06-13,PSIB–PSOE,13
+Balearic Islands,1999-06-13,Pacte+COP,7
+Balearic Islands,1999-06-13,PSM–EN,5
+Balearic Islands,1999-06-13,UM,3
+Balearic Islands,1999-06-13,EU–EV,3
+Canary Islands,1999-06-13,CC,24
+Canary Islands,1999-06-13,PSOE,19
+Canary Islands,1999-06-13,PP,15
+Canary Islands,1999-06-13,AHI,2
+Cantabria,1999-06-13,PP,19
+Cantabria,1999-06-13,PSOE–p,14
+Cantabria,1999-06-13,PRC,6
+Castile and León,1999-06-13,PP,48
+Castile and León,1999-06-13,PSOE,30
+Castile and León,1999-06-13,UPL,3
+Castile and León,1999-06-13,IUCyL,1
+Castile and León,1999-06-13,TC–PNC,1
+Castilla–La Mancha,1999-06-13,PSOE–p,26
+Castilla–La Mancha,1999-06-13,PP,21
+Extremadura,1999-06-13,PSOE–p,34
+Extremadura,1999-06-13,PP,28
+Extremadura,1999-06-13,IU–CE,3
+La Rioja,1999-06-13,PP,18
+La Rioja,1999-06-13,PSOE,13
+La Rioja,1999-06-13,PR,2
+Madrid,1999-06-13,PP,55
+Madrid,1999-06-13,PSOE–p,39
+Madrid,1999-06-13,IU,8
+Murcia,1999-06-13,PP,26
+Murcia,1999-06-13,PSOE,18
+Murcia,1999-06-13,IURM,1
+Navarre,1999-06-13,UPN,22
+Navarre,1999-06-13,PSN–PSOE,11
+Navarre,1999-06-13,EH,8
+Navarre,1999-06-13,IU/EB,3
+Navarre,1999-06-13,CDN,3
+Navarre,1999-06-13,EA–PNV,3
+Valencian Community,1999-06-13,PP,49
+Valencian Community,1999-06-13,PSOE–p,35
+Valencian Community,1999-06-13,EUPV,5
+Catalonia,1999-10-17,CiU,56
+Catalonia,1999-10-17,PSC–CpC,52
+Catalonia,1999-10-17,PP,12
+Catalonia,1999-10-17,ERC,12
+Catalonia,1999-10-17,IC–V,3
+Basque Country,1998-10-25,EAJ/PNV,21
+Basque Country,1998-10-25,PP,16
+Basque Country,1998-10-25,EH,14
+Basque Country,1998-10-25,PSE–EE (PSOE),14
+Basque Country,1998-10-25,EA,6
+Basque Country,1998-10-25,IU/EB,2
+Basque Country,1998-10-25,UA,2
+Galicia,1997-10-19,PP,42
+Galicia,1997-10-19,BNG,18
+Galicia,1997-10-19,PSdeG–PSOE/EU–EG/OV,15
+Andalusia,1996-03-03,PSOE–A,52
+Andalusia,1996-03-03,PP,40
+Andalusia,1996-03-03,IULV–CA,13
+Andalusia,1996-03-03,PA,4
+Aragon,1995-05-28,PP,27
+Aragon,1995-05-28,PSOE,19
+Aragon,1995-05-28,PAR,14
+Aragon,1995-05-28,IU,5
+Aragon,1995-05-28,CHA,2
+Asturias,1995-05-28,PP,21
+Asturias,1995-05-28,PSOE,17
+Asturias,1995-05-28,IU,6
+Asturias,1995-05-28,PAS,1
+Balearic Islands,1995-05-28,PP,30
+Balearic Islands,1995-05-28,PSIB–PSOE,16
+Balearic Islands,1995-05-28,PSM–EN,6
+Balearic Islands,1995-05-28,IU,3
+Balearic Islands,1995-05-28,UM,2
+Balearic Islands,1995-05-28,EVIB,1
+Balearic Islands,1995-05-28,AIPF,1
+Canary Islands,1995-05-28,CC,21
+Canary Islands,1995-05-28,PP,18
+Canary Islands,1995-05-28,PSOE,16
+Canary Islands,1995-05-28,PCN,4
+Canary Islands,1995-05-28,AHI,1
+Cantabria,1995-05-28,PP,13
+Cantabria,1995-05-28,PSOE,10
+Cantabria,1995-05-28,UPCA,7
+Cantabria,1995-05-28,PRC,6
+Cantabria,1995-05-28,IU,3
+Castile and León,1995-05-28,PP,50
+Castile and León,1995-05-28,PSOE,27
+Castile and León,1995-05-28,IU,5
+Castile and León,1995-05-28,UPL,2
+Castilla–La Mancha,1995-05-28,PSOE,24
+Castilla–La Mancha,1995-05-28,PP,22
+Castilla–La Mancha,1995-05-28,IU–ICAM,1
+Extremadura,1995-05-28,PSOE,31
+Extremadura,1995-05-28,PP,27
+Extremadura,1995-05-28,IU–LV–CE,6
+Extremadura,1995-05-28,CEx,1
+La Rioja,1995-05-28,PP,17
+La Rioja,1995-05-28,PSOE,12
+La Rioja,1995-05-28,IU,2
+La Rioja,1995-05-28,PR,2
+Madrid,1995-05-28,PP,54
+Madrid,1995-05-28,PSOE,32
+Madrid,1995-05-28,IU,17
+Murcia,1995-05-28,PP,26
+Murcia,1995-05-28,PSOE,15
+Murcia,1995-05-28,IU–LV–RM,4
+Navarre,1995-05-28,UPN,17
+Navarre,1995-05-28,PSN–PSOE,11
+Navarre,1995-05-28,CDN,10
+Navarre,1995-05-28,IU/EB,5
+Navarre,1995-05-28,HB,5
+Navarre,1995-05-28,EA,2
+Valencian Community,1995-05-28,PP,42
+Valencian Community,1995-05-28,PSOE,32
+Valencian Community,1995-05-28,EU–EV,10
+Valencian Community,1995-05-28,UV,5
+Catalonia,1995-11-19,CiU,60
+Catalonia,1995-11-19,PSC–PSOE,34
+Catalonia,1995-11-19,PP,17
+Catalonia,1995-11-19,ERC,13
+Catalonia,1995-11-19,IC–EV,11
+Basque Country,1994-10-23,EAJ/PNV,22
+Basque Country,1994-10-23,PSE–EE (PSOE),12
+Basque Country,1994-10-23,HB,11
+Basque Country,1994-10-23,PP,11
+Basque Country,1994-10-23,EA,8
+Basque Country,1994-10-23,IU/EB,6
+Basque Country,1994-10-23,UA,5
+Andalusia,1994-06-12,PSOE–A,45
+Andalusia,1994-06-12,PP,41
+Andalusia,1994-06-12,IULV–CA,20
+Andalusia,1994-06-12,PA–PAP,3
+Galicia,1993-10-17,PP,43
+Galicia,1993-10-17,PSdeG–PSOE,19
+Galicia,1993-10-17,BNG,13
+Catalonia,1992-03-15,CiU,70
+Catalonia,1992-03-15,PSC–PSOE,40
+Catalonia,1992-03-15,ERC,11
+Catalonia,1992-03-15,IC,7
+Catalonia,1992-03-15,PP,7
+Aragon,1991-05-26,PSOE,30
+Aragon,1991-05-26,PAR,17
+Aragon,1991-05-26,PP,17
+Aragon,1991-05-26,CAA–IU,3
+Asturias,1991-05-26,PSOE,21
+Asturias,1991-05-26,PP,15
+Asturias,1991-05-26,IU,6
+Asturias,1991-05-26,CDS,2
+Asturias,1991-05-26,PAS–UNA,1
+Balearic Islands,1991-05-26,PP–UM,31
+Balearic Islands,1991-05-26,PSIB–PSOE,21
+Balearic Islands,1991-05-26,PSM–NM,3
+Balearic Islands,1991-05-26,PSM–EU,2
+Balearic Islands,1991-05-26,UIM–IM,1
+Balearic Islands,1991-05-26,FIEF,1
+Canary Islands,1991-05-26,PSOE,23
+Canary Islands,1991-05-26,AIC,16
+Canary Islands,1991-05-26,CDS,7
+Canary Islands,1991-05-26,PP,6
+Canary Islands,1991-05-26,ICAN,5
+Canary Islands,1991-05-26,AM,2
+Canary Islands,1991-05-26,AHI,1
+Cantabria,1991-05-26,PSOE,16
+Cantabria,1991-05-26,UPCA,15
+Cantabria,1991-05-26,PP,6
+Cantabria,1991-05-26,PRC,2
+Castile and León,1991-05-26,PP,43
+Castile and León,1991-05-26,PSOE,35
+Castile and León,1991-05-26,CDS,5
+Castile and León,1991-05-26,IU,1
+Castilla–La Mancha,1991-05-26,PSOE,27
+Castilla–La Mancha,1991-05-26,PP,19
+Castilla–La Mancha,1991-05-26,IU,1
+Extremadura,1991-05-26,PSOE,39
+Extremadura,1991-05-26,PP,19
+Extremadura,1991-05-26,IU,4
+Extremadura,1991-05-26,CDS,3
+La Rioja,1991-05-26,PSOE,16
+La Rioja,1991-05-26,PP,15
+La Rioja,1991-05-26,PR,2
+Madrid,1991-05-26,PP,47
+Madrid,1991-05-26,PSOE,41
+Madrid,1991-05-26,IU,13
+Murcia,1991-05-26,PSOE,24
+Murcia,1991-05-26,PP,17
+Murcia,1991-05-26,IU,4
+Navarre,1991-05-26,UPN,20
+Navarre,1991-05-26,PSN–PSOE,19
+Navarre,1991-05-26,HB,6
+Navarre,1991-05-26,EA,3
+Navarre,1991-05-26,IU,2
+Valencian Community,1991-05-26,PSOE,45
+Valencian Community,1991-05-26,PP,31
+Valencian Community,1991-05-26,UV,7
+Valencian Community,1991-05-26,EUPV,6
+Basque Country,1990-10-28,EAJ/PNV,22
+Basque Country,1990-10-28,PSE–PSOE,16
+Basque Country,1990-10-28,HB,13
+Basque Country,1990-10-28,EA,9
+Basque Country,1990-10-28,PP,6
+Basque Country,1990-10-28,EE,6
+Basque Country,1990-10-28,UA,3
+Andalusia,1990-06-23,PSOE–A,62
+Andalusia,1990-06-23,PP,26
+Andalusia,1990-06-23,IU–CA,11
+Andalusia,1990-06-23,PA,10
+Galicia,1989-12-17,PP,38
+Galicia,1989-12-17,PSdeG–PSOE,28
+Galicia,1989-12-17,BNG,5
+Galicia,1989-12-17,PSG–EG,2
+Galicia,1989-12-17,CG,2
+Catalonia,1988-05-29,CiU,69
+Catalonia,1988-05-29,PSC–PSOE,42
+Catalonia,1988-05-29,IC,9
+Catalonia,1988-05-29,AP,6
+Catalonia,1988-05-29,ERC,6
+Catalonia,1988-05-29,CDS,3
+Aragon,1987-06-10,PSOE,27
+Aragon,1987-06-10,PAR,19
+Aragon,1987-06-10,AP,13
+Aragon,1987-06-10,CDS,6
+Aragon,1987-06-10,CAA–IU,2
+Asturias,1987-06-10,PSOE,20
+Asturias,1987-06-10,AP,13
+Asturias,1987-06-10,CDS,8
+Asturias,1987-06-10,IU,4
+Balearic Islands,1987-06-10,AP–PL,25
+Balearic Islands,1987-06-10,PSOE,21
+Balearic Islands,1987-06-10,CDS,5
+Balearic Islands,1987-06-10,UM,4
+Balearic Islands,1987-06-10,PSM–EN,2
+Balearic Islands,1987-06-10,PSM–EU,2
+Canary Islands,1987-06-10,PSOE,21
+Canary Islands,1987-06-10,CDS,13
+Canary Islands,1987-06-10,AIC,11
+Canary Islands,1987-06-10,AP,6
+Canary Islands,1987-06-10,AM,3
+Canary Islands,1987-06-10,AC–INC,2
+Canary Islands,1987-06-10,ICU,2
+Canary Islands,1987-06-10,AHI,2
+Cantabria,1987-06-10,AP,19
+Cantabria,1987-06-10,PSOE,13
+Cantabria,1987-06-10,PRC,5
+Cantabria,1987-06-10,CDS,2
+Castile and León,1987-06-10,AP,32
+Castile and León,1987-06-10,PSOE,32
+Castile and León,1987-06-10,CDS,18
+Castile and León,1987-06-10,PDP,1
+Castile and León,1987-06-10,SI,1
+Castilla–La Mancha,1987-06-10,PSOE,25
+Castilla–La Mancha,1987-06-10,AP,18
+Castilla–La Mancha,1987-06-10,CDS,4
+Extremadura,1987-06-10,PSOE,34
+Extremadura,1987-06-10,AP,17
+Extremadura,1987-06-10,CDS,8
+Extremadura,1987-06-10,EU,4
+Extremadura,1987-06-10,IU,2
+La Rioja,1987-06-10,PSOE,14
+La Rioja,1987-06-10,AP,13
+La Rioja,1987-06-10,CDS,4
+La Rioja,1987-06-10,PRP,2
+Madrid,1987-06-10,PSOE,40
+Madrid,1987-06-10,AP,32
+Madrid,1987-06-10,CDS,17
+Madrid,1987-06-10,IU,7
+Murcia,1987-06-10,PSOE,25
+Murcia,1987-06-10,AP,16
+Murcia,1987-06-10,CDS,3
+Murcia,1987-06-10,IU,1
+Navarre,1987-06-10,PSN–PSOE,15
+Navarre,1987-06-10,UPN,14
+Navarre,1987-06-10,HB,7
+Navarre,1987-06-10,CDS,4
+Navarre,1987-06-10,EA,4
+Navarre,1987-06-10,UDF (PDP–PL),3
+Navarre,1987-06-10,AP,2
+Navarre,1987-06-10,EE,1
+Valencian Community,1987-06-10,PSOE,42
+Valencian Community,1987-06-10,AP,25
+Valencian Community,1987-06-10,CDS,10
+Valencian Community,1987-06-10,UV,6
+Valencian Community,1987-06-10,IU–UPV,6
+Basque Country,1986-11-30,PSE–PSOE,19
+Basque Country,1986-11-30,EAJ/PNV,17
+Basque Country,1986-11-30,HB,13
+Basque Country,1986-11-30,EA,13
+Basque Country,1986-11-30,EE,9
+Basque Country,1986-11-30,AP–PL,2
+Basque Country,1986-11-30,CDS,2
+Andalusia,1986-06-22,PSOE–A,60
+Andalusia,1986-06-22,AP–PDP–PL,28
+Andalusia,1986-06-22,IU–CA,19
+Andalusia,1986-06-22,PA,2
+Galicia,1985-11-24,AP–PDP–PL–CdG,34
+Galicia,1985-11-24,PSdG–PSOE,22
+Galicia,1985-11-24,CG,11
+Galicia,1985-11-24,PSG–EG,3
+Galicia,1985-11-24,BNG,1
+Basque Country,1984-02-26,EAJ/PNV,32
+Basque Country,1984-02-26,PSE–PSOE,19
+Basque Country,1984-02-26,HB,11
+Basque Country,1984-02-26,AP–PDP–UL,7
+Basque Country,1984-02-26,EE,6
+Catalonia,1984-04-29,CiU,72
+Catalonia,1984-04-29,PSC–PSOE,41
+Catalonia,1984-04-29,AP–PDP–UL,11
+Catalonia,1984-04-29,PSUC,6
+Catalonia,1984-04-29,ERC,5
+Aragon,1983-05-08,PSOE,33
+Aragon,1983-05-08,AP–PDP–UL,18
+Aragon,1983-05-08,PAR,13
+Aragon,1983-05-08,PCE,1
+Aragon,1983-05-08,CDS,1
+Asturias,1983-05-08,PSOE,26
+Asturias,1983-05-08,AP–PDP–UL,14
+Asturias,1983-05-08,PCA–PCE,5
+Balearic Islands,1983-05-08,AP–PDP–UL,21
+Balearic Islands,1983-05-08,PSOE,21
+Balearic Islands,1983-05-08,UM,6
+Balearic Islands,1983-05-08,PSM–PSI,2
+Balearic Islands,1983-05-08,PSM,2
+Balearic Islands,1983-05-08,PDL,1
+Balearic Islands,1983-05-08,CIM,1
+Canary Islands,1983-05-08,PSOE,27
+Canary Islands,1983-05-08,AP–PDP–UL,17
+Canary Islands,1983-05-08,CDS,6
+Canary Islands,1983-05-08,AM,3
+Canary Islands,1983-05-08,UPC–AC,2
+Canary Islands,1983-05-08,AGI,2
+Canary Islands,1983-05-08,PCC,1
+Canary Islands,1983-05-08,CNC,1
+Canary Islands,1983-05-08,AHI,1
+Cantabria,1983-05-08,AP–PDP–UL,18
+Cantabria,1983-05-08,PSOE,15
+Cantabria,1983-05-08,PRC,2
+Castile and León,1983-05-08,PSOE,42
+Castile and León,1983-05-08,AP–PDP–UL,39
+Castile and León,1983-05-08,CDS,2
+Castile and León,1983-05-08,PDL,1
+Castilla–La Mancha,1983-05-08,PSOE,23
+Castilla–La Mancha,1983-05-08,AP–PDP–UL,21
+Extremadura,1983-05-08,PSOE,35
+Extremadura,1983-05-08,AP–PDP–UL,20
+Extremadura,1983-05-08,EU,6
+Extremadura,1983-05-08,PCE,4
+La Rioja,1983-05-08,PSOE,18
+La Rioja,1983-05-08,AP–PDP–UL,15
+La Rioja,1983-05-08,PRP,2
+Madrid,1983-05-08,PSOE,51
+Madrid,1983-05-08,AP–PDP–UL,34
+Madrid,1983-05-08,PCE,9
+Murcia,1983-05-08,PSOE,26
+Murcia,1983-05-08,AP–PDP–UL,16
+Murcia,1983-05-08,PCE,1
+Navarre,1983-05-08,PSOE,20
+Navarre,1983-05-08,UPN,13
+Navarre,1983-05-08,AP–PDP–UL,8
+Navarre,1983-05-08,HB,6
+Navarre,1983-05-08,EAJ/PNV,3
+Valencian Community,1983-05-08,PSOE,51
+Valencian Community,1983-05-08,AP–PDP–UL–UV,32
+Valencian Community,1983-05-08,PCE–PCPV,6
+Andalusia,1982-05-23,PSOE–A,66
+Andalusia,1982-05-23,AP,17
+Andalusia,1982-05-23,UCD,15
+Andalusia,1982-05-23,PCA–PCE,8
+Andalusia,1982-05-23,PSA–PA,3
+Galicia,1981-10-20,AP,26
+Galicia,1981-10-20,UCD,24
+Galicia,1981-10-20,PSdG–PSOE,16
+Galicia,1981-10-20,BNPG–PSG,3
+Galicia,1981-10-20,EG,1
+Galicia,1981-10-20,PCE–PCG,1
+Basque Country,1980-03-09,EAJ/PNV,25
+Basque Country,1980-03-09,HB,11
+Basque Country,1980-03-09,PSE–PSOE,9
+Basque Country,1980-03-09,EE,6
+Basque Country,1980-03-09,UCD,6
+Basque Country,1980-03-09,AP,2
+Basque Country,1980-03-09,PCE/EPK,1
+Catalonia,1980-03-20,CiU,43
+Catalonia,1980-03-20,PSC–PSOE,33
+Catalonia,1980-03-20,PSUC,25
+Catalonia,1980-03-20,CC–UCD,18
+Catalonia,1980-03-20,ERC,14
+Catalonia,1980-03-20,PSA–PA,2

@@ -1,0 +1,117 @@
+# pactómetro.es: cómo ponerla en marcha
+
+Titular de la web y del dominio: **Javier Pereiro Pérez** · Contacto: **pactometroes@gmail.com**
+
+Este ZIP tiene tres cosas:
+
+| Archivo | Qué es |
+|---|---|
+| `pactometro.es/` | La web completa. Es la carpeta que se sube al alojamiento |
+| `LEEME.md` | Esta guía |
+| `encuesta-google-apps-script.gs` | El programa que guarda las respuestas de la encuesta en una hoja de Google (paso 4) |
+
+Dentro de `pactometro.es/`:
+
+| Archivo | Qué es |
+|---|---|
+| `index.html` | La web: portada con buscador, pactómetros de todas las instituciones, encuesta, histórico, comparador, fuentes y aviso legal |
+| `config.js` | Configuración de la encuesta: aquí va la dirección de tu hoja de Google (paso 4) |
+| `data/` | Datos electorales. `data/mun/` tiene un archivo por provincia con todos sus municipios de 1979 a 2023 |
+| `img/`, `favicon.ico`, `site.webmanifest` | Logotipos, icono de la pestaña e iconos para móvil |
+| `CNAME`, `robots.txt`, `sitemap.xml` | Dominio para GitHub Pages e indexación en buscadores |
+
+La web no necesita servidor ni base de datos: sirve cualquier alojamiento de páginas estáticas.
+
+## 1. Registra el dominio a tu nombre
+
+El 8 de octubre de 2026 ni `pactómetro.es` ni `pactometro.es` estaban registrados.
+
+1. Elige un agente registrador acreditado para .es (la lista oficial está en dominios.es, de Red.es). Dos opciones españolas:
+   - **DonDominio**: unos 7 € al año, tanto el alta como la renovación.
+   - **Dinahosting** (empresa de Santiago de Compostela): unos 10 € el primer año y unos 14 € las renovaciones.
+
+   Son precios orientativos de octubre de 2026: comprueba el precio final, con IVA, al comprar.
+2. Busca `pactómetro.es`. Si el buscador no admite la tilde, escribe `xn--pactmetro-86a.es`: es el mismo dominio.
+3. Registra también `pactometro.es` (sin tilde), porque mucha gente lo escribirá así, y redirígelo al principal.
+4. Titular: **Javier Pereiro Pérez**, con tu DNI. Correo de contacto: **pactometroes@gmail.com**. Comprueba que el titular eres tú y no el registrador: eso es lo que te da la propiedad del dominio.
+
+## 2. Publica la web (gratis)
+
+Puedes publicarla ya, antes de tener el dominio: tendrá una dirección provisional gratuita.
+
+**GitHub Pages (recomendado)**
+
+Es gratis, aguanta bien los picos de visitas (100 GB de tráfico al mes) y, si conectas tu cuenta de GitHub a Claude, puedo subir yo los cambios y la web se actualiza sola.
+
+1. Crea una cuenta en github.com con pactometroes@gmail.com.
+2. Pulsa *New repository*, llámalo `pactometro`, márcalo como *Public* y pulsa *Create repository*.
+3. Pulsa *uploading an existing file*. Abre la carpeta `pactometro.es` en tu ordenador, selecciona todo lo que hay dentro (también las carpetas `data` e `img`) y arrástralo a la página. Pulsa *Commit changes*.
+4. Ve a *Settings → Pages*. En *Branch* elige `main` y `/ (root)` y pulsa *Save*. En uno o dos minutos la web estará en `https://tu-usuario.github.io/pactometro/`.
+5. Cuando tengas el dominio, en esa misma pantalla escribe `pactometro.es` en *Custom domain* y pulsa *Save*. Cuando lo permita, marca *Enforce HTTPS*.
+
+**Cloudflare Pages (alternativa, con tráfico ilimitado)**
+
+También es gratis y no limita el tráfico, pero para usar el dominio tienes que pasar su DNS a Cloudflare (cambiar los dos «servidores de nombres» en el registrador). Pasos: crea una cuenta en cloudflare.com, añade el dominio y copia sus dos servidores de nombres en el registrador. Después ve a *Workers & Pages → Create → Pages → Upload assets*, arrastra la carpeta `pactometro.es` y, en *Custom domains*, añade el dominio.
+
+**Por qué no Netlify:** para las cuentas nuevas (desde septiembre de 2025), su plan gratuito funciona con 300 créditos al mes. Cada publicación gasta 15 y cada GB de tráfico 20, y cuando se acaban la web queda en pausa hasta el mes siguiente. Es un riesgo en una noche electoral.
+
+## 3. Apunta el dominio al alojamiento
+
+Con **GitHub Pages**, en el panel de DNS de tu registrador:
+
+- Cuatro registros `A` para `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y `185.199.111.153`.
+- Un registro `CNAME` para `www` → `tu-usuario.github.io`.
+
+Con **Cloudflare Pages** no hace falta: basta con el cambio de servidores de nombres del paso anterior.
+
+Si registraste también `pactometro.es` (sin tilde), configura en el registrador una redirección de ese dominio a `https://pactómetro.es`.
+
+Comprueba estas direcciones en la ayuda del servicio antes de guardarlas, por si han cambiado. Los cambios tardan de minutos a unas horas, y el HTTPS se activa gratis cuando el dominio ya apunta al alojamiento.
+
+## 4. Activa la encuesta del 29-N (10 minutos)
+
+**Horario:** la encuesta se abre en cuanto `config.js` tiene la URL de la hoja y admite respuestas hasta el **domingo 22 de noviembre a las 20:00** (hora peninsular). Mientras `config.js` esté vacío no sale en el menú. Después de las 20:00 del 22 muestra «Encuesta cerrada». La hoja de Google también rechaza cualquier respuesta fuera de ese plazo, aunque alguien tenga mal la hora de su ordenador.
+
+Las respuestas se guardan en una hoja de cálculo privada de tu cuenta de Google. Nadie más puede verla, y la web nunca muestra el recuento.
+
+1. Entra en Google Drive con **pactometroes@gmail.com** y crea una hoja de cálculo nueva. Llámala «Encuesta 29-N».
+2. En la hoja, abre **Extensiones → Apps Script**. Borra lo que aparece y pega todo el contenido de `encuesta-google-apps-script.gs`. Pulsa el icono de guardar.
+3. En la lista de funciones de arriba elige **configurar** y pulsa **▶ Ejecutar**. Google pedirá permiso: elige tu cuenta y, si sale «Google no ha verificado esta aplicación», pulsa *Configuración avanzada → Ir a… (no seguro)* y luego *Permitir*. Es normal: la aplicación es tuya y solo escribe en esta hoja.
+4. Pulsa **Implementar → Nueva implementación**. En el engranaje elige **Aplicación web**. Pon *Ejecutar como: Yo* y *Quién tiene acceso: Cualquier usuario*. Pulsa *Implementar* y copia la **URL de la aplicación web** (termina en `/exec`).
+5. Pega esa URL entre las comillas de `encuestaURL: ''` en el archivo `config.js` de la web. En GitHub: abre `config.js` en el repositorio, pulsa el lápiz, pega la URL y pulsa *Commit changes*. (O mándame la URL y lo dejo hecho yo.)
+6. Haz una prueba antes del 22: abre tu web añadiendo `#encuesta-prueba` al final de la dirección (por ejemplo, `https://pactometro.es/#encuesta-prueba`) y envía una respuesta. En unos segundos debe aparecer una fila en la pestaña «Pruebas», que no cuenta en el recuento. Esa dirección de prueba funciona cualquier día.
+
+**Dónde ver los resultados:** en esa hoja. La pestaña «Respuestas» tiene una fila por respuesta (fecha con la hora redondeada, intención de voto, recuerdo de voto del 23-J y provincia). La pestaña «Recuento» tiene los totales y los cruces por provincia y por recuerdo de voto: actualízala con el menú **Encuesta 29-N → Actualizar recuento**. También puedes descargar la hoja (*Archivo → Descargar*) y pasármela para analizarla.
+
+**Si cambias el script** más adelante, en Apps Script usa *Implementar → Gestionar implementaciones → editar → Versión: nueva versión*. Así se mantiene la misma URL.
+
+**Versión 2 del script (14-10-2026):** solo guarda respuestas que llegan con la casilla de consentimiento marcada, comprueba que la provincia y el recuerdo de voto son opciones de la web, manda a la pestaña «Revisar» las intenciones de voto que no reconoce (sin contarlas) y limita las respuestas por minuto. Si cambia la lista de partidos de la encuesta, hay que cambiar también la lista `INTENCIONES` del script y volver a implementarlo; si no, esas respuestas irán a «Revisar».
+
+**Conservación:** la política de privacidad dice que las respuestas individuales se borran como tarde el **31 de mayo de 2027**. Usa el menú *Encuesta 29-N → Borrar respuestas individuales…*: guarda los totales en «Recuento» y vacía el resto.
+
+**Antes de publicar resultados, ten en cuenta la ley electoral:**
+- No se pueden publicar ni difundir encuestas electorales los cinco días anteriores a la votación, del 24 al 28 de noviembre (art. 69.7 de la LOREG). Con la encuesta cerrada el domingo 22 a las 20:00, el último día para publicar sus resultados es el lunes 23.
+- Una encuesta publicada en periodo electoral debe ir acompañada de su ficha técnica: quién la ha hecho, sus características técnicas y el texto íntegro de las preguntas. La Junta Electoral Central vigila el cumplimiento.
+- Es una encuesta abierta (responde quien quiere), así que conviene presentarla como no representativa y no como una estimación de voto.
+
+## 5. Cambios en la web
+
+Pídemelos en el chat de Claude (en el mismo o en uno nuevo, pegando el enlace de la página publicada).
+
+- **Con tu GitHub conectado a Claude:** subo yo los cambios al repositorio y la web se actualiza sola en uno o dos minutos.
+- **Sin conectarlo:** te paso un ZIP nuevo y subes los archivos cambiados al repositorio (*Add file → Upload files*), o en Cloudflare Pages vuelves a arrastrar la carpeta.
+
+## 6. Datos que habrá que actualizar
+
+- **Candidaturas del 29-N:** se presentan del 21 al 26 de octubre y se proclaman a primeros de noviembre. Entonces conviene ajustar la lista de partidos de la encuesta, antes de que abra el 22.
+- **Resultados del 29-N:** cuando el Ministerio del Interior publique los resultados oficiales, se añaden al Congreso y al histórico.
+- **Municipales y autonómicas de mayo de 2027:** mismo procedimiento con los nuevos ficheros oficiales.
+
+## 7. Derechos, aviso legal y seguridad
+
+- El diseño, el código y la recopilación de datos son © 2026 Javier Pereiro Pérez. La web lo indica en el pie y en las páginas «Aviso legal», «Privacidad» y «Cookies».
+- La web no usa cookies. Si algún día añades publicidad o analítica, antes hay que poner un gestor de consentimiento (con botón de rechazar), actualizar la política de cookies y añadir al aviso legal tu NIF y un domicilio.
+- `index.html` lleva una política de seguridad de contenidos (CSP): el navegador solo ejecuta el código de la propia web y la encuesta solo puede enviar datos a Google Apps Script. Si añades un script externo (publicidad, analítica, un mapa…), hay que añadir su dominio a esa política o no funcionará.
+- Los resultados oficiales proceden del Ministerio del Interior y del Congreso de los Diputados; hay que citar siempre la fuente, como ya hace la web.
+- Los escaños del Congreso de 1989 y 1993 proceden del proyecto *listas-electorales* (licencia CC BY 4.0), que exige atribución; ya figura en «Fuentes».
+- Si algún día pones publicidad o cobras por algo en la web, la Ley 34/2002 (LSSI) obliga a añadir tu NIF y un domicilio en el aviso legal.

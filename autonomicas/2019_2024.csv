@@ -1,0 +1,131 @@
+region,date,party,seats
+Galicia,2024-02-18,PP,40
+Galicia,2024-02-18,BNG,25
+Galicia,2024-02-18,PSdeG–PSOE,9
+Galicia,2024-02-18,DO,1
+Basque Country,2024-04-21,EAJ/PNV,27
+Basque Country,2024-04-21,EH Bildu,27
+Basque Country,2024-04-21,PSE–EE (PSOE),12
+Basque Country,2024-04-21,PP,7
+Basque Country,2024-04-21,Sumar,1
+Basque Country,2024-04-21,Vox,1
+Catalonia,2024-05-12,PSC–PSOE,42
+Catalonia,2024-05-12,Cat–Junts+,35
+Catalonia,2024-05-12,ERC,20
+Catalonia,2024-05-12,PP,15
+Catalonia,2024-05-12,Vox,11
+Catalonia,2024-05-12,Comuns Sumar,6
+Catalonia,2024-05-12,CUP–DT,4
+Catalonia,2024-05-12,Aliança.cat,2
+Castile and León,2022-02-13,PP,31
+Castile and León,2022-02-13,PSOE,28
+Castile and León,2022-02-13,Vox,13
+Castile and León,2022-02-13,Podemos–IU–AV,1
+Castile and León,2022-02-13,Cs,1
+Castile and León,2022-02-13,UPL,3
+Castile and León,2022-02-13,EV–SY,3
+Castile and León,2022-02-13,XAV,1
+Andalusia,2022-06-19,PP,58
+Andalusia,2022-06-19,PSOE–A,30
+Andalusia,2022-06-19,Vox,14
+Andalusia,2022-06-19,PorA,5
+Andalusia,2022-06-19,AA,2
+Catalonia,2021-02-14,PSC–PSOE,33
+Catalonia,2021-02-14,ERC,33
+Catalonia,2021-02-14,JxCat,32
+Catalonia,2021-02-14,Vox,11
+Catalonia,2021-02-14,ECP–PEC,8
+Catalonia,2021-02-14,CUP–G,9
+Catalonia,2021-02-14,Cs,6
+Catalonia,2021-02-14,PP,3
+Madrid,2021-05-04,PP,65
+Madrid,2021-05-04,Más Madrid,24
+Madrid,2021-05-04,PSOE,24
+Madrid,2021-05-04,Vox,13
+Madrid,2021-05-04,Podemos–IU,10
+Basque Country,2020-07-12,EAJ/PNV,31
+Basque Country,2020-07-12,EH Bildu,21
+Basque Country,2020-07-12,PSE–EE (PSOE),10
+Basque Country,2020-07-12,Elkarrekin Podemos,6
+Basque Country,2020-07-12,PP+Cs,6
+Basque Country,2020-07-12,Vox,1
+Galicia,2020-07-12,PP,42
+Galicia,2020-07-12,BNG,19
+Galicia,2020-07-12,PSdeG–PSOE,14
+Valencian Community,2019-04-28,PSPV–PSOE,27
+Valencian Community,2019-04-28,PP,19
+Valencian Community,2019-04-28,Cs,18
+Valencian Community,2019-04-28,Compromís,17
+Valencian Community,2019-04-28,Vox,10
+Valencian Community,2019-04-28,Unides Podem–EUPV,8
+Aragon,2019-05-26,PSOE,24
+Aragon,2019-05-26,PP,16
+Aragon,2019-05-26,Cs,12
+Aragon,2019-05-26,Podemos–Equo,5
+Aragon,2019-05-26,CHA,3
+Aragon,2019-05-26,Vox,3
+Aragon,2019-05-26,PAR,3
+Aragon,2019-05-26,IU,1
+Asturias,2019-05-26,PSOE,20
+Asturias,2019-05-26,PP,10
+Asturias,2019-05-26,Cs,5
+Asturias,2019-05-26,Podemos,4
+Asturias,2019-05-26,IU–IAS,2
+Asturias,2019-05-26,FAC,2
+Asturias,2019-05-26,Vox,2
+Balearic Islands,2019-05-26,PSIB–PSOE,19
+Balearic Islands,2019-05-26,PP,16
+Balearic Islands,2019-05-26,Cs,5
+Balearic Islands,2019-05-26,Podemos–EUIB,6
+Balearic Islands,2019-05-26,Més,4
+Balearic Islands,2019-05-26,Vox–ACTUA Baleares,3
+Balearic Islands,2019-05-26,El Pi,3
+Balearic Islands,2019-05-26,MxMe,2
+Balearic Islands,2019-05-26,GxF+PSOE+EUIB,1
+Canary Islands,2019-05-26,PSOE,25
+Canary Islands,2019-05-26,CCa–PNC,20
+Canary Islands,2019-05-26,PP,11
+Canary Islands,2019-05-26,NCa,5
+Canary Islands,2019-05-26,Podemos–SSP–Equo,4
+Canary Islands,2019-05-26,ASG,3
+Canary Islands,2019-05-26,Cs,2
+Cantabria,2019-05-26,PRC,14
+Cantabria,2019-05-26,PP,9
+Cantabria,2019-05-26,PSOE,7
+Cantabria,2019-05-26,Cs,3
+Cantabria,2019-05-26,Vox,2
+Castile and León,2019-05-26,PSOE,35
+Castile and León,2019-05-26,PP,29
+Castile and León,2019-05-26,Cs,12
+Castile and León,2019-05-26,Podemos–Equo,2
+Castile and León,2019-05-26,Vox,1
+Castile and León,2019-05-26,UPL,1
+Castile and León,2019-05-26,XAV,1
+Castilla–La Mancha,2019-05-26,PSOE,19
+Castilla–La Mancha,2019-05-26,PP,10
+Castilla–La Mancha,2019-05-26,Cs,4
+Extremadura,2019-05-26,PSOE,34
+Extremadura,2019-05-26,PP,20
+Extremadura,2019-05-26,Cs,7
+Extremadura,2019-05-26,Podemos–IU–eX–Equo,4
+La Rioja,2019-05-26,PSOE,15
+La Rioja,2019-05-26,PP,12
+La Rioja,2019-05-26,Cs,4
+La Rioja,2019-05-26,Podemos–IU–Equo,2
+Madrid,2019-05-26,PSOE,37
+Madrid,2019-05-26,PP,30
+Madrid,2019-05-26,Cs,26
+Madrid,2019-05-26,Más Madrid,20
+Madrid,2019-05-26,Vox,12
+Madrid,2019-05-26,Podemos–IU,7
+Murcia,2019-05-26,PSOE,17
+Murcia,2019-05-26,PP,16
+Murcia,2019-05-26,Cs,6
+Murcia,2019-05-26,Vox,4
+Murcia,2019-05-26,Podemos–Equo,2
+Navarre,2019-05-26,NA+,20
+Navarre,2019-05-26,PSN–PSOE,11
+Navarre,2019-05-26,GBai,9
+Navarre,2019-05-26,EH Bildu,7
+Navarre,2019-05-26,Podemos,2
+Navarre,2019-05-26,I–E,1
