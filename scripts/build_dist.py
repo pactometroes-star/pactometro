@@ -41,8 +41,9 @@ assert '<!--CONTENIDO-->' in shell
 gen = Generador(DATA, js)
 js = (js.replace('__ACTUALIZADO_ISO__', HOY.isoformat()).replace('__ACTUALIZADO__', f'{HOY.day} de {MESES[HOY.month - 1]} de {HOY.year}')
         .replace('__SLUG_PROV__', json.dumps(gen.slug_prov, ensure_ascii=False, sort_keys=True))
-        .replace('__PROV_NOMBRE__', json.dumps(gen.prov_n, ensure_ascii=False, sort_keys=True)))
-assert '__ACTUALIZADO' not in js and '__SLUG_PROV__' not in js and '__PROV_NOMBRE__' not in js
+        .replace('__PROV_NOMBRE__', json.dumps(gen.prov_n, ensure_ascii=False, sort_keys=True))
+        .replace('__PROV_CCAA__', json.dumps(gen.M['prov_ccaa'], ensure_ascii=False, sort_keys=True)))
+assert '__ACTUALIZADO' not in js and '__SLUG_PROV__' not in js and '__PROV_NOMBRE__' not in js and '__PROV_CCAA__' not in js
 
 # Content Security Policy (GitHub Pages can't send headers, so it goes in a <meta>). Only our own scripts run
 # (no inline code); the poll and the election night may only talk to Google Apps Script.
@@ -147,6 +148,11 @@ for r in M['municipios']:
     r.append(gen.slug_mun[r[0]])
 M['campos'] = M['campos'][:7] + ['slug']
 json.dump(M, open(os.path.join(DIST, 'data', 'municipios.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+# map: winner of each municipality in every municipal election (the boundaries, data/mapa/espana.json and
+# municipios.json, come from scripts/mapa.mjs)
+os.makedirs(os.path.join(DIST, 'data', 'mapa'), exist_ok=True)
+for y, d in gen.mapa_ayuntamientos().items():
+    json.dump(d, open(os.path.join(DIST, 'data', 'mapa', f'ayto-{y}.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 
 shutil.copytree(os.path.join(SITE, 'fonts'), os.path.join(DIST, 'fonts'))   # self-hosted Archivo and Ibarra Real Nova (OFL)
 for f in ['logo.png', 'logo-oscuro.png', 'icono-32.png', 'icono-48.png', 'icono-64.png', 'icono-96.png', 'icono-144.png', 'icono-192.png', 'icono-512.png',

@@ -180,6 +180,7 @@ class Generador:
         L = lambda f: json.load(open(os.path.join(data_dir, f), encoding='utf-8'))
         self.G, self.A, self.Lo, self.M = L('generales.json'), L('autonomicas.json'), L('locales.json'), L('municipios.json')
         self.prog = L('programas.json') if os.path.exists(os.path.join(data_dir, 'programas.json')) else None
+        self.fam = L('resumen.json').get('familias', {})
         self.ESC_2026 = json.loads(re.search(r'const ESC_2026 = (\{.*?\});', js_src).group(1))
         cal = re.search(r'const CAL_29N = (\[.*?\n\]);', js_src, re.S).group(1)
         cal = re.sub(r'//[^\n]*', '', cal).replace('null', 'None')
@@ -362,7 +363,8 @@ class Generador:
             senado = ('2 senadores' if p in ('51', '52') else 'senadores por islas' if p in ('07', '35', '38') else '4 senadores')
             lista = sorted(munis.get(p, []), key=lambda r: slug(r[1]))
             lis = '<ul class="enlaces col3">' + ''.join(f'<li><a href="{self.url_mun(r[0])}">{esc(r[1])}</a></li>' for r in lista) + '</ul>'
-            links = [('Simulador para el 29-N', '/congreso/simulador/', ''), ('Calendario del 29-N', '/29n/', '')]
+            links = [('Simulador para el 29-N', '/congreso/simulador/', ''), ('Calendario del 29-N', '/29n/', ''),
+                     (f'Mapa de los ayuntamientos de {nombre}', f'/mapa/?nivel=ayuntamientos&amp;prov={p}', '')]
             if p in dip:
                 links.insert(0, (self.nombre_dip(p, dip[p]), f'/diputacion/{self.slug_prov[p]}/', ''))
             if ca in self.auto_de_ca:
@@ -508,7 +510,7 @@ class Generador:
                 rk = m['e'][k]
                 rr = sorted(([*P['c'][ci], v, s] for ci, v, s in rk[6]), key=lambda x: -x[5])
                 hist_items.append(f'<li><a href="{path}?eleccion={k}">{k}</a>: {"concejo abierto" if rk[0] == "C" else esc(resumen_corto(rr, N, 4))}</li>')
-            links = [(f'Elecciones generales y ayuntamientos de {prov}', self.url_prov(p), '')]
+            links = [(f'Elecciones generales y ayuntamientos de {prov}', self.url_prov(p), ''), (f'{nombre} en el mapa electoral', f'/mapa/?nivel=ayuntamientos&amp;id={ine}', '')]
             if p in dips:
                 links.insert(0, (self.nombre_dip(p, dips[p]), f'/diputacion/{self.slug_prov[p]}/', ''))
             pob = f' · {fmt(r[4])} habitantes' if r[4] else ''
@@ -537,6 +539,81 @@ class Generador:
                                [('Inicio', '/'), ('Ayuntamientos', '/ayuntamientos/')]))
         return out
 
+    # ------------------------------------------------ map: winner of every municipality in each municipal election
+    def mapa_ayuntamientos(self):
+        """{year: {'anio', 'c': [[sig, familia], …], 'm': {ine: [candidatura, escaños, concejales(, marcas: 1 concejo abierto, 2 empate)]}}}.
+        Winner = most councillors, then most votes. Written as data/mapa/ayto-AAAA.json for the map."""
+        if getattr(self, '_ayto', None):
+            return self._ayto
+        out = {}
+        for p in sorted(self.prov_n):
+            P = self.mun_prov(p)
+            for ine, m in P['m'].items():
+                for y, rec in m['e'].items():
+                    tipo, escanos, res = rec[0], rec[1] or 0, rec[6]
+                    if not res:
+                        continue
+                    orden = sorted(res, key=lambda x: (-(x[2] or 0), -(x[1] or 0)))
+                    ci, v, s = orden[0]
+                    if not (s or v):
+                        continue
+                    empate = len(orden) > 1 and (s or 0) > 0 and (orden[1][2] or 0) == s
+                    sig, fam = P['c'][ci][0], P['c'][ci][3] or 'local'
+                    A = out.setdefault(int(y), {'c': [], 'ix': {}, 'm': {}})
+                    if (sig, fam) not in A['ix']:
+                        A['ix'][(sig, fam)] = len(A['c'])
+                        A['c'].append([sig, fam])
+                    fila = [A['ix'][(sig, fam)], s or 0, escanos]
+                    marcas = (1 if tipo == 'C' or escanos < 2 else 0) | (2 if empate else 0)   # 1 concejo abierto, 2 empate en concejales
+                    if marcas:
+                        fila.append(marcas)
+                    A['m'][ine] = fila
+        self._ayto = {y: {'anio': y, 'c': A['c'], 'm': dict(sorted(A['m'].items()))} for y, A in sorted(out.items())}
+        return self._ayto
+
+    # ------------------------------------------------ electoral map (the app draws the map; the page carries the same facts as text)
+    def mapa(self):
+        N = self.N
+        corto = lambda f: 'candidaturas locales' if f == 'local' else self.fam.get(f, {}).get('corto', f)
+        def cuentas(fams, unidad, lugar):
+            c = {}
+            for f in fams:
+                c[f] = c.get(f, 0) + 1
+            orden = sorted(c.items(), key=lambda kv: (-kv[1], kv[0] == 'local'))
+            partes = [f'{esc(corto(f))} en {fmt(n)}' for f, n in orden[:6]]
+            return f'Con más {unidad}: ' + lista_y(partes) + (' y otras' if len(orden) > 6 else '') + f' {lugar}.'
+        e23 = self.G['congreso']['2023']
+        provs, fams = [], []
+        for p, nombre in sorted(self.prov_n.items(), key=lambda kv: slug(kv[1])):
+            pv = e23['provincias'][p]
+            rows = sorted(pv['r'], key=lambda r: (-r[5], -(r[4] or 0)))
+            w = rows[0]
+            fams.append(w[3] or 'local')
+            provs.append((nombre, self.url_prov(p), esc(f'· {N.sig(w[0])}, {w[5]} de {pv["escanos"]}')))
+        auto, fams_a = [], []
+        for k in sorted(self.A, key=lambda k: self.A[k]['n']):
+            a = self.A[k]
+            e = a['elecciones'][-1]
+            w = sorted(e['r'], key=lambda r: (-r[5], -(r[4] or 0)))[0]
+            fams_a.append(w[3] or 'local')
+            auto.append((a['n'], f'/parlamento/{k}/', esc(f'· {fecha(e["fecha"])}: {N.sig(w[0])}, {w[5]} de {e["escanos"]}')))
+        ay = self.mapa_ayuntamientos()[2023]
+        fams_m = [ay['c'][f[0]][1] for f in ay['m'].values()]
+        cont = (migas_html([('Inicio', '/'), ('Mapa electoral', '/mapa/')])
+                + cabecera('Mapa electoral', 'Mapa electoral de España',
+                           'Quién ganó en cada provincia, comunidad, diputación y ayuntamiento. El mapa interactivo recorre todas las elecciones generales desde 1977 '
+                           'y las municipales desde 1979: pulsa cualquier lugar para ver su resultado.')
+                + seccion('Quién ganó cada provincia el 23-J', enlaces(provs, 'enlaces col3'),
+                          'Elecciones generales del 23 de julio de 2023: candidatura con más diputados en cada provincia. ' + cuentas(fams, 'diputados', 'provincias'))
+                + seccion('Parlamentos autonómicos', enlaces(auto, 'enlaces col2'), 'Candidatura con más escaños tras las últimas elecciones de cada comunidad. ' + cuentas(fams_a, 'escaños', 'parlamentos'))
+                + seccion('Ayuntamientos', enlaces([('Buscar un municipio', '/ayuntamientos/', ''), ('Diputaciones, cabildos y consells', '/locales/', '')]),
+                          f'Elecciones municipales de 2023, en {fmt(len(ay["m"]))} municipios con resultados. ' + cuentas(fams_m, 'concejales', 'municipios'))
+                + '<p class="small muted">Límites: © Instituto Geográfico Nacional (CC BY 4.0), vía es-atlas. Resultados: Ministerio del Interior; autonómicas recopiladas de fuentes públicas.</p>')
+        return [self.pagina('/mapa/', 'mapa', 'Mapa electoral de España: quién ganó en cada provincia y municipio · pactómetro.es',
+                            'Mapa electoral interactivo de España: quién ganó en cada provincia (elecciones generales desde 1977), comunidad autónoma, diputación y '
+                            'ayuntamiento (municipales desde 1979). Pulsa en el mapa para ver cada resultado.',
+                            cont, [('Inicio', '/'), ('Mapa electoral', '/mapa/')])]
+
     # ------------------------------------------------ other sections
     def secciones(self, titulo_inicio, desc_inicio):
         N = self.N
@@ -546,7 +623,7 @@ class Generador:
                 + seccion('Elecciones generales del 29 de noviembre de 2026', enlaces([('Calendario y cómo se reparten los escaños', '/29n/', ''), ('Simulador para el 29-N', '/congreso/simulador/', ''),
                                                                                      ('Programas electorales', '/29n/programas/', ''), ('Encuesta de pactómetro.es', '/encuesta/', ''), ('Resultados en directo', '/29n/resultados/', '')]))
                 + seccion('Instituciones', enlaces([('Congreso de los Diputados', '/congreso/', ''), ('Parlamentos autonómicos', '/autonomias/', ''), ('Diputaciones, cabildos y consells', '/locales/', ''),
-                                                     ('Ayuntamientos', '/ayuntamientos/', ''), ('Histórico electoral', '/historico/', ''), ('Comparar instituciones', '/comparar/', '')]))
+                                                     ('Ayuntamientos', '/ayuntamientos/', ''), ('Mapa electoral de España', '/mapa/', ''), ('Histórico electoral', '/historico/', ''), ('Comparar instituciones', '/comparar/', '')]))
                 + seccion('Tu provincia', enlaces([(n, self.url_prov(k), '') for k, n in provs], 'enlaces col3'), 'Diputados que elige el 29-N, resultado del 23-J y todos sus ayuntamientos.'))
         out.append(self.pagina('/', 'inicio', titulo_inicio, desc_inicio, cont))
         fijas = [
@@ -568,7 +645,7 @@ class Generador:
 
     def todas(self, titulo_inicio, desc_inicio):
         pags = (self.secciones(titulo_inicio, desc_inicio) + self.congreso() + self.p29n() + self.provincias()
-                + self.autonomias() + self.locales() + self.municipios())
+                + self.autonomias() + self.locales() + self.municipios() + self.mapa())
         paths = [p['path'] for p in pags]
         assert len(paths) == len(set(paths)), 'direcciones repetidas'
         return pags

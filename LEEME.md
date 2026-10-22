@@ -138,3 +138,12 @@ Son más de 8.300 páginas. Los enlaces antiguos con almohadilla (`pactometro.es
 
 Si la conexión automática con los datos del Ministerio está disponible, se podrá rellenar la pestaña sola (los datos en directo del Ministerio solo se entregan a medios acreditados que lo pidieran antes del 28 de octubre).
 
+
+## 9. Mapa electoral (desde el 22-10-2026)
+
+`/mapa/` es un mapa interactivo de España con cuatro niveles: **General** (Congreso por provincias, elecciones generales desde 1977, menos 1989 y 1993, que no tienen datos por provincia), **Comunidades** (últimas elecciones de cada parlamento o la situación tras las autonómicas de cada mayo desde 1983), **Provincias** (diputaciones, juntas generales y, en Canarias y Baleares, un cabildo o un consell por isla, desde 1987) y **Ayuntamientos** (los 8.131 municipios, municipales desde 1979). Cada lugar lleva el color de la candidatura con más escaños (si empatan, la más votada); la opción «Solo mayorías absolutas» deja en gris el resto. Al pulsar un lugar se ve su resultado y el enlace a su página. La dirección guarda lo que se está viendo, así que se puede compartir: `/mapa/?nivel=ayuntamientos&id=27028`, `/mapa/?nivel=ayuntamientos&prov=27`, `/mapa/?eleccion=1982`, `/mapa/?nivel=comunidades&id=11`.
+
+- **Límites:** Instituto Geográfico Nacional (CC BY 4.0) en la versión simplificada de *es-atlas* (MIT). La atribución figura bajo el mapa y en «Fuentes».
+- **Ficheros:** `data/mapa/espana.json` (comunidades, provincias e islas, 135 KB) y `data/mapa/municipios.json` (1,1 MB; solo se descarga al abrir el nivel de ayuntamientos) los genera `scripts/mapa.mjs` (Node, con los paquetes `es-atlas`, `d3-geo`, `d3-composite-projections`, `topojson-client` y `topojson-simplify`); solo hay que volver a generarlos si cambian los municipios. Los ganadores de cada municipal (`data/mapa/ayto-AAAA.json`) los escribe `build_dist.py` con los datos de `data/mun/`.
+- **Nuevas elecciones:** las generales del 29-N aparecerán solas en el nivel General cuando se añadan a `generales.json` con sus resultados por provincia; las municipales de 2027 necesitan añadir el año a `MUNICIPALES` en el código.
+- **Familias políticas:** el mapa colorea por familia. La regla de Compromís solo vale ya para las listas valencianas («Compromiso por…» o «Compromís amb Formentera» son otras candidaturas); `scripts/corregir_compromis.py` aplicó la corrección a los datos.

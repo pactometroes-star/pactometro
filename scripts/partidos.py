@@ -67,6 +67,7 @@ def _tok(s, *toks):
     return False
 
 CATALUNYA = {'08', '17', '25', '43'}
+VALENCIA = {'03', '12', '46'}
 
 def familia(siglas, nombre='', prov=None):
     s = norm(siglas).replace('–', '-')
@@ -161,7 +162,8 @@ def familia(siglas, nombre='', prov=None):
         return 'cds'
     if 'GBAI' in s or 'GEROA BAI' in n or 'GEROA BAI' in s or 'NABAI' in s or 'NAFARROA BAI' in n:
         return 'gbai'
-    if 'COMPROMIS' in s or 'COMPROMIS' in n or s == 'BLOC' and 'VALENCI' in n or 'BLOC NACIONALISTA VALENCIA' in n:
+    # Compromís is Valencian: «Compromiso por Galicia», «Compromisu por Asturies» or «Compromís amb Formentera» are other lists
+    if (prov is None or prov in VALENCIA) and (re.search(r'COMPROMIS(?![OU])', sn) or s == 'BLOC' and 'VALENCI' in n or 'BLOC NACIONALISTA VALENCIA' in n):
         return 'compromis'
     if s in ('MES', 'MXME', 'MPM', 'PSM-EN', 'PSM-NM', 'PSM', 'PSM-ENE', 'PSM-IV-EXM', 'PSM-PSI', 'BLOC') or 'MES PER MALLORCA' in n or 'MES PER MENORCA' in n \
             or 'PARTIT SOCIALISTA DE MALLORCA' in n:

@@ -96,7 +96,7 @@ p{margin:0}
 .menu-btn .x{display:none}
 .mast.open .menu-btn .x{display:block}
 .mast.open .menu-btn .ham{display:none}
-@media (max-width:1140px){
+@media (max-width:1199px){
   .mast .wrap{gap:8px}
   .menu-btn{display:inline-flex}
   .nav{display:none;width:100%;flex-direction:column;gap:2px;margin:0;padding:4px 0 14px;justify-content:flex-start}
@@ -342,6 +342,16 @@ details.more > div{padding:0 14px 14px}
 .enlaces.col3{grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr))}
 .enlaces a{color:var(--ink)}
 .section > p{max-width:72ch;color:var(--ink-2)}
+.h-mapa{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(20px,4vw,52px);align-items:center;margin-bottom:clamp(22px,3vw,34px)}
+.h-mapa-fig{margin:0;display:grid;gap:8px;min-width:0}
+.h-mapa-fig figcaption{font-size:13.5px;color:var(--muted)}
+.h-mapa-svg{aspect-ratio:1000/590;background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:clamp(6px,1.4vw,14px)}
+.h-mapa-svg svg{display:block;width:100%;height:100%}
+.h-mapa-svg path[data-i]{cursor:pointer}
+.h-mapa-txt{display:grid;gap:12px;justify-items:start;align-content:center}
+.h-mapa-txt h3{font-size:clamp(25px,2.8vw,32px)}
+.h-mapa-txt p{font-size:16.5px;color:var(--ink-2);max-width:46ch}
+@media (max-width:760px){.h-mapa{grid-template-columns:minmax(0,1fr)}}
 .h-provs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,170px),1fr));gap:6px}
 .h-provs a{display:flex;justify-content:space-between;gap:8px;padding:9px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);text-decoration:none;color:var(--ink);font-size:15px}
 .h-provs a:hover{border-color:var(--ink)}
@@ -727,6 +737,100 @@ table.e-dh-in td{padding:6px 10px}
 .tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.35;max-width:260px;box-shadow:0 6px 20px -8px rgba(0,0,0,.45)}
 .tip strong{display:block;font-size:15px;font-weight:700}
 .loading{color:var(--muted);padding:40px 0}
+/* ---------- mapa ---------- */
+.mapa-ctrl{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
+.mapa-campo{display:grid;gap:5px;min-width:0;max-width:100%}
+.mapa-campo > span{font:600 11.5px/1.2 var(--f-sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mapa-campo .select{max-width:100%}
+.mapa-niveles button{font-size:14px;padding:7px 15px;min-height:36px}
+.mapa-niveles button[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+.mapa{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,360px);grid-template-areas:"ctrl ctrl" "lienzo panel" "pie panel";grid-template-rows:auto auto 1fr;gap:14px 20px;align-items:start}
+.mapa-ctrl{grid-area:ctrl}
+.mapa-pie{grid-area:pie}
+.mapa-panel{grid-area:panel}
+.mapa-lienzo{grid-area:lienzo;position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;touch-action:pan-x pan-y}
+.mapa-lienzo:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.mapa-svg{display:block;width:100%;height:auto;aspect-ratio:1000/590;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.mapa-svg.arrastrando{cursor:grabbing}
+.mapa-svg .reg.nd{fill:var(--wash)}
+.mapa-svg .reg.nm{fill:var(--seat-empty)}
+.mapa-svg .reg.sd{fill:url(#mapa-rayas)}
+.mapa-svg .ry-f{fill:var(--wash)}
+.mapa-svg .ry-l{fill:var(--rule)}
+.mapa-svg .reg.dim{fill-opacity:.13}
+.mapa-svg.lv-ayuntamientos.z-cerca .reg{stroke:var(--sheet);stroke-width:.5px;vector-effect:non-scaling-stroke}
+.mapa-svg.lv-ayuntamientos.z-muy .reg{stroke-width:.9px}
+.mapa-svg.moviendo .reg{stroke:none!important}
+.mapa-bp,.mapa-bc,.mapa-marco,.mapa-hov,.mapa-sel,.mapa-sel2{fill:none;vector-effect:non-scaling-stroke;pointer-events:none;stroke-linejoin:round;stroke-linecap:round}
+.mapa-bp{stroke:var(--sheet);stroke-width:1px}
+.mapa-bc{stroke:var(--sheet);stroke-width:2px}
+.lv-comunidades .mapa-bp{stroke-width:.6px;stroke-opacity:.6}
+.lv-ayuntamientos .mapa-bp{stroke-width:1.3px}
+.lv-ayuntamientos .mapa-bc{stroke-width:2.3px}
+.mapa-marco{stroke:var(--muted);stroke-width:1px;stroke-dasharray:5 4}
+.mapa-hov{stroke:var(--ink);stroke-width:1.6px}
+.mapa-sel2{stroke:var(--sheet);stroke-width:5px}
+.mapa-sel{stroke:var(--ink);stroke-width:2.4px}
+.mapa-halo{fill:transparent;stroke:var(--muted);stroke-width:1px;stroke-dasharray:3 2;vector-effect:non-scaling-stroke;cursor:pointer}
+.mapa-zoom{position:absolute;top:10px;left:10px;display:grid;gap:6px}   /* top left: the Atlantic, empty at any zoom out */
+.mapa-zoom .btn{width:40px;height:40px;padding:0;justify-content:center;font-size:22px;font-weight:500;line-height:1;background:var(--sheet);box-shadow:var(--shadow)}
+.mapa-zoom .btn:hover{background:var(--wash);color:var(--ink)}
+.mapa-carga{position:absolute;right:12px;top:12px;margin:0;font-size:13px;background:var(--sheet);border:1px solid var(--rule);border-radius:999px;padding:4px 11px;box-shadow:var(--shadow)}
+.mapa-chip{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:7px 8px 7px 12px;font-size:14px;line-height:1.3;margin-top:-6px}
+.mapa-chip > span{min-width:0}
+.mapa-chip i{display:inline-block;width:9px;height:9px;border-radius:2px;margin:0 5px 0 4px}
+.mapa-chip .btn{flex:none}
+.mapa-pie{display:grid;gap:9px;min-width:0}
+.mapa-ley-cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 16px}
+.mapa-may{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.mapa-may input{width:17px;height:17px;margin:0;accent-color:var(--ink)}
+.mapa-pie p{margin:0}
+.mapa-ley-t{font:600 12px/1.35 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mapa-ley{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mapa-ley-b{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:999px;padding:5px 11px 5px 9px;font:500 13.5px/1.2 var(--f-sans);cursor:pointer}
+.mapa-ley-b:hover{border-color:var(--ink)}
+.mapa-ley-b[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);font-weight:700}
+.mapa-ley i{width:12px;height:12px;border-radius:3px;display:inline-block;flex:none}
+.mapa-ley b{font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.mapa-ley-mas{border:1px dashed var(--muted);background:transparent;color:var(--ink);border-radius:999px;padding:5px 12px;font:600 13px/1.2 var(--f-sans);cursor:pointer}
+.mapa-ley-mas:hover{border-style:solid;border-color:var(--ink)}
+.mapa-ley-x{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2);padding:5px 6px}
+.mapa-ley-x i.nd{background:var(--wash);box-shadow:inset 0 0 0 1px var(--rule)}
+.mapa-ley-x i.nm{background:var(--seat-empty)}
+.mapa-ley-x i.sd{background:repeating-linear-gradient(45deg,var(--rule) 0 2px,var(--wash) 2px 6px);box-shadow:inset 0 0 0 1px var(--rule)}
+.mapa-panel{display:grid;gap:12px;align-content:start;position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto}
+.mapa-panel > *{min-width:0}
+.mapa-panel h2{font-size:clamp(25px,2.6vw,32px)}
+.mapa-panel h2:focus{outline:none}
+.mapa-panel p{margin:0}
+.mapa-ficha-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.mapa-ficha-top .eyebrow{padding-top:6px}
+.mapa-x{flex:none;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin:-4px -6px 0 0;border:1px solid var(--rule);border-radius:50%;background:var(--sheet);color:var(--ink);cursor:pointer}
+.mapa-x:hover{border-color:var(--ink);background:var(--wash)}
+.mapa-gana{display:flex;gap:9px;align-items:baseline}
+.mapa-gana i{width:11px;height:11px;border-radius:3px;flex:none;transform:translateY(1px)}
+.mapa-acts{display:flex;flex-wrap:wrap;gap:8px}
+table.data.mapa-tabla{font-size:13.5px}
+table.data.mapa-tabla th,table.data.mapa-tabla td{padding:6px 8px}
+table.data.mapa-tabla th{letter-spacing:.02em;font-size:11px}
+table.data.mapa-tabla td:first-child{overflow-wrap:anywhere}
+.mapa-datos{margin-top:26px}
+.mapa-datos summary{cursor:pointer;font-weight:600;padding:8px 0}
+.mapa-datos .tablewrap{max-height:540px;overflow:auto}
+@media (max-width:899px){
+  .mapa{grid-template-columns:minmax(0,1fr);grid-template-areas:none;grid-template-rows:none}
+  .mapa > *{grid-area:auto}
+  .mapa-lienzo{order:1}.mapa-chip{order:2}.mapa-ctrl{order:3}.mapa-pie{order:4}.mapa-panel{order:5;position:static;max-height:none;overflow:visible}
+}
+@media (min-width:900px){.mapa-chip{display:none!important}}
+@media (max-width:560px){
+  .mapa-ctrl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+  .mapa-campo .select{width:100%}
+  .mapa-niveles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:14px}
+  .mapa-niveles button{border-radius:11px;padding:8px 6px}
+  .mapa-zoom{top:8px;left:8px;gap:5px}
+  .mapa-zoom .btn{width:36px;height:36px;font-size:20px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -740,6 +844,7 @@ table.e-dh-in td{padding:6px 10px}
       <a href="/congreso/" data-nav="congreso">Congreso</a>
       <a href="/29n/" data-nav="29n">29-N</a>
       <a href="/encuesta/" data-nav="encuesta" hidden>Encuesta</a>
+      <a href="/mapa/" data-nav="mapa">Mapa</a>
       <a href="/autonomias/" data-nav="autonomias">Autonomías</a>
       <a href="/locales/" data-nav="locales">Diputaciones</a>
       <a href="/ayuntamientos/" data-nav="ayuntamientos">Ayuntamientos</a>
@@ -1781,7 +1886,8 @@ async function viewCongreso(modo, clave){
   if (data){
     det.innerHTML = `<div class="section-head"><h2>Resultados por candidatura</h2><p>${data.fuente === 'oficial' ? 'Totales nacionales oficiales del Ministerio del Interior. Las candidaturas aparecen tal y como se agregan oficialmente (por ejemplo, las coaliciones con nombre propio en cada comunidad).' : esc(data.nota || '')}</p></div>
       ${resultsTable(data.r, {validos})}
-      ${data.provincias ? `<details class="more"><summary>Escaños por provincia</summary><div>${provTable(data.provincias)}</div></details>` : ''}`;
+      ${data.provincias ? `<details class="more"><summary>Escaños por provincia</summary><div>${provTable(data.provincias)}</div></details>
+      <p class="small"><a href="/mapa/?eleccion=${encodeURIComponent(kSel)}">Ver en el mapa quién ganó cada provincia</a></p>` : ''}`;
   } else if (modo === 'disolucion'){
     det.innerHTML = `<div class="section-head"><h2>De dónde sale esta composición</h2><p>Escaños por partido según la composición de los grupos parlamentarios recogida en fuentes públicas y en la prensa al cierre de la legislatura. No es un dato del Ministerio del Interior: el resultado oficial de las elecciones es el de la pestaña «23-J 2023».</p></div>${resultsTable(G.disolucion.r)}`;
   }
@@ -2021,6 +2127,9 @@ async function viewAutonomia(id, fechaSel){
   const ultima = e === els[els.length - 1];
   const partidos = e.r.map(rowToParty);
   const rc = recuentoDe(e), validos = validosDe(e.r, rc);
+  // the map shows parliaments as they stood after each round of May elections: the first one this election is part of
+  const siguiente = els[els.indexOf(e) + 1];
+  const corteMapa = AUTONOMICAS_CORTE.slice().reverse().find(y => `${y}-07-01` > e.fecha && (!siguiente || siguiente.fecha >= `${y}-07-01`));
   setTitle(a.n);
   app.innerHTML = `<div class="page-head"><span class="eyebrow">${esc(a.camara)} · ${e.escanos} escaños</span><h1>${esc(a.n)}</h1>
     <div class="row">${badge(e.fuente)}<span class="small muted">Elecciones del ${fecha(e.fecha)}</span></div>
@@ -2028,7 +2137,7 @@ async function viewAutonomia(id, fechaSel){
     ${a.nota ? `<p class="small muted">${esc(a.nota)}</p>` : ''}</div>
     <div class="tabs"><a class="tab" href="#autonomias">← Todas las autonomías</a>
       <select class="select" id="sel-el" aria-label="Elección">${els.slice().reverse().map(x => `<option value="${x.fecha}" ${x === e ? 'selected' : ''}>${fecha(x.fecha)}</option>`).join('')}</select>
-      ${cmpLink(`auto:${id}:${e.fecha}`)}</div>
+      ${cmpLink(`auto:${id}:${e.fecha}`)}${a.ccaa && (ultima || corteMapa) ? `<a class="tab" href="/mapa/?nivel=comunidades&id=${a.ccaa}${ultima ? '' : '&eleccion=' + corteMapa}">Ver en el mapa</a>` : ''}</div>
     <div class="sheet pad" id="pacto-slot"></div>
     <div class="section"><div class="section-head"><h2>Todas sus elecciones</h2><p>Escaños por candidatura en cada elección. La marca vertical indica la mayoría absoluta.</p></div><div class="hbars" id="hist"></div></div>
     <div class="section"><div class="section-head"><h2>${e.r.some(r => r[4]) ? 'Resultado' : 'Resultado en escaños'}</h2></div>${resultsTable(e.r, {validos})}</div>`;
@@ -2083,7 +2192,7 @@ async function viewLocal(tipo, id, year){
     <div class="row">${badge(e.fuente)}<span class="small muted">${tipo === 'dip' ? 'Constituida tras las elecciones municipales del ' : 'Elecciones del '}${fecha(e.fecha)}</span></div>
     ${x.nota ? `<p class="small muted">${esc(x.nota)}</p>` : ''}
     ${tipo === 'dip' ? '<p class="small muted">Los votos son la suma de los obtenidos por cada candidatura en los municipios de la provincia; los diputados se reparten por partidos judiciales.</p>' : ''}</div>
-    <div class="tabs"><a class="tab" href="#locales">← Todas</a>${ys.length > 1 ? `<select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>${fecha(x.e[k].fecha)}</option>`).join('')}</select>` : ''}${cmpLink(`${tipo}:${id}:${y}`)}</div>
+    <div class="tabs"><a class="tab" href="#locales">← Todas</a>${ys.length > 1 ? `<select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>${fecha(x.e[k].fecha)}</option>`).join('')}</select>` : ''}${cmpLink(`${tipo}:${id}:${y}`)}${+y >= 1987 ? `<a class="tab" href="/mapa/?nivel=provincias&id=${tipo === 'jjgg' ? Object.keys(PROV_JJGG).find(p => PROV_JJGG[p] === id) : id}&eleccion=${y}">Ver en el mapa</a>` : ''}</div>
     <div class="sheet pad" id="pacto-slot"></div>
     ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Todas sus elecciones</h2></div><div class="hbars" id="hist"></div></div>` : ''}
     <div class="section"><div class="section-head"><h2>Resultado</h2></div>${resultsTable(e.r, {validos})}</div>`;
@@ -2152,7 +2261,7 @@ async function viewMunicipio(ine, year){
     <p class="small muted">${TIPO[tipo] || ''}${censo ? ` · censo ${fmt(censo)} · votantes ${fmt(votantes)} (${fmtPct(100 * votantes / censo)})` : ''}</p></div>
     <div class="tabs"><a class="tab" href="#ayuntamientos">← Buscar otro municipio</a>
       <select class="select" id="sel-el" aria-label="Elección">${ys.slice().reverse().map(k => `<option value="${k}" ${k === y ? 'selected' : ''}>Municipales ${k}</option>`).join('')}</select>
-      ${dip ? `<a class="tab" href="#dip-${prov}">${esc(nombreLocal('dip', dip))} →</a>` : ''}${cmpLink(`mun:${ine}:${y}`)}</div>
+      ${dip ? `<a class="tab" href="#dip-${prov}">${esc(nombreLocal('dip', dip))} →</a>` : ''}${cmpLink(`mun:${ine}:${y}`)}<a class="tab" href="/mapa/?nivel=ayuntamientos&id=${ine}&eleccion=${y}">Ver en el mapa</a></div>
     <div class="sheet pad" id="pacto-slot"></div>
     ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Su historia electoral</h2><p>Concejales por candidatura en cada elección municipal. Pulsa una fila para abrirla en el pactómetro.</p></div><div class="hbars" id="hist"></div></div>` : ''}
     <div class="section"><div class="section-head"><h2>Resultado de ${y}</h2></div>${resultsTable(rows, {validos: validos - 0, unit: tipo === 'C' ? 'Electo' : 'Concejales'})}
@@ -2933,6 +3042,7 @@ async function viewFuentes(){
       <li><b>Investiduras y mociones de censura:</b> archivo oficial del <a href="https://www.congreso.es/es/cem/sesiones-de-investidura" target="_blank" rel="noopener">Congreso de los Diputados</a>.</li>
       <li><b>Parlamentos autonómicos:</b> las elecciones autonómicas no las publica el Ministerio del Interior sino cada comunidad. Los escaños de las 201 elecciones autonómicas celebradas entre 1980 y 2026 se han recopilado de fuentes públicas (Wikipedia) y se ha comprobado que cada elección suma exactamente el tamaño de su cámara. Ceuta y Melilla sí son datos oficiales, porque sus asambleas se eligen en las elecciones municipales. Se marcan como «Recopilado».</li>
       <li><b>Juntas Generales vascas y consells de Mallorca, Menorca y Eivissa (2023):</b> resultados recopilados de fuentes públicas. El Consell de Formentera es dato oficial (se elige en las municipales).</li>
+      <li><b>Mapa electoral:</b> límites de municipios, provincias y comunidades del Equipamiento Geográfico de Referencia Nacional del <a href="https://www.ign.es/" target="_blank" rel="noopener">Instituto Geográfico Nacional</a> (© IGN, licencia CC BY 4.0), en la versión simplificada del proyecto <a href="https://github.com/martgnz/es-atlas" target="_blank" rel="noopener">es-atlas</a> de Martín González (licencia MIT), con Canarias desplazada junto a la península (proyección cónica conforme de d3-composite-projections). En cada lugar se colorea la candidatura con más escaños (y, si empatan, la más votada); el tono intenso indica que tiene más de la mitad. Las islas de Baleares y Canarias se dibujan uniendo sus municipios.</li>
       <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
       <li><b>Simulador del 29-N, encuesta del CIS:</b> estimación de voto del <a href="https://www.cis.es/gl/w/avance-de-resultados-del-estudio-3582-bar%C3%B3metro-de-octubre-2026-" target="_blank" rel="noopener">Barómetro de octubre 2026</a> del Centro de Investigaciones Sociológicas (estudio n.º 3582; trabajo de campo del 1 al 6 de octubre de 2026; 5.025 entrevistas; publicado el 14 de octubre de 2026). El CIS no estima escaños: los escaños de partida son una proyección de pactómetro.es (variación proporcional sobre los resultados provinciales del 23-J, barrera del 3 % y ley D'Hondt con los escaños por provincia del Real Decreto 806/2026). No se muestra durante los cinco días anteriores a la votación ni el 29 de noviembre hasta el cierre de los colegios (art. 69.7 LOREG).</li>
       <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
@@ -3038,7 +3148,11 @@ async function viewInicio(){
     </div>
   </div></section>
   <section class="h-sec" aria-labelledby="h-prov"><div class="wrap">
-    <div class="h-sec-head"><h2 id="h-prov">Tu provincia</h2><p>Cuántos diputados elige el 29-N, cómo votó el 23-J y todos sus ayuntamientos.</p></div>
+    <div class="h-sec-head"><h2 id="h-prov">Tu provincia</h2><p>Cuántos diputados elige el 29-N, cómo votó el 23-J y todos sus ayuntamientos. Púlsala en el mapa o elígela en la lista.</p></div>
+    <div class="h-mapa">
+      <figure class="h-mapa-fig"><div class="h-mapa-svg" id="h-mapa"></div><figcaption>Candidatura con más diputados en cada provincia en las elecciones generales del 23-J de 2023.</figcaption></figure>
+      <div class="h-mapa-txt"><h3>Mapa electoral</h3><p>Quién ganó en cada provincia, comunidad, diputación y ayuntamiento, con todas las elecciones generales desde 1977 y las municipales desde 1979. Pulsa cualquier lugar para ver su resultado.</p><a class="btn lg solid" href="/mapa/">Abrir el mapa electoral</a></div>
+    </div>
     <ul class="h-provs" id="h-provs">${Object.entries(ESC_2026).sort((a, b) => (PROV_NOMBRE[a[0]] || '').localeCompare(PROV_NOMBRE[b[0]] || '', 'es')).map(([k, n]) => `<li><a href="#prov-${k}"><span>${esc(PROV_NOMBRE[k] || k)}</span><b>${n}<span class="vh"> diputados</span></b></a></li>`).join('')}</ul>
   </div></section>
   <section class="h-sec h-more" aria-labelledby="h-mas"><div class="wrap">
@@ -3052,6 +3166,7 @@ async function viewInicio(){
   </div></section>`;
   Buscador(app.querySelector('#h-search'));
   iniciarCuenta();
+  mapaInicio(app.querySelector('#h-mapa'));
   const aviso = (el, txt) => e => { console.error(e); if (el) el.innerHTML = `<p class="small muted">${txt} Recarga la página para intentarlo de nuevo.</p>`; };
   // the demo shows the latest CIS poll until the 29-N results are loaded (hidden during the legal blackout, art. 69.7 LOREG)
   Promise.all([load('generales.json'), enVedaSondeos() ? null : load('cis.json').catch(() => null)]).then(([G, C]) => {
@@ -3383,6 +3498,559 @@ async function viewDirecto(){
   await ciclo();
 }
 
+/* ================================================================ vista: mapa */
+// Mapa electoral de España en cuatro niveles: General (Congreso por provincias), Comunidades (parlamentos
+// autonómicos), Provincias (diputaciones, juntas generales, cabildos y consells) y Ayuntamientos.
+// Límites: Instituto Geográfico Nacional (CC BY 4.0) vía es-atlas, ya proyectados y simplificados por scripts/mapa.mjs
+// (data/mapa/espana.json y municipios.json); ganador de cada municipio en cada elección: data/mapa/ayto-AAAA.json
+// (scripts/build_dist.py). Se dibuja aquí en SVG, sin bibliotecas.
+const PROV_CCAA = __PROV_CCAA__;   // provincia → comunidad (códigos del Ministerio); lo pone build_dist.py
+const MUNICIPALES = ['2023', '2019', '2015', '2011', '2007', '2003', '1999', '1995', '1991', '1987', '1983', '1979'];
+const AUTONOMICAS_CORTE = ['2023', '2019', '2015', '2011', '2007', '2003', '1999', '1995', '1991', '1987', '1983'];
+const PROV_ISLAS = ['07', '35', '38'];                                    // un consell o un cabildo por isla
+const PROV_JJGG = {'01': 'araba', '48': 'bizkaia', '20': 'gipuzkoa'};
+const PROV_SIN_DIP = {'33': 'asturias', '39': 'cantabria', '26': 'la-rioja', '28': 'madrid', '30': 'murcia', '31': 'navarra', '51': 'ceuta', '52': 'melilla'};
+const MAPA_HALOS = {general: ['51', '52'], provincias: ['51', '52'], comunidades: ['18', '19'], ayuntamientos: ['51001', '52001']};   // Ceuta y Melilla
+const MAPA_NIVELES = [['general', 'General'], ['comunidades', 'Comunidades'], ['provincias', 'Provincias'], ['ayuntamientos', 'Ayuntamientos']];
+const mayus = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+const ordenarFilas = rows => (rows || []).slice().sort((a, b) => (b[5] || 0) - (a[5] || 0) || (b[4] || 0) - (a[4] || 0));
+
+// Geometry file → {W, H, marco, capas: {nombre: {ids, d: [path, …]} | path (líneas)}}. Arcs are delta-encoded, so a ring
+// is its first point plus the deltas of its arcs (reversed and negated for arcs that run backwards): relative SVG paths.
+const MAPA_GEO = {};
+function mapaGeo(f){
+  if (!MAPA_GEO[f]) MAPA_GEO[f] = load('mapa/' + f).then(T => {
+    const A = T.arcos, n = A.length, ini = new Array(n), fin = new Array(n), ida = new Array(n), vuelta = new Array(n);
+    for (let i = 0; i < n; i++){ const a = A[i]; let x = a[0], y = a[1]; for (let j = 2; j < a.length; j += 2){ x += a[j]; y += a[j + 1]; } ini[i] = a[0] + ',' + a[1]; fin[i] = x + ',' + y; }
+    const fw = i => ida[i] !== undefined ? ida[i] : (ida[i] = A[i].slice(2).join(','));
+    const bw = i => { if (vuelta[i] !== undefined) return vuelta[i]; const a = A[i], o = []; for (let j = a.length - 2; j >= 2; j -= 2) o.push(-a[j], -a[j + 1]); return (vuelta[i] = o.join(',')); };
+    const tramo = a => a < 0 ? bw(~a) : fw(a);
+    const anillo = r => { const t = r.map(tramo).filter(Boolean); return 'M' + (r[0] < 0 ? fin[~r[0]] : ini[r[0]]) + (t.length ? 'l' + t.join(',') : '') + 'z'; };
+    const capas = {};
+    for (const [k, c] of Object.entries(T.capas)){
+      capas[k] = Array.isArray(c) ? c.map(a => 'M' + (a < 0 ? fin[~a] : ini[a]) + 'l' + (tramo(a) || '0,0')).join('')
+        : {ids: c.ids, d: c.g.map(pols => pols.map(p => p.map(anillo).join('')).join(''))};
+    }
+    return {W: T.ancho * T.q, H: T.alto * T.q, marco: T.marco || '', nombres: T.nombres || {}, capas};
+  }).catch(e => { delete MAPA_GEO[f]; throw e; });
+  return MAPA_GEO[f];
+}
+// a region of the map: the candidature with most seats (then votes) is the winner; «may»: more than half of the seats
+function mapaRegion(o){
+  const g = o.rows && o.rows[0], s = o.rows && o.rows[1];
+  if (g && ((g[5] || 0) > 0 || (g[4] || 0) > 0)) Object.assign(o, {sig: niceSig(g[0]), fam: g[3] || 'local', esc: g[5] || 0, may: o.total > 0 && g[5] > o.total / 2, empate: !!s && g[5] > 0 && s[5] === g[5]});
+  return o;
+}
+function mapaTablaFicha(r, unidad){
+  const con = r.rows.filter(x => x[5] > 0), hasV = con.some(x => x[4]);
+  return `<div class="tablewrap"><table class="data mapa-tabla"><caption class="vh">Resultado en ${esc(r.n)}</caption><thead><tr><th scope="col">Candidatura</th>${hasV ? '<th scope="col" class="n">Votos</th>' : ''}<th scope="col" class="n">${unidad}</th></tr></thead><tbody>
+    ${con.map(x => `<tr><td><span class="sw" style="background:${x[2]}"></span>${esc(niceSig(x[0]))}</td>${hasV ? `<td class="n">${fmt(x[4])}</td>` : ''}<td class="n"><b>${x[5]}</b></td></tr>`).join('')}</tbody></table></div>`;
+}
+// panel for a selected region: o = {eyebrow, sub, extra, unidad, nota, vacio, enlaces: [[href, texto], …]}
+function mapaFicha(r, o){
+  const hay = r.rows.some(x => x[5] > 0);
+  return `<div class="mapa-ficha-top"><span class="eyebrow">${esc(o.eyebrow)}</span><button type="button" class="mapa-x" data-mapa="resumen" aria-label="Quitar la selección y volver al resumen de España" title="Volver al resumen"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+    <h2 id="mapa-panel-t" tabindex="-1">${esc(r.n)}</h2>${o.sub ? `<p class="small muted">${o.sub}</p>` : ''}${o.extra || ''}
+    ${hay ? `${r.sig ? `<p class="mapa-gana"><i style="background:${famColor(r.fam)}"></i><span>${mapaFraseGana(r, o.unidad.toLowerCase())}</span></p>` : ''}${miniBar(r.rows, r.total)}${mapaTablaFicha(r, o.unidad)}`
+      : `<p class="muted">${esc(o.vacio || r.nota || 'No hay datos de esta elección.')}</p>`}
+    ${o.nota ? `<p class="small muted">${o.nota}</p>` : ''}
+    ${o.enlaces && o.enlaces.length ? `<div class="mapa-acts">${o.enlaces.map(([h, t], i) => `<a class="btn${i ? ' ghost' : ''}" href="${h}">${esc(t)}</a>`).join('')}</div>` : ''}`;
+}
+// «PP tiene mayoría absoluta: 14 de 25» / «PP y PSOE empatan a 9 concejales…»
+function mapaFraseGana(r, unidad){
+  const g = r.rows[0], s = r.rows[1];
+  if (s && g[5] > 0 && s[5] === g[5]){
+    const otros = r.rows.filter(x => x[5] === g[5]).map(x => `<b>${esc(niceSig(x[0]))}</b>`);
+    return `${listaY(otros)} empatan a ${g[5]} ${unidad} (de ${r.total})${g[4] && s[4] ? `; el mapa usa el color de la más votada, ${esc(niceSig(g[0]))}` : ''}.`;
+  }
+  return `<b>${esc(niceSig(g[0]))}</b> ${g[5] > r.total / 2 ? 'tiene mayoría absoluta' : 'es la candidatura con más ' + unidad}: ${g[5]} de ${r.total}.`;
+}
+// «PP en 31, PSOE en 15 y PNV en 2»
+function mapaCuentas(m, soloMay){
+  const c = {}; m.regiones.forEach(r => { if (r.fam && (!soloMay || r.may)) c[r.fam] = (c[r.fam] || 0) + 1; });
+  return Object.keys(c).sort((a, b) => c[b] - c[a] || (a === 'local') - (b === 'local')).map(f => [f, c[f]]);
+}
+const mapaFraseCuentas = (m, unidad) => { const c = mapaCuentas(m); return c.length ? `Con más ${unidad}: ${listaY(c.slice(0, 6).map(([f, n]) => `${famCorto(f)} en ${miles(n)}`))}${c.length > 6 ? ' y otras' : ''}.` : ''; };
+
+async function mapaGeneral(k){
+  const [geo, G] = await Promise.all([mapaGeo('espana.json'), load('generales.json')]);
+  const ks = Object.keys(G.congreso).filter(x => Object.keys(G.congreso[x].provincias || {}).length).sort((a, b) => G.congreso[b].fecha.localeCompare(G.congreso[a].fecha));
+  if (!ks.includes(k)) k = ks[0];
+  const E = G.congreso[k], et = 'generales de ' + LEYENDA_ELECCION(k), capa = geo.capas.provincias;
+  const regiones = capa.ids.map((id, i) => { const pv = own(E.provincias, id);
+    return mapaRegion({id, n: PROV_NOMBRE[id] || (pv ? pv.n : id), lugar: PROV_NOMBRE[id] || id, d: capa.d[i], rows: pv ? ordenarFilas(pv.r) : [], total: pv ? pv.escanos : 0}); });
+  const nac = ordenarFilas(E.r);
+  const m = {nivel: 'general', el: k, opciones: ks.map(x => [x, 'Generales de ' + LEYENDA_ELECCION(x)]), etiqueta: 'Elecciones ' + et, corto: et, geo, regiones,
+    unidad: 'diputados', irA: 'Provincia', leyenda: 'Candidatura con más diputados en cada provincia', lugares: 'provincias'};
+  m.resumen = () => `<span class="eyebrow">Congreso de los Diputados · ${fecha(E.fecha)}</span><h2 id="mapa-panel-t" tabindex="-1">Elecciones ${esc(et)}</h2>
+    <p class="small muted">${E.escanos} diputados · mayoría absoluta ${Math.floor(E.escanos / 2) + 1}</p>${miniBar(nac, E.escanos)}${miniLegend(nac, 6)}
+    <p class="small">${esc(mapaFraseCuentas(m, 'diputados'))} Cada provincia es una circunscripción y reparte sus diputados con la ley D'Hondt: pulsa una en el mapa o elígela en la lista para ver su resultado.</p>
+    <div class="mapa-acts"><a class="btn" href="#congreso-${k}">Abrir el Congreso de ${LEYENDA_ELECCION(k)}</a>${k === ks[0] ? '<a class="btn ghost" href="#congreso-simulador">Simulador del 29-N</a>' : ''}</div>`;
+  m.enlace = r => `#prov-${r.id}`;
+  m.ficha = r => mapaFicha(r, {eyebrow: `Provincia · ${mayus(et)}`, sub: r.total ? `${r.total} ${r.total === 1 ? 'diputado' : 'diputados'} en juego` : '', unidad: 'Diputados',
+    enlaces: [[`#prov-${r.id}`, `${r.n}: el 29-N y sus municipios`], [`#congreso-${k}`, `Congreso de ${LEYENDA_ELECCION(k)}`]]});
+  return m;
+}
+async function mapaComunidades(k){
+  const [geo, A] = await Promise.all([mapaGeo('espana.json'), load('autonomicas.json')]);
+  const porCa = {}; Object.values(A).forEach(a => { if (a.ccaa) porCa[a.ccaa] = a; });
+  const opciones = [['ultimas', 'Últimas elecciones'], ...AUTONOMICAS_CORTE.map(y => [y, `Tras las autonómicas de ${y}`])];
+  if (!opciones.some(o => o[0] === k)) k = 'ultimas';
+  const corte = k === 'ultimas' ? '9999' : k + '-07-01', capa = geo.capas.comunidades;
+  const regiones = capa.ids.map((id, i) => {
+    const a = porCa[id], els = a ? a.elecciones.filter(x => x.fecha < corte) : [], e = els[els.length - 1];
+    return mapaRegion({id, n: a ? a.n : id, lugar: a ? a.n : id, d: capa.d[i], rows: e ? ordenarFilas(e.r) : [], total: e ? e.escanos : 0, a, e,
+      ultima: !!e && e === a.elecciones[a.elecciones.length - 1], nota: a && !e ? `Sus primeras elecciones fueron en ${a.elecciones[0].fecha.slice(0, 4)}.` : ''});
+  });
+  const m = {nivel: 'comunidades', el: k, opciones, etiqueta: k === 'ultimas' ? 'Últimas elecciones autonómicas' : `Tras las autonómicas de ${k}`, corto: k === 'ultimas' ? 'últimas elecciones' : `tras las autonómicas de ${k}`, geo, regiones,
+    unidad: 'escaños', irA: 'Comunidad', leyenda: 'Candidatura con más escaños en cada parlamento', lugares: 'parlamentos'};
+  m.resumen = () => `<span class="eyebrow">17 parlamentos y 2 asambleas</span><h2 id="mapa-panel-t" tabindex="-1">${esc(m.etiqueta)}</h2>
+    <p class="small">${esc(mapaFraseCuentas(m, 'escaños'))}</p>
+    <p class="small">${k === 'ultimas' ? 'Cada comunidad con su última elección: las fechas no coinciden, porque Andalucía, Cataluña, Galicia, el País Vasco y algunas más votan en su propio calendario.' : `Cada comunidad con el parlamento que tenía en junio de ${k}, tras las elecciones autonómicas de mayo. Las que votan en otro calendario muestran su elección anterior.`} Pulsa una comunidad para ver su parlamento.</p>
+    <div class="mapa-acts"><a class="btn" href="#autonomias">Todos los parlamentos</a></div>`;
+  m.enlace = r => r.a ? `#auto-${r.a.id}${r.e && !r.ultima ? '.' + r.e.fecha : ''}` : '';
+  m.ficha = r => !r.e ? mapaFicha(r, {eyebrow: 'Comunidad autónoma', unidad: 'Escaños', enlaces: r.a ? [[`#auto-${r.a.id}`, `${r.a.camara}: todas sus elecciones`]] : []})
+    : mapaFicha(r, {eyebrow: `${r.a.camara} · ${fecha(r.e.fecha)}`, sub: `${r.total} escaños · mayoría absoluta ${Math.floor(r.total / 2) + 1}`, unidad: 'Escaños',
+      extra: r.ultima && r.a.gobierno && r.a.gobierno.presidente ? `<p class="small">Presidencia: <b>${esc(r.a.gobierno.presidente)}</b></p>` : '',
+      nota: r.e.fuente === 'compilada' ? 'Resultado recopilado de fuentes públicas.' : '',
+      enlaces: [[`#auto-${r.a.id}${r.ultima ? '' : '.' + r.e.fecha}`, `${r.a.camara}: pactos y elecciones`]]});
+  return m;
+}
+async function mapaProvincias(k){
+  const [geo, L, A] = await Promise.all([mapaGeo('espana.json'), load('locales.json'), load('autonomicas.json')]);
+  const anios = MUNICIPALES.filter(y => +y >= 1987);
+  if (!anios.includes(k)) k = anios[0];
+  const P = geo.capas.provincias, I = geo.capas.islas, regiones = [];
+  const inst = (o, tipo, x) => { const e = x && own(x.e, k);
+    return mapaRegion(Object.assign(o, {tipo, x, e, n: x ? nombreLocal(tipo, x) : o.lugar, rows: e ? ordenarFilas(e.r) : [], total: e ? e.escanos : 0, nota: x && !e ? `No hay datos de ${k} en pactómetro.es.` : ''})); };
+  P.ids.forEach((id, i) => {
+    if (PROV_ISLAS.includes(id)) return;
+    const o = {id, lugar: PROV_NOMBRE[id] || id, d: P.d[i]};
+    if (own(L.diputaciones, id)) regiones.push(inst(o, 'dip', L.diputaciones[id]));
+    else if (PROV_JJGG[id]) regiones.push(inst(o, 'jjgg', own(L.juntas, PROV_JJGG[id])));
+    else regiones.push(Object.assign(o, {n: o.lugar, rows: [], total: 0, tipo: 'sin', nota: 'No tiene diputación provincial', a: own(A, PROV_SIN_DIP[id])}));
+  });
+  I.ids.forEach((id, i) => { const cab = own(L.cabildos, id), x = cab || own(L.consells, id);
+    regiones.push(inst({id, lugar: x ? x.n.replace(/^Consell (Insular )?(de |d')/, '') : id, d: I.d[i]}, cab ? 'cab' : 'con', x)); });
+  const TIPO = {dip: ['Diputación provincial', 'diputados provinciales', 'Tras las municipales de '], jjgg: ['Juntas Generales', 'junteros', 'Elecciones de '],
+    cab: ['Cabildo insular', 'consejeros', 'Elecciones de '], con: ['Consell insular', 'consejeros', 'Elecciones de ']};
+  const m = {nivel: 'provincias', el: k, opciones: anios.map(y => [y, `Tras las municipales de ${y}`]), etiqueta: `Diputaciones, cabildos y consells tras las municipales de ${k}`, corto: `tras las municipales de ${k}`, geo, regiones,
+    unidad: 'escaños', irA: 'Provincia o isla', leyenda: 'Candidatura con más escaños en cada diputación, cabildo o consell', lugares: 'instituciones'};
+  m.resumen = () => `<span class="eyebrow">Gobiernos provinciales e insulares · ${k}</span><h2 id="mapa-panel-t" tabindex="-1">Diputaciones, cabildos y consells</h2>
+    <p class="small">${esc(mapaFraseCuentas(m, 'escaños'))}</p>
+    <p class="small">Las 38 diputaciones de régimen común se forman con los resultados de las municipales; en Canarias cada isla tiene su cabildo, en Baleares su consell y en el País Vasco cada territorio sus juntas generales. Asturias, Cantabria, La Rioja, Madrid, Murcia y Navarra, comunidades de una sola provincia, no tienen diputación; Ceuta y Melilla tampoco.</p>
+    <div class="mapa-acts"><a class="btn" href="#locales">Todas las diputaciones y cabildos</a></div>`;
+  m.enlace = r => r.tipo === 'sin' ? (r.a ? `#auto-${r.a.id}` : `#prov-${r.id}`) : r.x ? `#${r.tipo}-${r.x.id}${r.e && k !== Object.keys(r.x.e).sort().pop() ? '.' + k : ''}` : '';
+  m.ficha = r => {
+    if (r.tipo === 'sin'){
+      const ciudad = r.id === '51' || r.id === '52';
+      const txt = ciudad ? `${r.lugar} es una ciudad autónoma: no tiene diputación. Su Asamblea, que se elige en las elecciones municipales, hace a la vez de pleno municipal y de parlamento autonómico.`
+        : r.id === '31' ? 'Navarra es una comunidad foral de una sola provincia: no tiene diputación provincial y sus funciones las asumen las instituciones forales.'
+        : `${r.lugar} es una comunidad autónoma de una sola provincia: no tiene diputación provincial y sus funciones las asume la propia comunidad.`;
+      return mapaFicha(r, {eyebrow: ciudad ? 'Ciudad autónoma' : 'Comunidad uniprovincial', unidad: 'Escaños', vacio: txt,
+        enlaces: [...(r.a ? [[`#auto-${r.a.id}`, `${r.a.camara}: pactos y elecciones`]] : []), [`#prov-${r.id}`, `${r.lugar}: el 29-N y sus municipios`]]});
+    }
+    const T = TIPO[r.tipo], ult = r.x ? Object.keys(r.x.e).sort().pop() : k;
+    const enl = r.x ? [[`#${r.tipo}-${r.x.id}${!r.e || k === ult ? '' : '.' + k}`, `${r.n}: pactos y elecciones`]] : [];
+    if (r.tipo === 'dip' || r.tipo === 'jjgg') enl.push([`#prov-${r.id}`, `${r.lugar}: el 29-N y sus municipios`]);
+    return mapaFicha(r, {eyebrow: `${T[0]} · ${T[2]}${k}`, sub: r.total ? `${r.total} ${T[1]} · mayoría absoluta ${Math.floor(r.total / 2) + 1}` : '', unidad: 'Escaños',
+      nota: r.e && r.e.fuente === 'compilada' ? 'Resultado recopilado de fuentes públicas.' : '', enlaces: enl});
+  };
+  return m;
+}
+async function mapaAyuntamientos(k){
+  if (!MUNICIPALES.includes(k)) k = MUNICIPALES[0];
+  const [geo, W, M] = await Promise.all([mapaGeo('municipios.json'), load(`mapa/ayto-${k}.json`), load('municipios.json')]);
+  if (!M._ine){ M._ine = {}; M.municipios.forEach(r => { M._ine[r[0]] = r; }); }
+  const capa = geo.capas.municipios;
+  const regiones = capa.ids.map((id, i) => {
+    const ix = M._ine[id], w = own(W.m, id), n = ix ? ix[1] : (geo.nombres[id] || id);
+    const r = {id, n, lugar: n, d: capa.d[i], prov: id.slice(0, 2), ix, rows: [], total: 0};
+    if (w){ const c = W.c[w[0]] || ['', 'local'], f = w[3] || 0;   // f: 1 concejo abierto, 2 empate en concejales
+      Object.assign(r, {sig: niceSig(c[0]), fam: c[1] || 'local', esc: w[1], total: w[2], abierto: !!(f & 1), empate: !!(f & 2), may: !!(f & 1) || w[1] > w[2] / 2}); }
+    else r.nota = ix ? `Sin resultados en las municipales de ${k}` : 'Territorio compartido por varios municipios';
+    return r;
+  });
+  const m = {nivel: 'ayuntamientos', el: k, opciones: MUNICIPALES.map(y => [y, `Municipales de ${y}`]), etiqueta: `Elecciones municipales de ${k}`, corto: `municipales de ${k}`, geo, regiones,
+    unidad: 'concejales', irA: 'Provincia', leyenda: 'Candidatura con más concejales en cada municipio', lugares: 'municipios'};
+  const conDatos = regiones.filter(r => r.fam).length;
+  m.resumen = () => `<span class="eyebrow">${miles(conDatos)} municipios con resultados</span><h2 id="mapa-panel-t" tabindex="-1">Municipales de ${k}</h2>
+    <p class="small">${esc(mapaFraseCuentas(m, 'concejales'))}</p>
+    <p class="small">El color es el de la candidatura con más concejales, que no siempre gobierna: si nadie tiene mayoría absoluta, el alcalde sale de la votación de investidura. Amplía el mapa y pulsa tu municipio, o elígelo en las listas de arriba.</p>
+    <div class="mapa-acts"><a class="btn" href="#ayuntamientos">Buscar un municipio</a></div>`;
+  m.enlace = r => r.ix ? `#mun-${r.id}${r.fam && String(r.ix[3]) !== k ? '.' + k : ''}` : '';
+  m.ficha = async r => {
+    const pv = PROV_NOMBRE[r.prov] || '', base = {eyebrow: `${pv} · Municipales de ${k}`, unidad: 'Concejales'};
+    if (!r.ix) return mapaFicha(r, {...base, eyebrow: pv, vacio: 'Territorio compartido por varios municipios: no tiene ayuntamiento propio.'});
+    const todas = [`#mun-${r.id}`, `${r.n}: todas sus elecciones`];
+    if (!r.fam) return mapaFicha(r, {...base, vacio: `No hay resultados de ${r.n} en las municipales de ${k}.`, enlaces: [todas]});
+    const P = await load('mun/' + r.prov + '.json'), mm = P.m[r.id], rec = mm && own(mm.e, k);
+    if (!rec) return mapaFicha(r, {...base, enlaces: [todas]});
+    const ult = Object.keys(mm.e).sort().pop();
+    const f = {...r, rows: ordenarFilas(rec[6].map(([ci, v, s]) => { const c = P.c[ci]; return [c[0], c[1], c[2], c[3], v, s]; })), total: rec[1]};
+    const abierto = rec[0] === 'C' || rec[1] < 2;
+    return mapaFicha(f, {...base, unidad: abierto ? 'Electos' : 'Concejales',
+      sub: (abierto ? 'Concejo abierto' : `${rec[1]} concejales · mayoría absoluta ${Math.floor(rec[1] / 2) + 1}`) + (r.ix[4] ? ` · ${fmt(r.ix[4])} habitantes` : ''),
+      enlaces: [[`#mun-${r.id}${k === ult ? '' : '.' + k}`, `${r.n}: pactos y elecciones`]]});
+  };
+  return m;
+}
+const mapaNivel = (nivel, el) => nivel === 'comunidades' ? mapaComunidades(el) : nivel === 'provincias' ? mapaProvincias(el) : nivel === 'ayuntamientos' ? mapaAyuntamientos(el) : mapaGeneral(el);
+const mapaTextoRegion = (m, r) => r.fam ? `${r.n}: ${r.sig}, ${r.abierto ? 'concejo abierto' : `${r.esc} de ${r.total} ${m.unidad}`}${r.empate ? ', empate en escaños' : r.may ? ', mayoría absoluta' : ''}` : `${r.n}: ${r.nota || 'sin datos'}`;
+const mapaTipHTML = (m, r) => `<strong>${esc(r.n)}</strong>${r.fam ? `${esc(r.sig)} · ${r.abierto ? 'concejo abierto' : `${r.esc} de ${r.total} ${m.unidad}`}${r.empate ? ' (empate en escaños; más votada)' : r.may && !r.abierto ? ' (mayoría absoluta)' : ''}` : esc(r.nota || 'Sin datos')}`;
+
+// Zoom and pan of an SVG group: buttons, Ctrl + wheel (and trackpad pinch), drag with the mouse, two fingers on a
+// touch screen (one finger still scrolls the page), keyboard. State in map units: scale k, translation x, y.
+function ZoomMapa(lienzo, svg, g, alCambiar){
+  const z = {k: 1, x: 0, y: 0, W: 1, H: 1, kmax: 8, arrastrado: false};
+  const reducido = matchMedia('(prefers-reduced-motion: reduce)');
+  const limitar = s => { s.k = Math.min(z.kmax, Math.max(1, s.k)); s.x = Math.min(0, Math.max(z.W * (1 - s.k), s.x)); s.y = Math.min(0, Math.max(z.H * (1 - s.k), s.y)); return s; };
+  let tQuieto = 0;
+  const aplicar = () => {
+    g.setAttribute('transform', `translate(${z.x.toFixed(1)},${z.y.toFixed(1)}) scale(${z.k.toFixed(4)})`); alCambiar(z.k);
+    svg.classList.add('moviendo'); clearTimeout(tQuieto); tQuieto = setTimeout(() => svg.classList.remove('moviendo'), 160);
+  };
+  const aVista = (cx, cy) => { const b = svg.getBoundingClientRect(); return [(cx - b.left) / b.width * z.W, (cy - b.top) / b.height * z.H]; };
+  let anim = 0;
+  function ir(k, x, y, animar = true){
+    cancelAnimationFrame(anim);
+    const t = limitar({k, x, y});
+    if (!animar || reducido.matches){ Object.assign(z, {k: t.k, x: t.x, y: t.y}); return aplicar(); }
+    // interpolate the centre of the view and the logarithm of the scale, so the zoom feels even
+    const c0 = [(z.W / 2 - z.x) / z.k, (z.H / 2 - z.y) / z.k], c1 = [(z.W / 2 - t.x) / t.k, (z.H / 2 - t.y) / t.k], l0 = Math.log(z.k), l1 = Math.log(t.k), t0 = performance.now();
+    const paso = ahora => {
+      const p = Math.min(1, (ahora - t0) / 340), e = 1 - Math.pow(1 - p, 3);
+      const k2 = Math.exp(l0 + (l1 - l0) * e), cx = c0[0] + (c1[0] - c0[0]) * e, cy = c0[1] + (c1[1] - c0[1]) * e;
+      Object.assign(z, limitar({k: k2, x: z.W / 2 - cx * k2, y: z.H / 2 - cy * k2})); aplicar();
+      if (p < 1) anim = requestAnimationFrame(paso); else { Object.assign(z, {k: t.k, x: t.x, y: t.y}); aplicar(); }
+    };
+    anim = requestAnimationFrame(paso);
+  }
+  function en(vx, vy, f, animar){ const k2 = Math.min(z.kmax, Math.max(1, z.k * f)); ir(k2, vx - (vx - z.x) * k2 / z.k, vy - (vy - z.y) * k2 / z.k, animar); }
+  // fit a box (map units) in the view; frac: share of the view it should fill
+  function encuadrar(bb, frac = .85){
+    if (!bb || !(bb.width > 0 || bb.height > 0)) return;
+    const k = Math.min(z.kmax, Math.max(1, Math.min(z.W / Math.max(bb.width, 1), z.H / Math.max(bb.height, 1)) * frac));
+    ir(k, z.W / 2 - (bb.x + bb.width / 2) * k, z.H / 2 - (bb.y + bb.height / 2) * k);
+  }
+  lienzo.addEventListener('wheel', ev => {
+    if (!(ev.ctrlKey || ev.metaKey)) return;                      // the wheel alone scrolls the page
+    ev.preventDefault();
+    const d = Math.max(-.5, Math.min(.5, -ev.deltaY * (ev.deltaMode === 1 ? .05 : ev.deltaMode ? 1 : .01)));
+    const [vx, vy] = aVista(ev.clientX, ev.clientY); en(vx, vy, Math.pow(2, d), false);
+  }, {passive: false});
+  let arr = null;
+  svg.addEventListener('pointerdown', ev => { if (ev.pointerType === 'touch' || ev.button !== 0) return; arr = {id: ev.pointerId, cx: ev.clientX, cy: ev.clientY, x: z.x, y: z.y, mov: false}; });
+  svg.addEventListener('pointermove', ev => {
+    if (!arr || ev.pointerId !== arr.id) return;
+    const dx = ev.clientX - arr.cx, dy = ev.clientY - arr.cy;
+    if (!arr.mov){ if (Math.hypot(dx, dy) < 5 || z.k === 1) return; arr.mov = true; svg.setPointerCapture(ev.pointerId); svg.classList.add('arrastrando'); hideTip(); }
+    const b = svg.getBoundingClientRect();
+    Object.assign(z, limitar({k: z.k, x: arr.x + dx / b.width * z.W, y: arr.y + dy / b.height * z.H})); aplicar();
+  });
+  const soltar = () => { if (arr && arr.mov){ z.arrastrado = true; setTimeout(() => { z.arrastrado = false; }, 0); } arr = null; svg.classList.remove('arrastrando'); };
+  svg.addEventListener('pointerup', soltar); svg.addEventListener('pointercancel', soltar);
+  svg.addEventListener('dblclick', ev => { const [vx, vy] = aVista(ev.clientX, ev.clientY); en(vx, vy, 2); });
+  // two fingers: zoom and move (one finger is left to the browser, so the page still scrolls)
+  let pinza = null;
+  const dos = t => { const [a, b] = [t[0], t[1]]; return {d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), cx: (a.clientX + b.clientX) / 2, cy: (a.clientY + b.clientY) / 2}; };
+  lienzo.addEventListener('touchstart', ev => {
+    if (ev.touches.length !== 2) return;
+    ev.preventDefault(); hideTip();
+    const p = dos(ev.touches), [vx, vy] = aVista(p.cx, p.cy);
+    pinza = {d: Math.max(p.d, 1), k: z.k, px: (vx - z.x) / z.k, py: (vy - z.y) / z.k};
+  }, {passive: false});
+  lienzo.addEventListener('touchmove', ev => {
+    if (!pinza || ev.touches.length !== 2) return;
+    ev.preventDefault();
+    const p = dos(ev.touches), [vx, vy] = aVista(p.cx, p.cy), k = Math.min(z.kmax, Math.max(1, pinza.k * p.d / pinza.d));
+    Object.assign(z, limitar({k, x: vx - pinza.px * k, y: vy - pinza.py * k})); aplicar();
+  }, {passive: false});
+  lienzo.addEventListener('touchend', ev => { if (ev.touches.length < 2 && pinza){ pinza = null; z.arrastrado = true; setTimeout(() => { z.arrastrado = false; }, 350); } });
+  lienzo.addEventListener('keydown', ev => {
+    if (ev.target !== lienzo || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+    const paso = .12 * z.W / z.k, mov = {ArrowLeft: [paso, 0], ArrowRight: [-paso, 0], ArrowUp: [0, paso * z.H / z.W], ArrowDown: [0, -paso * z.H / z.W]}[ev.key];
+    if (mov){ ev.preventDefault(); ir(z.k, z.x + mov[0] * z.k, z.y + mov[1] * z.k); }
+    else if (ev.key === '+' || ev.key === '='){ ev.preventDefault(); en(z.W / 2, z.H / 2, 1.6); }
+    else if (ev.key === '-' || ev.key === '_'){ ev.preventDefault(); en(z.W / 2, z.H / 2, 1 / 1.6); }
+    else if (ev.key === '0'){ ev.preventDefault(); ir(1, 0, 0); }
+  });
+  return {z, ir, en, encuadrar, aplicar, medida(W, H){ z.W = W; z.H = H; Object.assign(z, limitar({k: z.k, x: z.x, y: z.y})); aplicar(); }};
+}
+
+// Portada: mapa pequeño de las provincias con el ganador del 23-J; pulsar una lleva a su página. Se carga al acercarse.
+function mapaInicio(box){
+  if (!box) return;
+  const ver = () => mapaGeneral('').then(m => {
+    if (!box.isConnected) return;
+    const g = m.geo;
+    box.innerHTML = `<svg viewBox="0 0 ${g.W} ${g.H}" role="img" aria-label="${esc('Mapa de las provincias de España según la candidatura con más diputados el 23-J. ' + mapaFraseCuentas(m, 'diputados'))}"><g>${m.regiones.map((r, i) => `<path data-i="${i}" d="${r.d}" fill="${r.fam ? famColor(r.fam) : 'var(--wash)'}"/>`).join('')}</g><path class="mapa-bp" d="${g.capas.borde_prov}"/><path class="mapa-marco" d="${g.marco}"/><path class="mapa-hov"/></svg>`;
+    const svg = box.querySelector('svg'), hov = svg.querySelector('.mapa-hov');
+    svg.addEventListener('pointerover', ev => { const p = ev.target.closest('[data-i]'); if (!p || ev.pointerType !== 'mouse') return; const r = m.regiones[+p.dataset.i];
+      hov.setAttribute('d', r.d); showTip(ev, `<strong>${esc(r.n)}</strong>${own(ESC_2026, r.id) ? `${ESC_2026[r.id]} ${ESC_2026[r.id] === 1 ? 'diputado' : 'diputados'} el 29-N` : ''}${r.sig ? `<br>El 23-J ganó ${esc(r.sig)} (${r.esc} de ${r.total})` : ''}`); });
+    svg.addEventListener('pointermove', ev => { if (!tip.hidden) moveTip(ev); });
+    svg.addEventListener('pointerout', ev => { if (!(ev.relatedTarget && ev.relatedTarget.closest && ev.relatedTarget.closest('#h-mapa [data-i]'))){ hov.setAttribute('d', ''); hideTip(); } });
+    svg.addEventListener('click', ev => { const p = ev.target.closest('[data-i]'); if (p){ hideTip(); irA('prov-' + m.regiones[+p.dataset.i].id); } });
+  }).catch(() => { box.closest('.h-mapa').hidden = true; });
+  if (!('IntersectionObserver' in window)) return ver();
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)){ io.disconnect(); ver(); } }, {rootMargin: '500px 0px'});
+  io.observe(box);
+}
+
+async function viewMapa(){
+  setTitle('Mapa electoral');
+  const q = new URLSearchParams(location.search);
+  const st = {nivel: MAPA_NIVELES.some(n => n[0] === q.get('nivel')) ? q.get('nivel') : 'general', el: {}, id: q.get('id') || null, filtro: null, may: q.get('mayoria') === '1',
+    prov: /^\d\d$/.test(q.get('prov') || '') && own(PROV_NOMBRE, q.get('prov')) ? q.get('prov') : ''};
+  if (q.get('eleccion')) st.el[st.nivel] = q.get('eleccion');
+  app.innerHTML = `<div class="page-head"><span class="eyebrow">Mapa electoral</span><h1>Mapa electoral de España</h1>
+    <p class="lede">Quién ganó en cada provincia, comunidad, diputación y ayuntamiento. Elige un nivel, pulsa en el mapa para ver el resultado y cambia de elección para ver cómo ha cambiado.</p></div>
+    <div class="mapa">
+    <div class="mapa-ctrl">
+      <div class="mapa-campo"><span id="mapa-niv-t">Nivel</span><div class="seg mapa-niveles" role="radiogroup" aria-labelledby="mapa-niv-t">${MAPA_NIVELES.map(([k, t]) => `<button type="button" role="radio" data-nivel="${k}" aria-checked="${k === st.nivel}" tabindex="${k === st.nivel ? 0 : -1}">${t}</button>`).join('')}</div></div>
+      <label class="mapa-campo"><span>Elección</span><select class="select" id="mapa-el"></select></label>
+      <label class="mapa-campo"><span id="mapa-ir-t">Provincia</span><select class="select" id="mapa-ir"></select></label>
+      <label class="mapa-campo" id="mapa-mun-c" hidden><span>Municipio</span><select class="select" id="mapa-mun"></select></label>
+    </div>
+        <div class="mapa-lienzo" id="mapa-lienzo" tabindex="0" role="region" aria-label="Mapa interactivo" aria-describedby="mapa-ayuda">
+          <svg class="mapa-svg lv-${st.nivel}" id="mapa-svg" viewBox="0 0 10000 5900" role="img" aria-labelledby="mapa-svg-t"><title id="mapa-svg-t">Mapa electoral de España</title>
+            <defs><pattern id="mapa-rayas" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ry-f" width="40" height="40"/><rect class="ry-l" width="13" height="40"/></pattern></defs>
+            <g id="mapa-g"><g id="mapa-regs"></g><path class="mapa-bp" id="mapa-bp"/><path class="mapa-bc" id="mapa-bc"/><path class="mapa-marco" id="mapa-marco"/><g id="mapa-halos"></g>
+              <path class="mapa-hov" id="mapa-hov"/><path class="mapa-sel2" id="mapa-sel2"/><path class="mapa-sel" id="mapa-sel"/></g>
+          </svg>
+          <div class="mapa-zoom"><button type="button" class="btn ghost" data-z="mas" aria-label="Ampliar el mapa">+</button><button type="button" class="btn ghost" data-z="menos" aria-label="Reducir el mapa">−</button><button type="button" class="btn ghost" data-z="todo" aria-label="Ver toda España"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+          <p class="mapa-carga" id="mapa-carga" hidden>Cargando el mapa…</p>
+        </div>
+        <div class="mapa-chip" id="mapa-chip" hidden></div>
+        <div class="mapa-pie">
+          <div class="mapa-ley-cab"><p class="mapa-ley-t" id="mapa-ley-t"></p><label class="mapa-may"><input type="checkbox" id="mapa-may"${st.may ? ' checked' : ''}> Solo mayorías absolutas</label></div>
+          <div class="mapa-ley" id="mapa-ley" role="group" aria-labelledby="mapa-ley-t"></div>
+          <p class="small muted" id="mapa-ayuda">Pulsa una candidatura de la leyenda para ver solo dónde ganó. Amplía con + y −, con Ctrl y la rueda del ratón o pellizcando con dos dedos, y arrastra para moverte; con el teclado, sobre el mapa: + y − para ampliar, flechas para moverte y 0 para ver toda España.</p>
+          <p class="small muted">Límites: © <a href="https://www.ign.es/" target="_blank" rel="noopener">Instituto Geográfico Nacional<span class="vh"> (se abre en una pestaña nueva)</span></a> (CC BY 4.0), vía es-atlas. Resultados: Ministerio del Interior; autonómicas, juntas generales y consells de 2023 recopilados de fuentes públicas.</p>
+        </div>
+      <section class="mapa-panel sheet pad" id="mapa-panel" aria-labelledby="mapa-panel-t"><h2 id="mapa-panel-t" class="vh">Resultado</h2><p class="muted">Cargando el mapa…</p></section>
+    </div>
+    <p class="vh" id="mapa-estado" aria-live="polite"></p>
+    <details class="mapa-datos" id="mapa-datos"><summary>Ver los datos del mapa en una tabla</summary><div id="mapa-tabla"></div></details>`;
+  const $ = s => app.querySelector(s);
+  const svg = $('#mapa-svg'), regs = $('#mapa-regs'), lienzo = $('#mapa-lienzo'), panel = $('#mapa-panel');
+  let mod = null, paths = [], fichaN = 0, cargaN = 0, hovI = -1;
+  const Z = ZoomMapa(lienzo, svg, $('#mapa-g'), k => {
+    svg.classList.toggle('z-cerca', k >= 3); svg.classList.toggle('z-muy', k >= 9);
+    app.querySelectorAll('.mapa-halo').forEach(c => c.setAttribute('r', Math.max(+c.dataset.r, 90 / Math.sqrt(k)).toFixed(1)));
+  });
+  const idx = id => mod ? mod.regiones.findIndex(r => r.id === id) : -1;
+  const caja = i => { try { return paths[i] ? paths[i].getBBox() : null; } catch(e){ return null; } };
+  const unir = bbs => { bbs = bbs.filter(b => b && b.width + b.height > 0); if (!bbs.length) return null; const x = Math.min(...bbs.map(b => b.x)), y = Math.min(...bbs.map(b => b.y)); return {x, y, width: Math.max(...bbs.map(b => b.x + b.width)) - x, height: Math.max(...bbs.map(b => b.y + b.height)) - y}; };
+  const cajaProv = p => unir(mod.regiones.map((r, i) => r.prov === p ? caja(i) : null));
+  const pantalla = bb => { const b = svg.getBoundingClientRect(); return bb ? Math.max(bb.width, bb.height) * Z.z.k * b.width / Z.z.W : 0; };
+
+  function pintar(p, r){
+    const nm = st.may && r.fam && !r.may;   // «solo mayorías absolutas»: the rest in grey
+    p.setAttribute('class', 'reg' + (r.tipo === 'sin' ? ' sd' : !r.fam ? ' nd' : nm ? ' nm' : '') + (st.filtro && r.fam !== st.filtro ? ' dim' : ''));
+    if (r.fam && !nm) p.setAttribute('fill', famColor(r.fam)); else p.removeAttribute('fill');
+  }
+  function dibujar(nuevo){
+    const geo = mod.geo;
+    svg.setAttribute('class', `mapa-svg lv-${mod.nivel}`);
+    svg.setAttribute('viewBox', `0 0 ${geo.W} ${geo.H}`); svg.style.aspectRatio = `${geo.W} / ${geo.H}`;
+    Z.z.kmax = mod.nivel === 'ayuntamientos' ? 40 : 10; Z.medida(geo.W, geo.H);
+    if (nuevo){
+      regs.innerHTML = mod.regiones.map((r, i) => `<path data-i="${i}" d="${r.d}"/>`).join('');
+      paths = [...regs.children];
+      $('#mapa-bp').setAttribute('d', geo.capas.borde_prov || ''); $('#mapa-bc').setAttribute('d', geo.capas.borde_ccaa || ''); $('#mapa-marco').setAttribute('d', geo.marco);
+      // Ceuta and Melilla are a few pixels wide: a dashed ring around them, which can also be pressed
+      $('#mapa-halos').innerHTML = MAPA_HALOS[mod.nivel].map(idx).filter(i => i >= 0).map(i => {
+        const b = caja(i); if (!b) return ''; const rr = Math.max(b.width, b.height) * .9;
+        return `<circle class="mapa-halo" data-i="${i}" data-r="${rr.toFixed(1)}" cx="${(b.x + b.width / 2).toFixed(1)}" cy="${(b.y + b.height / 2).toFixed(1)}" r="${Math.max(rr, 90 / Math.sqrt(Z.z.k)).toFixed(1)}"/>`; }).join('');
+    }
+    mod.regiones.forEach((r, i) => pintar(paths[i], r));
+    $('#mapa-svg-t').textContent = `${mod.leyenda}. ${mod.etiqueta}. ${mapaFraseCuentas(mod, mod.unidad)}`;
+    leyenda();
+  }
+  function leyenda(){
+    let c = mapaCuentas(mod, st.may), nd = 0, sd = 0, nm = 0;
+    const ocultas = !st.leyendaToda && c.length > 12 ? c.length - 10 : 0;
+    if (ocultas) c = c.filter(([f], i) => i < 10 || f === st.filtro);
+    mod.regiones.forEach(r => { if (!r.fam){ if (r.tipo === 'sin') sd++; else nd++; } else if (!r.may) nm++; });
+    $('#mapa-ley-t').textContent = `${st.may ? mod.leyenda.replace(/^Candidatura con más \S+/, 'Mayorías absolutas') : mod.leyenda} · ${mod.corto}`;
+    $('#mapa-ley').innerHTML = c.map(([f, n]) => `<button type="button" class="mapa-ley-b" data-f="${esc(f)}" aria-pressed="${st.filtro === f}"><i style="background:${famColor(f)}"></i>${esc(famCorto(f))}<b>${miles(n)}<span class="vh"> ${mod.lugares}</span></b></button>`).join('')
+      + (ocultas ? `<button type="button" class="mapa-ley-mas" data-mapa="leyenda" aria-expanded="false">${ocultas} más</button>` : st.leyendaToda && mapaCuentas(mod, st.may).length > 12 ? '<button type="button" class="mapa-ley-mas" data-mapa="leyenda" aria-expanded="true">Ver menos</button>' : '')
+      + (st.may && nm ? `<span class="mapa-ley-x"><i class="nm"></i>Sin mayoría absoluta<b>${miles(nm)}</b></span>` : '')
+      + (sd ? `<span class="mapa-ley-x"><i class="sd"></i>Sin diputación<b>${sd}</b></span>` : '')
+      + (nd ? `<span class="mapa-ley-x"><i class="nd"></i>Sin datos<b>${miles(nd)}</b></span>` : '');
+  }
+  function filtrar(f){
+    st.filtro = st.filtro === f ? null : f;
+    mod.regiones.forEach((r, i) => paths[i].classList.toggle('dim', !!st.filtro && r.fam !== st.filtro));
+    app.querySelectorAll('.mapa-ley-b').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === st.filtro)));
+    const n = st.filtro ? mod.regiones.filter(r => r.fam === st.filtro).length : 0;
+    $('#mapa-estado').textContent = st.filtro ? `Resaltados los ${miles(n)} ${mod.lugares} donde ${famCorto(st.filtro)} tiene más ${mod.unidad}.` : 'Se muestran todas las candidaturas.';
+  }
+  let munDe = null;   // province whose municipalities fill the second list
+  function opciones(){
+    const el = $('#mapa-el'); el.innerHTML = mod.opciones.map(([k, t]) => `<option value="${esc(k)}">${esc(t)}</option>`).join(''); el.value = mod.el;
+    $('#mapa-ir-t').textContent = mod.irA;
+    const lista = mod.nivel === 'ayuntamientos' ? Object.entries(PROV_NOMBRE).sort((a, b) => a[1].localeCompare(b[1], 'es'))
+      : mod.regiones.slice().sort((a, b) => a.lugar.localeCompare(b.lugar, 'es')).map(r => [r.id, r.lugar]);
+    $('#mapa-ir').innerHTML = '<option value="">Toda España</option>' + lista.map(([k, n]) => `<option value="${esc(k)}">${esc(n)}</option>`).join('');
+    munDe = null; sincronizar();
+  }
+  function sincronizar(){
+    const sel = $('#mapa-ir'), mun = $('#mapa-mun'), cm = $('#mapa-mun-c');
+    if (mod.nivel !== 'ayuntamientos'){ cm.hidden = true; sel.value = st.id || ''; return; }
+    sel.value = st.prov || ''; cm.hidden = !st.prov;
+    if (st.prov && munDe !== st.prov){
+      munDe = st.prov;
+      mun.innerHTML = '<option value="">Elige un municipio</option>' + mod.regiones.filter(r => r.prov === st.prov && r.ix).sort((a, b) => a.n.localeCompare(b.n, 'es')).map(r => `<option value="${r.id}">${esc(r.n)}</option>`).join('');
+    }
+    mun.value = st.id && st.prov && st.id.startsWith(st.prov) ? st.id : '';
+  }
+  function guardarURL(){
+    const p = new URLSearchParams();
+    if (st.nivel !== 'general') p.set('nivel', st.nivel);
+    if (mod && mod.el !== mod.opciones[0][0]) p.set('eleccion', mod.el);
+    if (st.id) p.set('id', st.id);
+    else if (st.nivel === 'ayuntamientos' && st.prov) p.set('prov', st.prov);
+    if (st.may) p.set('mayoria', '1');
+    const u = '/mapa/' + (String(p) ? '?' + p : '');
+    if (location.pathname + location.search !== u) history.replaceState(null, '', u);
+  }
+  function chip(r){
+    const c = $('#mapa-chip');
+    if (!r){ c.hidden = true; return; }
+    c.innerHTML = `<span><b>${esc(r.n)}</b> ${r.fam ? `<i style="background:${famColor(r.fam)}"></i>${esc(r.sig)} · ${r.abierto ? 'concejo abierto' : `${r.esc} de ${r.total}`}` : esc(r.nota || 'Sin datos')}</span><button type="button" class="btn ghost" data-mapa="ver">Ver más</button>`;
+    c.hidden = false;
+  }
+  async function ficha(r){
+    const n = ++fichaN;
+    if (!r){ panel.innerHTML = mod.resumen(); return; }
+    const h = mod.ficha(r);
+    if (typeof h === 'string'){ panel.innerHTML = h; return; }
+    panel.innerHTML = `<span class="eyebrow">${esc(PROV_NOMBRE[r.prov] || '')}</span><h2 id="mapa-panel-t" tabindex="-1">${esc(r.n)}</h2><p class="muted">Cargando el resultado…</p>`;
+    try { const html = await h; if (n === fichaN) panel.innerHTML = html; }
+    catch(e){ if (n === fichaN) panel.insertAdjacentHTML('beforeend', `<p class="small muted">${esc(e.message)}</p>`); }
+  }
+  function seleccionar(id, o = {}){
+    const i = idx(id), r = i >= 0 ? mod.regiones[i] : null;
+    st.id = r ? r.id : null;
+    if (r && mod.nivel === 'ayuntamientos') st.prov = r.prov;
+    $('#mapa-sel').setAttribute('d', r ? r.d : ''); $('#mapa-sel2').setAttribute('d', r ? r.d : '');
+    if (r && o.zoom){
+      const bb = caja(i);
+      Z.encuadrar(bb, mod.nivel === 'ayuntamientos' ? .25 : .5);
+    }
+    sincronizar(); guardarURL(); ficha(r); chip(r); tablaDatos();
+    if (o.anunciar !== false) $('#mapa-estado').textContent = r ? mapaTextoRegion(mod, r) : 'Resumen de toda España.';
+    if (o.foco){ const t = panel.querySelector('h2'); if (t) t.focus({preventScroll: true}); }
+  }
+  function tablaDatos(){
+    const box = $('#mapa-tabla'); if (!$('#mapa-datos').open || !mod) return;
+    let rs = mod.regiones;
+    if (mod.nivel === 'ayuntamientos'){
+      if (!st.prov){ box.innerHTML = '<p class="small muted">Elige una provincia en la lista de arriba para ver la tabla de sus municipios.</p>'; return; }
+      rs = rs.filter(r => r.prov === st.prov && r.ix);
+    }
+    rs = rs.slice().sort((a, b) => a.lugar.localeCompare(b.lugar, 'es'));
+    box.innerHTML = `<div class="tablewrap"><table class="data"><caption class="vh">${esc(mod.leyenda)} · ${esc(mod.etiqueta)}</caption><thead><tr><th scope="col">${esc(mod.irA === 'Provincia' && mod.nivel === 'ayuntamientos' ? 'Municipio' : mod.irA)}</th><th scope="col">Candidatura con más ${mod.unidad}</th><th scope="col" class="n">${mayus(mod.unidad)}</th></tr></thead><tbody>
+      ${rs.map(r => { const h = mod.enlace(r); return `<tr><td>${h ? `<a href="${h}">${esc(r.n)}</a>` : esc(r.n)}</td><td>${r.fam ? `<span class="sw" style="background:${famColor(r.fam)}"></span>${esc(r.sig)}${r.may && !r.abierto ? ' <span class="small muted">(mayoría absoluta)</span>' : ''}` : `<span class="muted">${esc(r.nota || 'Sin datos')}</span>`}</td><td class="n">${r.fam ? (r.abierto ? 'concejo abierto' : `${r.esc} de ${r.total}`) : '—'}</td></tr>`; }).join('')}</tbody></table></div>`;
+  }
+  async function cargar(o = {}){
+    const n = ++cargaN, aviso = setTimeout(() => { $('#mapa-carga').hidden = false; }, 150);
+    let m;
+    try { m = await mapaNivel(st.nivel, st.el[st.nivel] || ''); }
+    catch(e){ if (n === cargaN) panel.innerHTML = `<h2 id="mapa-panel-t" class="h3">No se pudo cargar el mapa</h2><p class="muted">${esc(e.message)}</p>`; return; }
+    finally { clearTimeout(aviso); if (n === cargaN) $('#mapa-carga').hidden = true; }
+    if (n !== cargaN || !svg.isConnected) return;
+    const nuevo = !mod || mod.nivel !== m.nivel;
+    mod = m; st.el[mod.nivel] = mod.el;
+    if (nuevo) st.filtro = null;
+    else if (st.filtro && !mod.regiones.some(r => r.fam === st.filtro)) st.filtro = null;
+    app.querySelectorAll('.mapa-niveles [role="radio"]').forEach(b => { const on = b.dataset.nivel === mod.nivel; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+    dibujar(nuevo); opciones();
+    hovI = -1; $('#mapa-hov').setAttribute('d', '');
+    if (st.id && idx(st.id) < 0) st.id = null;
+    seleccionar(st.id, {zoom: o.zoom, anunciar: o.anunciar});
+    if (!st.id && o.caja) Z.encuadrar(o.caja, .85);
+  }
+  // inherit the selection when moving to a coarser level (municipality → province → community)
+  function heredar(de, id, a){
+    if (!id) return null;
+    const prov = de === 'ayuntamientos' ? id.slice(0, 2) : (de === 'general' || de === 'provincias') && /^\d\d$/.test(id) ? id : null;
+    if (a === 'general') return prov;
+    if (a === 'provincias') return prov && !PROV_ISLAS.includes(prov) ? prov : null;
+    if (a === 'comunidades') return prov ? (PROV_CCAA[prov] || null) : de === 'comunidades' ? id : null;
+    return null;
+  }
+  async function cambiarNivel(nv){
+    if (!mod || nv === st.nivel) return;
+    const de = st.nivel, prev = st.id, i = idx(prev), bb = i >= 0 ? caja(i) : null;
+    st.nivel = nv;
+    st.id = heredar(de, prev, nv);
+    if (nv === 'ayuntamientos') st.prov = prev && /^\d\d$/.test(prev) && (de === 'general' || de === 'provincias') ? prev : (de === 'ayuntamientos' ? st.prov : '');
+    await cargar({caja: st.id ? null : bb});
+  }
+
+  // ---- events
+  app.querySelector('.mapa-niveles').addEventListener('click', ev => { const b = ev.target.closest('[data-nivel]'); if (b) cambiarNivel(b.dataset.nivel); });
+  $('#mapa-el').addEventListener('change', ev => { st.el[st.nivel] = ev.target.value; cargar({anunciar: false}).then(() => { $('#mapa-estado').textContent = `${mod.etiqueta}. ${mapaFraseCuentas(mod, mod.unidad)}`; }); });
+  $('#mapa-ir').addEventListener('change', ev => {
+    const v = ev.target.value;
+    if (mod.nivel === 'ayuntamientos'){
+      st.prov = v;
+      if (st.id && !st.id.startsWith(v)) st.id = null;
+      seleccionar(st.id, {anunciar: false});
+      if (v){ Z.encuadrar(cajaProv(v), .9); $('#mapa-estado').textContent = `${PROV_NOMBRE[v]}: elige un municipio en la lista o púlsalo en el mapa.`; }
+      else { Z.ir(1, 0, 0); $('#mapa-estado').textContent = 'Toda España.'; }
+      return;
+    }
+    if (v) seleccionar(v, {zoom: true}); else { seleccionar(null); Z.ir(1, 0, 0); }
+  });
+  $('#mapa-mun').addEventListener('change', ev => { if (ev.target.value) seleccionar(ev.target.value, {zoom: true}); else seleccionar(null); });
+  $('#mapa-datos').addEventListener('toggle', tablaDatos);
+  $('#mapa-may').addEventListener('change', ev => {
+    st.may = ev.target.checked;
+    if (st.filtro && st.may && !mod.regiones.some(r => r.fam === st.filtro && r.may)) st.filtro = null;
+    mod.regiones.forEach((r, i) => pintar(paths[i], r)); leyenda(); guardarURL();
+    const n = mod.regiones.filter(r => r.may).length;
+    $('#mapa-estado').textContent = st.may ? `Mayoría absoluta en ${miles(n)} de ${miles(mod.regiones.filter(r => r.fam).length)} ${mod.lugares}.` : 'Se muestra la candidatura con más escaños en cada lugar.';
+  });
+  $('#mapa-ley').addEventListener('click', ev => { const b = ev.target.closest('[data-f]'); if (b) filtrar(b.dataset.f); });
+  app.querySelector('.mapa-zoom').addEventListener('click', ev => {
+    const b = ev.target.closest('[data-z]'); if (!b) return;
+    if (b.dataset.z === 'todo') Z.ir(1, 0, 0);
+    else Z.en(Z.z.W / 2, Z.z.H / 2, b.dataset.z === 'mas' ? 1.8 : 1 / 1.8);   // around the centre of the view
+  });
+  app.addEventListener('click', ev => {
+    const b = ev.target.closest('[data-mapa]'); if (!b) return;
+    if (b.dataset.mapa === 'resumen'){ seleccionar(null); $('#mapa-ir').focus(); }
+    else if (b.dataset.mapa === 'leyenda'){ st.leyendaToda = !st.leyendaToda; leyenda(); const m = $('#mapa-ley .mapa-ley-mas'); if (m) m.focus(); }
+    else if (b.dataset.mapa === 'ver'){ panel.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'}); const t = panel.querySelector('h2'); if (t) t.focus({preventScroll: true}); }
+  });
+  svg.addEventListener('click', ev => {
+    if (Z.z.arrastrado || !mod) return;
+    const el = ev.target.closest('[data-i]'); if (!el) return;
+    const i = +el.dataset.i, r = mod.regiones[i];
+    if (mod.nivel === 'ayuntamientos' && pantalla(caja(i)) < 12){   // too small to aim at: show its province closer, with it selected
+      seleccionar(r.id); Z.encuadrar(cajaProv(r.prov), .9); return;
+    }
+    seleccionar(r.id);
+  });
+  svg.addEventListener('pointerover', ev => {
+    if (ev.pointerType !== 'mouse' || svg.classList.contains('arrastrando') || !mod) return;
+    const el = ev.target.closest('[data-i]'); if (!el) return;
+    const i = +el.dataset.i, r = mod.regiones[i];
+    if (i !== hovI){ hovI = i; $('#mapa-hov').setAttribute('d', r.d); }
+    showTip(ev, mapaTipHTML(mod, r) + (mod.nivel === 'ayuntamientos' && pantalla(caja(i)) < 12 ? '<br><span class="small">Pulsa para acercarte</span>' : ''));
+  });
+  svg.addEventListener('pointermove', ev => { if (!tip.hidden && ev.pointerType === 'mouse') moveTip(ev); });
+  svg.addEventListener('pointerout', ev => { if (ev.relatedTarget && ev.relatedTarget.closest && ev.relatedTarget.closest('[data-i]')) return; hovI = -1; $('#mapa-hov').setAttribute('d', ''); hideTip(); });
+  svg.addEventListener('pointerleave', () => { hovI = -1; $('#mapa-hov').setAttribute('d', ''); hideTip(); });
+
+  await cargar({zoom: !!st.id, anunciar: false});
+  if (mod && !st.id && st.prov && mod.nivel === 'ayuntamientos') Z.encuadrar(cajaProv(st.prov), .9);
+}
+
 /* ================================================================ direcciones */
 // Every view has a route key, as before ('mun-27028', 'congreso-simulador', 'comparar?s=…'), and a real address
 // (/ayuntamiento/lugo/, /congreso/simulador/, /comparar/?s=…). Each address is a static page with its own title and
@@ -3400,7 +4068,7 @@ const LOCAL_URL = {dip: 'diputacion', cab: 'cabildo', con: 'consell', jjgg: 'jun
 const PAG_FIJAS = {inicio: '/', congreso: '/congreso/', 'congreso-disolucion': '/congreso/disolucion/', 'congreso-simulador': '/congreso/simulador/',
   autonomias: '/autonomias/', locales: '/locales/', ayuntamientos: '/ayuntamientos/', historico: '/historico/', encuesta: '/encuesta/', 'encuesta-prueba': '/encuesta/?prueba=1',
   comparar: '/comparar/', '29n': '/29n/', programas: '/29n/programas/', directo: '/29n/resultados/', fuentes: '/fuentes/', 'aviso-legal': '/aviso-legal/',
-  privacidad: '/privacidad/', cookies: '/cookies/'};
+  privacidad: '/privacidad/', cookies: '/cookies/', mapa: '/mapa/'};
 const esRuta = h => !!h && !/^(sec-|h-|app$|ck-|t-|enc-)/.test(h);   // anything else after # is an in-page anchor
 // Route key → address (null if a municipality's address is not known yet)
 function urlDe(h){
@@ -3485,10 +4153,11 @@ async function dispatch(h){
   if ((m = h.match(/^prov-(\d{2})$/))) return viewProvincia(m[1]);
   if (h === 'programas'){ setTitle('Programas electorales del 29-N'); return viewProgramas(); }
   if (h === 'directo'){ setTitle('Resultados del 29-N en directo'); return viewDirecto(); }
+  if (h === 'mapa') return viewMapa();
   if (LEGAL_PAGS.some(x => x[0] === h)) return viewLegal(h);
   return notFound();
 }
-const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta', programas: '29n', directo: '29n'};
+const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta', programas: '29n', directo: '29n', mapa: 'mapa'};
 const $mast = document.querySelector('.mast'), $menu = document.getElementById('menu-btn');
 function cerrarMenu(){ $mast.classList.remove('open'); $menu.setAttribute('aria-expanded', 'false'); }
 $menu.addEventListener('click', () => { const abrir = !$mast.classList.contains('open'); $mast.classList.toggle('open', abrir); $menu.setAttribute('aria-expanded', String(abrir)); });
@@ -3504,16 +4173,17 @@ document.addEventListener('keydown', ev => {
   const n = all[(all.indexOf(b) + d + all.length) % all.length];
   ev.preventDefault(); n.focus(); n.click();
 });
-// Tables and timelines wider than the screen scroll sideways: make them reachable and scrollable from the keyboard.
+// Tables and timelines wider (or, with a maximum height, taller) than their box scroll: make them reachable and
+// scrollable from the keyboard.
 function marcarDesplazables(){
   app.querySelectorAll('.tablewrap, .tl-wrap').forEach(el => {
-    const desborda = el.scrollWidth > el.clientWidth + 1;
+    const ancho = el.scrollWidth > el.clientWidth + 1, alto = el.scrollHeight > el.clientHeight + 1, desborda = ancho || alto;
     if (desborda && el.getAttribute('role') !== 'region'){
       // named after the closest heading before it (each scrolling region needs its own name)
       const h = [...app.querySelectorAll('h1, h2, h3, summary')].filter(x => x.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING).pop();
       el.tabIndex = 0; el.setAttribute('role', 'region');
       const cap = el.querySelector('caption');
-      el.setAttribute('aria-label', (cap ? cap.textContent.trim() : h ? h.textContent.trim() : 'Tabla de datos') + ' (se desplaza en horizontal)');
+      el.setAttribute('aria-label', (cap ? cap.textContent.trim() : h ? h.textContent.trim() : 'Tabla de datos') + (ancho ? ' (se desplaza en horizontal)' : ' (se desplaza)'));
     } else if (!desborda && el.getAttribute('role') === 'region'){
       el.removeAttribute('tabindex'); el.removeAttribute('role'); el.removeAttribute('aria-label');
     }
