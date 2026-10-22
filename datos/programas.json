@@ -1,0 +1,21 @@
+{
+  "revisado": "2026-10-22",
+  "nota": "Orden: escaños al disolverse las Cortes y, después, candidaturas sin escaño. La lista se completará cuando las juntas electorales proclamen las candidaturas (2 de noviembre) y se actualizará a medida que los partidos publiquen sus programas.",
+  "partidos": [
+    {"k": "pp", "nombre": "Partido Popular (PP)", "estado": "compromisos", "fecha": "2026-10-19", "documento": "https://www.pp.es/actualidad/articulos/feijoo-firma-el-contrato-para-gobernar-el-cambio-mi-mayor-ambicion-es-lograr-que-la-palabra-de-un-presidente-vuelva-a-tener-valor/", "documento_titulo": "«Contrato con España»", "web": "https://www.pp.es/"},
+    {"k": "psoe", "nombre": "PSOE", "estado": "pendiente", "web": "https://www.psoe.es/"},
+    {"k": "vox", "nombre": "Vox", "estado": "pendiente", "web": "https://www.voxespana.es/"},
+    {"k": "fa", "nombre": "Frente Amplio (IU, Movimiento Sumar, Más Madrid, Comuns y otros)", "estado": "pendiente", "web": "https://frenteamplio.info/"},
+    {"k": "erc", "nombre": "Esquerra Republicana (ERC)", "estado": "pendiente", "web": "https://www.esquerra.cat/"},
+    {"k": "junts", "nombre": "Junts per Catalunya", "estado": "pendiente", "web": "https://junts.cat/"},
+    {"k": "bildu", "nombre": "EH Bildu", "estado": "pendiente", "web": "https://ehbildu.eus/"},
+    {"k": "pnv", "nombre": "EAJ-PNV", "estado": "pendiente", "web": "https://www.eaj-pnv.eus/"},
+    {"k": "podemos", "nombre": "Podemos", "estado": "pendiente", "web": "https://podemos.info/"},
+    {"k": "bng", "nombre": "Bloque Nacionalista Galego (BNG)", "estado": "pendiente", "web": "https://www.bng.gal/"},
+    {"k": "cc", "nombre": "Coalición Canaria", "estado": "pendiente", "web": "https://coalicioncanaria.org/"},
+    {"k": "upn", "nombre": "Unión del Pueblo Navarro (UPN)", "estado": "pendiente", "web": "https://www.upn.org/"},
+    {"k": "compromis", "nombre": "Compromís", "estado": "pendiente", "web": "https://compromis.net/"},
+    {"k": "salf", "nombre": "Se Acabó La Fiesta (SALF)", "estado": "pendiente"},
+    {"k": "d21", "nombre": "Democracia 21", "estado": "pendiente", "web": "https://democracia21.es/", "nota": "En Madrid y Barcelona concurre en coalición con Ciudadanos y UCIN («Democracia para el siglo 21»)."}
+  ]
+}

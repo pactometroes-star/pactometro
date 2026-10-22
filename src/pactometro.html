@@ -1,6 +1,6 @@
 <title>Pactómetro · Mayorías y pactos en todas las instituciones de España</title>
 <meta name="description" content="Calcula mayorías y pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, cabildos, consells y todos los ayuntamientos de España, con el histórico electoral oficial desde 1977.">
-<link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* Fonts served from pactometro.es itself (SIL Open Font License, see fonts/): no request to third parties. */
 @font-face{font-family:'Archivo';font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(fonts/archivo-latin-ext-wdth-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
@@ -188,6 +188,27 @@ main{padding-block:28px 56px}
 .addform input{border:1px solid var(--rule);border-radius:999px;padding:7px 12px;background:var(--sheet);min-width:0}
 .addform input[type="text"]{flex:1 1 140px}
 .addform input[type="number"]{width:84px}
+.directo-cifras{display:flex;flex-wrap:wrap;gap:10px 28px;margin:10px 0 4px}
+.directo-cifras div{display:grid}
+.directo-cifras b{font:700 clamp(26px,3.4vw,36px)/1.05 var(--f-sans);font-variation-settings:"wdth" 112;font-variant-numeric:tabular-nums}
+.directo-cifras span{font-size:13px;color:var(--muted)}
+.directo-aviso{margin-top:16px}
+.share{display:grid;gap:10px;padding:14px 16px;border:1.5px solid var(--ink);border-radius:var(--r);background:var(--sheet)}
+.share-h{font:700 16px/1.3 var(--f-sans);letter-spacing:0;margin:0}
+.share-h:focus{outline:none}
+.share-res{font-size:14.5px;color:var(--ink-2);margin:0}
+.share-l{font-size:13px;font-weight:600;color:var(--ink)}
+.share-row{display:flex;gap:6px;flex-wrap:wrap}
+.share-row input{flex:1 1 220px;min-width:0;border:1px solid var(--rule);border-radius:999px;padding:7px 12px;background:var(--paper);font-size:13.5px;color:var(--ink)}
+.share-red{display:flex;flex-wrap:wrap;gap:6px}
+.share-red .btn{min-height:36px}
+.share-img{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.share-emb summary{cursor:pointer;font-weight:600;font-size:14px}
+.share-emb{display:grid;gap:6px}
+.share-emb[open]{padding-top:2px}
+.share-emb textarea{width:100%;font:12.5px/1.4 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--rule);border-radius:6px;padding:8px;background:var(--paper);color:var(--ink);resize:vertical}
+.share-st{margin:0;min-height:1em;color:var(--ink-2)}
+.share-aviso p{margin:0;padding:10px 12px;border-radius:var(--r);background:var(--wash);font-size:14px;color:var(--ink)}
 .simctl{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--paper)}
 .simctl-b{display:flex;flex-wrap:wrap;gap:6px}
 .simctl-b .btn{min-height:36px}
@@ -313,6 +334,18 @@ details.more > div{padding:0 14px 14px}
 .prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
 .prose code{font-size:13px;background:var(--wash);padding:1px 5px;border-radius:3px}
 .prose .lede{font-size:17px;color:var(--ink)}
+.migas{font-size:13px;color:var(--muted);margin:2px 0 12px;display:flex;flex-wrap:wrap;gap:2px 6px}
+.migas a{color:var(--ink-2)}
+.enlaces{margin:0;padding-left:20px;display:grid;gap:7px;max-width:80ch}
+.enlaces.col2,.enlaces.col3{list-style:none;padding:0;max-width:none;gap:6px 18px}
+.enlaces.col2{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.enlaces.col3{grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr))}
+.enlaces a{color:var(--ink)}
+.section > p{max-width:72ch;color:var(--ink-2)}
+.h-provs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,170px),1fr));gap:6px}
+.h-provs a{display:flex;justify-content:space-between;gap:8px;padding:9px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);text-decoration:none;color:var(--ink);font-size:15px}
+.h-provs a:hover{border-color:var(--ink)}
+.h-provs b{font-variant-numeric:tabular-nums;color:var(--ink-2);font-weight:600}
 .enc-rgpd{border:1px solid var(--rule);border-radius:var(--r);background:var(--paper);padding:14px 16px;display:grid;gap:10px;font-size:13.5px;color:var(--ink-2)}
 .enc-rgpd-t{font:700 14.5px/1.3 var(--f-sans);letter-spacing:0;color:var(--ink)}
 .enc-rgpd dl{display:grid;gap:6px;margin:0}
@@ -611,7 +644,10 @@ table.cmp-gen td{text-align:right}
 .e-list{margin:0;padding-left:20px;display:grid;gap:8px;max-width:76ch;color:var(--ink-2)}
 .e-list b{color:var(--ink)}
 .e-prov{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
-.e-prov li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);font-size:14.5px}
+.e-prov li{border:1px solid var(--rule);border-radius:8px;background:var(--sheet);font-size:14.5px}
+.e-prov li a{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;text-decoration:none;color:inherit;border-radius:8px}
+.e-prov li a:hover{background:var(--wash)}
+.e-prov li a span:first-child{text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
 .e-prov b{font-variant-numeric:tabular-nums;white-space:nowrap}
 .e-prov .chg{margin-left:6px;font-size:12px;font-weight:600;color:var(--ink-2)}
 table.e-dh-t td.win{background:var(--ink);color:var(--paper);font-weight:700}
@@ -695,7 +731,43 @@ table.e-dh-in td{padding:6px 10px}
 </style>
 
 <a class="skip" href="#app" id="saltar">Saltar al contenido</a>
-<section class="ck" id="ck" aria-labelledby="ck-t" hidden>
+<header class="mast">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="pactómetro.es, ir a la portada"><img class="logo-l" src="/img/logo.png" alt="" width="188" height="30"><img class="logo-d" src="/img/logo-oscuro.png" alt="" width="188" height="30"></a>
+    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav"><svg class="ham" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="x" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Menú</button>
+    <nav class="nav" id="nav" aria-label="Secciones">
+      <a href="/" data-nav="inicio" class="nav-home">Portada</a>
+      <a href="/congreso/" data-nav="congreso">Congreso</a>
+      <a href="/29n/" data-nav="29n">29-N</a>
+      <a href="/encuesta/" data-nav="encuesta" hidden>Encuesta</a>
+      <a href="/autonomias/" data-nav="autonomias">Autonomías</a>
+      <a href="/locales/" data-nav="locales">Diputaciones</a>
+      <a href="/ayuntamientos/" data-nav="ayuntamientos">Ayuntamientos</a>
+      <a href="/historico/" data-nav="historico">Histórico</a>
+      <a href="/comparar/" data-nav="comparar">Comparar</a>
+      <a href="/fuentes/" data-nav="fuentes">Fuentes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app" tabindex="-1">
+<!--CONTENIDO-->
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="mark"><img src="/img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a> <a class="in-link" href="https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/" target="_blank" rel="noopener me" aria-label="Perfil de LinkedIn de Javier Pereiro Pérez (se abre en una pestaña nueva)">LinkedIn<svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span></p>
+    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="/fuentes/">Fuentes y metodología</a><span id="actualizado"></span></p>
+    <nav class="foot-legal" aria-label="Enlaces del pie de página"><a href="/encuesta/">Encuesta del 29-N</a><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a><a href="/cookies/">Cookies</a><button class="linkbtn" type="button" data-ck-abrir>Configurar cookies</button></nav>
+  </div>
+</footer>
+
+<div class="tip" id="tip" aria-hidden="true" hidden></div>
+
+<script>
+'use strict';
+// Cookie notice and poll strip: they only work with JavaScript, so they are not in the static pages
+document.getElementById('saltar').insertAdjacentHTML('afterend', `<section class="ck" id="ck" aria-labelledby="ck-t" hidden>
   <div class="wrap ck-in">
     <div class="ck-txt">
       <h2 class="ck-h" id="ck-t" tabindex="-1">Cookies y datos en tu navegador</h2>
@@ -713,47 +785,12 @@ table.e-dh-in td{padding:6px 10px}
       <button class="btn ck-b" type="button" data-ck="guardar" hidden>Guardar mi elección</button>
     </div>
   </div>
-</section>
-<header class="mast">
-  <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="pactómetro.es, ir a la portada"><img class="logo-l" src="img/logo.png" alt="" width="188" height="30"><img class="logo-d" src="img/logo-oscuro.png" alt="" width="188" height="30"></a>
-    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav"><svg class="ham" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="x" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Menú</button>
-    <nav class="nav" id="nav" aria-label="Secciones">
-      <a href="#inicio" data-nav="inicio" class="nav-home">Portada</a>
-      <a href="#congreso" data-nav="congreso">Congreso</a>
-      <a href="#29n" data-nav="29n">29-N</a>
-      <a href="#encuesta" data-nav="encuesta" hidden>Encuesta</a>
-      <a href="#autonomias" data-nav="autonomias">Autonomías</a>
-      <a href="#locales" data-nav="locales">Diputaciones</a>
-      <a href="#ayuntamientos" data-nav="ayuntamientos">Ayuntamientos</a>
-      <a href="#historico" data-nav="historico">Histórico</a>
-      <a href="#comparar" data-nav="comparar">Comparar</a>
-      <a href="#fuentes" data-nav="fuentes">Fuentes</a>
-    </nav>
-  </div>
-</header>
-<aside class="promo" id="promo" aria-label="Encuesta del 29-N" hidden>
+</section>`);
+document.querySelector('.mast').insertAdjacentHTML('afterend', `<aside class="promo" id="promo" aria-label="Encuesta del 29-N" hidden>
   <div class="wrap promo-in"><p><b>Encuesta del 29-N:</b> ¿a quién piensas votar? Es anónima y se responde en un minuto.<span class="promo-mas"> Abierta hasta el 22 de noviembre a las 20:00.</span></p>
-    <a class="btn promo-go" href="#encuesta">Responder la encuesta</a>
+    <a class="btn promo-go" href="/encuesta/">Responder la encuesta</a>
     <button class="promo-x" type="button" id="promo-x" aria-label="Ocultar el aviso de la encuesta hasta mañana"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
-</aside>
-
-<main class="wrap" id="app" tabindex="-1">
-  <p class="loading">Cargando datos electorales…</p>
-</main>
-
-<footer class="foot">
-  <div class="wrap">
-    <p class="mark"><img src="img/icono-64.png" alt="" width="20" height="20"><span><b>pactómetro.es</b> · © 2026 Javier Pereiro Pérez · Contacto: <a href="mailto:pactometroes@gmail.com">pactometroes@gmail.com</a> <a class="in-link" href="https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/" target="_blank" rel="noopener me" aria-label="Perfil de LinkedIn de Javier Pereiro Pérez (se abre en una pestaña nueva)">LinkedIn<svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span></p>
-    <p>Datos oficiales: Ministerio del Interior y Congreso de los Diputados · <a href="#fuentes">Fuentes y metodología</a> · Actualizado el <time datetime="__ACTUALIZADO_ISO__">__ACTUALIZADO__</time></p>
-    <nav class="foot-legal" aria-label="Enlaces del pie de página"><a href="#encuesta">Encuesta del 29-N</a><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><button class="linkbtn" type="button" data-ck-abrir>Configurar cookies</button></nav>
-  </div>
-</footer>
-
-<div class="tip" id="tip" aria-hidden="true" hidden></div>
-
-<script>
-'use strict';
+</aside>`);
 /* ================================================================ utilidades */
 const NF = new Intl.NumberFormat('es-ES');
 const fmt = n => (n === null || n === undefined || isNaN(n)) ? '—' : NF.format(n);
@@ -832,10 +869,10 @@ function guardarConsentimiento(pref){
 /* ================================================================ datos */
 const cache = {};
 function load(path){
-  if (!cache[path]) cache[path] = fetch('data/' + path).then(r => {
+  if (!cache[path]) cache[path] = fetch('/data/' + path).then(r => {
     if (!r.ok) throw new Error(`No se pudo cargar «${path}» (error ${r.status}). Recarga la página para intentarlo de nuevo.`);
     return r.json();
-  }).catch(e => { delete cache[path]; throw e; });
+  }).then(j => { if (path === 'municipios.json') indexarSlugs(j); return j; }).catch(e => { delete cache[path]; throw e; });
   return cache[path];
 }
 let FAM = {};
@@ -968,7 +1005,7 @@ const XLSX = (() => {
 })();
 const archivoSlug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
 const hoyTexto = () => { const d = new Date(); return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`; };
-const pieExcel = fuente => [[], [{v: `Descargado de pactómetro.es el ${hoyTexto()} · ${location.href}`, s: 'note'}], [{v: `Datos: ${fuente || 'Ministerio del Interior y fuentes indicadas en pactómetro.es/#fuentes'}`, s: 'note'}], [{v: '© 2026 Javier Pereiro Pérez · pactómetro.es · Cita la fuente si reutilizas estos datos.', s: 'note'}]];
+const pieExcel = fuente => [[], [{v: `Descargado de pactómetro.es el ${hoyTexto()} · ${location.href}`, s: 'note'}], [{v: `Datos: ${fuente || 'Ministerio del Interior y fuentes indicadas en pactometro.es/fuentes/'}`, s: 'note'}], [{v: '© 2026 Javier Pereiro Pérez · pactómetro.es · Cita la fuente si reutilizas estos datos.', s: 'note'}]];
 const pct01 = (a, b) => (b ? a / b : null);
 const fuenteTexto = f => f === 'simulacion' ? 'Escenario creado en el simulador de pactómetro.es (no es un resultado electoral)' : f === 'compilada' ? 'Resultados recopilados de fuentes públicas (no oficiales del Ministerio del Interior)' : 'Ministerio del Interior (ficheros oficiales de resultados) · Congreso de los Diputados';
 // Filas de una tabla de resultados para Excel: devuelve {filas, inicio, fin} con cabecera incluida
@@ -1027,11 +1064,20 @@ function minimalWinning(parties, maj){
   return out;
 }
 
+// ?si=PSOE,Sumar,EH%20Bildu → ['PSOE', 'Sumar', 'EH Bildu'] (commas inside a name come encoded)
+function paramLista(k){
+  const par = location.search.slice(1).split('&').find(x => x.split('=')[0] === k);
+  if (!par) return [];
+  return par.split('=').slice(1).join('=').split(',').filter(Boolean).map(x => { try { return decodeURIComponent(x.replace(/\+/g, ' ')); } catch(e){ return ''; } }).filter(Boolean);
+}
+
 /* ================================================================ componente pactómetro */
 /* cfg: {total, partidos, regla:'congreso'|'parlamento'|'municipal'|'diputacion'|'insular', preset:{id:'si'|'abs'}, presetNota,
          editable, simKey, masVotada,
          simBases: [{k, label, origen, partidos}] (simulator starting points), simEstado: {base, mod}} */
+let pactoN = 0;
 function Pactometro(cfg){
+  const uid = ++pactoN;
   const root = document.createElement('section');
   root.className = 'pacto';
   const st = { partidos: cfg.partidos.map(p => ({...p})), voto: new Map(), showAll: false,
@@ -1061,9 +1107,12 @@ function Pactometro(cfg){
         <div class="row">
           <button class="btn ghost" type="button" data-act="nadie">Todos «no»</button>
           ${cfg.preset ? '<button class="btn ghost" type="button" data-act="preset">Restaurar</button>' : ''}
+          <button class="btn" type="button" data-act="compartir" aria-expanded="false" aria-controls="share-${uid}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="12" cy="3.5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="4" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12.5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.8 7 10.2 4.5M5.8 9l4.4 2.5" stroke="currentColor" stroke-width="1.6"/></svg>Compartir</button>
           ${cfg.exportar ? '<button class="btn" type="button" data-act="xlsx" title="Descarga los resultados, tu escenario, las mayorías posibles y el histórico en una hoja de Excel"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v9m0 0L4.5 6.5M8 10l3.5-3.5M2 12v2.5h12V12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Excel</button>' : ''}
         </div>
       </div>
+      <div class="share" id="share-${uid}" hidden></div>
+      <div class="share-aviso" hidden></div>
       ${cfg.presetNota ? `<p class="preset-note">${esc(cfg.presetNota)}</p>` : ''}
       <div class="plist" role="list"></div>
       ${cfg.editable ? `<div class="sumline"></div>
@@ -1247,7 +1296,7 @@ function Pactometro(cfg){
       const chips = b.querySelector('.chips');
       for (const m of c.members){ const ch = document.createElement('span'); ch.className = 'chip'; ch.innerHTML = `<i style="background:${m.color}"></i>`; ch.appendChild(document.createTextNode(`${niceSig(m.sig)} ${m.esc}`)); chips.appendChild(ch); }
       b.setAttribute('aria-label', 'Probar esta coalición: ' + c.members.map(m => m.sig).join(', '));
-      b.addEventListener('click', () => { st.partidos.forEach(p => st.voto.set(p.id, c.members.some(m => m.id === p.id) ? 'si' : 'no')); refresh(false); root.querySelector('.stage').scrollIntoView({behavior: 'smooth', block: 'start'}); });
+      b.addEventListener('click', () => { editado(); st.partidos.forEach(p => st.voto.set(p.id, c.members.some(m => m.id === p.id) ? 'si' : 'no')); refresh(false); root.querySelector('.stage').scrollIntoView({behavior: 'smooth', block: 'start'}); });
       box.appendChild(b);
     }
   }
@@ -1300,9 +1349,11 @@ function Pactometro(cfg){
     } catch(e){ console.error(e); alertaExcel(btn); }
     finally { setTimeout(() => { btn.disabled = false; btn.innerHTML = txt0; delete btn.dataset.err; }, btn.dataset.err ? 3500 : 600); }
   }
-  function save(){ if (cfg.simKey) store.set(cfg.simKey, {base: st.base, mod: st.mod, partidos: st.partidos.map(p => ({sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, esc: seatsOf(p), nota: p.nota || ''})), voto: st.partidos.map(p => st.voto.get(p.id))}); }
-  function refresh(coal = true){ drawHemi(); drawTally(); drawVerdict(); drawList(); if (coal) drawCoal(); drawOrigen(); save(); }
-  function escanosCambiados(){ st.mod = true; drawHemi(); drawTally(); drawVerdict(); drawCoal(); drawSum(); drawOrigen(); save(); }
+  function save(){ if (cfg.simKey && !st.compartido) store.set(cfg.simKey, {base: st.base, mod: st.mod, partidos: st.partidos.map(p => ({sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, esc: seatsOf(p), nota: p.nota || ''})), voto: st.partidos.map(p => st.voto.get(p.id))}); }
+  function refresh(coal = true){ drawHemi(); drawTally(); drawVerdict(); drawList(); if (coal) drawCoal(); drawOrigen(); save();
+    if (cfg.alCambiar){ const m = new Map(); st.partidos.forEach(p => { const v = st.voto.get(p.id); if (v !== 'no') m.set(norm(niceSig(p.sig)), v); }); cfg.alCambiar(m); } }
+  function editado(){ if (st.compartido){ st.compartido = false; avisoCompartido(); } }
+  function escanosCambiados(){ editado(); st.mod = true; drawHemi(); drawTally(); drawVerdict(); drawCoal(); drawSum(); drawOrigen(); save(); }
   function cargarBase(k){
     if (k === 'cero'){ st.partidos.forEach(p => p.esc = 0); st.voto = new Map(st.partidos.map(p => [p.id, 'no'])); }
     else {
@@ -1310,7 +1361,156 @@ function Pactometro(cfg){
       const t = Date.now();
       st.partidos = b.partidos.map((p, i) => ({...p, id: 'b' + i + '-' + t})); st.voto = new Map(st.partidos.map(p => [p.id, 'no']));
     }
-    st.base = k; st.mod = false; st.showAll = false; refresh();
+    editado(); st.base = k; st.mod = false; st.showAll = false; refresh();
+  }
+  // ---------------------------------------------------------------- compartir
+  const PALETA = ['#8d6e63', '#5c7a99', '#7e8f3a', '#8c6f8f', '#9e7a4a', '#5f8a8b'];
+  const clave = sig => norm(niceSig(sig)).replace(/[^a-z0-9]+/g, '');
+  function leerCompartido(){
+    const si = paramLista('si'), ab = paramLista('abs'), ps = paramLista('p');
+    if (cfg.editable && ps.length){
+      const ref = {}; (cfg.simBases || []).forEach(b => b.partidos.forEach(x => { if (!ref[clave(x.sig)]) ref[clave(x.sig)] = x; }));
+      cfg.partidos.forEach(x => { if (!ref[clave(x.sig)]) ref[clave(x.sig)] = x; });
+      const filas = ps.map(x => x.split('~')).filter(x => x[0] && x[0].length <= 40).slice(0, 40);
+      if (!filas.length) return;
+      st.partidos = filas.map(([sig, n, v], i) => { const r = ref[clave(sig)];
+        return {id: 'u' + i, sig: r ? r.sig : sig, nom: r ? r.nom : 'Candidatura añadida en el simulador', color: r ? r.color : PALETA[i % PALETA.length], fam: r ? r.fam : 'local', votos: null,
+          esc: Math.max(0, Math.min(total, parseInt(n, 10) || 0)), nota: r && r.nota || ''}; });
+      st.voto = new Map(st.partidos.map((p, i) => [p.id, {s: 'si', a: 'abs'}[filas[i][2]] || 'no']));
+      st.base = null; st.mod = true; st.compartido = true;
+    } else if (si.length || ab.length){
+      const S = new Set(si.map(clave)), A = new Set(ab.map(clave));
+      st.partidos.forEach(p => st.voto.set(p.id, S.has(clave(p.sig)) ? 'si' : A.has(clave(p.sig)) ? 'abs' : 'no'));
+      st.compartido = !!cfg.simKey;
+    }
+  }
+  function avisoCompartido(){
+    const el = root.querySelector('.share-aviso');
+    el.hidden = !st.compartido;
+    el.innerHTML = st.compartido ? `<p><b>Escenario compartido por enlace.</b> Tu escenario guardado no se toca mientras no cambies nada. <a href="${esc(location.pathname)}">Volver a mi escenario</a></p>` : '';
+  }
+  const quienesSi = () => ordered().filter(p => st.voto.get(p.id) === 'si').map(p => niceSig(p.sig));
+  function textoEscenario(){
+    const t = totals(), unidad = cfg.regla === 'municipal' ? 'concejales' : 'escaños', n = quienesSi();
+    const inst = (cfg.exportar && cfg.exportar.institucion) || 'esta institución';
+    if (!n.length) return `¿Quién puede gobernar en ${inst}? Prueba los pactos posibles en pactómetro.es`;
+    const quien = n.length === 1 ? n[0] : n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1];
+    return `${quien} ${n.length > 1 ? 'suman' : 'tiene'} ${t.si} de ${total} ${unidad} (${inst}): ${t.si >= maj ? 'mayoría absoluta' : `${n.length > 1 ? 'les' : 'le'} faltan ${maj - t.si} para la mayoría absoluta, que está en ${maj}`}.`;
+  }
+  function consultaEscenario(){
+    const lista = arr => arr.map(x => encodeURIComponent(String(x).replace(/[~,]/g, ' '))).join(',');
+    const q = new URLSearchParams(location.search); ['si', 'abs', 'p'].forEach(k => q.delete(k));
+    let extra = '';
+    if (cfg.editable) extra = 'p=' + st.partidos.filter(p => seatsOf(p) > 0).map(p => `${encodeURIComponent(String(p.sig).replace(/[~,]/g, ' '))}~${seatsOf(p)}~${{si: 's', abs: 'a'}[st.voto.get(p.id)] || 'n'}`).join(',');
+    else {
+      const si = st.partidos.filter(p => st.voto.get(p.id) === 'si' && seatsOf(p) > 0).map(p => p.sig), ab = st.partidos.filter(p => st.voto.get(p.id) === 'abs' && seatsOf(p) > 0).map(p => p.sig);
+      extra = [si.length ? 'si=' + lista(si) : '', ab.length ? 'abs=' + lista(ab) : ''].filter(Boolean).join('&');
+    }
+    const base = q.toString();
+    return [base, extra].filter(Boolean).join('&');
+  }
+  const enlaceEscenario = () => { const qq = consultaEscenario(); return 'https://pactometro.es' + location.pathname + (qq ? '?' + qq : ''); };
+  function codigoInsertar(){
+    const qq = consultaEscenario().replace(/(^|&)eleccion=[^&]*/, '').replace(/^&/, '');
+    const src = 'https://pactometro.es/widget/?i=' + encodeURIComponent(rutaActual()) + (qq ? '&' + qq : '');
+    const tit = (cfg.exportar && cfg.exportar.institucion) || 'pactómetro.es';
+    return `<iframe src="${src}" title="Pactómetro: ${esc(tit)}" width="100%" height="480" style="border:0;max-width:680px" loading="lazy"></iframe>`;
+  }
+  function abrirCompartir(btn){
+    const $s = root.querySelector('.share');
+    const abrir = $s.hidden;
+    btn.setAttribute('aria-expanded', String(abrir));
+    if (!abrir){ $s.hidden = true; return; }
+    const url = enlaceEscenario(), txt = textoEscenario(), u = encodeURIComponent(url), tt = encodeURIComponent(txt);
+    const red = (n, href) => `<a class="btn ghost" href="${href}" target="_blank" rel="noopener">${n}<span class="vh"> (se abre en una pestaña nueva)</span></a>`;
+    $s.innerHTML = `<h3 class="share-h" tabindex="-1">Compartir este escenario</h3>
+      <p class="share-res">${esc(txt)}</p>
+      <label class="share-l" for="share-url-${uid}">Enlace</label>
+      <div class="share-row"><input id="share-url-${uid}" type="text" readonly value="${esc(url)}"><button class="btn" type="button" data-act="copiar">Copiar enlace</button></div>
+      <div class="share-red">${red('WhatsApp', `https://wa.me/?text=${encodeURIComponent(txt + ' ' + url)}`)}${red('Telegram', `https://t.me/share/url?url=${u}&text=${tt}`)}${red('X', `https://twitter.com/intent/tweet?text=${tt}&url=${u}`)}${red('Bluesky', `https://bsky.app/intent/compose?text=${encodeURIComponent(txt + ' ' + url)}`)}${red('LinkedIn', `https://www.linkedin.com/sharing/share-offsite/?url=${u}`)}<a class="btn ghost" href="mailto:?subject=${encodeURIComponent('Pactómetro: ' + ((cfg.exportar && cfg.exportar.institucion) || 'pactos'))}&body=${encodeURIComponent(txt + '\n\n' + url)}">Correo</a>
+        ${navigator.share ? '<button class="btn ghost" type="button" data-act="nativo">Más opciones…</button>' : ''}</div>
+      <div class="share-img"><button class="btn" type="button" data-act="imagen">Descargar imagen</button><span class="small muted">Imagen de 1200 × 630 con el hemiciclo, lista para redes sociales.</span></div>
+      <details class="share-emb"><summary>Insertar en tu web</summary>
+        <p class="small">Copia este código en tu web o blog para mostrar este pactómetro. No usa cookies ni guarda datos de quien lo ve.</p>
+        <label class="vh" for="share-emb-${uid}">Código para insertar</label><textarea id="share-emb-${uid}" readonly rows="3">${esc(codigoInsertar())}</textarea>
+        <button class="btn ghost" type="button" data-act="copiar-emb">Copiar código</button></details>
+      <p class="share-st small" role="status"></p>`;
+    $s.hidden = false;
+    $s.querySelector('.share-h').focus();
+  }
+  async function copiar(texto, campo){
+    const st2 = root.querySelector('.share-st');
+    try { await navigator.clipboard.writeText(texto); st2.textContent = 'Copiado.'; }
+    catch(e){ campo.focus(); campo.select(); st2.textContent = 'Seleccionado: pulsa Ctrl+C (o mantén pulsado y elige Copiar).'; }
+  }
+  function recortar(x, t, w){ if (x.measureText(t).width <= w) return t; while (t.length > 1 && x.measureText(t + '…').width > w) t = t.slice(0, -1); return t + '…'; }
+  async function imagenEscenario(){
+    const W = 1200, H = 630, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const x = cv.getContext('2d');
+    try { await Promise.all(['700 40px Archivo', '500 22px Archivo', '600 44px "Ibarra Real Nova"'].map(f => document.fonts.load(f))); } catch(e){}
+    const INK = '#051e3e', MUT = '#5b6676', SANS = 'Archivo, Arial, sans-serif';
+    x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#f2f4f7'; x.fillRect(0, H - 70, W, 70);
+    const t1 = (cfg.exportar && cfg.exportar.institucion) || 'pactómetro.es', t2 = (cfg.exportar && cfg.exportar.eleccion) || '';
+    x.fillStyle = INK; x.font = '600 42px "Ibarra Real Nova", Georgia, serif'; x.fillText(recortar(x, t1, W - 100), 50, 78);
+    x.font = `500 22px ${SANS}`; x.fillStyle = MUT; x.fillText(recortar(x, t2, W - 100), 50, 114);
+    // hemiciclo, como en la web: primero los síes, después las abstenciones y los noes
+    const {pos, rad} = seatLayout(total);
+    const cx = 330, cy = 492, S = 268 / 1.75, r = Math.max(1.6, rad * S * 0.86);
+    const seats = []; for (const p of ordered()) for (let k = 0; k < seatsOf(p); k++) seats.push(p);
+    pos.forEach(([a, R], i) => { const p = seats[i]; x.beginPath(); x.arc(cx + R * Math.cos(a) * S, cy - R * Math.sin(a) * S, r, 0, 2 * Math.PI); x.fillStyle = p ? p.color : '#e1e6ee'; x.fill(); });
+    if (maj < pos.length){
+      const a = (pos[maj - 1][0] + pos[maj][0]) / 2, R0 = Math.min(...pos.map(q => q[1])) - rad * 1.7, R1 = Math.max(...pos.map(q => q[1])) + rad * 1.9;
+      x.strokeStyle = INK; x.lineWidth = 3; x.lineCap = 'round'; x.beginPath();
+      x.moveTo(cx + R0 * Math.cos(a) * S, cy - R0 * Math.sin(a) * S); x.lineTo(cx + R1 * Math.cos(a) * S, cy - R1 * Math.sin(a) * S); x.stroke();
+    }
+    x.textAlign = 'center'; x.fillStyle = INK; x.font = `700 84px ${SANS}`; x.fillText(String(maj), cx, cy - 8);
+    x.font = `600 17px ${SANS}`; x.fillStyle = MUT; x.fillText(`PARA LA MAYORÍA · ${total}`, cx, cy + 22);
+    x.textAlign = 'left';
+    // cifras y veredicto
+    const t = totals(), X0 = 690;
+    [['Sí', t.si], ['Abstención', t.ab], ['No', t.no]].forEach(([k, v], i) => {
+      x.fillStyle = INK; x.font = `700 ${i ? 46 : 64}px ${SANS}`; x.fillText(String(v), X0 + [0, 150, 330][i], 214);
+      x.fillStyle = MUT; x.font = `600 16px ${SANS}`; x.fillText(k.toUpperCase(), X0 + [0, 150, 330][i], 242);
+    });
+    const pill = textoPlano($ver.querySelector('.pill') ? $ver.querySelector('.pill').outerHTML : ''), on = !!$ver.querySelector('.pill.on');
+    x.font = `700 20px ${SANS}`; const pw = x.measureText(pill).width + 40;
+    x.beginPath(); x.roundRect ? x.roundRect(X0, 266, pw, 42, 21) : x.rect(X0, 266, pw, 42);
+    if (on){ x.fillStyle = INK; x.fill(); x.fillStyle = '#ffffff'; } else { x.strokeStyle = INK; x.lineWidth = 2; x.stroke(); x.fillStyle = INK; }
+    x.fillText(pill, X0 + 20, 294);
+    const si = ordered().filter(p => st.voto.get(p.id) === 'si');
+    const lista = si.length ? si : ordered().slice(0, 7);
+    x.fillStyle = MUT; x.font = `600 16px ${SANS}`; x.fillText(si.length ? 'VOTAN SÍ' : 'COMPOSICIÓN', X0, 350);
+    const filas = lista.length > 6 ? 5 : lista.length;
+    lista.slice(0, filas).forEach((p, i) => {
+      const y = 384 + i * 30;
+      x.fillStyle = p.color; x.beginPath(); x.arc(X0 + 8, y - 7, 8, 0, 2 * Math.PI); x.fill();
+      x.fillStyle = INK; x.font = `600 21px ${SANS}`; x.fillText(recortar(x, niceSig(p.sig), 360), X0 + 26, y);
+      x.font = `700 21px ${SANS}`; x.textAlign = 'right'; x.fillText(String(seatsOf(p)), W - 60, y); x.textAlign = 'left';
+    });
+    if (lista.length > filas){ x.fillStyle = MUT; x.font = `500 18px ${SANS}`; x.fillText(`y ${lista.length - filas} más`, X0 + 26, 384 + filas * 30); }
+    x.fillStyle = INK; x.font = `700 26px ${SANS}`; x.fillText('pactómetro.es', 50, H - 26);
+    x.fillStyle = MUT; x.font = `500 18px ${SANS}`; x.textAlign = 'right'; x.fillText('Calcula mayorías y pactos en pactometro.es', W - 50, H - 28); x.textAlign = 'left';
+    return new Promise(res => cv.toBlob(res, 'image/png'));
+  }
+  const nombreImagen = () => 'pactometro-' + archivoSlug(((cfg.exportar && (cfg.exportar.archivo || cfg.exportar.institucion)) || 'escenario')) + '.png';
+  async function descargarImagen(btn){
+    const txt0 = btn.textContent; btn.disabled = true; btn.textContent = 'Generando…';
+    try {
+      const blob = await imagenEscenario(); const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = nombreImagen(); document.body.appendChild(a); a.click();
+      setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+      root.querySelector('.share-st').textContent = 'Imagen descargada.';
+    } catch(e){ console.error(e); root.querySelector('.share-st').textContent = 'No se pudo generar la imagen.'; }
+    finally { btn.disabled = false; btn.textContent = txt0; }
+  }
+  async function compartirNativo(){
+    const url = enlaceEscenario(), text = textoEscenario();
+    try {
+      let files;
+      try { const blob = await imagenEscenario(); const f = new File([blob], nombreImagen(), {type: 'image/png'}); if (navigator.canShare && navigator.canShare({files: [f]})) files = [f]; } catch(e){}
+      await navigator.share(files ? {title: 'pactómetro.es', text, url, files} : {title: 'pactómetro.es', text, url});
+    } catch(e){ /* cancelado */ }
   }
   root.addEventListener('click', ev => {
     const b = ev.target.closest('button'); if (!b) return;
@@ -1324,13 +1524,18 @@ function Pactometro(cfg){
     }
     if (row && b.dataset.v){
       const id = row.dataset.p, v = b.dataset.v, foco = row.contains(document.activeElement);
-      st.voto.set(id, v); refresh(false);
+      editado(); st.voto.set(id, v); refresh(false);
       if (foco){ const nb = $list.querySelector(`.prow[data-p="${id}"] [data-v="${v}"]`); if (nb) nb.focus(); }
       return;
     }
     const act = b.dataset.act;
-    if (act === 'nadie'){ st.partidos.forEach(p => st.voto.set(p.id, 'no')); refresh(false); }
-    if (act === 'preset'){ st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no')); refresh(false); }
+    if (act === 'nadie'){ editado(); st.partidos.forEach(p => st.voto.set(p.id, 'no')); refresh(false); }
+    if (act === 'preset'){ editado(); st.partidos.forEach(p => st.voto.set(p.id, (cfg.preset && cfg.preset[p.id]) || 'no')); refresh(false); }
+    if (act === 'compartir') abrirCompartir(b);
+    if (act === 'copiar') copiar(root.querySelector('.share input').value, root.querySelector('.share input'));
+    if (act === 'copiar-emb') copiar(root.querySelector('.share textarea').value, root.querySelector('.share textarea'));
+    if (act === 'imagen') descargarImagen(b);
+    if (act === 'nativo') compartirNativo();
     if (act === 'todas'){ st.showAll = !st.showAll; drawCoal(); }
     if (act === 'xlsx') exportar(b);
     if (act === 'ceros' || act === 'base'){ cargarBase(b.dataset.base); b.focus(); }
@@ -1353,9 +1558,11 @@ function Pactometro(cfg){
     const palette = ['#8d6e63', '#5c7a99', '#7e8f3a', '#8c6f8f', '#9e7a4a', '#5f8a8b'];
     const id = 'n' + Date.now();
     st.partidos.push({id, sig: name, nom: 'Candidatura añadida en el simulador', color: palette[st.partidos.length % palette.length], fam: 'local', votos: null, esc: seats});
-    st.voto.set(id, 'no'); st.mod = true; form.reset(); refresh();
+    editado(); st.voto.set(id, 'no'); st.mod = true; form.reset(); refresh();
   });
+  leerCompartido();
   refresh();
+  avisoCompartido();
   return root;
 }
 
@@ -1412,7 +1619,7 @@ function presetLargest(partidos){
 }
 function alertaExcel(btn){ btn.dataset.err = '1'; btn.textContent = 'No se pudo generar el Excel'; }
 const cmpLink = (spec, txt = 'Comparar con otra →') => `<a class="tab" href="#comparar?s=${encodeURIComponent(spec)}">${txt}</a>`;
-function setTitle(t){ document.title = t ? `${t} · Pactómetro` : 'Pactómetro'; }
+function setTitle(t){ if (primeraVista && document.body.dataset.ruta && document.body.dataset.ruta !== '404') return; document.title = t ? `${t} · pactómetro.es` : 'pactómetro.es'; }
 
 /* ================================================================ aviso del 29-N (portada y Congreso) */
 // Cuenta atrás con días, horas, minutos y segundos; iniciarCuenta() la pone en marcha. conv: G.convocatoria si ya se ha cargado.
@@ -1568,7 +1775,7 @@ async function viewCongreso(modo, clave){
     ${tabs}${cabecera}<div class="sheet pad" id="pacto-slot"></div>${extra}
     <div class="section" id="detalle"></div>`;
   iniciarCuenta();
-  app.querySelector('#sel-congreso').addEventListener('change', e => { if (e.target.value) location.hash = 'congreso-' + e.target.value; });
+  app.querySelector('#sel-congreso').addEventListener('change', e => { if (e.target.value) irA('congreso-' + e.target.value); });
   app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBases, simEstado, votosValidos: validos, recuento: rcData, exportar}));
   const det = app.querySelector('#detalle');
   if (data){
@@ -1671,7 +1878,7 @@ async function view29N(){
         <p>La Constitución fija la provincia como circunscripción (art. 68) y la LOREG reparte los 350 escaños así (art. 162):</p>
         <ul class="e-list"><li>Cada provincia tiene un mínimo de <b>2 diputados</b>, y Ceuta y Melilla, <b>1 cada una</b>.</li><li>Los <b>248 restantes</b> se reparten según la población: se divide la población de las provincias entre 248, cada provincia recibe tantos diputados como veces contiene ese cociente y los que sobran van a las provincias con los decimales más altos.</li><li>El decreto de convocatoria fija el resultado. Para el 29-N es el anexo del <b>Real Decreto 806/2026</b>.</li></ul>
         ${cambios.length ? `<p class="small">Respecto a 2023 cambian ${listaY(cambios.map(p => `${p.n} (${p.d > 0 ? 'gana' : 'pierde'} ${Math.abs(p.d)}: ${p.s} diputados)`))}.</p>` : ''}
-        <ul class="e-prov" aria-label="Diputados por circunscripción en 2026">${provs.map(p => `<li><span>${esc(p.n)}</span><b>${p.s}${p.d ? `<span class="chg">${p.d > 0 ? '+' : '−'}${Math.abs(p.d)}</span>` : ''}</b></li>`).join('')}</ul>
+        <ul class="e-prov" aria-label="Diputados por circunscripción en 2026">${provs.map(p => `<li><a href="#prov-${p.k}"><span>${esc(p.n)}</span><b>${p.s}${p.d ? `<span class="chg">${p.d > 0 ? '+' : '−'}${Math.abs(p.d)}</span>` : ''}</b></a></li>`).join('')}</ul>
       </li>
       <li><h3>Paso 2. Quién se queda los escaños de cada provincia</h3>
         <p>Dentro de cada provincia, los escaños se reparten con estas reglas (art. 163 LOREG):</p>
@@ -1825,7 +2032,7 @@ async function viewAutonomia(id, fechaSel){
     <div class="sheet pad" id="pacto-slot"></div>
     <div class="section"><div class="section-head"><h2>Todas sus elecciones</h2><p>Escaños por candidatura en cada elección. La marca vertical indica la mayoría absoluta.</p></div><div class="hbars" id="hist"></div></div>
     <div class="section"><div class="section-head"><h2>${e.r.some(r => r[4]) ? 'Resultado' : 'Resultado en escaños'}</h2></div>${resultsTable(e.r, {validos})}</div>`;
-  app.querySelector('#sel-el').addEventListener('change', ev => location.hash = `auto-${id}.${ev.target.value}`);
+  app.querySelector('#sel-el').addEventListener('change', ev => irA(`auto-${id}.${ev.target.value}`));
   app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: 'parlamento', preset: presetLargest(partidos), votosValidos: validos, recuento: rc,
     exportar: {institucion: a.camara, eleccion: 'Elecciones del ' + fecha(e.fecha), fecha: e.fecha, fuente: e.fuente, archivo: `${id}-${e.fecha}`,
       historico: els.slice().reverse().map(x => ({eleccion: 'Autonómicas ' + x.fecha.slice(0, 4), fecha: x.fecha, total: x.escanos, r: x.r, rc: recuentoDe(x)}))},
@@ -1880,7 +2087,7 @@ async function viewLocal(tipo, id, year){
     <div class="sheet pad" id="pacto-slot"></div>
     ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Todas sus elecciones</h2></div><div class="hbars" id="hist"></div></div>` : ''}
     <div class="section"><div class="section-head"><h2>Resultado</h2></div>${resultsTable(e.r, {validos})}</div>`;
-  const sel = app.querySelector('#sel-el'); if (sel) sel.addEventListener('change', ev => location.hash = `${tipo}-${id}.${ev.target.value}`);
+  const sel = app.querySelector('#sel-el'); if (sel) sel.addEventListener('change', ev => irA(`${tipo}-${id}.${ev.target.value}`));
   app.querySelector('#pacto-slot').appendChild(Pactometro({total: e.escanos, partidos, regla: T.regla, preset: presetLargest(partidos), votosValidos: validos || 0, recuento: rc,
     exportar: {institucion: titulo, eleccion: (tipo === 'dip' ? 'Tras las municipales del ' : 'Elecciones del ') + fecha(e.fecha), fecha: e.fecha, fuente: e.fuente, archivo: `${archivoSlug(titulo)}-${y}`,
       historico: ys.slice().reverse().map(k => ({eleccion: (tipo === 'dip' ? 'Municipales ' : 'Elecciones ') + k, fecha: x.e[k].fecha, total: x.e[k].escanos, r: x.e[k].r, rc: recuentoDe(x.e[k])}))},
@@ -1950,7 +2157,7 @@ async function viewMunicipio(ine, year){
     ${ys.length > 1 ? `<div class="section"><div class="section-head"><h2>Su historia electoral</h2><p>Concejales por candidatura en cada elección municipal. Pulsa una fila para abrirla en el pactómetro.</p></div><div class="hbars" id="hist"></div></div>` : ''}
     <div class="section"><div class="section-head"><h2>Resultado de ${y}</h2></div>${resultsTable(rows, {validos: validos - 0, unit: tipo === 'C' ? 'Electo' : 'Concejales'})}
     <p class="small muted">Votos válidos: ${fmt(validos)} · en blanco: ${fmt(blancos)} · nulos: ${fmt(nulos)}.</p></div>`;
-  app.querySelector('#sel-el').addEventListener('change', ev => location.hash = `mun-${ine}.${ev.target.value}`);
+  app.querySelector('#sel-el').addEventListener('change', ev => irA(`mun-${ine}.${ev.target.value}`));
   const slot = app.querySelector('#pacto-slot');
   if (tipo === 'C' || escanos < 2){
     const el = rows.filter(r => r[5] > 0);
@@ -2144,8 +2351,8 @@ async function viewComparar(query){
   app.querySelector('#cmp-xlsx').dataset.html = app.querySelector('#cmp-xlsx').innerHTML;
   function syncHash(){
     const p = new URLSearchParams(); p.set('s', st.sels.map(cmpSpec).join('|')); if (st.modo !== 'fam') p.set('m', st.modo); if (st.met) p.set('v', st.met);
-    const h = '#comparar?' + p.toString().replace(/%3A/g, ':').replace(/%7C/g, '|');
-    history.replaceState(null, '', h); lastHash = decodeURIComponent(h.slice(1));
+    const q = '?' + p.toString().replace(/%3A/g, ':').replace(/%7C/g, '|');
+    history.replaceState(null, '', '/comparar/' + q); lastHash = 'comparar' + q;
   }
   async function compute(){
     const my = ++gen;
@@ -2377,7 +2584,7 @@ function cuentaContenido(t){
     const p = partes(ELEC.cierre - t);
     return {html: '<p class="cd-hoy">Hoy se vota</p>' + nums(p, false) + '<p class="cd-txt">para que cierren los colegios electorales, a las 20:00 hora peninsular (en Canarias, una hora después).</p>', label: 'Hoy se vota. ' + etiqueta(p, 'para que cierren los colegios electorales.')};
   }
-  return {html: '<p class="cd-hoy">Los colegios electorales han cerrado</p><p class="cd-txt">Empieza el escrutinio. Los resultados oficiales se cargarán en pactómetro.es en cuanto los publique el Ministerio del Interior.</p>', label: 'Los colegios electorales han cerrado.', fin: true};
+  return {html: '<p class="cd-hoy">Los colegios electorales han cerrado</p><p class="cd-txt">Empieza el escrutinio. <a href="/29n/resultados/">Sigue los resultados en directo y prueba los pactos</a>.</p>', label: 'Los colegios electorales han cerrado.', fin: true};
 }
 function iniciarCuenta(){
   pararCuenta();
@@ -2593,8 +2800,8 @@ async function viewEncuesta(prueba){
 }
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
-const LEGAL_FECHA = '15 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '__ACTUALIZADO__';                // date of the last publication, set by scripts/build_dist.py
+const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
+const ACTUALIZADO = '__ACTUALIZADO__', ACTUALIZADO_ISO = '__ACTUALIZADO_ISO__';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
@@ -2644,7 +2851,9 @@ function legalPrivacidad(){
     <p>Javier Pereiro Pérez, titular de pactómetro.es. Contacto: ${MAIL}.</p>
     <h2>1. Cuando visitas la web</h2>
     <p>pactómetro.es está alojada en GitHub Pages, un servicio de GitHub, Inc. Como en cualquier web, tu navegador se conecta con los servidores del alojamiento, y GitHub registra la dirección IP de quienes visitan las páginas por motivos de seguridad. pactómetro.es no tiene acceso a esos registros ni los usa. Más información en la ${EXT('https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement', 'declaración de privacidad de GitHub')}.</p>
-    <p>La web no carga contenidos de terceros: el código, los datos y las tipografías se sirven desde el propio pactómetro.es.</p>
+    <p>La web no carga contenidos de terceros: el código, los datos y las tipografías se sirven desde el propio pactómetro.es. Los botones para compartir (WhatsApp, Telegram, X, Bluesky, LinkedIn, correo) son enlaces normales: la web no carga nada de esas redes y solo te llevan a ellas si los pulsas. La imagen para compartir se genera en tu propio navegador.</p>
+    <p>La noche electoral del 29 de noviembre, la página de resultados en directo y el widget consultan cada minuto una hoja de cálculo de Google del titular para mostrar el escrutinio. Al hacerlo, tu navegador se conecta con los servidores de Google LLC, que reciben tu dirección IP como en cualquier conexión; la consulta no lleva cookies ni ningún dato tuyo.</p>
+    <p>El widget que otras webs pueden insertar no usa cookies ni guarda nada en el navegador de quien lo ve.</p>
     <h2>2. La encuesta del 29-N</h2>
     <dl class="legal-dl">
       <dt>Qué datos se recogen</dt><dd>Tu provincia y tu intención de voto (obligatorias), tu voto en las generales del 23 de julio de 2023 (opcional) y la fecha y la hora de la respuesta, redondeada a la hora en punto. Nada más: ni nombre, ni correo, ni dirección IP, ni identificadores de tu dispositivo.</dd>
@@ -2828,6 +3037,10 @@ async function viewInicio(){
       </div>
     </div>
   </div></section>
+  <section class="h-sec" aria-labelledby="h-prov"><div class="wrap">
+    <div class="h-sec-head"><h2 id="h-prov">Tu provincia</h2><p>Cuántos diputados elige el 29-N, cómo votó el 23-J y todos sus ayuntamientos.</p></div>
+    <ul class="h-provs" id="h-provs">${Object.entries(ESC_2026).sort((a, b) => (PROV_NOMBRE[a[0]] || '').localeCompare(PROV_NOMBRE[b[0]] || '', 'es')).map(([k, n]) => `<li><a href="#prov-${k}"><span>${esc(PROV_NOMBRE[k] || k)}</span><b>${n}<span class="vh"> diputados</span></b></a></li>`).join('')}</ul>
+  </div></section>
   <section class="h-sec h-more" aria-labelledby="h-mas"><div class="wrap">
     <h2 id="h-mas">Más formas de explorar</h2>
     <div class="h-tools">
@@ -2959,7 +3172,7 @@ function localesInicio(L, form, txt){
   const grupos = [['dip', 'Diputaciones provinciales'], ['cab', 'Cabildos insulares'], ['con', 'Consells insulars'], ['jjgg', 'Juntas Generales']];
   const sel = form.querySelector('select');
   sel.innerHTML = '<option value="">Elige de la lista</option>' + grupos.map(([t, g]) => `<optgroup label="${g}">${Object.values(L[TIPOS[t].k]).sort((a, b) => a.n.localeCompare(b.n, 'es')).map(x => `<option value="${t}-${x.id}">${esc(nombreLocal(t, x))}</option>`).join('')}</optgroup>`).join('');
-  form.addEventListener('submit', ev => { ev.preventDefault(); if (sel.value) location.hash = sel.value; else sel.focus(); });
+  form.addEventListener('submit', ev => { ev.preventDefault(); if (sel.value) irA(sel.value); else sel.focus(); });
   const n = t => Object.keys(L[TIPOS[t].k]).length;
   txt.textContent = `Las ${n('dip')} diputaciones provinciales, los ${n('cab')} cabildos canarios, los ${n('con')} consells de Baleares y las ${n('jjgg')} juntas generales del País Vasco.`;
 }
@@ -3068,7 +3281,7 @@ function Buscador(form){
     clearTimeout(tAviso);
     tAviso = setTimeout(() => { $res.textContent = items.length ? `${items.length} ${items.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir y Intro para abrir.` : 'Ningún resultado.'; }, 500);
   }
-  function ir(o){ cerrar(); location.hash = o.href.slice(1); }
+  function ir(o){ cerrar(); irA(o.href); }
   $q.addEventListener('input', actualizar);
   $q.addEventListener('focus', () => { cargar().catch(() => {}); if ($q.value.trim()) actualizar(); });
   $q.addEventListener('keydown', ev => {
@@ -3090,16 +3303,169 @@ function Buscador(form){
     if (act >= 0 && items[act]) return ir(items[act]);
     const q = $q.value.trim();
     if (!q){ $q.focus(); return; }
-    try { await cargar(); } catch(e){ location.hash = 'ayuntamientos?q=' + encodeURIComponent(q); return; }
+    try { await cargar(); } catch(e){ irA('ayuntamientos?q=' + encodeURIComponent(q)); return; }
     items = buscarInstituciones(idx, q);
-    if (items.length) ir(items[0]); else location.hash = 'ayuntamientos?q=' + encodeURIComponent(q);
+    if (items.length) ir(items[0]); else irA('ayuntamientos?q=' + encodeURIComponent(q));
   });
   setTimeout(() => { if (form.isConnected) cargar().catch(() => {}); }, 1500);
 }
 
+/* ================================================================ vistas con contenido estático (provincias, programas, directo) */
+// The static page already carries the full text (scripts/paginas.py); the app only adds what changes or needs data.
+async function viewProvincia(p){
+  const slot = app.querySelector('#prov-cis');
+  if (!slot || enVedaSondeos()) return;
+  const C = await load('cis.json').catch(() => null);
+  const pr = C && C.proyeccion && C.proyeccion.provincias[p]; if (!pr) return;
+  const filas = C.partidos.filter(x => pr.r[x.k]).map(x => [x.sig, x.nom, x.color, x.fam, null, pr.r[x.k]]).sort((a, b) => b[5] - a[5]);
+  slot.innerHTML = `<div class="section"><div class="section-head"><h2>Con la última encuesta del CIS</h2>
+    <p>Diputados que obtendría cada candidatura en ${esc(pr.n)} con la estimación de voto del <a href="${esc(C.estudio.url)}" target="_blank" rel="noopener">barómetro del CIS de ${esc(C.estudio.titulo.replace(/^Barómetro de /, ''))}<span class="vh"> (se abre en una pestaña nueva)</span></a> (estudio n.º ${C.estudio.numero}).
+    Es una proyección de pactómetro.es, no un dato del CIS, que no estima escaños: se explica en el <a href="#congreso-simulador">simulador</a>.</p></div>
+    ${resultsTable(filas, {unit: 'Diputados'})}</div>`;
+}
+async function viewProgramas(){}
+// Noche electoral: escrutinio provisional que se actualiza solo. Datos: la pestaña «Directo» de la hoja de Google
+// (Apps Script, ?directo=1) o, si no, /data/directo.json. Formato: {actualizado, escrutado, participacion, fuente,
+// partidos: [{sig, nom?, esc, votos?, color?}]}.
+const DIRECTO_DESDE = Date.parse('2026-11-29T19:00:00Z');   // 20:00 en la península: cierran los colegios
+let relojDirecto = null;
+const votosDirecto = new Map();                              // lo que marca quien mira, por candidatura, entre actualizaciones
+function pararDirecto(){ if (relojDirecto){ clearTimeout(relojDirecto); relojDirecto = null; } }
+const directoValido = D => D && Array.isArray(D.partidos) && D.partidos.some(p => +p.esc > 0);
+async function datosDirecto(){
+  const src = CFG.directoURL || (CFG.encuestaURL ? CFG.encuestaURL + (CFG.encuestaURL.includes('?') ? '&' : '?') + 'directo=1' : '');
+  let D = null;
+  if (src) D = await fetch(src, {cache: 'no-store'}).then(r => r.ok ? r.json() : null).catch(() => null);
+  if (!directoValido(D)) D = await fetch('/data/directo.json', {cache: 'no-store'}).then(r => r.ok ? r.json() : null).catch(() => null);
+  return directoValido(D) ? D : null;
+}
+async function viewDirecto(){
+  pararDirecto();
+  if (ahoraReal().getTime() < DIRECTO_DESDE){
+    app.insertAdjacentHTML('beforeend', `<div class="notice directo-aviso"><span class="date">29-N</span><p>Los resultados empezarán a aparecer aquí cuando cierren los colegios, a las 20:00 (hora peninsular) del domingo 29 de noviembre. Mientras tanto, puedes <a href="/congreso/simulador/">simular el resultado</a> o consultar el <a href="/29n/">calendario y cómo se reparten los escaños</a>.</p></div>`);
+    return;
+  }
+  const [G, C] = await Promise.all([load('generales.json').catch(() => null), load('cis.json').catch(() => null)]);
+  const color = {}, fam = {};
+  const pon = (sig, c, f) => { const k = norm(niceSig(sig)); if (!color[k]){ color[k] = c; fam[k] = f; } };
+  if (G) G.congreso['2023'].r.concat(G.disolucion.r).forEach(r => pon(r[0], r[2], r[3]));
+  if (C) C.partidos.forEach(x => pon(x.sig, x.color, x.fam));
+  pon('Frente Amplio', '#e5007e', 'sumar'); pon('SALF', '#5b4b8a', 'local');
+  let ultimo = null, escAnunciado = null;
+  const dibujar = D => {
+    const partidos = D.partidos.filter(p => +p.esc > 0 || +p.votos > 0).map((p, i) => { const k = norm(niceSig(p.sig));
+      return {id: 'd' + i, sig: String(p.sig), nom: String(p.nom || ''), color: /^#[0-9a-f]{6}$/i.test(p.color || '') ? p.color : (color[k] || '#8a8f98'), fam: fam[k] || 'local', votos: +p.votos || null, esc: Math.max(0, +p.esc || 0)}; })
+      .sort((a, b) => b.esc - a.esc || (b.votos || 0) - (a.votos || 0));
+    const preset = {}; partidos.forEach(p => { const v = votosDirecto.get(norm(niceSig(p.sig))); if (v) preset[p.id] = v; });
+    const esc_ = +D.escrutado || 0, hora = D.actualizado ? new Date(D.actualizado).toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'}) : '';
+    const asignados = partidos.reduce((a, p) => a + p.esc, 0);
+    app.innerHTML = `<div class="page-head"><span class="eyebrow">Elecciones generales · 29 de noviembre de 2026 · resultados provisionales</span><h1>Resultados del 29-N en directo</h1>
+      <div class="directo-cifras"><div><b>${fmtPct(esc_)}</b><span>escrutado</span></div>${D.participacion ? `<div><b>${fmtPct(+D.participacion)}</b><span>participación</span></div>` : ''}<div><b>${asignados}</b><span>de 350 escaños asignados</span></div>${hora ? `<div><b>${hora}</b><span>última actualización</span></div>` : ''}</div>
+      <p class="vh" id="directo-estado" aria-live="polite"></p></div>
+      <div class="sheet pad" id="pacto-slot"></div>
+      <p class="small muted">Fuente: ${esc(D.fuente || 'Ministerio del Interior, escrutinio provisional')}. Los resultados provisionales pueden cambiar con el escrutinio definitivo de las juntas electorales, que empieza el 4 de diciembre. La página se actualiza sola cada minuto.</p>`;
+    app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, votosValidos: partidos.reduce((a, p) => a + (p.votos || 0), 0),
+      alCambiar: m => { votosDirecto.clear(); m.forEach((v, k) => votosDirecto.set(k, v)); },
+      exportar: {institucion: 'Congreso de los Diputados', eleccion: 'Elecciones generales del 29 de noviembre de 2026 · escrutinio provisional al ' + fmtPct(esc_), fecha: '2026-11-29', fuente: 'oficial', archivo: 'congreso-29n-provisional'},
+      presetNota: 'Marca el voto de cada candidatura para probar mayorías: se mantiene aunque lleguen datos nuevos.'}));
+    const estado = app.querySelector('#directo-estado');
+    if (escAnunciado !== esc_){ estado.textContent = `Escrutado el ${fmtPct(esc_)}.`; escAnunciado = esc_; }
+  };
+  const ciclo = async () => {
+    if (!document.body.contains(app) || rutaActual() !== 'directo') return;
+    const D = await datosDirecto();
+    if (D && D.actualizado + '|' + D.escrutado !== ultimo){ ultimo = D.actualizado + '|' + D.escrutado; dibujar(D); }
+    else if (!D && ultimo === null){
+      const est = app.querySelector('.directo-aviso') || (app.insertAdjacentHTML('beforeend', '<div class="notice directo-aviso"><span class="date">29-N</span><p aria-live="polite">Esperando los primeros datos del escrutinio. Esta página se actualiza sola cada minuto.</p></div>'), null);
+    }
+    relojDirecto = setTimeout(ciclo, 60000 + Math.floor(Math.random() * 15000));
+  };
+  await ciclo();
+}
+
+/* ================================================================ direcciones */
+// Every view has a route key, as before ('mun-27028', 'congreso-simulador', 'comparar?s=…'), and a real address
+// (/ayuntamiento/lugo/, /congreso/simulador/, /comparar/?s=…). Each address is a static page with its own title and
+// text for search engines (scripts/build_dist.py); this script then draws the interactive view on top.
+const SLUG_PROV = __SLUG_PROV__;   // provincia → slug de su dirección; lo pone build_dist.py
+const PROV_NOMBRE = __PROV_NOMBRE__;
+let MUN_SLUG = null;               // INE → slug (columna 7 de municipios.json en la web publicada)
+function indexarSlugs(M){
+  if (MUN_SLUG || !M || !Array.isArray(M.municipios)) return;
+  MUN_SLUG = {}; M.municipios.forEach(r => { if (r[7]) MUN_SLUG[r[0]] = r[7]; });
+  setTimeout(() => enlazar(document), 0);
+}
+const cargarSlugs = () => MUN_SLUG ? Promise.resolve() : load('municipios.json').then(() => {});
+const LOCAL_URL = {dip: 'diputacion', cab: 'cabildo', con: 'consell', jjgg: 'juntas-generales'};
+const PAG_FIJAS = {inicio: '/', congreso: '/congreso/', 'congreso-disolucion': '/congreso/disolucion/', 'congreso-simulador': '/congreso/simulador/',
+  autonomias: '/autonomias/', locales: '/locales/', ayuntamientos: '/ayuntamientos/', historico: '/historico/', encuesta: '/encuesta/', 'encuesta-prueba': '/encuesta/?prueba=1',
+  comparar: '/comparar/', '29n': '/29n/', programas: '/29n/programas/', directo: '/29n/resultados/', fuentes: '/fuentes/', 'aviso-legal': '/aviso-legal/',
+  privacidad: '/privacidad/', cookies: '/cookies/'};
+const esRuta = h => !!h && !/^(sec-|h-|app$|ck-|t-|enc-)/.test(h);   // anything else after # is an in-page anchor
+// Route key → address (null if a municipality's address is not known yet)
+function urlDe(h){
+  h = String(h || '').replace(/^#/, '');
+  if (!h) return '/';
+  if (own(PAG_FIJAS, h)) return PAG_FIJAS[h];
+  const el = v => v ? '?eleccion=' + encodeURIComponent(v) : '';
+  const qs = () => '?' + h.split('?').slice(1).join('?');
+  let m;
+  if ((m = h.match(/^congreso-(\d{4}(?:-\d{2})?)$/))) return m[1] === '2023' ? '/congreso/' : `/congreso/${m[1]}/`;
+  if ((m = h.match(/^auto-([a-z-]+?)(?:\.(\d{4}-\d{2}-\d{2}))?$/))) return `/parlamento/${m[1]}/${el(m[2])}`;
+  if ((m = h.match(/^(dip|cab|con|jjgg)-([a-z0-9-]+?)(?:\.(\d{4}))?$/))) return `/${LOCAL_URL[m[1]]}/${m[1] === 'dip' ? (own(SLUG_PROV, m[2]) || m[2]) : m[2]}/${el(m[3])}`;
+  if ((m = h.match(/^mun-(\d{5})(?:\.(\d{4}))?$/))) return MUN_SLUG && own(MUN_SLUG, m[1]) ? `/ayuntamiento/${MUN_SLUG[m[1]]}/${el(m[2])}` : null;
+  if ((m = h.match(/^prov-(\d{2})$/))) return own(SLUG_PROV, m[1]) ? `/provincia/${SLUG_PROV[m[1]]}/` : null;
+  if (h.startsWith('ayuntamientos?')) return '/ayuntamientos/' + qs();
+  if (h.startsWith('comparar?')) return '/comparar/' + qs();
+  return null;
+}
+// Address of this page → route key (each static page names its view in <body data-ruta>)
+function rutaActual(){
+  const base = document.body.dataset.ruta || '404';
+  const p = new URLSearchParams(location.search), e = p.get('eleccion');
+  if (/^(auto|dip|cab|con|jjgg|mun)-/.test(base) && e && /^\d{4}(-\d{2}-\d{2})?$/.test(e)) return base + '.' + e;
+  if (base === 'ayuntamientos' && p.get('q')) return 'ayuntamientos?q=' + encodeURIComponent(p.get('q'));
+  if (base === 'comparar' && location.search.length > 1) return 'comparar' + location.search;
+  if (base === 'encuesta' && p.get('prueba') === '1') return 'encuesta-prueba';
+  return base;
+}
+// Go to a view: same page with other options → no reload; another page → load it
+async function irA(h, reemplazar){
+  h = String(h || '').replace(/^#/, '');
+  let u = urlDe(h);
+  if (!u && /^mun-/.test(h)){ try { await cargarSlugs(); } catch(e){} u = urlDe(h); }
+  if (!u){ if (reemplazar){ history.replaceState(null, '', location.pathname + location.search); return route(); } return; }
+  const d = new URL(u, location.origin);
+  if (d.pathname === location.pathname){
+    history[reemplazar ? 'replaceState' : 'pushState'](null, '', d.pathname + d.search);
+    return route();
+  }
+  if (reemplazar) location.replace(d.href); else location.assign(d.href);
+}
+// Links drawn with #ruta get their real address (so they can be opened in a new tab and followed by search engines)
+let tEnlaces = 0;
+function enlazar(root){
+  root.querySelectorAll('a[href^="#"]').forEach(a => {
+    const h = decodeURIComponent(a.getAttribute('href').slice(1));
+    if (!esRuta(h)) return;
+    const u = urlDe(h); if (u) a.setAttribute('href', u);
+  });
+}
+document.addEventListener('click', ev => {
+  if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+  const a = ev.target.closest('a[href]'); if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+  const href = a.getAttribute('href');
+  if (href.startsWith('#')){ const h = decodeURIComponent(href.slice(1)); if (esRuta(h)){ ev.preventDefault(); irA(h); } return; }
+  const d = new URL(a.href, location.href);
+  if (d.origin === location.origin && d.pathname === location.pathname && d.search !== location.search && !d.hash){
+    ev.preventDefault(); history.pushState(null, '', d.pathname + d.search); route();
+  }
+});
+
 /* ================================================================ router */
 async function dispatch(h){
   let m;
+  if (h === '404') return notFound();
   if (!h || h === 'inicio') return viewInicio();
   if (h === 'congreso'){ setTitle('Congreso'); return viewCongreso('2023'); }
   if (h === 'congreso-disolucion'){ setTitle('Congreso al disolverse'); return viewCongreso('disolucion'); }
@@ -3116,10 +3482,13 @@ async function dispatch(h){
   if (h === 'comparar' || h.startsWith('comparar?')) return viewComparar(h.slice(9));
   if (h === '29n') return view29N();
   if (h === 'fuentes'){ setTitle('Fuentes y metodología'); return viewFuentes(); }
+  if ((m = h.match(/^prov-(\d{2})$/))) return viewProvincia(m[1]);
+  if (h === 'programas'){ setTitle('Programas electorales del 29-N'); return viewProgramas(); }
+  if (h === 'directo'){ setTitle('Resultados del 29-N en directo'); return viewDirecto(); }
   if (LEGAL_PAGS.some(x => x[0] === h)) return viewLegal(h);
   return notFound();
 }
-const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta'};
+const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta', programas: '29n', directo: '29n'};
 const $mast = document.querySelector('.mast'), $menu = document.getElementById('menu-btn');
 function cerrarMenu(){ $mast.classList.remove('open'); $menu.setAttribute('aria-expanded', 'false'); }
 $menu.addEventListener('click', () => { const abrir = !$mast.classList.contains('open'); $mast.classList.toggle('open', abrir); $menu.setAttribute('aria-expanded', String(abrir)); });
@@ -3156,13 +3525,16 @@ new MutationObserver(programarDesplazables).observe(app, {childList: true, subtr
 addEventListener('resize', programarDesplazables);
 let lastHash = null, primeraVista = true;
 async function route(){
-  const h = decodeURIComponent(location.hash.slice(1));
-  if (h.startsWith('sec-') || h.startsWith('h-')) return;
+  // an old address with # (pactometro.es/#encuesta, pactometro.es/#mun-27028): go to its own page
+  const viejo = decodeURIComponent(location.hash.slice(1));
+  if (esRuta(viejo)) return irA(viejo, true);
+  const h = rutaActual();
   const key = NAV[(h || 'inicio').split(/[-.?]/)[0]] || '';
   document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === key) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   cerrarMenu();
   hideTip();
   pararCuenta();
+  pararDirecto();
   actualizarNavEncuesta();
   actualizarPromo(h);
   const sameView = lastHash !== null && (lastHash.split('.')[0] === h.split('.')[0] || (lastHash.startsWith('comparar') && h.startsWith('comparar')));
@@ -3170,7 +3542,10 @@ async function route(){
   app.className = 'wrap';
   try { await dispatch(h); }
   catch(e){ app.className = 'wrap'; app.innerHTML = `<div class="error"><h1 class="h3" style="font-size:24px">No se pudieron cargar los datos</h1><p class="muted">${esc(e.message)}</p></div>`; }
-  if (!sameView){
+  enlazar(document);
+  const ancla = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (ancla) ancla.scrollIntoView();           // /29n/#sec-fuentes: the section exists only once the view is drawn
+  else if (!sameView){
     window.scrollTo(0, 0);
     // after moving to another page, put keyboard and screen-reader focus on its title
     if (!primeraVista){ const t = app.querySelector('h1'); if (t){ t.tabIndex = -1; t.focus({preventScroll: true}); } else app.focus({preventScroll: true}); }
@@ -3217,6 +3592,9 @@ document.addEventListener('click', ev => { const b = ev.target.closest('[data-ck
 if (window.ResizeObserver) new ResizeObserver(ajustarHuecoCk).observe($ck);
 if (!leerConsentimiento()) abrirAvisoCookies(false);
 
-window.addEventListener('hashchange', route);
+window.addEventListener('hashchange', () => { const h = decodeURIComponent(location.hash.slice(1)); if (esRuta(h)) irA(h, true); });
+window.addEventListener('popstate', route);
+new MutationObserver(() => { clearTimeout(tEnlaces); tEnlaces = setTimeout(() => enlazar(document), 0); }).observe(document.body, {childList: true, subtree: true});
+{ const up = document.getElementById('actualizado'); if (up) up.innerHTML = ` · Actualizado el <time datetime="${ACTUALIZADO_ISO}">${ACTUALIZADO}</time>`; }
 Promise.all([load('resumen.json').then(R => { FAM = R.familias; }).catch(() => {}), sincronizarReloj()]).finally(route);
 </script>

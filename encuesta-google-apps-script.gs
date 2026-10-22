@@ -1,5 +1,5 @@
 /**
- * Encuesta 29-N · pactómetro.es
+ * Encuesta 29-N y noche electoral · pactómetro.es
  * Titular: Javier Pereiro Pérez · pactometroes@gmail.com
  *
  * Guarda en esta hoja de cálculo las respuestas anónimas de la encuesta de la web.
@@ -31,6 +31,11 @@
  * Implementar → Gestionar implementaciones → editar (lápiz) → Versión: nueva versión → Implementar.
  * Así se mantiene la misma URL.
  *
+ * Noche electoral (versión 3, 22-10-2026): la página pactometro.es/29n/resultados/ y el widget leen la pestaña
+ * «Directo» de esta hoja (con ?directo=1 en la misma URL /exec). Créala con el menú Encuesta 29-N → «Preparar la
+ * pestaña Directo». Esa noche basta con escribir el porcentaje escrutado y los escaños (y, si se quiere, los votos)
+ * de cada candidatura: la web lo muestra en menos de un minuto a todos los visitantes. La hora se pone sola.
+ *
  * Conservación: la política de privacidad de la web dice que las respuestas individuales se borran
  * como tarde el 31 de mayo de 2027. Ese día (o antes) usa el menú Encuesta 29-N → «Borrar respuestas
  * individuales»: guarda antes el recuento con los totales y después vacía las filas.
@@ -43,6 +48,7 @@ const HOJA_RESPUESTAS = 'Respuestas';
 const HOJA_PRUEBAS = 'Pruebas';
 const HOJA_REVISAR = 'Revisar';
 const HOJA_RECUENTO = 'Recuento';
+const HOJA_DIRECTO = 'Directo';
 const CABECERA = ['Fecha (hora redondeada)', 'Intención de voto 29-N', 'Recuerdo de voto 23-J', 'Provincia'];
 
 // Opciones de la web (pactometro.es, vista «Encuesta»). Si cambian allí, cámbialas también aquí.
@@ -84,9 +90,66 @@ function doPost(e) {
   return texto_('ok');
 }
 
-/** Al abrir la URL en el navegador solo confirma que funciona; nunca muestra resultados. */
-function doGet() {
+/** Con ?directo=1 devuelve los resultados de la pestaña «Directo» (datos públicos); si no, solo confirma que funciona.
+    Nunca muestra las respuestas de la encuesta. */
+function doGet(e) {
+  if (e && e.parameter && e.parameter.directo === '1') return directo_();
   return texto_('Encuesta de pactómetro.es: funcionando.');
+}
+
+/** Escrutinio de la noche electoral en el formato que espera la web. Se guarda 30 segundos en caché. */
+function directo_() {
+  const cache = CacheService.getScriptCache();
+  const guardado = cache.get('directo');
+  if (guardado) return json_(guardado);
+  const h = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(HOJA_DIRECTO);
+  if (!h) return json_('{"partidos":[]}');
+  const v = h.getDataRange().getValues();
+  const num = function (x) {
+    if (typeof x === 'number') return x;
+    let t = String(x || '').trim().replace(/\s|%/g, '');
+    if (/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(t)) t = t.replace(/\./g, '');   // 1.234.567 (miles con punto)
+    return parseFloat(t.replace(',', '.')) || 0;
+  };
+  const partidos = v.slice(6).filter(function (f) { return String(f[0]).trim(); }).slice(0, 60).map(function (f) {
+    const color = String(f[3] || '').trim();
+    const p = {sig: String(f[0]).trim().slice(0, 40), esc: Math.max(0, Math.round(num(f[1])))};
+    if (num(f[2]) > 0) p.votos = Math.round(num(f[2]));
+    if (/^#[0-9a-fA-F]{6}$/.test(color)) p.color = color;
+    return p;
+  });
+  const esFecha = function (x) { return Object.prototype.toString.call(x) === '[object Date]' && !isNaN(x); };
+  const act = v[3] && esFecha(v[3][1]) ? v[3][1].toISOString() : new Date().toISOString();
+  const salida = JSON.stringify({actualizado: act, escrutado: num(v[0] && v[0][1]), participacion: num(v[1] && v[1][1]) || null,
+    fuente: String((v[2] && v[2][1]) || 'Ministerio del Interior (escrutinio provisional)').slice(0, 120), partidos: partidos});
+  cache.put('directo', salida, 30);
+  return json_(salida);
+}
+
+function json_(t) {
+  return ContentService.createTextOutput(t).setMimeType(ContentService.MimeType.JSON);
+}
+
+/** Al editar la pestaña «Directo», apunta la hora y renueva la caché para que la web lo muestre enseguida. */
+function onEdit(e) {
+  const h = e && e.range && e.range.getSheet();
+  if (!h || h.getName() !== HOJA_DIRECTO || e.range.getRow() === 4) return;
+  h.getRange(4, 2).setValue(new Date());
+  CacheService.getScriptCache().remove('directo');
+}
+
+/** Crea la pestaña «Directo» con su plantilla (escrutado, participación, fuente, hora y tabla de candidaturas). */
+function prepararDirecto() {
+  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  let h = libro.getSheetByName(HOJA_DIRECTO);
+  if (!h) h = libro.insertSheet(HOJA_DIRECTO);
+  h.getRange(1, 1, 4, 2).setValues([['Escrutado (%)', 0], ['Participación (%)', ''], ['Fuente', 'Ministerio del Interior (escrutinio provisional)'], ['Actualizado', new Date()]]);
+  h.getRange(1, 1, 4, 1).setFontWeight('bold');
+  h.getRange(6, 1, 1, 4).setValues([['Candidatura', 'Escaños', 'Votos (opcional)', 'Color (opcional, #rrggbb)']]).setFontWeight('bold');
+  h.setFrozenRows(6);
+  h.setColumnWidths(1, 4, 190);
+  h.getRange(4, 2).setNumberFormat('dd/MM/yyyy HH:mm:ss');
+  SpreadsheetApp.getUi().alert('Pestaña «Directo» preparada. La noche del 29-N escribe el porcentaje escrutado en B1 y, desde la fila 7, cada candidatura con sus escaños.');
 }
 
 /** Admite letras, números, espacios y puntuación básica. Nunca empieza por = + - @, así que no puede colar fórmulas. */
@@ -137,6 +200,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('Encuesta 29-N')
     .addItem('Actualizar recuento', 'actualizarRecuento')
+    .addItem('Preparar la pestaña Directo (noche electoral)', 'prepararDirecto')
     .addSeparator()
     .addItem('Borrar respuestas individuales…', 'borrarRespuestasIndividuales')
     .addToUi();

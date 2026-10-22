@@ -115,3 +115,26 @@ Pídemelos en el chat de Claude (en el mismo o en uno nuevo, pegando el enlace d
 - Los resultados oficiales proceden del Ministerio del Interior y del Congreso de los Diputados; hay que citar siempre la fuente, como ya hace la web.
 - Los escaños del Congreso de 1989 y 1993 proceden del proyecto *listas-electorales* (licencia CC BY 4.0), que exige atribución; ya figura en «Fuentes».
 - Si algún día pones publicidad o cobras por algo en la web, la Ley 34/2002 (LSSI) obliga a añadir tu NIF y un domicilio en el aviso legal.
+
+## 8. Páginas, compartir, widget y noche electoral (desde el 22-10-2026)
+
+**Una dirección por página.** Cada institución tiene su propia dirección, con título, descripción y los datos en texto para Google:
+`/congreso/`, `/congreso/1982/`, `/parlamento/galicia/`, `/diputacion/lugo/`, `/ayuntamiento/lugo/`, `/provincia/lugo/`, `/29n/`, `/29n/programas/`, `/29n/resultados/`…
+Son más de 8.300 páginas. Los enlaces antiguos con almohadilla (`pactometro.es/#encuesta`, `#mun-27028`) siguen funcionando: llevan a la dirección nueva.
+
+- **Search Console:** en «Sitemaps», vuelve a enviar `sitemap.xml` (ahora tiene todas las direcciones). Google tarda unos días o semanas en indexarlas.
+- **Programas electorales:** la lista está en `data/programas.json` (estado, fecha y enlaces oficiales). Se actualiza a medida que los partidos los publiquen.
+
+**Compartir.** Cada pactómetro tiene un botón «Compartir»: enlace con la coalición marcada (en el simulador, también los escaños), WhatsApp, Telegram, X, Bluesky, LinkedIn, correo, una imagen PNG de 1200 × 630 y el código para insertar el pactómetro en otra web.
+
+**Widget para otras webs.** `https://pactometro.es/widget/?i=…` muestra el hemiciclo de cualquier institución (y la coalición, si se indica). No usa cookies. El código para copiarlo sale en «Compartir → Insertar en tu web». Ejemplos:
+`?i=congreso`, `?i=mun-27028&si=PP,BNG`, `?i=auto-galicia`, `?i=directo` (resultados de la noche electoral).
+
+**Noche electoral (29-N).** La página `/29n/resultados/` y el widget `?i=directo` leen la pestaña «Directo» de la hoja de Google de la encuesta y se actualizan solos cada minuto a partir de las 20:00.
+
+1. Antes del 29-N: pega la **versión 3** de `encuesta-google-apps-script.gs` en Apps Script y publica una nueva versión (*Implementar → Gestionar implementaciones → editar → Versión: nueva versión*). La URL no cambia.
+2. Recarga la hoja y usa el menú *Encuesta 29-N → Preparar la pestaña Directo (noche electoral)*.
+3. La noche del 29-N: escribe en la pestaña «Directo» el porcentaje escrutado (B1), la participación (B2) y, desde la fila 7, cada candidatura con sus escaños (y, si quieres, sus votos). La web lo muestra en menos de un minuto; la hora se pone sola.
+
+Si la conexión automática con los datos del Ministerio está disponible, se podrá rellenar la pestaña sola (los datos en directo del Ministerio solo se entregan a medios acreditados que lo pidieran antes del 28 de octubre).
+
