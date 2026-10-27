@@ -181,6 +181,7 @@ class Generador:
         self.G, self.A, self.Lo, self.M = L('generales.json'), L('autonomicas.json'), L('locales.json'), L('municipios.json')
         self.prog = L('programas.json') if os.path.exists(os.path.join(data_dir, 'programas.json')) else None
         self.fam = L('resumen.json').get('familias', {})
+        self.cand = L('candidaturas.json') if os.path.exists(os.path.join(data_dir, 'candidaturas.json')) else None
         self.ESC_2026 = json.loads(re.search(r'const ESC_2026 = (\{.*?\});', js_src).group(1))
         cal = re.search(r'const CAL_29N = (\[.*?\n\]);', js_src, re.S).group(1)
         cal = re.sub(r'//[^\n]*', '', cal).replace('null', 'None')
@@ -291,6 +292,7 @@ class Generador:
                            f"Las Cortes se disolvieron por el Real Decreto 806/2026 (BOE del {fecha(c['decreto_boe'])}). La campaña va del {fecha(c['campana'][0])} al {fecha(c['campana'][1])} "
                            f"y se vota el domingo 29 de noviembre de 9:00 a 20:00. Se eligen 350 diputados y {c['senadores_electos']} senadores; las nuevas Cortes se constituyen el {fecha(c['constitucion_cortes'])}.")
                 + seccion('Calendario electoral', cal)
+                + (self.seccion_candidaturas() if self.cand else '')
                 + '<div class="section" id="sec-prov"><div class="section-head"><h2>Diputados por provincia</h2><p>Madrid gana un escaño (38) y Cádiz pierde uno (8) respecto a 2023. Cada provincia reparte sus escaños con la ley D\'Hondt entre las candidaturas que superan el 3 % de los votos válidos.</p></div>' + tb + '</div>'
                 + seccion('Más sobre el 29-N', enlaces([('Programas electorales de los partidos', '/29n/programas/', ''), ('Simulador para el 29-N', '/congreso/simulador/', ''),
                                                         ('Encuesta de pactómetro.es', '/encuesta/', ''), ('Resultados en directo (noche electoral)', '/29n/resultados/', '')])))
@@ -324,6 +326,15 @@ class Generador:
                                'Resultados provisionales de las elecciones generales del 29 de noviembre de 2026 en directo: escaños en el Congreso, escrutinio y pactos posibles.',
                                cont, [('Inicio', '/'), ('Elecciones 29-N', '/29n/'), ('Resultados en directo', '/29n/resultados/')]))
         return out
+
+    def seccion_candidaturas(self):
+        C = self.cand
+        fuentes = lambda f: ' · '.join(f'<a href="{esc(u)}" rel="noopener">{esc(t)}</a>' for t, u in (f or []))
+        cuerpo = ('<h3>Coaliciones al Congreso</h3><ul class="enlaces">'
+                  + ''.join(f'<li><b>{esc(c["nombre"])}</b>: {esc(c["partidos"])}. {esc(c["donde"])}.</li>' for c in C['congreso']) + '</ul>'
+                  + f'<p>{esc(C["solos"])}</p><h3>Pactos para el Senado</h3><ul class="enlaces">'
+                  + ''.join(f'<li><b>{esc(c["nombre"])}</b>. {esc(c["texto"])} <span class="small muted">{fuentes(c.get("fuentes"))}</span></li>' for c in C['senado']) + '</ul>')
+        return seccion('Quién se presenta', cuerpo, esc(f'{C["nota"]} Revisado el {fecha(C["revisado"])}.'), 'sec-cand')
 
     # ------------------------------------------------ provinces (general elections + municipalities)
     def provincias(self):

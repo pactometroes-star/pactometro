@@ -653,6 +653,7 @@ table.cmp-gen td{text-align:right}
 .e-steps p{max-width:72ch;color:var(--ink-2)}
 .e-list{margin:0;padding-left:20px;display:grid;gap:8px;max-width:76ch;color:var(--ink-2)}
 .e-list b{color:var(--ink)}
+#cand-cuerpo h3{font-size:20px;margin-top:6px}
 .e-prov{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
 .e-prov li{border:1px solid var(--rule);border-radius:8px;background:var(--sheet);font-size:14.5px}
 .e-prov li a{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;text-decoration:none;color:inherit;border-radius:8px}
@@ -1967,7 +1968,7 @@ async function view29N(){
   app.innerHTML = `${bloqueEncuesta()}${avisoElecciones(conv, true)}
   <div class="page-head"><span class="eyebrow">Elecciones generales · 29 de noviembre de 2026</span><h1>Cómo funcionan las elecciones del 29-N</h1>
     <p class="lede">El calendario oficial, cómo se reparten los escaños del Congreso y del Senado y qué significa cada tipo de voto, según la Constitución, la Ley Orgánica del Régimen Electoral General (LOREG), el Real Decreto de convocatoria y la Junta Electoral Central.</p></div>
-  <nav class="tabs" aria-label="En esta página"><a class="tab" href="#sec-cal">Calendario</a><a class="tab" href="#sec-congreso">Escaños del Congreso</a><a class="tab" href="#sec-dhondt">Calculadora D'Hondt</a><a class="tab" href="#sec-senado">Senado</a><a class="tab" href="#sec-votos">Tipos de voto</a><a class="tab" href="#sec-como">Cómo votar</a><a class="tab" href="#sec-fuentes">Fuentes</a></nav>
+  <nav class="tabs" aria-label="En esta página"><a class="tab" href="#sec-cal">Calendario</a><a class="tab" href="#sec-congreso">Escaños del Congreso</a><a class="tab" href="#sec-dhondt">Calculadora D'Hondt</a><a class="tab" href="#sec-cand">Quién se presenta</a><a class="tab" href="#sec-senado">Senado</a><a class="tab" href="#sec-votos">Tipos de voto</a><a class="tab" href="#sec-como">Cómo votar</a><a class="tab" href="#sec-fuentes">Fuentes</a></nav>
   <div class="e-facts">
     <div class="e-fact"><b>350</b><span>diputados del Congreso, elegidos en 52 circunscripciones: las 50 provincias, Ceuta y Melilla.</span></div>
     <div class="e-fact"><b>176</b><span>escaños son la mayoría absoluta del Congreso, la que hace falta para investir en primera votación.</span></div>
@@ -2013,6 +2014,9 @@ async function view29N(){
       <p class="e-dh-sum" id="dh-sum" aria-live="polite"></p>
       <div id="dh-out"></div>
     </div></section>
+
+  <section class="section" id="sec-cand" aria-labelledby="t-cand"><div class="section-head"><h2 id="t-cand">Quién se presenta</h2><p id="cand-nota">Coaliciones para el Congreso y pactos para el Senado.</p></div>
+    <div class="prose" id="cand-cuerpo"><p class="muted">Cargando…</p></div></section>
 
   <section class="section" id="sec-senado" aria-labelledby="t-senado"><div class="section-head"><h2 id="t-senado">Cómo se elige el Senado</h2></div>
     <div class="prose">
@@ -2101,6 +2105,18 @@ async function view29N(){
   app.querySelector('#dh-prov').addEventListener('change', ev => { if (ev.target.value){ $esc.value = ev.target.value; calcular(); } });
   $esc.addEventListener('input', calcular); $bl.addEventListener('input', calcular);
   pintarFilas(); calcular();
+  // candidaturas y pactos (data/candidaturas.json)
+  load('candidaturas.json').then(C => {
+    const box = app.querySelector('#cand-cuerpo'); if (!box) return;
+    app.querySelector('#cand-nota').textContent = `${C.nota} Revisado el ${fecha(C.revisado)}.`;
+    const fuentes = f => (f || []).map(([t, u]) => EXT(esc(u), esc(t))).join(' · ');
+    box.innerHTML = `<h3>Coaliciones al Congreso</h3>
+      <ul class="e-list">${C.congreso.map(c => `<li><b>${esc(c.nombre)}</b>: ${esc(c.partidos)}. <span class="muted">${esc(c.donde)}.</span></li>`).join('')}</ul>
+      <p>${esc(C.solos)}</p>
+      <h3>Pactos para el Senado</h3>
+      <ul class="e-list">${C.senado.map(c => `<li><b>${esc(c.nombre)}</b>. ${esc(c.texto)} <span class="small muted">${fuentes(c.fuentes)}</span></li>`).join('')}</ul>
+      <p class="small muted">En la <a href="#encuesta">encuesta</a> solo aparecen, en cada provincia, las candidaturas que se presentan allí.</p>`;
+  }).catch(() => { const box = app.querySelector('#cand-cuerpo'); if (box) box.innerHTML = '<p class="muted">No se pudo cargar la lista de candidaturas. Recarga la página para intentarlo de nuevo.</p>'; });
 }
 
 /* ================================================================ vista: autonomías */
@@ -2718,25 +2734,41 @@ function iniciarCuenta(){
 const CFG = window.PACTOMETRO_CONFIG || {};
 let relojDesfase = 0;                                    // corrección con la hora del servidor de la web
 const ahoraReal = () => new Date(Date.now() + relojDesfase);
+const PROV_CAT = ['08', '17', '25', '43'], PROV_PV = ['01', '20', '48'], PROV_GAL = ['15', '27', '32', '36'], PROV_VAL = ['03', '12', '46'],
+  PROV_CAN = ['35', '38'], PROV_AND = ['04', '11', '14', '18', '21', '23', '29', '41'], PROV_ARA = ['22', '44', '50'];
+const aliasProv = (provs, etiqueta, nota) => Object.fromEntries(provs.map(p => [p, [etiqueta, nota]]));
 const ENC = {
   apertura: new Date('2026-10-12T22:00:00Z'),          // 13-X: abierta desde que se publica (cuando config.js tiene la URL)
   cierre: new Date('2026-11-22T19:00:00Z'),            // domingo 22-N, 20:00 hora peninsular
   clave: 'pacto.encuesta29n.v1',
+  // Candidaturas al Congreso que se pueden votar en cada provincia (coaliciones registradas y listas anunciadas hasta el
+  // 27-X; se revisa con las candidaturas del BOE). n: lo que se guarda en la hoja (no cambiar los que ya existen: la hoja
+  // de Apps Script los reconoce por ese nombre); etiqueta / alias: lo que se ve, también según la provincia.
+  // p: solo en esas provincias; sin: en todas menos esas.
   partidos: [
-    {k: 'pp', n: 'PP', f: 'pp'},
-    {k: 'psoe', n: 'PSOE', f: 'psoe'},
+    {k: 'pp', n: 'PP', f: 'pp', sin: ['31']},                                     // en Navarra va con UPN
+    {k: 'psoe', n: 'PSOE', f: 'psoe', alias: aliasProv(PROV_CAT, 'PSC-PSOE', 'Partit dels Socialistes de Catalunya')},
     {k: 'vox', n: 'Vox', f: 'vox'},
-    {k: 'fa', n: 'Frente Amplio', nota: 'Sumar, IU, Más Madrid y Comuns', f: 'sumar'},
-    {k: 'd21', n: 'Democracia 21'},
-    {k: 'podemos', n: 'Podemos', f: 'podemos'},
-    {k: 'erc', n: 'ERC', nota: 'Cataluña', f: 'erc', p: ['08', '17', '25', '43']},
-    {k: 'junts', n: 'Junts', nota: 'Cataluña', f: 'junts', p: ['08', '17', '25', '43']},
-    {k: 'bildu', n: 'EH Bildu', nota: 'País Vasco y Navarra', f: 'bildu', p: ['01', '20', '48', '31']},
-    {k: 'pnv', n: 'PNV', nota: 'País Vasco', f: 'pnv', p: ['01', '20', '48']},
-    {k: 'bng', n: 'BNG', nota: 'Galicia', f: 'bng', p: ['15', '27', '32', '36']},
-    {k: 'compromis', n: 'Compromís', nota: 'Comunitat Valenciana', f: 'compromis', p: ['03', '12', '46']},
-    {k: 'cc', n: 'Coalición Canaria', nota: 'Canarias', f: 'cc', p: ['35', '38']},
-    {k: 'upn', n: 'UPN', nota: 'Navarra', f: 'upn', p: ['31']},
+    {k: 'fa', n: 'Frente Amplio', nota: 'IU, Sumar y otros', f: 'sumar', sin: [...PROV_VAL, ...PROV_CAN, '44'],
+      alias: {...aliasProv(['22', '50'], 'Chunta Aragonesista-Frente Amplio Aragón', 'CHA, IU, Sumar y otros'), ...aliasProv(PROV_AND, 'Frente Amplio por Andalucía', 'IU, Sumar, IPA y Verdes Equo'),
+        ...aliasProv(['07'], 'Ara Més-Front Ampli', 'Ara Més, Sumar, EU y Podemos'), ...aliasProv(PROV_CAT, 'Frente Amplio', 'Comuns, IU y Sumar'), ...aliasProv(['28'], 'Frente Amplio', 'Más Madrid, IU y Sumar')}},
+    {k: 'podemos', n: 'Podemos', f: 'podemos', sin: [...PROV_CAT, ...PROV_VAL, ...PROV_CAN, '07']},   // en esas va dentro de otra lista o no se presenta
+    {k: 'd21', n: 'Democracia 21', nota: 'Con Ciudadanos y UCIN · solo Madrid y Barcelona', p: ['28', '08']},
+    {k: 'salf', n: 'Se Acabó La Fiesta', nota: 'SALF', sin: ['25', '17', '20', '39', '13']},
+    {k: 'fo', n: 'Frente Obrero', nota: 'En las 52 circunscripciones'},
+    {k: 'erc', n: 'ERC', nota: 'Cataluña · con candidatos de Podemos', f: 'erc', p: PROV_CAT},
+    {k: 'junts', n: 'Junts', nota: 'Cataluña', f: 'junts', p: PROV_CAT},
+    {k: 'bildu', n: 'EH Bildu', nota: 'País Vasco y Navarra', f: 'bildu', p: [...PROV_PV, '31']},
+    {k: 'pnv', n: 'PNV', nota: 'País Vasco', f: 'pnv', p: PROV_PV},
+    {k: 'bng', n: 'BNG', nota: 'Galicia', f: 'bng', p: PROV_GAL},
+    {k: 'compromis', n: 'Compromís', etiqueta: 'Compromís-Front Valencià', nota: 'Compromís, Podemos, EUPV y ERPV', f: 'compromis', p: PROV_VAL},
+    {k: 'cc', n: 'Coalición Canaria', nota: 'Con Primero Canarias', f: 'cc', p: PROV_CAN,
+      alias: {'35': ['Primero Canarias-Coalición Canaria', 'Primero Canarias y CC'], '38': ['Coalición Canaria-Primero Canarias', 'CC y Primero Canarias']}},
+    {k: 'upc', n: 'Unidad del Pueblo Canario', nota: 'Podemos, Nueva Canarias, IU y Sumar', f: 'nc', p: PROV_CAN},
+    {k: 'upn', n: 'UPN', etiqueta: 'UPN-PP', nota: 'Unión del Pueblo Navarro y PP', f: 'upn', p: ['31']},
+    {k: 'gbai', n: 'Geroa Bai', nota: 'Navarra', f: 'gbai', p: ['31']},
+    {k: 'aa', n: 'Adelante Andalucía', nota: 'Andalucía', f: 'aa', p: PROV_AND},
+    {k: 'existe', n: 'Coalición Existe', nota: 'Teruel Existe y Aragón Existe', f: 'texiste', p: PROV_ARA},
   ],
   otras: [
     {k: 'otro', n: 'Otro partido', marca: true}, {k: 'blanco', n: 'En blanco'}, {k: 'nulo', n: 'Nulo'},
@@ -2788,10 +2820,10 @@ async function viewEncuesta(prueba){
   const ya = modo === 'real' && !probando ? store.get(ENC.clave) : null;
   const provs = Object.entries(M.provincias).sort((a, b) => a[1].localeCompare(b[1], 'es'));
   const color = f => (FAM[f] || {}).color || '#8a8f98';
-  const opHTML = (o, party) => `<label class="enc-op" data-k="${o.k}"${o.p ? ` data-prov="${o.p.join(' ')}"` : ''}>
+  const opHTML = (o, party) => `<label class="enc-op" data-k="${o.k}"${o.p ? ` data-prov="${o.p.join(' ')}"` : ''}${o.sin ? ` data-sin="${o.sin.join(' ')}"` : ''}>
       <input type="radio" name="intencion" value="${o.k}" id="enc-${o.k}">
       <span class="sw${party || o.marca ? '' : ' none'}" style="${party ? `background:${color(o.f)}` : o.marca ? 'background:var(--seat-empty)' : ''}"></span>
-      <span class="t"><b>${esc(o.n)}</b>${o.nota ? `<small>${esc(o.nota)}</small>` : ''}</span></label>`;
+      <span class="t"><b>${esc(o.etiqueta || o.n)}</b><small${o.nota ? '' : ' hidden'}>${esc(o.nota || '')}</small></span></label>`;
   const aviso = modo === 'previa'
     ? '<div class="notice prev"><span class="date">Vista previa</span><p>En pactómetro.es la encuesta se podrá responder hasta el domingo 22 de noviembre a las 20:00. Aquí puedes probarla, pero no se guarda nada.</p></div>'
     : probando ? '<div class="notice prev"><span class="date">Modo prueba</span><p>Esta respuesta se guarda en la pestaña «Pruebas» de la hoja de cálculo y no cuenta en la encuesta.</p></div>' : '';
@@ -2859,11 +2891,16 @@ async function viewEncuesta(prueba){
   };
   form.addEventListener('change', ev => {
     if (ev.target === $prov){
+      // only the candidacies that run in that province, with the name they use there
       const pv = $prov.value;
-      form.querySelectorAll('.enc-op[data-prov]').forEach(l => {
-        const visible = !pv || l.dataset.prov.split(' ').includes(pv);
+      form.querySelectorAll('.enc-op').forEach(l => {
+        const o = ENC.partidos.find(x => x.k === l.dataset.k); if (!o) return;
+        const visible = !pv || ((!o.p || o.p.includes(pv)) && !(o.sin && o.sin.includes(pv)));
         l.hidden = !visible;
         if (!visible) l.querySelector('input').checked = false;
+        const [et, nota] = (pv && o.alias && o.alias[pv]) || [o.etiqueta || o.n, o.nota || ''];
+        l.querySelector('.t b').textContent = et;
+        const sm = l.querySelector('.t small'); sm.textContent = nota; sm.hidden = !nota;
       });
     }
     marcar();
@@ -2875,11 +2912,12 @@ async function viewEncuesta(prueba){
     const main = app.querySelector('#enc-main');
     if (modo === 'real' && !probando && encEstado() !== 'abierta'){ viewEncuesta(false); return; }   // cerró mientras rellenaba
     const op = ENC.partidos.concat(ENC.otras).find(o => o.k === sel.value);
-    const datos = {intencion: op.n, recuerdo: $rec.value, provincia: $prov.value ? M.provincias[$prov.value] : '', consentimiento: '1', web: form.querySelector('#enc-web').value, v: '2'};
+    const visto = ((op.alias || {})[$prov.value] || [])[0] || op.etiqueta || op.n;   // the name the person saw
+    const datos = {intencion: op.n, recuerdo: $rec.value, provincia: $prov.value ? M.provincias[$prov.value] : '', consentimiento: '1', web: form.querySelector('#enc-web').value, v: '3'};
     if (probando) datos.prueba = '1';
     if (modo === 'previa'){
       main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Vista previa · no se ha guardado</span><h2>Así verá la confirmación quien responda</h2>
-        <p>Has elegido <b>${esc(op.n)}</b>${datos.provincia ? ` en ${esc(datos.provincia)}` : ''}${datos.recuerdo ? ` (recuerdo de voto: ${esc(datos.recuerdo)})` : ''}. En pactómetro.es esta respuesta se guardaría de forma anónima en la hoja de cálculo privada del titular.</p>
+        <p>Has elegido <b>${esc(visto)}</b>${datos.provincia ? ` en ${esc(datos.provincia)}` : ''}${datos.recuerdo ? ` (recuerdo de voto: ${esc(datos.recuerdo)})` : ''}. En pactómetro.es esta respuesta se guardaría de forma anónima en la hoja de cálculo privada del titular.</p>
         <button class="btn" type="button" id="enc-otra">Volver a probar</button></div>`;
       main.querySelector('#enc-otra').addEventListener('click', () => viewEncuesta(prueba));
       main.scrollIntoView({behavior: 'smooth', block: 'start'});

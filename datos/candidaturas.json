@@ -1,0 +1,123 @@
+{
+  "revisado": "2026-10-27",
+  "estado": "anunciadas",
+  "nota": "Coaliciones y pactos anunciados por los partidos. El BOE publica las candidaturas presentadas el 28 de octubre y las juntas electorales las proclaman el 2 de noviembre: entonces se confirmarán aquí, con los cabezas de lista de cada provincia.",
+  "congreso": [
+    {
+      "nombre": "Frente Amplio",
+      "partidos": "Izquierda Unida, Movimiento Sumar, Más Madrid y Comuns, con socios distintos en cada comunidad. Candidata a la presidencia: Ada Colau",
+      "donde": "En toda España salvo la Comunitat Valenciana y Canarias, donde sus partidos van en otras coaliciones, y Teruel. En Aragón se llama «Chunta Aragonesista-Frente Amplio Aragón»; en Andalucía, «Frente Amplio por Andalucía», y en Baleares, «Ara Més-Front Ampli», con Podemos"
+    },
+    {
+      "nombre": "Compromís-Front Valencià",
+      "partidos": "Compromís, Podemos, Esquerra Unida del País Valencià y Esquerra Republicana del País Valencià",
+      "donde": "Alicante, Castellón y Valencia"
+    },
+    {
+      "nombre": "Unidad del Pueblo Canario",
+      "partidos": "Podemos, Nueva Canarias-Bloque Canarista, Izquierda Unida y Movimiento Sumar",
+      "donde": "Las Palmas y Santa Cruz de Tenerife"
+    },
+    {
+      "nombre": "Coalición Canaria-Primero Canarias",
+      "partidos": "Coalición Canaria y Primero Canarias (en Las Palmas, «Primero Canarias-Coalición Canaria»)",
+      "donde": "Las Palmas y Santa Cruz de Tenerife"
+    },
+    {
+      "nombre": "Unión del Pueblo Navarro en coalición con el Partido Popular",
+      "partidos": "UPN y PP",
+      "donde": "Navarra"
+    },
+    {
+      "nombre": "Democracia para el Siglo 21",
+      "partidos": "Democracia 21, Ciudadanos y UCIN. Candidata: Miriam González",
+      "donde": "Solo Madrid y Barcelona, las dos circunscripciones en las que ha reunido los avales"
+    },
+    {
+      "nombre": "Coalición Existe",
+      "partidos": "Teruel Existe y Aragón Existe",
+      "donde": "Aragón"
+    }
+  ],
+  "solos": "Van con su propia candidatura el PP (salvo en Navarra), el PSOE (PSC-PSOE en Cataluña), Vox, ERC (con candidatos de Podemos en sus listas), Junts, EH Bildu, PNV, BNG, Geroa Bai, Adelante Andalucía, en las ocho provincias andaluzas, y PACMA, entre otros. Podemos se presenta por su cuenta en el resto de España; en Cataluña no presenta lista y apoya a ERC. Se Acabó La Fiesta está en 47 circunscripciones: todas menos Lleida, Girona, Gipuzkoa, Cantabria y Ciudad Real. Frente Obrero dice haber reunido los avales en las 52. No se presentan Aliança Catalana, la CUP, el PRC, Foro Asturias ni El Pi.",
+  "senado": [
+    {
+      "nombre": "«Senado de Progreso»: PSOE y Frente Amplio",
+      "texto": "Una sola candidatura al Senado del PSOE con Izquierda Unida, Movimiento Sumar, Más Madrid, Compromís, Chunta Aragonesista, Batzarre, Més y Ceuta Ya, en 47 circunscripciones. No rige en Cataluña, donde el PSC y los Comuns van por separado, ni en Canarias, salvo en La Gomera. Podemos no forma parte.",
+      "fuentes": [
+        [
+          "Infobae, 17-10-2026",
+          "https://www.infobae.com/espana/2026/10/17/acuerdo-historico-para-las-elecciones-del-29-n-en-el-senado-psoe-y-frente-amplio-se-presentaran-juntos-para-tratar-de-impedir-otra-mayoria-absoluta-del-pp/"
+        ],
+        [
+          "Demócrata, 23-10-2026",
+          "https://www.democrata.es/elecciones-generales-espana/cataluna-acuerdo-senado-psoe-frente-amplio-psc/"
+        ]
+      ]
+    },
+    {
+      "nombre": "Baleares: PSIB-PSOE, Més, Sumar y Esquerra Unida",
+      "texto": "Candidatura conjunta de la izquierda al Senado en las islas; en Mallorca, con el nombre «Acord de Progrés per Mallorca».",
+      "fuentes": [
+        [
+          "Canal 4 Diario, 18-10-2026",
+          "https://canal4diario.com/29n/2026/10/18/psib-mes-sumar-y-esquerra-unida-concurriran-juntos-al-senado-bajo-la-marca-acord-de-progres-per-mallorca/"
+        ]
+      ]
+    },
+    {
+      "nombre": "PP y Vox: reparto de candidatos",
+      "texto": "No es una coalición, sino un reparto acordado el 26 de octubre. Vox no presenta candidatos al Senado en Las Palmas, Santa Cruz de Tenerife, Cádiz, Valencia, Castellón y Baleares, y el PP incluye en su lista a un independiente propuesto por Vox. El PP no se presenta en Gipuzkoa, Girona y Tarragona. Vox presenta un solo candidato en Sevilla, Huelva, Asturias, Badajoz, Álava, Navarra, Cáceres, Huesca, Zaragoza, Alicante, Granada, Cuenca, Pontevedra y Jaén, y los habituales en el resto.",
+      "fuentes": [
+        [
+          "Infobae, 26-10-2026",
+          "https://www.infobae.com/espana/agencias/2026/10/26/pp-y-vox-esperan-lograr-hasta-140-senadores-gracias-al-pacto-para-concurrir-al-senado/"
+        ],
+        [
+          "Moncloa.com, 27-10-2026",
+          "https://www.moncloa.com/2026/10/27/pacto-pp-vox-senado-29n-3456050/"
+        ]
+      ]
+    },
+    {
+      "nombre": "ERC y EH Bildu",
+      "texto": "Anunciaron el 10 de octubre que volverían a presentarse juntos al Senado, a falta de que lo ratificaran sus bases.",
+      "fuentes": [
+        [
+          "Ara, 10-10-2026",
+          "https://en.ara.cat/politics/erc-and-bildu-will-reissue-the-coalition-in-the-senate_1_5875316.html"
+        ]
+      ]
+    },
+    {
+      "nombre": "Coalición Canaria y Primero Canarias",
+      "texto": "Candidatura de unidad canaria, al Congreso y al Senado.",
+      "fuentes": [
+        [
+          "RTVC, 14-10-2026",
+          "https://rtvc.es/primero-canarias-coalicion-canaria-cierran-acuerdo-candidatura-unidad-canaria-29-n-14-octubre-2026/"
+        ]
+      ]
+    },
+    {
+      "nombre": "Formentera: Sa Unió",
+      "texto": "El PP y Compromís amb Formentera presentan un candidato común al senador de Formentera, que el 29-N se elige por primera vez por separado de Ibiza.",
+      "fuentes": [
+        [
+          "Mundiario, 17-10-2026",
+          "https://www.mundiario.com/articulo/politica/elecciones-29-n-que-partidos-presentan-todas-coaliciones-registradas/20261017132941447352.html"
+        ]
+      ]
+    },
+    {
+      "nombre": "Se Acabó La Fiesta",
+      "texto": "No presenta candidatos al Senado.",
+      "fuentes": [
+        [
+          "The Objective, 27-10-2026",
+          "https://theobjective.com/espana/politica/2026-10-27/alvise-senado-pp-vox-congreso/"
+        ]
+      ]
+    }
+  ]
+}

@@ -36,6 +36,12 @@
  * pestaña Directo». Esa noche basta con escribir el porcentaje escrutado y los escaños (y, si se quiere, los votos)
  * de cada candidatura: la web lo muestra en menos de un minuto a todos los visitantes. La hora se pone sola.
  *
+ * Candidaturas reales (versión 4, 27-10-2026): la web enseña en cada provincia solo los partidos que se presentan allí
+ * y añade Frente Obrero, Se Acabó La Fiesta, Unidad del Pueblo Canario, Adelante Andalucía, Coalición Existe y
+ * Geroa Bai. Las coaliciones regionales se guardan con el nombre de siempre: «Compromís» es Compromís-Front Valencià,
+ * «Frente Amplio» incluye sus marcas de Aragón, Andalucía y Baleares, «UPN» es UPN-PP y «Coalición Canaria» va con
+ * Primero Canarias. Las respuestas que llegaron antes con esas opciones nuevas están en «Revisar».
+ *
  * Conservación: la política de privacidad de la web dice que las respuestas individuales se borran
  * como tarde el 31 de mayo de 2027. Ese día (o antes) usa el menú Encuesta 29-N → «Borrar respuestas
  * individuales»: guarda antes el recuento con los totales y después vacía las filas.
@@ -52,8 +58,9 @@ const HOJA_DIRECTO = 'Directo';
 const CABECERA = ['Fecha (hora redondeada)', 'Intención de voto 29-N', 'Recuerdo de voto 23-J', 'Provincia'];
 
 // Opciones de la web (pactometro.es, vista «Encuesta»). Si cambian allí, cámbialas también aquí.
-const INTENCIONES = ['PP', 'PSOE', 'Vox', 'Frente Amplio', 'Democracia 21', 'Podemos', 'ERC', 'Junts', 'EH Bildu', 'PNV',
-  'BNG', 'Compromís', 'Coalición Canaria', 'UPN', 'Otro partido', 'En blanco', 'Nulo', 'No votaré', 'Aún no lo sé'];
+const INTENCIONES = ['PP', 'PSOE', 'Vox', 'Frente Amplio', 'Democracia 21', 'Podemos', 'Se Acabó La Fiesta', 'Frente Obrero',
+  'ERC', 'Junts', 'EH Bildu', 'PNV', 'BNG', 'Compromís', 'Coalición Canaria', 'Unidad del Pueblo Canario', 'UPN', 'Geroa Bai',
+  'Adelante Andalucía', 'Coalición Existe', 'Otro partido', 'En blanco', 'Nulo', 'No votaré', 'Aún no lo sé'];
 const RECUERDOS = ['PP', 'PSOE', 'Vox', 'Sumar', 'ERC', 'Junts', 'EH Bildu', 'PNV', 'BNG', 'Coalición Canaria', 'UPN',
   'Otro partido', 'En blanco o nulo', 'No votó', 'No tenía edad para votar'];
 const PROVINCIAS = ['A Coruña', 'Albacete', 'Alicante/Alacant', 'Almería', 'Araba/Álava', 'Asturias', 'Ávila', 'Badajoz',
