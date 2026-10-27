@@ -1882,7 +1882,7 @@ const ENC = {
     {k: 'podemos', n: 'Podemos', f: 'podemos', sin: [...PROV_CAT, ...PROV_VAL, ...PROV_CAN, '07']},   // en esas va dentro de otra lista o no se presenta
     {k: 'd21', n: 'Democracia 21', nota: 'Con Ciudadanos y UCIN · solo Madrid y Barcelona', p: ['28', '08']},
     {k: 'salf', n: 'Se Acabó La Fiesta', nota: 'SALF', sin: ['25', '17', '20', '39', '13']},
-    {k: 'fo', n: 'Frente Obrero', nota: 'En las 52 circunscripciones'},
+    {k: 'fo', n: 'Frente Obrero'},
     {k: 'erc', n: 'ERC', nota: 'Cataluña · con candidatos de Podemos', f: 'erc', p: PROV_CAT},
     {k: 'junts', n: 'Junts', nota: 'Cataluña', f: 'junts', p: PROV_CAT},
     {k: 'bildu', n: 'EH Bildu', nota: 'País Vasco y Navarra', f: 'bildu', p: [...PROV_PV, '31']},
