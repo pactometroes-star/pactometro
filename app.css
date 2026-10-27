@@ -649,6 +649,7 @@ table.cmp-gen td{text-align:right}
 .e-steps p{max-width:72ch;color:var(--ink-2)}
 .e-list{margin:0;padding-left:20px;display:grid;gap:8px;max-width:76ch;color:var(--ink-2)}
 .e-list b{color:var(--ink)}
+#cand-cuerpo h3{font-size:20px;margin-top:6px}
 .e-prov{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
 .e-prov li{border:1px solid var(--rule);border-radius:8px;background:var(--sheet);font-size:14.5px}
 .e-prov li a{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;text-decoration:none;color:inherit;border-radius:8px}
