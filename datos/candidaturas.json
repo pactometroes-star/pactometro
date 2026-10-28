@@ -8,12 +8,11 @@
   "pdf": "https://www.boe.es/boe/dias/2026/10/28/pdfs/BOE-A-2026-22607.pdf"
  },
  "nota": "Candidaturas presentadas ante las juntas electorales, según el BOE del 28 de octubre (BOE-A-2026-22607). Todavía no son definitivas: las juntas las proclaman el 2 de noviembre y el BOE publica las listas proclamadas el 3.",
- "nota_cabezas": "Cabezas de lista según el BOE. Los marcados con * son los que anunció el partido y aún no hemos podido comprobar en el BOE; donde no aparece ninguno, falta por comprobar. Se completarán con las listas proclamadas.",
  "congreso": [
   {
    "nombre": "Frente Amplio",
    "partidos": "Izquierda Unida, Movimiento Sumar, Más Madrid y Comuns, con socios distintos en cada comunidad. Candidata a la presidencia: Ada Colau",
-   "donde": "En 44 circunscripciones: todas menos las de la Comunitat Valenciana y Canarias, donde sus partidos van en otras coaliciones, Teruel, Ceuta y Melilla. Cambia de nombre en Barcelona, Girona y Lleida («Comuns-Front Ampli»), Aragón («Chunta Aragonesista-Frente Amplio Aragón»), Baleares («AraMés-Front Ampli»), Galicia («Frente Amplio-Fronte Ampla»), Euskadi y Navarra («Frente Amplio-Fronte Zabala») y Asturias («Frente Ampliu por Asturies»)"
+   "donde": "En 44 circunscripciones: todas menos las de la Comunitat Valenciana y Canarias, donde sus partidos van en otras coaliciones, Teruel, Ceuta y Melilla. Cambia de nombre en Barcelona, Girona y Lleida («Comuns-Front Ampli»), Huesca y Zaragoza («Chunta Aragonesista-Frente Amplio Aragón»), Baleares («AraMés-Front Ampli»), Asturias («Frente Ampliu por Asturies»), Álava y Navarra («Frente Amplio-Fronte Zabala»), A Coruña y Ourense («Frente Amplio-Fronte Ampla»), Pontevedra («Fronte Ampla») y Cádiz, Córdoba, Granada, Huelva y Sevilla («Frente Amplio Andaluz»)"
   },
   {
    "nombre": "Compromís: Front Valencià",
@@ -27,7 +26,7 @@
   },
   {
    "nombre": "Coalición Canaria y Primero Canarias",
-   "partidos": "Coalición Canaria y Municipalistas Primero Canarias: «Primero Canarias-Coalición Canaria» en Las Palmas y «Coalición Canaria-Primero Canarias» en Santa Cruz de Tenerife",
+   "partidos": "Coalición Canaria y Municipalistas Primero Canarias: «Municipalistas Primero Canarias-Coalición Canaria» en Las Palmas y «Coalición Canaria-Municipalistas Primero Canarias» en Santa Cruz de Tenerife",
    "donde": "Las Palmas y Santa Cruz de Tenerife"
   },
   {
@@ -45,7 +44,7 @@
  "senado": [
   {
    "nombre": "«Senado de Progreso»: PSOE y Frente Amplio",
-   "texto": "Una sola candidatura al Senado del PSOE con Izquierda Unida, Movimiento Sumar, Más Madrid, Compromís, Chunta Aragonesista, Batzarre, Més y Ceuta Ya, que en el BOE figura como «Senado de Progreso» (SDP) en casi todas las provincias. No rige en Cataluña, donde el PSC y los Comuns van por separado, ni en Canarias, salvo en La Gomera. Podemos no forma parte.",
+   "texto": "Una sola candidatura al Senado del PSOE con los partidos del Frente Amplio (Izquierda Unida, Movimiento Sumar, Más Madrid, Compromís, Chunta Aragonesista, Batzarre…), que en el BOE figura como «Senado de Progreso» (SDP) en todas las provincias menos en Cataluña, donde el PSC y los Comuns («Comuns-Front Ampli per la Democràcia») van por separado; Baleares, con una lista distinta en cada isla, y Canarias, donde el PSOE va solo. En Huesca y Teruel se llama «Senado de Progreso de Aragón»; en Galicia la forman solo el PSOE y Movimiento Sumar, y en Alicante y Valencia, el PSOE, Compromís y EUPV. Podemos no forma parte.",
    "fuentes": [
     [
      "Infobae, 17-10-2026",
@@ -63,7 +62,7 @@
   },
   {
    "nombre": "Baleares: una lista de la izquierda en cada isla",
-   "texto": "En Mallorca, «Acord de Progrés per Mallorca» (PSIB-PSOE, Més, Sumar y EU); en Menorca, «Menorca al Senat» (PSOE, Més per Menorca, EM, EU y Podemos); en Ibiza, «Eivissa al Senat» (PSOE, Sumar, EUIB, Ara Eivissa y Podem), y en Formentera, «Formentera al Senat» (PSOE, Gent per Formentera y Sumar).",
+   "texto": "En Mallorca, «Acord de Progrés per Mallorca» (PSIB-PSOE, Més per Mallorca, Sumar y EUIB); en Menorca, «Menorca al Senat» (PSOE, Més per Menorca, EM, EU y Podemos); en Ibiza, «Eivissa al Senat» (PSOE, Sumar, EUIB, Ara Eivissa y Podem), y en Formentera, «Formentera al Senat» (PSOE, Gent per Formentera y Movimiento Sumar).",
    "fuentes": [
     [
      "Canal 4 Diario, 18-10-2026",
@@ -72,16 +71,12 @@
     [
      "BOE-A-2026-22607, 28-10-2026",
      "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22607"
-    ],
-    [
-     "La Voz de Ibiza, 28-10-2026",
-     "https://lavozdeibiza.com/actualidad/oficial-estas-son-las-listas-para-las-elecciones-del-29-n-en-ibiza-y-formentera/"
     ]
    ]
   },
   {
    "nombre": "PP y Vox: reparto de candidatos",
-   "texto": "No es una coalición, sino un reparto acordado el 26 de octubre: Vox no presenta candidatos al Senado en Las Palmas, Santa Cruz de Tenerife, Cádiz, Valencia, Castellón y Baleares, y el PP no se presenta en Gipuzkoa, Girona y Tarragona. En el BOE se ve además que en muchas provincias Vox lleva un solo candidato en vez de tres (por ejemplo, en Granada, Jaén, Cuenca, Ciudad Real y Lugo) y que en Valencia el número dos del PP es José Luis Aguirre, independiente y exconseller de Vox.",
+   "texto": "No es una coalición, sino un reparto acordado el 26 de octubre. En el BOE, Vox no presenta candidatos al Senado en Cádiz, Valencia, Castellón, Baleares ni Canarias, y presenta uno solo en vez de tres en 14 provincias: Alicante, Álava, Asturias, Badajoz, Bizkaia, Cáceres, Cuenca, Granada, Huelva, Huesca, Jaén, Pontevedra, Sevilla y Zaragoza. El PP no se presenta al Senado en Gipuzkoa, Girona ni Tarragona, y en Valencia su número dos es José Luis Aguirre, independiente y exconseller de Vox.",
    "fuentes": [
     [
      "Infobae, 26-10-2026",
@@ -92,38 +87,42 @@
      "https://www.moncloa.com/2026/10/27/pacto-pp-vox-senado-29n-3456050/"
     ],
     [
-     "Diario de Alicante, 28-10-2026",
-     "https://diariodealicante.net/candidaturas-congreso-senado-valencia-29n/"
+     "BOE-A-2026-22607, 28-10-2026",
+     "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22607"
     ]
    ]
   },
   {
    "nombre": "ERC y EH Bildu",
-   "texto": "Vuelven a presentarse juntos al Senado: en Navarra, por ejemplo, la candidatura que publica el BOE se llama «EH Bildu-ERC».",
+   "texto": "Van juntos al Senado: en el BOE, «ERC-EH Bildu» en las cuatro provincias catalanas y «EH Bildu-ERC» en Euskadi y Navarra.",
    "fuentes": [
     [
      "Ara, 10-10-2026",
      "https://en.ara.cat/politics/erc-and-bildu-will-reissue-the-coalition-in-the-senate_1_5875316.html"
     ],
     [
-     "Navarra.com, 28-10-2026",
-     "https://navarra.okdiario.com/articulo/politica/todas-listas-electorales-navarra-29-n-candidatos-cada-partido-congreso-senado/20261028085307665743.html"
+     "BOE-A-2026-22607, 28-10-2026",
+     "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22607"
     ]
    ]
   },
   {
    "nombre": "Coalición Canaria y Primero Canarias",
-   "texto": "Candidatura de unidad canaria, al Congreso y al Senado.",
+   "texto": "Candidatura conjunta al Congreso y al Senado: en el BOE, «Coalición Canaria-Municipalistas Primero Canarias» en todas las islas, salvo en Gran Canaria, donde va al revés.",
    "fuentes": [
     [
      "RTVC, 14-10-2026",
      "https://rtvc.es/primero-canarias-coalicion-canaria-cierran-acuerdo-candidatura-unidad-canaria-29-n-14-octubre-2026/"
+    ],
+    [
+     "BOE-A-2026-22607, 28-10-2026",
+     "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22607"
     ]
    ]
   },
   {
    "nombre": "Formentera: Sa Unió",
-   "texto": "«Sa Unió de Formentera», del PP y Compromís amb Formentera, presenta a Vicent Tur Costa al senador de Formentera, que el 29-N se elige por primera vez por separado de Ibiza.",
+   "texto": "«Sa Unió de Formentera», del PP y Compromís amb Formentera, presenta a Vicente Tur Costa al senador de Formentera, que el 29-N se elige por primera vez por separado de Ibiza. También se presentan «Formentera al Senat» (PSOE, Gent per Formentera y Movimiento Sumar) y «Formentera Viva».",
    "fuentes": [
     [
      "Mundiario, 17-10-2026",
@@ -132,16 +131,24 @@
     [
      "La Voz de Ibiza, 28-10-2026",
      "https://lavozdeibiza.com/actualidad/oficial-estas-son-las-listas-para-las-elecciones-del-29-n-en-ibiza-y-formentera/"
+    ],
+    [
+     "BOE-A-2026-22607, 28-10-2026",
+     "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22607"
     ]
    ]
   },
   {
    "nombre": "Se Acabó La Fiesta",
-   "texto": "No presenta candidatos al Senado.",
+   "texto": "No presenta candidatos al Senado en ninguna provincia.",
    "fuentes": [
     [
      "The Objective, 27-10-2026",
      "https://theobjective.com/espana/politica/2026-10-27/alvise-senado-pp-vox-congreso/"
+    ],
+    [
+     "BOE-A-2026-22607, 28-10-2026",
+     "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22607"
     ]
    ]
   }
@@ -198,6 +205,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "Raúl Aperribay Ganzábal"
     },
     {
@@ -406,6 +414,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "Mariana García Hernández"
     },
     {
@@ -584,7 +593,7 @@
     {
      "k": "psoe",
      "s": "PSIB-PSOE",
-     "n": "Partit Socialista de les Illes Balears",
+     "n": "Partido Socialista de las Islas Baleares",
      "f": "psoe",
      "c": "Francesca Lluch Armengol Socias"
     },
@@ -631,7 +640,7 @@
     {
      "k": "pp",
      "s": "PP",
-     "n": "Partido Popular",
+     "n": "Partit Popular/Partido Popular",
      "f": "pp",
      "c": "Xavier García Albiol"
     },
@@ -651,7 +660,6 @@
     {
      "k": "fa",
      "s": "Comuns-Front Ampli",
-     "n": "Frente Amplio en Cataluña",
      "f": "sumar",
      "c": "Ada Colau Ballano"
     },
@@ -742,7 +750,7 @@
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Isabel Lara Benítez"
+     "c": "Isabel Lara Benitez"
     },
     {
      "k": "fo",
@@ -753,7 +761,7 @@
      "k": "pcte",
      "s": "PCTE",
      "n": "Partido Comunista de los Trabajadores de España",
-     "nota": "no admitida"
+     "nota": "inadmitida por la junta electoral el 27 de octubre"
     },
     {
      "k": "mundo",
@@ -766,13 +774,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Marcos Santamaría del Olmo"
     }
-   ],
-   "nota": "Según El Español, la junta electoral no admitió la candidatura del PCTE.",
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "10": {
@@ -782,72 +783,62 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Cristina Teniente",
-     "a": 1
+     "c": "Cristina Elena Teniente Sánchez"
     },
     {
      "k": "psoe",
      "s": "PSOE",
-     "n": "Partido Socialista Obrero Español",
-     "f": "psoe"
+     "n": "Partido Socialista de Cáceres",
+     "f": "psoe",
+     "c": "Irene Pozas García"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Marcela Reija",
-     "a": 1
+     "c": "Marcela Reigía Vales"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
-     "f": "sumar"
+     "f": "sumar",
+     "c": "Antonio Moreno Pérez"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Álvaro Jaén",
-     "a": 1
+     "c": "Álvaro Jaén Barbado"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Mónica Pérez Gaite"
     },
     {
      "k": "juex",
      "s": "JUEX",
-     "n": "Juntos por Extremadura"
+     "n": "Juntos por Extremadura",
+     "c": "Raúl González Holgado"
     },
     {
      "k": "nex",
      "s": "NEX",
-     "n": "Nuevo Extremeñismo-Adelante Extremadura"
+     "n": "Nuevo Extremeñismo-Adelante Extremadura",
+     "c": "Ángel Andreo García"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Rubén Albalá Manuel"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Emilio José Paniagua Collazos"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "La Portada de Extremadura (Podemos)",
-     "https://www.laportadadeextremadura.com/extremadura/podemos-presenta-a-amparo-botejara-y-alvaro-jaen-como-cabezas-de-lista-al-congreso-en-badajoz-y-caceres_9261_102.html"
-    ]
    ]
   },
   "11": {
@@ -857,80 +848,67 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "María José García-Pelayo",
-     "a": 1
+     "c": "María José García-Pelayo Jurado"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "José Manuel Albares",
-     "a": 1
+     "c": "José Manuel Albares Bueno"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Blanca Armario González",
-     "a": 1
+     "c": "Blanca Armario González"
     },
     {
      "k": "fa",
-     "s": "Frente Amplio",
-     "f": "sumar"
+     "s": "Frente Amplio Andaluz",
+     "f": "sumar",
+     "c": "Esther Francisca Gil de Reboleño Lastortres"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Julio de la Torre",
-     "a": 1
+     "c": "Julio de la Torre Lorenzo"
     },
     {
      "k": "aa",
      "s": "Adelante Andalucía",
      "f": "aa",
-     "c": "María Sánchez",
-     "a": 1
+     "c": "María Sánchez Barrada"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Juan Vicente Parra Piñero"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Marcelino Laínez de los Reyes"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Laura María Gálvez Carmona"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "María Gracia Clavijo Repetto"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Francisco Anselmo Mesa González"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "101TV (cabezas de lista en Andalucía)",
-     "https://www.101tv.es/andalucia/quien-es-quien-en-las-listas-andaluzas-para-el-29n-los-candidatos-al-congreso-provincia-a-provincia"
-    ]
    ]
   },
   "12": {
@@ -940,78 +918,62 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Elena Albalat",
-     "a": 1
+     "c": "Elena Albalat Aguilella"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "María Jiménez Román",
-     "a": 1
+     "c": "María Jiménez Román"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Alberto Asarta Cuevas",
-     "a": 1
+     "c": "Alberto Teófilo Asarta Cuevas"
     },
     {
      "k": "compromis",
      "s": "Compromís: Front Valencià",
      "n": "Compromís, EUPV, Podem y ERPV",
      "f": "compromis",
-     "c": "Ignasi Garcia",
-     "a": 1
+     "c": "Ignasi García Felip"
     },
     {
      "k": "fe",
      "s": "FE de las JONS",
-     "n": "Falange Española de las JONS"
+     "n": "Falange Española de las JONS",
+     "c": "Andrónico Miguel Agustín Brun"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "David Fuentes Pinazo"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Francisca Hernández Rodríguez"
     },
     {
      "k": "autonomos",
-     "s": "Partido Autónomos"
+     "s": "Partido Autónomos",
+     "c": "Carolina Queral Recatalá"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Badr Ait Lamqadem Zahiri"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Álvaro González Álvaro"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "Castellón Plaza (Compromís: Front Valencià)",
-     "https://castellonplaza.com/castellonplaza/castellon9/compromisfront-valencia-registra-su-candidatura-al-congreso-en-castellon-encabezada-por-ignasi-garcia"
-    ],
-    [
-     "El Debate (listas del PSOE en la Comunitat Valenciana)",
-     "https://www.eldebate.com/espana/comunidad-valenciana/20261022/candidaturas-completas-psoe-elecciones-generales-29n_472444.html"
-    ]
    ]
   },
   "13": {
@@ -1021,7 +983,7 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "María del Carmen Fúnez de Gregorio"
+     "c": "María Del Carmen Fúnez De Gregorio"
     },
     {
      "k": "psoe",
@@ -1053,12 +1015,6 @@
      "s": "Frente Obrero",
      "c": "Raül Abengózar Galán"
     }
-   ],
-   "fuentes": [
-    [
-     "Lanza, 28-10-2026",
-     "https://www.lanzadigital.com/provincia/ciudad-real/presentadas-6-candidaturas-al-congreso-y-4-al-senado-por-ciudad-real-de-cara-a-las-elecciones-del-29-n/"
-    ]
    ]
   },
   "14": {
@@ -1085,7 +1041,7 @@
     },
     {
      "k": "fa",
-     "s": "Frente Amplio",
+     "s": "Frente Amplio Andaluz",
      "f": "sumar",
      "c": "Sebastián Pérez Gallardo"
     },
@@ -1104,6 +1060,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "Carmen María Valderrama Crespo"
     },
     {
@@ -1115,7 +1072,7 @@
     {
      "k": "fo",
      "s": "Frente Obrero",
-     "c": "Ángel Molina Ruiz"
+     "c": "Angel Molina Ruiz"
     },
     {
      "k": "pacma",
@@ -1135,12 +1092,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Eladio Barrado Prieto"
     }
-   ],
-   "fuentes": [
-    [
-     "Cordópolis, 28-10-2026",
-     "https://cordopolis.eldiario.es/cordoba-hoy/sociedad/son-listas-electorales-partidos-presentan-cordoba-29n_1_13620448.html"
-    ]
    ]
   },
   "15": {
@@ -1150,14 +1101,14 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Miguel Ángel Tellado Figueira"
+     "c": "Miguel Ángel Tellado Filgueira"
     },
     {
      "k": "psoe",
      "s": "PSdeG-PSOE",
      "n": "Partido dos Socialistas de Galicia",
      "f": "psoe",
-     "c": "Obdulia Taboadela"
+     "c": "Obdulia Taboadela Álvarez"
     },
     {
      "k": "vox",
@@ -1169,7 +1120,7 @@
      "k": "fa",
      "s": "Frente Amplio-Fronte Ampla",
      "f": "sumar",
-     "c": "Xosé Lois Piñeiro García"
+     "c": "José Luis Piñeiro García"
     },
     {
      "k": "podemos",
@@ -1186,29 +1137,27 @@
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Joel Novoa Arias"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "María Francisca Santos Vázquez"
     },
     {
      "k": "pcte",
      "s": "PCTG",
-     "n": "Partido Comunista dos Traballadores da Galiza"
+     "n": "Partido Comunista dos Traballadores da Galiza",
+     "c": "Daniel López García"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "María José García Hidalgo"
     }
-   ],
-   "fuentes": [
-    [
-     "Nós Diario, 28-10-2026",
-     "https://www.nosdiario.gal/articulo/internacional/consulte-aqui-candidaturas-presentadas-galiza-concorrer-eleccions-do-29-n/20261028100715270391.html"
-    ]
    ]
   },
   "16": {
@@ -1273,12 +1222,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Rafael García Sáez"
     }
-   ],
-   "fuentes": [
-    [
-     "El Plural, 28-10-2026",
-     "https://www.elplural.com/autonomias/castilla-la-mancha/todas-listas-congreso-castilla-la-mancha-29n-44-candidatos-encabezan-papeletas_802602102"
-    ]
    ]
   },
   "17": {
@@ -1286,70 +1229,65 @@
     {
      "k": "pp",
      "s": "PP",
-     "n": "Partido Popular",
+     "n": "Partit Popular/Partido Popular",
      "f": "pp",
-     "c": "Diana Moya",
-     "a": 1
+     "c": "Diana Moya Redondo"
     },
     {
      "k": "psoe",
      "s": "PSC-PSOE",
      "n": "Partit dels Socialistes de Catalunya",
-     "f": "psoe"
+     "f": "psoe",
+     "c": "Marc Lamuà Estañol"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Ignasi Mulleras Vinzia",
-     "a": 1
+     "c": "Ignasi Mulleras Vinzia"
     },
     {
      "k": "fa",
      "s": "Comuns-Front Ampli",
-     "n": "Frente Amplio en Cataluña",
-     "f": "sumar"
+     "f": "sumar",
+     "c": "Júlia Boada Danés"
     },
     {
      "k": "erc",
      "s": "ERC",
      "n": "Esquerra Republicana de Catalunya",
-     "f": "erc"
+     "f": "erc",
+     "c": "Teresa Jordà Roura"
     },
     {
      "k": "junts",
      "s": "Junts",
      "n": "Junts per Catalunya",
-     "f": "junts"
+     "f": "junts",
+     "c": "Marta Madrenas Mir"
     },
     {
      "k": "alhora",
-     "s": "Alhora"
+     "s": "Alhora",
+     "c": "Júlia Ojeda Caba"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Ivan Arroyo Laguna"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Arseniy Maximov Eudoqumova"
     },
     {
      "k": "pcte",
      "s": "PCTC",
-     "n": "Partit Comunista dels Treballadors de Catalunya"
+     "n": "Partit Comunista dels Treballadors de Catalunya",
+     "c": "Tomás Ferreira Crubellati"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ]
    ]
   },
   "18": {
@@ -1376,7 +1314,7 @@
     },
     {
      "k": "fa",
-     "s": "Frente Amplio",
+     "s": "Frente Amplio Andaluz",
      "f": "sumar",
      "c": "Jesús Fernández Martín"
     },
@@ -1420,12 +1358,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Rosa Alonso Domínguez"
     }
-   ],
-   "fuentes": [
-    [
-     "Ahora Granada, 28-10-2026",
-     "https://www.ahoragranada.com/noticias/todas-las-candidaturas-por-granada-al-congreso-y-al-senado-para-el-29n/"
-    ]
    ]
   },
   "19": {
@@ -1490,12 +1422,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "José Carlos Albares Gallego"
     }
-   ],
-   "fuentes": [
-    [
-     "El Plural, 28-10-2026",
-     "https://www.elplural.com/autonomias/castilla-la-mancha/todas-listas-congreso-castilla-la-mancha-29n-44-candidatos-encabezan-papeletas_802602102"
-    ]
    ]
   },
   "20": {
@@ -1505,71 +1431,70 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Jon Echeverría"
+     "c": "Jon Echeverría Franco"
     },
     {
      "k": "psoe",
      "s": "PSE-EE (PSOE)",
      "n": "Partido Socialista de Euskadi-Euskadiko Ezkerra",
      "f": "psoe",
-     "c": "Rafaela Romero"
+     "c": "Rafaela Romero Pozo"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Juan de Dios Dávila"
+     "c": "Juan Dios Dávila Garijo"
     },
     {
      "k": "fa",
-     "s": "Frente Amplio-Fronte Zabala",
+     "s": "Frente Amplio",
      "f": "sumar",
-     "c": "Rosa Rubio"
+     "c": "Rosa Rubio Sánchez"
     },
     {
      "k": "bildu",
      "s": "EH Bildu",
      "n": "Euskal Herria Bildu",
      "f": "bildu",
-     "c": "Oihana Etxebarrieta"
+     "c": "Oihana Etxebarrieta Legrand"
     },
     {
      "k": "pnv",
      "s": "EAJ-PNV",
      "n": "Partido Nacionalista Vasco",
      "f": "pnv",
-     "c": "Maribel Vaquero"
+     "c": "Maribel Vaquero Montero"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Maite Gartzia"
+     "c": "Maite Gartzia Ontiveros"
     },
     {
      "k": "eb",
-     "s": "Escaños en Blanco"
+     "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
+     "c": "Daniel Lizarralde Aguirre"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Leire Orbañanos Martínez"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "María Pilar Julia Otegui Serranos"
     },
     {
      "k": "pcte",
      "s": "PCTE/ELAK",
-     "n": "Partido Comunista de los Trabajadores de Euskadi"
+     "n": "Partido Comunista de los Trabajadores de Euskadi",
+     "c": "Eneko Lanz Llamas"
     }
-   ],
-   "fuentes": [
-    [
-     "Europa Press en Demócrata, 28-10-2026",
-     "https://www.democrata.es/euskadi/euskadi-publica-las-listas-provisionales-15-candidaturas-por-alava-12-por-bizkaia-y-11-por-gipuzkoa-al-congreso/"
-    ]
    ]
   },
   "21": {
@@ -1579,78 +1504,62 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Pilar Miranda",
-     "a": 1
+     "c": "María del Pilar Miranda Plata"
     },
     {
      "k": "psoe",
      "s": "PSOE",
-     "n": "Partido Socialista Obrero Español",
+     "n": "Partido Socialista de Huelva",
      "f": "psoe",
-     "c": "Gabriel Cruz",
-     "a": 1
+     "c": "Gabriel Cruz Santana"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Tomás Fernández Ríos",
-     "a": 1
+     "c": "Tomás Fernández Ríos"
     },
     {
      "k": "fa",
-     "s": "Frente Amplio",
+     "s": "Frente Amplio Andaluz",
      "f": "sumar",
-     "c": "Rebeca Martín",
-     "a": 1
+     "c": "Rebeca Martín Sánchez"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Hermes Gómez",
-     "a": 1
+     "c": "Hermes Gómez Escobar"
     },
     {
      "k": "aa",
      "s": "Adelante Andalucía",
      "f": "aa",
-     "c": "Carmen Martín",
-     "a": 1
+     "c": "Carmen María Martín Carrasco"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Rafael Vicente Frías Ranea"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Juana María Gómez Lorencio"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Cristina Reina Esojo"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "José Luis Rubio García"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "101TV (cabezas de lista en Andalucía)",
-     "https://www.101tv.es/andalucia/quien-es-quien-en-las-listas-andaluzas-para-el-29n-los-candidatos-al-congreso-provincia-a-provincia"
-    ]
    ]
   },
   "22": {
@@ -1660,83 +1569,68 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Ana Alós",
-     "a": 1
+     "c": "Ana Isabel Alós Lopez"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Begoña Nasarre",
-     "a": 1
+     "c": "Begoña Nasarre Oliva"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Esther Blanco",
-     "a": 1
+     "c": "Ester Blanco Sánchez"
     },
     {
      "k": "fa",
      "s": "Chunta Aragonesista-Frente Amplio Aragón",
      "n": "CHA, IU y Movimiento Sumar",
      "f": "sumar",
-     "c": "Luis Parra",
-     "a": 1
+     "c": "José Luis Parra Pascau"
     },
     {
      "k": "podemos",
      "s": "Podemos",
-     "f": "podemos"
+     "f": "podemos",
+     "c": "Vicente Oliver Alexandre"
     },
     {
      "k": "fia",
      "s": "FIA",
-     "n": "Federación de los Independientes de Aragón"
+     "n": "Federación de los Independientes de Aragón",
+     "c": "Jose Maria Abad Torres"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Abel Escribano Bonacho"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Maria del Carmen Molero Lacarte"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Diego Cajal Orleans"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Manuel Inurria Fernandez"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Rafael Pedraza Garrido"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "Aragón Digital (PSOE en Aragón)",
-     "https://www.aragondigital.es/articulo/politica/fernando-beltran-cabeza-lista-psoe-zaragoza-nasarre-herminio-sancho-repiten-huesca-teruel/202610152010331015767.html"
-    ],
-    [
-     "Demócrata (CHA-Frente Amplio Aragón en Huesca)",
-     "https://www.democrata.es/aragon/luis-parra-y-pilar-garces-encabezan-la-lista-cha-frente-amplio-aragon-al-congreso-por-huesca/"
-    ]
    ]
   },
   "23": {
@@ -1746,74 +1640,67 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Luis Mariano Camacho",
-     "a": 1
+     "c": "Luis Mariano Camacho Nuñez"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Isabel Uceda",
-     "a": 1
+     "c": "Isabel Uceda Cantero"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Francisco José Alcaraz Martos",
-     "a": 1
+     "c": "Francisco José Alcaraz Martos"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
      "f": "sumar",
-     "c": "Antonio Ortega",
-     "a": 1
+     "c": "Antonio Ortega Ruiz"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Lola Rodríguez López",
-     "a": 1
+     "c": "Dolores Rodríguez López"
     },
     {
      "k": "aa",
      "s": "Adelante Andalucía",
      "f": "aa",
-     "c": "Silvia Cano",
-     "a": 1
+     "c": "Silvia Cano Contreras"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Erika Villegas Ruiz"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Noemí Pulido Galán"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Juan Francisco Salinas Montoro"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Francisca Amaro Lombardo"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Juan Javier Reverte López"
     }
-   ],
-   "fuentes": [
-    [
-     "Diario Jaén, 28-10-2026",
-     "https://www.diariojaen.es/jaen/las-fuerzas-politicas-cierran-sus-candidaturas-en-jaen-para-el-29n-EB11676828"
-    ]
    ]
   },
   "24": {
@@ -1853,6 +1740,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "María López Castellanos"
     },
     {
@@ -1894,12 +1782,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Enrique Jesús Pérez Suárez"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "25": {
@@ -1907,82 +1789,65 @@
     {
      "k": "pp",
      "s": "PP",
-     "n": "Partido Popular",
+     "n": "Partit Popular/Partido Popular",
      "f": "pp",
-     "c": "Roger Melero",
-     "a": 1
+     "c": "Roger Melero Serra"
     },
     {
      "k": "psoe",
      "s": "PSC-PSOE",
      "n": "Partit dels Socialistes de Catalunya",
-     "f": "psoe"
+     "f": "psoe",
+     "c": "Cristina Morón Molina"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Rafael Villafranca Mercé",
-     "a": 1
+     "c": "Rafael Villafranca Merce"
     },
     {
      "k": "fa",
      "s": "Comuns-Front Ampli",
-     "n": "Frente Amplio en Cataluña",
-     "f": "sumar"
+     "f": "sumar",
+     "c": "Montserrat (Montse) Cortasa Gras"
     },
     {
      "k": "erc",
      "s": "ERC",
      "n": "Esquerra Republicana de Catalunya",
      "f": "erc",
-     "c": "Inès Granollers",
-     "a": 1
+     "c": "Inés Granollers i Cunillera"
     },
     {
      "k": "junts",
      "s": "Junts",
      "n": "Junts per Catalunya",
-     "f": "junts"
+     "f": "junts",
+     "c": "Isidre Gavín i Valls"
     },
     {
      "k": "alhora",
      "s": "Alhora",
-     "c": "Cristina Casol",
-     "a": 1
+     "c": "Cristina Casol Segués"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Albert Balasch Roque"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partit Animalista amb el Medi Ambient",
+     "c": "Iván Guijarro Vila"
     },
     {
      "k": "pcte",
      "s": "PCTC",
-     "n": "Partit Comunista dels Treballadors de Catalunya"
+     "n": "Partit Comunista dels Treballadors de Catalunya",
+     "c": "Guillem Cruz Lezcano"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "Nació Digital (Alhora en Lleida)",
-     "https://naciodigital.cat/lleida/politica/cristina-casol-encapcalara-la-candidatura-dalhora-a-lleida-per-a-les-eleccions-del-29-n.html"
-    ],
-    [
-     "La Ciutat (ERC en Lleida y Tarragona)",
-     "https://laciutat.cat/catalunya/erc-tria-norma-pujol-tarragona-ines-granollers-lleida-eleccions-29-n_902670_102.html"
-    ]
    ]
   },
   "26": {
@@ -1992,71 +1857,62 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Cuca Gamarra",
-     "a": 1
+     "c": "María Concepción Gamarra Ruiz Clavijo"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Elisa Garrido",
-     "a": 1
+     "c": "Elisa Garrido Jiménez"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Ángel Alda",
-     "a": 1
+     "c": "Ángel Alda Pérez"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
-     "f": "sumar"
+     "f": "sumar",
+     "c": "Alba Díez Arrea"
     },
     {
      "k": "podemos",
      "s": "Podemos",
-     "f": "podemos"
+     "f": "podemos",
+     "c": "María Aranzazu Carrero Bacigalupe"
     },
     {
      "k": "eb",
-     "s": "Escaños en Blanco"
+     "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
+     "c": "María Carmen García Pellejero"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Francisco Martínez Díaz"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Rosalía Cortés Rodríguez"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Francisco Castro Portolés"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Juan Aparici Jerez"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "elDiario.es La Rioja (PSOE)",
-     "https://www.eldiario.es/la-rioja/candidatas-psoe-rioja-29n-repiten-garrido-congreso-andreu-senado_1_13586379.html"
-    ]
    ]
   },
   "27": {
@@ -2083,7 +1939,7 @@
     },
     {
      "k": "fa",
-     "s": "Frente Amplio-Fronte Ampla",
+     "s": "Frente Amplio",
      "f": "sumar",
      "c": "Reyes Rodríguez García"
     },
@@ -2091,8 +1947,7 @@
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Ximena Cheda Tuya",
-     "a": 1
+     "c": "Ximena Cheda Tuya"
     },
     {
      "k": "bng",
@@ -2103,25 +1958,15 @@
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Víctor Contreras Céspedes"
     },
     {
      "k": "salf",
      "s": "SALF",
      "n": "Se Acabó La Fiesta",
-     "c": "María Ferreiro",
-     "a": 1
+     "c": "María Ferreiro Carreiras"
     }
-   ],
-   "fuentes": [
-    [
-     "Nós Diario, 28-10-2026",
-     "https://www.nosdiario.gal/articulo/internacional/consulte-aqui-candidaturas-presentadas-galiza-concorrer-eleccions-do-29-n/20261028100715270391.html"
-    ],
-    [
-     "El Progreso, 26-10-2026",
-     "https://elprogreso.es/articulo/lugo/ocho-candidaturas-aspiran-congreso-provincia-comicios-29-n/202610262148192009527.html"
-    ]
    ]
   },
   "28": {
@@ -2208,12 +2053,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Luis Alvise Pérez Fernández"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 28-10-2026",
-     "https://www.democrata.es/elecciones-generales-espana/herramientas/candidaturas"
-    ]
    ]
   },
   "29": {
@@ -2223,81 +2062,73 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Elías Bendodo",
-     "a": 1
+     "c": "Elías Bendodo Benasayag"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "José Bernal",
-     "a": 1
+     "c": "José Bernal Gutiérrez"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Carlos Hernández Quero",
-     "a": 1
+     "c": "Carlos Hernández Quero"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
-     "f": "sumar"
+     "f": "sumar",
+     "c": "Rafael Borrego Peña"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Micaela Jiménez",
-     "a": 1
+     "c": "Micaela Jiménez Fortes"
     },
     {
      "k": "aa",
      "s": "Adelante Andalucía",
      "f": "aa",
-     "c": "Ana Jiménez",
-     "a": 1
+     "c": "Ana María Jiménez Navarro"
     },
     {
      "k": "am",
-     "s": "Alternativa Malagueña"
+     "s": "Alternativa Malagueña",
+     "c": "Emilio Felipe Guzmán Jiménez"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Nicolás Navarro Ramírez"
+    },
+    {
+     "k": "calvo",
+     "s": "José María Calvo Guerra",
+     "c": "José María Calvo Guerra",
+     "nota": "un solo candidato"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Eva Ramos Taillefer"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Antonio Jiménez Martínez de Ubago"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Mercedes Gema Jiménez Martín"
     }
-   ],
-   "nota": "Además, según Europa Press, una agrupación de electores presentó una candidatura con un solo candidato.",
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "101TV (cabezas de lista en Andalucía)",
-     "https://www.101tv.es/andalucia/quien-es-quien-en-las-listas-andaluzas-para-el-29n-los-candidatos-al-congreso-provincia-a-provincia"
-    ]
    ]
   },
   "30": {
@@ -2307,83 +2138,72 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Mirian Guardiola",
-     "a": 1
+     "c": "Mirian Guardiola Salmerón"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "María González Veracruz",
-     "a": 1
+     "c": "María González Veracruz"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Joaquín Robles López",
-     "a": 1
+     "c": "Joaquín Robles López"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
      "f": "sumar",
-     "c": "Penélope Luna",
-     "a": 1
+     "c": "Penélope Luna Palazón"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Víctor Egío",
-     "a": 1
+     "c": "Víctor Manuel Egío García"
     },
     {
      "k": "eb",
-     "s": "Escaños en Blanco"
+     "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
+     "c": "Ángel María Rey Albesa"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Luis Pons Burgueros"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Francisco Javier Mateo Valera"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Olmo Arquero Peinazo"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Raquel Cardeñosa Cuesta"
     },
     {
      "k": "3e",
-     "s": "Tercera Edad en Acción"
+     "s": "Tercera Edad en Acción",
+     "c": "Domingo Díaz Carrillo"
     },
     {
      "k": "uc",
-     "s": "Unión Cartaginense"
+     "s": "Unión Cartaginense",
+     "c": "Isabel Diaz Cuevas"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "Murcia Plaza (listas del PSOE, Frente Amplio y Podemos)",
-     "https://murciaplaza.com/murciaplaza/region/la-batalla-del-29n-se-libra-en-femenino-en-la-region-y-con-solo-dos-cartageneros-en-las-listas-de-salida"
-    ]
    ]
   },
   "31": {
@@ -2460,12 +2280,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Lidia Martínez Aranguibel"
     }
-   ],
-   "fuentes": [
-    [
-     "Navarra.com, 28-10-2026",
-     "https://navarra.okdiario.com/articulo/politica/todas-listas-electorales-navarra-29-n-candidatos-cada-partido-congreso-senado/20261028085307665743.html"
-    ]
    ]
   },
   "32": {
@@ -2482,13 +2296,13 @@
      "s": "PSdeG-PSOE",
      "n": "Partido dos Socialistas de Galicia",
      "f": "psoe",
-     "c": "María del Carmen Rodríguez Dacosta"
+     "c": "María Del Carmen Rodríguez Dacosta"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "María Jesús Morenza Fernández"
+     "c": "Maria Jesús Morenza Fernández"
     },
     {
      "k": "fa",
@@ -2511,33 +2325,32 @@
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Laia González Gandia"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "María Fernanda Villegas Hermida"
     },
     {
      "k": "pcte",
      "s": "PCTG",
-     "n": "Partido Comunista dos Traballadores da Galiza"
+     "n": "Partido Comunista dos Traballadores da Galiza",
+     "c": "Brais Coello Vences"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Máis Xusto"
+     "s": "Por un Mundo Máis Xusto",
+     "c": "Rafael Manuel Fernández Alonso"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Abel Estévez González"
     }
-   ],
-   "fuentes": [
-    [
-     "Nós Diario, 28-10-2026",
-     "https://www.nosdiario.gal/articulo/internacional/consulte-aqui-candidaturas-presentadas-galiza-concorrer-eleccions-do-29-n/20261028100715270391.html"
-    ]
    ]
   },
   "33": {
@@ -2565,7 +2378,6 @@
     {
      "k": "fa",
      "s": "Frente Ampliu por Asturies",
-     "n": "Frente Amplio en Asturias",
      "f": "sumar",
      "c": "Juan Antonio González Ponte"
     },
@@ -2649,6 +2461,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "Alicia Calzada Bujedo"
     },
     {
@@ -2679,12 +2492,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Fernando Martínez Torres"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "35": {
@@ -2694,92 +2501,86 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Sergio Ramos",
-     "a": 1
+     "c": "Sergio Ramos Acosta"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Dolores Corujo",
-     "a": 1
+     "c": "María Dolores Corujo Berriel"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Alberto Rodríguez Almeida",
-     "a": 1
+     "c": "Andrés Alberto Rodríguez Almeida"
     },
     {
      "k": "upc",
      "s": "Unidad del Pueblo Canario",
      "n": "Nueva Canarias-BC, Podemos, IU y Sumar",
      "f": "nc",
-     "c": "Luis Campos",
-     "a": 1
+     "c": "Luis Alberto Campos Jiménez"
     },
     {
      "k": "cc",
      "s": "Primero Canarias-CC",
      "n": "Municipalistas Primero Canarias-Coalición Canaria",
      "f": "cc",
-     "c": "Teodoro Sosa",
-     "a": 1
+     "c": "Teodoro Claret Sosa Monzón"
     },
     {
      "k": "drago",
      "s": "Drago Canarias",
-     "c": "Héctor Morán",
-     "a": 1
+     "n": "Partido Drago Canarias",
+     "c": "Héctor Morán Rodríguez"
     },
     {
      "k": "eb",
-     "s": "Escaños en Blanco"
+     "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
+     "c": "Valentín Tomás Labrada Ruiz"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Jorge García Cantarero"
     },
     {
      "k": "lib",
-     "s": "Liberación Canaria"
+     "s": "Liberación Canaria",
+     "c": "Daniel Falero Mesa"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Iris Cristina Sánchez Padrón"
     },
     {
      "k": "pcpc",
      "s": "PCPC",
-     "n": "Partido Comunista del Pueblo Canario"
+     "n": "Partido Comunista del Pueblo Canario",
+     "c": "Sonia María Iruela Padrón"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Domingo González Perdomo"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Gara Rodríguez Gutiérrez"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Clara María Tejera González"
     }
-   ],
-   "fuentes": [
-    [
-     "Canarias7, 27-10-2026",
-     "https://www.canarias7.es/elecciones/generales/elecciones-generales-2026-lista-partidos-candidatos-canarias-20261027175409-nt.html"
-    ],
-    [
-     "Canarias Ahora, 28-10-2026",
-     "https://www.eldiario.es/canariasahora/politica/son-candidatos-canarias-elecciones-generales-2026-listas-congreso-senado_1_13618307.html"
-    ]
    ]
   },
   "36": {
@@ -2806,7 +2607,7 @@
     },
     {
      "k": "fa",
-     "s": "Frente Amplio-Fronte Ampla",
+     "s": "Fronte Ampla",
      "f": "sumar",
      "c": "Gloria Alonso Domínguez"
     },
@@ -2825,20 +2626,25 @@
     },
     {
      "k": "eb",
-     "s": "Escaños en Blanco"
+     "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
+     "c": "Joaquín Francisco Pérez Fernández"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Xose Luis García Pazos"
     },
     {
      "k": "pcte",
      "s": "PCTG",
-     "n": "Partido Comunista dos Traballadores da Galiza"
+     "n": "Partido Comunista dos Traballadores da Galiza",
+     "c": "Miguel Riaño Roa"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "María Noelia Alonso Domínguez"
     },
     {
      "k": "salf",
@@ -2846,12 +2652,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "David Díaz Garrido"
     }
-   ],
-   "fuentes": [
-    [
-     "Nós Diario, 28-10-2026",
-     "https://www.nosdiario.gal/articulo/internacional/consulte-aqui-candidaturas-presentadas-galiza-concorrer-eleccions-do-29-n/20261028100715270391.html"
-    ]
    ]
   },
   "37": {
@@ -2917,12 +2717,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Luis Eduardo Riesco Lorenzo"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "38": {
@@ -2932,88 +2726,79 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Gustavo González de Vega",
-     "a": 1
+     "c": "Gustavo González De Vega"
     },
     {
      "k": "psoe",
      "s": "PSOE",
-     "n": "Partido Socialista Obrero Español",
+     "n": "Partido Socialista de Santa Cruz de Tenerife",
      "f": "psoe",
-     "c": "José Antonio Valbuena",
-     "a": 1
+     "c": "Jose Antonio Valbuena Alonso"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Alejandro Gómez",
-     "a": 1
+     "c": "Alejandro Santiago Gómez Rodríguez"
     },
     {
      "k": "upc",
      "s": "Unidad del Pueblo Canario",
      "n": "Nueva Canarias-BC, Podemos, IU y Sumar",
      "f": "nc",
-     "c": "María de la Soledad Collado Mirabal",
-     "a": 1
+     "c": "María Soledad Collado Mirabal"
     },
     {
      "k": "cc",
      "s": "CC-Primero Canarias",
      "n": "Coalición Canaria-Municipalistas Primero Canarias",
      "f": "cc",
-     "c": "Cristina Valido",
-     "a": 1
+     "c": "Cristina Valido García"
     },
     {
      "k": "drago",
      "s": "Drago Canarias",
-     "c": "Alberto Rodríguez",
-     "a": 1
+     "n": "Partido Drago Canarias",
+     "c": "Alberto Rodríguez Rodríguez"
     },
     {
      "k": "f8",
-     "s": "F8",
-     "n": "Feminism8"
+     "s": "Feminism8",
+     "c": "Nuria Morales Delgado"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Antonio Coy García"
     },
     {
      "k": "lib",
-     "s": "Liberación Canaria"
+     "s": "Liberación Canaria",
+     "c": "Angélica María Calero Armas"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Yolanda Morales Pérez"
     },
     {
      "k": "autonomos",
-     "s": "Partido Autónomos"
+     "s": "Partido Autónomos",
+     "c": "Jose Luis Arias Machuca"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Pablo Janai García Canino"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Eduardo Zerolo Álvarez"
     }
-   ],
-   "fuentes": [
-    [
-     "Canarias7, 27-10-2026",
-     "https://www.canarias7.es/elecciones/generales/elecciones-generales-2026-lista-partidos-candidatos-canarias-20261027175409-nt.html"
-    ],
-    [
-     "Canarias Ahora, 28-10-2026",
-     "https://www.eldiario.es/canariasahora/politica/son-candidatos-canarias-elecciones-generales-2026-listas-congreso-senado_1_13618307.html"
-    ]
    ]
   },
   "39": {
@@ -3023,37 +2808,37 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Isabel Urrutia"
+     "c": "María Isabel Urrutia de los Mozos"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Susana Herrán"
+     "c": "Susana Herran Martin"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Emilio del Valle"
+     "c": "Emilio Jesús del Valle Rodríguez"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
      "f": "sumar",
-     "c": "Carmen Martín"
+     "c": "María Carmen Martin García"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Pablo Gómez"
+     "c": "Pablo Gómez Ruiz"
     },
     {
      "k": "fo",
      "s": "Frente Obrero",
-     "c": "Raúl Díaz"
+     "c": "Raúl Diaz Roces"
     },
     {
      "k": "pcte",
@@ -3061,12 +2846,6 @@
      "n": "Partido Comunista de los Trabajadores de España",
      "c": "Pablo Isidro Gómez"
     }
-   ],
-   "fuentes": [
-    [
-     "Europa Press en Cantabria Liberal, 28-10-2026",
-     "https://www.cantabrialiberal.com/cantabria/siete-partidos-presentan-candidaturas-en-cantabria-a-las-elecciones-generales,851502.html"
-    ]
    ]
   },
   "40": {
@@ -3083,7 +2862,7 @@
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "José Luis Aceves Galindo"
+     "c": "Jose Luis Aceves Galindo"
     },
     {
      "k": "vox",
@@ -3123,20 +2902,14 @@
     {
      "k": "mundo",
      "s": "Por un Mundo Más Justo",
-     "c": "José Manuel Eizaguirre Fernández-Palacios"
+     "c": "Jose Manuel Eizaguirre Fernandez-Palacios"
     },
     {
      "k": "salf",
      "s": "SALF",
      "n": "Se Acabó La Fiesta",
-     "c": "Jesús Ángel Gascón Ames"
+     "c": "Jesús Angel Gascón Ames"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "41": {
@@ -3146,87 +2919,73 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Juan Bravo",
-     "a": 1
+     "c": "Juan Bravo Baena"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Alfonso Rodríguez Gómez de Celis",
-     "a": 1
+     "c": "Alfonso Rodríguez Gómez de Celis"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "María de los Reyes Romero Vilches",
-     "a": 1
+     "c": "María de los Reyes Romero Vilches"
     },
     {
      "k": "fa",
-     "s": "Frente Amplio",
+     "s": "Frente Amplio Andaluz",
      "f": "sumar",
-     "c": "Enrique Santiago",
-     "a": 1
+     "c": "Enrique Fernando Santiago Romero"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "Mar Cambrollé",
-     "a": 1
+     "c": "Mar Cambrollé Jurado"
     },
     {
      "k": "aa",
      "s": "Adelante Andalucía",
      "f": "aa",
-     "c": "Luis de los Santos",
-     "a": 1
+     "c": "Luis María de los Santos Castillo"
     },
     {
      "k": "fe",
      "s": "FE de las JONS",
-     "n": "Falange Española de las JONS"
+     "n": "Falange Española de las JONS",
+     "c": "Jorge Luis Francisco Gil Lorenzo"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Alejandro Rodríguez Prieto"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Clara Isabel Márquez Martínez"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Nasai Littarru Sampedro"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Noemí Reyes Roldán"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Juan Antonio Sánchez Murillo González"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "101TV (cabezas de lista en Andalucía)",
-     "https://www.101tv.es/andalucia/quien-es-quien-en-las-listas-andaluzas-para-el-29n-los-candidatos-al-congreso-provincia-a-provincia"
-    ]
    ]
   },
   "42": {
@@ -3266,6 +3025,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "Luis García Molina"
     },
     {
@@ -3295,12 +3055,6 @@
      "s": "Soria ¡Ya!",
      "c": "Juan Antonio Palomar Sicilia"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "43": {
@@ -3308,86 +3062,81 @@
     {
      "k": "pp",
      "s": "PP",
-     "n": "Partido Popular",
+     "n": "Partit Popular/Partido Popular",
      "f": "pp",
-     "c": "Mónica Landete",
-     "a": 1
+     "c": "Mónica Landete Oliva"
     },
     {
      "k": "psoe",
      "s": "PSC-PSOE",
      "n": "Partit dels Socialistes de Catalunya",
      "f": "psoe",
-     "c": "Ione Montalvo",
-     "a": 1
+     "c": "Ione Montalvo Aguirrezabala"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Jordi de la Fuente",
-     "a": 1
+     "c": "Jordi Albert de la Fuente i Miró"
     },
     {
      "k": "fa",
      "s": "Frente Amplio",
      "f": "sumar",
-     "c": "Ester Roca",
-     "a": 1
+     "c": "Ester Roca Domodel"
     },
     {
      "k": "erc",
      "s": "ERC",
      "n": "Esquerra Republicana de Catalunya",
      "f": "erc",
-     "c": "Norma Pujol",
-     "a": 1
+     "c": "Norma Pujol Farré"
     },
     {
      "k": "junts",
      "s": "Junts",
      "n": "Junts per Catalunya",
      "f": "junts",
-     "c": "Josep Maria Cruset",
-     "a": 1
+     "c": "Josep Maria Cruset i Domènech"
     },
     {
      "k": "alhora",
-     "s": "Alhora"
+     "s": "Alhora",
+     "c": "Miquel Bonet Pinyol"
     },
     {
      "k": "cnv",
-     "s": "Convergents"
+     "s": "Convergents",
+     "c": "Cristian Orellana Trujillo"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Olga Donaire Muñoz"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Bárbara Batalla Vargas"
     },
     {
      "k": "pcte",
      "s": "PCTC",
-     "n": "Partit Comunista dels Treballadors de Catalunya"
+     "n": "Partit Comunista dels Treballadors de Catalunya",
+     "c": "Andreu Tomàs Martínez de Villa"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Charles Toja Muiños"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Jorge Sánchez Castro"
     }
-   ],
-   "fuentes": [
-    [
-     "Canal 21 Ebre",
-     "https://www.canal21ebre.com/llistes-catalanes-eleccions-generals-29n-2026/"
-    ]
    ]
   },
   "44": {
@@ -3397,78 +3146,76 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Alberto Herrero",
-     "a": 1
+     "c": "José Alberto Herrero Bono"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Herminio Sancho",
-     "a": 1
+     "c": "Herminio Rufino Sancho Íniguez"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Daniel Alda",
-     "a": 1
+     "c": "Daniel Alda Chercoles"
     },
     {
      "k": "podemos",
      "s": "Podemos",
-     "f": "podemos"
+     "f": "podemos",
+     "c": "Rafael Carlos Esteban Martín"
     },
     {
      "k": "fe",
      "s": "FE de las JONS",
-     "n": "Falange Española de las JONS"
+     "n": "Falange Española de las JONS",
+     "c": "Santiago María Núñez Albesa"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Alba Waitara Casanova Collado"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Selena Tomasa Sánchez Galindo"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "José Manuel Carrizosa Miguel"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Carlos Aranda Anquela"
     },
     {
      "k": "texiste",
      "s": "Teruel Existe",
      "f": "texiste",
-     "c": "Tomás Guitarte",
-     "a": 1
+     "c": "Tomás Guitarte Gimeno"
     }
    ],
    "nota": "No se presentan Frente Amplio (Chunta Aragonesista renunció para no dividir el voto), Aragón Existe ni Izquierda Unida, que no pudo presentar lista.",
    "fuentes": [
     [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
+     "elDiario.es Aragón, 21-10-2026",
+     "https://www.eldiario.es/aragon/politica/cha-frente-amplio-renuncian-presentarse-congreso-teruel-evitar-dispersion-voto_1_13604566.html"
     ],
     [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
+     "elDiario.es Aragón (Aragón Existe)",
+     "https://www.eldiario.es/aragon/politica/aragon-existe-renuncia-presentar-lista-zaragoza-huesca-29n-centrarse-elecciones-municipales_1_13606349.html"
     ],
     [
-     "Aragón Digital (PSOE en Aragón)",
-     "https://www.aragondigital.es/articulo/politica/fernando-beltran-cabeza-lista-psoe-zaragoza-nasarre-herminio-sancho-repiten-huesca-teruel/202610152010331015767.html"
-    ],
-    [
-     "Aragón Digital (Teruel Existe)",
-     "https://www.aragondigital.es/articulo/politica/tomas-guitarte-encabeza-candidatura-teruel-existe-29n-congreso-diputados/202610261127171017884.html"
+     "elDiario.es Aragón (IU)",
+     "https://www.eldiario.es/aragon/politica/iu-renuncia-presentar-lista-teruel-29n-motivos-legales-criticas-cha-no-hecho-posible_1_13609969.html"
     ]
    ]
   },
@@ -3529,12 +3276,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Antonio Cuñarro Alonso"
     }
-   ],
-   "fuentes": [
-    [
-     "El Plural, 28-10-2026",
-     "https://www.elplural.com/autonomias/castilla-la-mancha/todas-listas-congreso-castilla-la-mancha-29n-44-candidatos-encabezan-papeletas_802602102"
-    ]
    ]
   },
   "46": {
@@ -3544,7 +3285,7 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "María José Catalá"
+     "c": "María José Catalá Verdet"
     },
     {
      "k": "psoe",
@@ -3564,68 +3305,62 @@
      "s": "Compromís: Front Valencià",
      "n": "Compromís, EUPV, Podem y ERPV",
      "f": "compromis",
-     "c": "Àgueda Micó"
+     "c": "Àgueda Micó Micó"
     },
     {
      "k": "agenda",
      "s": "Agenda Valenciana",
-     "c": "José Ramón Chirivella"
+     "c": "José Ramón Chirivella Vila"
     },
     {
      "k": "fe",
      "s": "FE de las JONS",
      "n": "Falange Española de las JONS",
-     "c": "Alejo Herrero"
+     "c": "Alejo Herrero González de Cárdenas"
     },
     {
      "k": "fo",
      "s": "Frente Obrero",
-     "c": "Carmen López"
+     "c": "Carmen López Manzano"
     },
     {
      "k": "pacma",
      "s": "PACMA",
      "n": "Partido Animalista con el Medio Ambiente",
-     "c": "Irene Mora"
+     "c": "Irene Mercedes Mora Pérez"
     },
     {
      "k": "autonomos",
      "s": "Partido Autónomos",
-     "c": "Roberto Pradas"
+     "c": "Roberto Pradas Moncho"
     },
     {
      "k": "pcte",
      "s": "PCTE",
      "n": "Partido Comunista de los Trabajadores de España",
-     "c": "Gabriel Lorente"
+     "c": "Gabriel Lorente Juan"
     },
     {
      "k": "mundo",
      "s": "Por un Mundo Más Justo",
-     "c": "Marta Calatayud"
+     "c": "Marta López Calatayud"
     },
     {
      "k": "rrb",
      "s": "Renacer Renàixer",
-     "c": "Miguel Ramón Martí"
+     "c": "Miguel Ramón Martí Matias"
     },
     {
      "k": "salf",
      "s": "SALF",
      "n": "Se Acabó La Fiesta",
-     "c": "Kevin Pérez"
+     "c": "Kevin Pérez Hernández"
     },
     {
      "k": "vlc",
      "s": "Valencia Unida",
      "c": "Vicente González-Lizondo Sánchez"
     }
-   ],
-   "fuentes": [
-    [
-     "Diario de Alicante, 28-10-2026",
-     "https://diariodealicante.net/candidaturas-congreso-senado-valencia-29n/"
-    ]
    ]
   },
   "47": {
@@ -3665,6 +3400,7 @@
     {
      "k": "eb",
      "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
      "c": "Katia García Casas"
     },
     {
@@ -3682,7 +3418,7 @@
      "k": "pacma",
      "s": "PACMA",
      "n": "Partido Animalista con el Medio Ambiente",
-     "c": "María Hernández García"
+     "c": "María Hernandez García"
     },
     {
      "k": "pancal",
@@ -3707,12 +3443,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Onecha López Merino"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "48": {
@@ -3722,14 +3452,14 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Esther Martínez"
+     "c": "Esther Martínez Fernández"
     },
     {
      "k": "psoe",
      "s": "PSE-EE (PSOE)",
      "n": "Partido Socialista de Euskadi-Euskadiko Ezkerra",
      "f": "psoe",
-     "c": "Patxi López"
+     "c": "Patxi López Alvarez"
     },
     {
      "k": "vox",
@@ -3739,58 +3469,57 @@
     },
     {
      "k": "fa",
-     "s": "Frente Amplio-Fronte Zabala",
+     "s": "Frente Amplio",
      "f": "sumar",
-     "c": "Lander Martínez"
+     "c": "Lander Martínez Hierro"
     },
     {
      "k": "bildu",
      "s": "EH Bildu",
      "n": "Euskal Herria Bildu",
      "f": "bildu",
-     "c": "Oskar Matute"
+     "c": "Oskar Matute Garcia de Jalón"
     },
     {
      "k": "pnv",
      "s": "EAJ-PNV",
      "n": "Partido Nacionalista Vasco",
      "f": "pnv",
-     "c": "Idoia Sagastizabal"
+     "c": "Idoia Sagastizabal Unzetabarrenetxea"
     },
     {
      "k": "podemos",
      "s": "Podemos",
      "f": "podemos",
-     "c": "José Manuel de Pablos"
+     "c": "Jose Manuel de Pablos Bajo"
     },
     {
      "k": "pfac",
-     "s": "Feministas al Congreso"
+     "s": "Feministas al Congreso",
+     "c": "Pilar Aguilar Carrasco"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Oscar García Riesgo"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Janire Asenjo García"
     },
     {
      "k": "pcte",
      "s": "PCTE/ELAK",
-     "n": "Partido Comunista de los Trabajadores de Euskadi"
+     "n": "Partido Comunista de los Trabajadores de Euskadi",
+     "c": "Sergio Saenz Álvarez"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Luis Maria Vega Castresana"
     }
-   ],
-   "fuentes": [
-    [
-     "Europa Press en Demócrata, 28-10-2026",
-     "https://www.democrata.es/euskadi/euskadi-publica-las-listas-provisionales-15-candidaturas-por-alava-12-por-bizkaia-y-11-por-gipuzkoa-al-congreso/"
-    ]
    ]
   },
   "49": {
@@ -3850,12 +3579,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "María Cynthia Garrote Ballestero"
     }
-   ],
-   "fuentes": [
-    [
-     "El Español, 28-10-2026",
-     "https://www.elespanol.com/castilla-y-leon/region/20261028/partidos-presentan-elecciones-generales-castilla-leon-candidaturas-completas/1003744437571_0.html"
-    ]
    ]
   },
   "50": {
@@ -3865,82 +3588,74 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Rocío Dívar",
-     "a": 1
+     "c": "María del Rocío Dívar Conde"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Fernando Beltrán",
-     "a": 1
+     "c": "Fernando Ángel Beltrán Blázquez"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "Carmen Rouco",
-     "a": 1
+     "c": "María Carmen Rouco Laliena"
     },
     {
      "k": "fa",
      "s": "Chunta Aragonesista-Frente Amplio Aragón",
      "n": "CHA, IU y Movimiento Sumar",
-     "f": "sumar"
+     "f": "sumar",
+     "c": "Marina Rodríguez Hernando"
     },
     {
      "k": "podemos",
      "s": "Podemos",
-     "f": "podemos"
+     "f": "podemos",
+     "c": "Alicia Arteaga Lahuerta"
     },
     {
      "k": "fe",
      "s": "FE de las JONS",
-     "n": "Falange Española de las JONS"
+     "n": "Falange Española de las JONS",
+     "c": "Ignacio Alejandro Moreno Bescós"
     },
     {
      "k": "fia",
      "s": "FIA",
-     "n": "Federación de los Independientes de Aragón"
+     "n": "Federación de los Independientes de Aragón",
+     "c": "Amadeo Escolán Remartínez"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "Samuel Pelayo Fosch"
     },
     {
      "k": "pacma",
      "s": "PACMA",
-     "n": "Partido Animalista con el Medio Ambiente"
+     "n": "Partido Animalista con el Medio Ambiente",
+     "c": "Óscar Jesús Marcos Baigorri"
     },
     {
      "k": "pcte",
      "s": "PCTE",
-     "n": "Partido Comunista de los Trabajadores de España"
+     "n": "Partido Comunista de los Trabajadores de España",
+     "c": "Marina Lapuente Rey"
     },
     {
      "k": "mundo",
-     "s": "Por un Mundo Más Justo"
+     "s": "Por un Mundo Más Justo",
+     "c": "Jesús Miguel Sánchez Felipe"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "María Cristina Falcón Aldana"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "Aragón Digital (PSOE en Aragón)",
-     "https://www.aragondigital.es/articulo/politica/fernando-beltran-cabeza-lista-psoe-zaragoza-nasarre-herminio-sancho-repiten-huesca-teruel/202610152010331015767.html"
-    ]
    ]
   },
   "51": {
@@ -3982,12 +3697,6 @@
      "n": "Se Acabó La Fiesta",
      "c": "Carlos Pavón Fumado"
     }
-   ],
-   "fuentes": [
-    [
-     "Ceuta TV, 28-10-2026",
-     "https://www.ceutatv.com/politica/seis-candidaturas-congreso-cuatro-senado-conozca-aqui-quienes-concurriran-elecciones-29n/20261028094510259192.html"
-    ]
    ]
   },
   "52": {
@@ -3997,51 +3706,38 @@
      "s": "PP",
      "n": "Partido Popular",
      "f": "pp",
-     "c": "Sofía Acedo",
-     "a": 1
+     "c": "Sofía Acedo Reyes"
     },
     {
      "k": "psoe",
      "s": "PSOE",
      "n": "Partido Socialista Obrero Español",
      "f": "psoe",
-     "c": "Riduan Moh",
-     "a": 1
+     "c": "Riduan Moh Abdelkader"
     },
     {
      "k": "vox",
      "s": "Vox",
      "f": "vox",
-     "c": "José Miguel Tasende",
-     "a": 1
+     "c": "José Miguel Tasende Souto"
     },
     {
      "k": "eb",
-     "s": "Escaños en Blanco"
+     "s": "Escaños en Blanco",
+     "n": "Escaños en Blanco para dejar escaños vacíos",
+     "c": "Juan Soler Pardo"
     },
     {
      "k": "fo",
-     "s": "Frente Obrero"
+     "s": "Frente Obrero",
+     "c": "David Vidal Mas"
     },
     {
      "k": "salf",
      "s": "SALF",
-     "n": "Se Acabó La Fiesta"
+     "n": "Se Acabó La Fiesta",
+     "c": "Susana Morillo Espinosa"
     }
-   ],
-   "fuentes": [
-    [
-     "Demócrata, 26-10-2026 (cabezas de lista del PP)",
-     "https://www.democrata.es/en/general-elections-spain/feijoo-rushes-the-closure-of-the-pp-lists-for-the-29n-these-are-the-52-heads-of-candidacy/"
-    ],
-    [
-     "El Debate, 21-10-2026 (cabezas de lista de Vox)",
-     "https://www.eldebate.com/espana/20261021/estos-son-cabezas-lista-vox-29n_472379.html"
-    ],
-    [
-     "Demócrata (PSOE de Melilla)",
-     "https://www.democrata.es/actualidad/riduan-moh-liderara-la-lista-del-psoe-de-melilla-al-congreso-el-29-de-noviembre/"
-    ]
    ]
   }
  }
