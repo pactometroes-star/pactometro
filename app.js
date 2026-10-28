@@ -1237,7 +1237,12 @@ async function view29N(){
     const box = app.querySelector('#cand-cuerpo'); if (!box) return;
     app.querySelector('#cand-nota').textContent = `${C.nota} Revisado el ${fecha(C.revisado)}.`;
     const fuentes = f => (f || []).map(([t, u]) => EXT(esc(u), esc(t))).join(' · ');
-    box.innerHTML = `<h3>Coaliciones al Congreso</h3>
+    const porProv = Object.entries(C.provincias || {}).map(([k, v]) => ({k, n: (M && M.provincias[k]) || k, c: v.listas.length}))
+      .sort((a, b) => a.n.localeCompare(b.n, 'es'));
+    box.innerHTML = `${porProv.length ? `<h3>Candidaturas al Congreso en cada provincia</h3>
+      <p>Entra en tu provincia para ver qué candidaturas se presentan y quién encabeza cada lista. ${C.boe ? EXT(esc(C.boe.url), `Ver en el BOE (${esc(C.boe.id)})`) : ''}</p>
+      <ul class="e-prov" aria-label="Número de candidaturas al Congreso en cada provincia">${porProv.map(p => `<li><a href="#prov-${p.k}"><span>${esc(p.n)}</span><b>${p.c}<span class="vh"> candidaturas</span></b></a></li>`).join('')}</ul>` : ''}
+      <h3>Coaliciones al Congreso</h3>
       <ul class="e-list">${C.congreso.map(c => `<li><b>${esc(c.nombre)}</b>: ${esc(c.partidos)}. <span class="muted">${esc(c.donde)}.</span></li>`).join('')}</ul>
       <p>${esc(C.solos)}</p>
       <h3>Pactos para el Senado</h3>
@@ -1862,40 +1867,45 @@ const CFG = window.PACTOMETRO_CONFIG || {};
 let relojDesfase = 0;                                    // corrección con la hora del servidor de la web
 const ahoraReal = () => new Date(Date.now() + relojDesfase);
 const PROV_CAT = ['08', '17', '25', '43'], PROV_PV = ['01', '20', '48'], PROV_GAL = ['15', '27', '32', '36'], PROV_VAL = ['03', '12', '46'],
-  PROV_CAN = ['35', '38'], PROV_AND = ['04', '11', '14', '18', '21', '23', '29', '41'], PROV_ARA = ['22', '44', '50'];
+  PROV_CAN = ['35', '38'], PROV_AND = ['04', '11', '14', '18', '21', '23', '29', '41'];
 const aliasProv = (provs, etiqueta, nota) => Object.fromEntries(provs.map(p => [p, [etiqueta, nota]]));
 const ENC = {
   apertura: new Date('2026-10-12T22:00:00Z'),          // 13-X: abierta desde que se publica (cuando config.js tiene la URL)
   cierre: new Date('2026-11-22T19:00:00Z'),            // domingo 22-N, 20:00 hora peninsular
   clave: 'pacto.encuesta29n.v1',
-  // Candidaturas al Congreso que se pueden votar en cada provincia (coaliciones registradas y listas anunciadas hasta el
-  // 27-X; se revisa con las candidaturas del BOE). n: lo que se guarda en la hoja (no cambiar los que ya existen: la hoja
-  // de Apps Script los reconoce por ese nombre); etiqueta / alias: lo que se ve, también según la provincia.
-  // p: solo en esas provincias; sin: en todas menos esas.
+  // Candidaturas al Congreso que se pueden votar en cada provincia, según las candidaturas presentadas que publicó el BOE
+  // el 28-X (BOE-A-2026-22607; se revisa con las proclamadas del 3-XI). n: lo que se guarda en la hoja (no cambiar los que
+  // ya existen: la hoja de Apps Script los reconoce por ese nombre); etiqueta / alias: lo que se ve, también según la
+  // provincia. p: solo en esas provincias; sin: en todas menos esas.
   partidos: [
     {k: 'pp', n: 'PP', f: 'pp', sin: ['31']},                                     // en Navarra va con UPN
-    {k: 'psoe', n: 'PSOE', f: 'psoe', alias: aliasProv(PROV_CAT, 'PSC-PSOE', 'Partit dels Socialistes de Catalunya')},
+    {k: 'psoe', n: 'PSOE', f: 'psoe', alias: {...aliasProv(PROV_CAT, 'PSC-PSOE', 'Partit dels Socialistes de Catalunya'), ...aliasProv(PROV_GAL, 'PSdeG-PSOE', 'Partido dos Socialistas de Galicia'),
+      ...aliasProv(PROV_PV, 'PSE-EE (PSOE)', 'Partido Socialista de Euskadi'), ...aliasProv(['31'], 'PSN-PSOE', 'Partido Socialista de Navarra'), ...aliasProv(['07'], 'PSIB-PSOE', 'Partit Socialista de les Illes Balears')}},
     {k: 'vox', n: 'Vox', f: 'vox'},
-    {k: 'fa', n: 'Frente Amplio', nota: 'IU, Sumar y otros', f: 'sumar', sin: [...PROV_VAL, ...PROV_CAN, '44'],
-      alias: {...aliasProv(['22', '50'], 'Chunta Aragonesista-Frente Amplio Aragón', 'CHA, IU, Sumar y otros'), ...aliasProv(PROV_AND, 'Frente Amplio por Andalucía', 'IU, Sumar, IPA y Verdes Equo'),
-        ...aliasProv(['07'], 'Ara Més-Front Ampli', 'Ara Més, Sumar, EU y Podemos'), ...aliasProv(PROV_CAT, 'Frente Amplio', 'Comuns, IU y Sumar'), ...aliasProv(['28'], 'Frente Amplio', 'Más Madrid, IU y Sumar')}},
-    {k: 'podemos', n: 'Podemos', f: 'podemos', sin: [...PROV_CAT, ...PROV_VAL, ...PROV_CAN, '07']},   // en esas va dentro de otra lista o no se presenta
+    {k: 'fa', n: 'Frente Amplio', nota: 'IU, Sumar y otros', f: 'sumar', sin: [...PROV_VAL, ...PROV_CAN, '44', '51', '52'],
+      alias: {...aliasProv(['22', '50'], 'Chunta Aragonesista-Frente Amplio Aragón', 'CHA, IU y Sumar'), ...aliasProv(['07'], 'AraMés-Front Ampli', 'Ara Més, EU y Sumar'),
+        ...aliasProv(['08', '17', '25'], 'Comuns-Front Ampli', 'Comuns, IU y Sumar'), ...aliasProv(['43'], 'Frente Amplio', 'Comuns, IU y Sumar'), ...aliasProv(['28'], 'Frente Amplio', 'Más Madrid, IU y Sumar'),
+        ...aliasProv(PROV_GAL, 'Frente Amplio-Fronte Ampla', 'Sumar, IU y otros'), ...aliasProv([...PROV_PV, '31'], 'Frente Amplio-Fronte Zabala', 'IU, Sumar y otros'),
+        ...aliasProv(['33'], 'Frente Ampliu por Asturies', 'IU, Sumar y otros')}},
+    {k: 'podemos', n: 'Podemos', f: 'podemos', sin: [...PROV_CAT, ...PROV_VAL, ...PROV_CAN, '07', '52'],   // en esas va dentro de otra lista o no se presenta
+      alias: {'33': ['Podemos (Paz, Casa y Trabajo)', '']}},
     {k: 'd21', n: 'Democracia 21', nota: 'Con Ciudadanos y UCIN · solo Madrid y Barcelona', p: ['28', '08']},
-    {k: 'salf', n: 'Se Acabó La Fiesta', nota: 'SALF', sin: ['25', '17', '20', '39', '13']},
+    {k: 'salf', n: 'Se Acabó La Fiesta', nota: 'SALF', sin: ['25', '17', '20', '48', '39', '13']},
     {k: 'fo', n: 'Frente Obrero'},
     {k: 'erc', n: 'ERC', nota: 'Cataluña · con candidatos de Podemos', f: 'erc', p: PROV_CAT},
     {k: 'junts', n: 'Junts', nota: 'Cataluña', f: 'junts', p: PROV_CAT},
     {k: 'bildu', n: 'EH Bildu', nota: 'País Vasco y Navarra', f: 'bildu', p: [...PROV_PV, '31']},
     {k: 'pnv', n: 'PNV', nota: 'País Vasco', f: 'pnv', p: PROV_PV},
     {k: 'bng', n: 'BNG', nota: 'Galicia', f: 'bng', p: PROV_GAL},
-    {k: 'compromis', n: 'Compromís', etiqueta: 'Compromís-Front Valencià', nota: 'Compromís, Podemos, EUPV y ERPV', f: 'compromis', p: PROV_VAL},
+    {k: 'compromis', n: 'Compromís', etiqueta: 'Compromís: Front Valencià', nota: 'Compromís, EUPV, Podem y ERPV', f: 'compromis', p: PROV_VAL},
     {k: 'cc', n: 'Coalición Canaria', nota: 'Con Primero Canarias', f: 'cc', p: PROV_CAN,
-      alias: {'35': ['Primero Canarias-Coalición Canaria', 'Primero Canarias y CC'], '38': ['Coalición Canaria-Primero Canarias', 'CC y Primero Canarias']}},
-    {k: 'upc', n: 'Unidad del Pueblo Canario', nota: 'Podemos, Nueva Canarias, IU y Sumar', f: 'nc', p: PROV_CAN},
+      alias: {'35': ['Primero Canarias-Coalición Canaria', 'Municipalistas Primero Canarias y CC'], '38': ['Coalición Canaria-Primero Canarias', 'CC y Municipalistas Primero Canarias']}},
+    {k: 'upc', n: 'Unidad del Pueblo Canario', nota: 'Nueva Canarias, Podemos, IU y Sumar', f: 'nc', p: PROV_CAN},
     {k: 'upn', n: 'UPN', etiqueta: 'UPN-PP', nota: 'Unión del Pueblo Navarro y PP', f: 'upn', p: ['31']},
     {k: 'gbai', n: 'Geroa Bai', nota: 'Navarra', f: 'gbai', p: ['31']},
     {k: 'aa', n: 'Adelante Andalucía', nota: 'Andalucía', f: 'aa', p: PROV_AND},
-    {k: 'existe', n: 'Coalición Existe', nota: 'Teruel Existe y Aragón Existe', f: 'texiste', p: PROV_ARA},
+    {k: 'texiste', n: 'Teruel Existe', nota: 'Teruel', f: 'texiste', p: ['44']},      // Aragón Existe retiró sus listas de Zaragoza y Huesca
+    {k: 'sy', n: 'Soria Ya', etiqueta: 'Soria ¡Ya!', nota: 'Soria', p: ['42']},      // n sin ¡!: la hoja solo admite letras, números y . , ' ( ) / · -
   ],
   otras: [
     {k: 'otro', n: 'Otro partido', marca: true}, {k: 'blanco', n: 'En blanco'}, {k: 'nulo', n: 'Nulo'},
@@ -1958,7 +1968,7 @@ async function viewEncuesta(prueba){
     <h1>¿A quién piensas votar el 29-N?</h1>
     <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
   const como = `<aside class="enc-how"><h2 class="h3">Cómo funciona</h2><dl>
-      <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). La lista de partidos se actualizará cuando se proclamen las candidaturas, a primeros de noviembre.</dd></div>
+      <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). En cada provincia salen las principales candidaturas que se presentan allí, según el BOE del 28 de octubre, y las demás se eligen con «Otro partido». La lista se revisará con las proclamadas, que el BOE publica el 3 de noviembre.</dd></div>
       <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, tu provincia y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP. Más en la <a href="#privacidad">política de privacidad</a>.</dd></div>
       <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
       <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta (<a href="#cookies">política de cookies</a>).</dd></div>
@@ -2075,7 +2085,7 @@ async function viewEncuesta(prueba){
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
 const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '27 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-27';   // date of the last publication, set by scripts/build_dist.py
+const ACTUALIZADO = '28 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-28';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
