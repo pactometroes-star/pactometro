@@ -103,7 +103,7 @@ Pídemelos en el chat de Claude (en el mismo o en uno nuevo, pegando el enlace d
 
 ## 6. Datos que habrá que actualizar
 
-- **Candidaturas del 29-N:** se presentan del 21 al 26 de octubre y se proclaman a primeros de noviembre. Entonces conviene ajustar la lista de partidos de la encuesta, antes de que abra el 22.
+- **Candidaturas del 29-N:** están en `data/candidaturas.json` (ver el apartado 10). Desde el 28-10-2026 son las presentadas que publicó el BOE; las proclamadas salen en el BOE del 3 de noviembre y entonces se revisan también la encuesta y la versión del script.
 - **Resultados del 29-N:** cuando el Ministerio del Interior publique los resultados oficiales, se añaden al Congreso y al histórico.
 - **Municipales y autonómicas de mayo de 2027:** mismo procedimiento con los nuevos ficheros oficiales.
 
@@ -147,3 +147,12 @@ Si la conexión automática con los datos del Ministerio está disponible, se po
 - **Ficheros:** `data/mapa/espana.json` (comunidades, provincias e islas, 135 KB) y `data/mapa/municipios.json` (1,1 MB; solo se descarga al abrir el nivel de ayuntamientos) los genera `scripts/mapa.mjs` (Node, con los paquetes `es-atlas`, `d3-geo`, `d3-composite-projections`, `topojson-client` y `topojson-simplify`); solo hay que volver a generarlos si cambian los municipios. Los ganadores de cada municipal (`data/mapa/ayto-AAAA.json`) los escribe `build_dist.py` con los datos de `data/mun/`.
 - **Nuevas elecciones:** las generales del 29-N aparecerán solas en el nivel General cuando se añadan a `generales.json` con sus resultados por provincia; las municipales de 2027 necesitan añadir el año a `MUNICIPALES` en el código.
 - **Familias políticas:** el mapa colorea por familia. La regla de Compromís solo vale ya para las listas valencianas («Compromiso por…» o «Compromís amb Formentera» son otras candidaturas); `scripts/corregir_compromis.py` aplicó la corrección a los datos.
+
+## 10. Candidaturas del 29-N (desde el 28-10-2026)
+
+`data/candidaturas.json` alimenta «Quién se presenta» en `/29n/` y la tabla «Candidaturas al Congreso el 29-N» de cada página de provincia (`/provincia/…/`).
+
+- `congreso`, `solos` y `senado`: coaliciones al Congreso, quién va por su cuenta y pactos para el Senado, con sus fuentes.
+- `provincias`: para cada circunscripción (código INE, `"01"`–`"52"`), la lista de candidaturas presentadas según el BOE del 28-10-2026 (BOE-A-2026-22607). En cada una, `s` son las siglas, `n` el nombre completo, `f` la familia (para el color), `c` el cabeza de lista y `a: 1` marca un cabeza de lista anunciado por el partido que aún no se ha comprobado en el BOE (sale con asterisco). Se ordenan así: primero las de los partidos con diputados en el Congreso saliente y después el resto por orden alfabético.
+- **Encuesta:** en cada provincia solo salen las candidaturas que se presentan allí (`ENC.partidos` en el código: `p` = solo en esas provincias, `sin` = en todas menos esas, `alias` = el nombre que usan allí). Si se añade una opción, hay que añadirla también a `INTENCIONES` en `encuesta-google-apps-script.gs` (versión 5: Teruel Existe y Soria ¡Ya!, que se guarda como «Soria Ya» porque la hoja no admite signos de exclamación) y publicar una nueva versión del script.
+- **3 de noviembre:** el BOE publica las candidaturas proclamadas. Entonces se sustituyen las presentadas, se completan los cabezas de lista que faltan y se quita el asterisco a los comprobados.

@@ -42,6 +42,11 @@
  * «Frente Amplio» incluye sus marcas de Aragón, Andalucía y Baleares, «UPN» es UPN-PP y «Coalición Canaria» va con
  * Primero Canarias. Las respuestas que llegaron antes con esas opciones nuevas están en «Revisar».
  *
+ * Candidaturas presentadas (versión 5, 28-10-2026): la web sigue ya las candidaturas que publicó el BOE el 28 de octubre.
+ * Añade Teruel Existe (solo Teruel: Aragón Existe retiró sus listas de Zaragoza y Huesca, así que «Coalición Existe»
+ * deja de salir en la web, aunque se sigue aceptando por las respuestas que ya llegaron) y Soria ¡Ya! (solo Soria; se
+ * guarda como «Soria Ya», sin signos de exclamación, porque la hoja no admite esos caracteres).
+ *
  * Conservación: la política de privacidad de la web dice que las respuestas individuales se borran
  * como tarde el 31 de mayo de 2027. Ese día (o antes) usa el menú Encuesta 29-N → «Borrar respuestas
  * individuales»: guarda antes el recuento con los totales y después vacía las filas.
@@ -60,7 +65,7 @@ const CABECERA = ['Fecha (hora redondeada)', 'Intención de voto 29-N', 'Recuerd
 // Opciones de la web (pactometro.es, vista «Encuesta»). Si cambian allí, cámbialas también aquí.
 const INTENCIONES = ['PP', 'PSOE', 'Vox', 'Frente Amplio', 'Democracia 21', 'Podemos', 'Se Acabó La Fiesta', 'Frente Obrero',
   'ERC', 'Junts', 'EH Bildu', 'PNV', 'BNG', 'Compromís', 'Coalición Canaria', 'Unidad del Pueblo Canario', 'UPN', 'Geroa Bai',
-  'Adelante Andalucía', 'Coalición Existe', 'Otro partido', 'En blanco', 'Nulo', 'No votaré', 'Aún no lo sé'];
+  'Adelante Andalucía', 'Teruel Existe', 'Soria Ya', 'Coalición Existe', 'Otro partido', 'En blanco', 'Nulo', 'No votaré', 'Aún no lo sé'];
 const RECUERDOS = ['PP', 'PSOE', 'Vox', 'Sumar', 'ERC', 'Junts', 'EH Bildu', 'PNV', 'BNG', 'Coalición Canaria', 'UPN',
   'Otro partido', 'En blanco o nulo', 'No votó', 'No tenía edad para votar'];
 const PROVINCIAS = ['A Coruña', 'Albacete', 'Alicante/Alacant', 'Almería', 'Araba/Álava', 'Asturias', 'Ávila', 'Badajoz',

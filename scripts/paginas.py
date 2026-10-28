@@ -330,11 +330,51 @@ class Generador:
     def seccion_candidaturas(self):
         C = self.cand
         fuentes = lambda f: ' · '.join(f'<a href="{esc(u)}" rel="noopener">{esc(t)}</a>' for t, u in (f or []))
-        cuerpo = ('<h3>Coaliciones al Congreso</h3><ul class="enlaces">'
+        prov = sorted((C.get('provincias') or {}).items(), key=lambda kv: self.prov_n[kv[0]])
+        rejilla = ''
+        if prov:
+            boe = C.get('boe') or {}
+            rejilla = ('<h3>Candidaturas al Congreso en cada provincia</h3><p>Entra en tu provincia para ver qué candidaturas se presentan y quién encabeza cada lista.'
+                       + (f' <a href="{esc(boe["url"])}" rel="noopener">Ver en el BOE ({esc(boe["id"])})</a>' if boe.get('url') else '') + '</p>'
+                       + '<ul class="e-prov" aria-label="Número de candidaturas al Congreso en cada provincia">'
+                       + ''.join(f'<li><a href="{self.url_prov(p)}#sec-candidaturas"><span>{esc(self.prov_n[p])}</span><b>{len(v["listas"])}<span class="vh"> candidaturas</span></b></a></li>' for p, v in prov)
+                       + '</ul>')
+        cuerpo = (rejilla + '<h3>Coaliciones al Congreso</h3><ul class="enlaces">'
                   + ''.join(f'<li><b>{esc(c["nombre"])}</b>: {esc(c["partidos"])}. {esc(c["donde"])}.</li>' for c in C['congreso']) + '</ul>'
                   + f'<p>{esc(C["solos"])}</p><h3>Pactos para el Senado</h3><ul class="enlaces">'
                   + ''.join(f'<li><b>{esc(c["nombre"])}</b>. {esc(c["texto"])} <span class="small muted">{fuentes(c.get("fuentes"))}</span></li>' for c in C['senado']) + '</ul>')
         return seccion('Quién se presenta', cuerpo, esc(f'{C["nota"]} Revisado el {fecha(C["revisado"])}.'), 'sec-cand')
+
+    def candidaturas_prov(self, p, nombre):
+        """Candidacies presented in the province (data/candidaturas.json → provincias), for the province page."""
+        C = self.cand
+        d = (C or {}).get('provincias', {}).get(p)
+        if not d:
+            return ''
+        gris = self.fam.get('local', {}).get('color', '#8a8f98')
+        filas = []
+        for e in d['listas']:
+            color = self.fam.get(e.get('f'), {}).get('color', gris)
+            nm = f' <span class="muted small nm">{esc(e["n"])}</span>' if e.get('n') else ''
+            nota = f' <span class="small muted">({esc(e["nota"])})</span>' if e.get('nota') else ''
+            cab = (esc(e['c']) + ('<span aria-hidden="true">*</span><span class="vh"> (anunciado por el partido)</span>' if e.get('a') else '')) if e.get('c') else '<span class="muted" aria-hidden="true">—</span><span class="vh">Sin comprobar</span>'
+            filas.append(f'<tr><td><span class="sw" style="background:{color}"></span><b>{esc(e["s"])}</b>{nm}{nota}</td><td>{cab}</td></tr>')
+        tabla_ = (f'<div class="tablewrap"><table class="data cand-tabla"><caption class="vh">Candidaturas al Congreso presentadas en {esc(nombre)}</caption>'
+                  '<thead><tr><th>Candidatura</th><th>Cabeza de lista</th></tr></thead><tbody>' + ''.join(filas) + '</tbody></table></div>')
+        boe = C.get('boe') or {}
+        pie = []
+        if d.get('nota'):
+            pie.append(esc(d['nota']))
+        if any(e.get('a') for e in d['listas']):
+            pie.append('* Anunciado por el partido; falta comprobarlo en el BOE.')
+        src = [f'<a href="{esc(boe["url"])}" rel="noopener">BOE del {fecha(boe["fecha"])} ({esc(boe["id"])})</a>'] if boe.get('url') else []
+        src += [f'<a href="{esc(u)}" rel="noopener">{esc(t)}</a>' for t, u in d.get('fuentes', [])]
+        pie.append('Fuentes: ' + ' · '.join(src) + '.')
+        n = len(d['listas'])
+        intro = (f'{n} candidaturas presentadas en {esc(nombre)} según el BOE del {fecha(boe.get("fecha", C["revisado"]))}. Todavía no son definitivas: '
+                 'las juntas electorales las proclaman el 2 de noviembre y el BOE publica las listas proclamadas el 3. '
+                 'Primero, las de los partidos con diputados en el Congreso saliente; después, el resto por orden alfabético.')
+        return seccion('Candidaturas al Congreso el 29-N', tabla_ + ''.join(f'<p class="small muted">{x}</p>' for x in pie), intro, 'sec-candidaturas')
 
     # ------------------------------------------------ provinces (general elections + municipalities)
     def provincias(self):
@@ -385,14 +425,17 @@ class Generador:
                     f"{' (los mismos que en 2023)' if esc26 == esc23 else f' ({esc23} en 2023)'} y {senado}.")
             cont = (migas_html([('Inicio', '/'), ('Elecciones 29-N', '/29n/'), (nombre, self.url_prov(p))])
                     + cabecera(f'Provincia · {esc(self.ccaa.get(ca, ""))}', f'{nombre}: elecciones generales y municipios', lede)
+                    + self.candidaturas_prov(p, nombre)
                     + seccion(f'Resultado del 23-J de 2023 en {nombre}', tabla(rows, N, caption=f'Elecciones generales de 2023 en {nombre}') + ult + cambio,
                               'Votos y diputados de cada candidatura en la provincia (Ministerio del Interior).')
                     + '<div id="prov-cis"></div>'
                     + seccion(f'Ayuntamientos de {nombre}', lis, f'Los {len(lista)} municipios con datos: entra en cualquiera para ver su pleno y calcular quién puede gobernar.', 'sec-municipios')
                     + seccion('También en esta provincia', enlaces(links)))
-            tit = f'{nombre}: diputados el 29-N, resultados del 23-J y ayuntamientos · pactómetro.es'
-            desc = (f"{nombre} elige {esc26} diputados el 29-N. Resultado del 23-J en la provincia: {resumen_corto(rows, N)}. "
-                    f"Pactos, municipios y diputación de {nombre}.")
+            hay_cand = bool(self.cand and self.cand.get('provincias', {}).get(p))
+            tit = (f'{nombre}: candidaturas del 29-N, resultados del 23-J y ayuntamientos · pactómetro.es' if hay_cand
+                   else f'{nombre}: diputados el 29-N, resultados del 23-J y ayuntamientos · pactómetro.es')
+            desc = (f"{nombre} elige {esc26} diputados el 29-N" + (': candidaturas presentadas y cabezas de lista' if hay_cand else '')
+                    + f". Resultado del 23-J en la provincia: {resumen_corto(rows, N)}. Pactos, municipios y diputación de {nombre}.")
             out.append(self.pagina(self.url_prov(p), f'prov-{p}', tit, desc, cont, [('Inicio', '/'), ('Elecciones 29-N', '/29n/'), (nombre, self.url_prov(p))]))
         return out
 
