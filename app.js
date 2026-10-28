@@ -1885,8 +1885,9 @@ const ENC = {
     {k: 'fa', n: 'Frente Amplio', nota: 'IU, Sumar y otros', f: 'sumar', sin: [...PROV_VAL, ...PROV_CAN, '44', '51', '52'],
       alias: {...aliasProv(['22', '50'], 'Chunta Aragonesista-Frente Amplio Aragón', 'CHA, IU y Sumar'), ...aliasProv(['07'], 'AraMés-Front Ampli', 'Ara Més, EU y Sumar'),
         ...aliasProv(['08', '17', '25'], 'Comuns-Front Ampli', 'Comuns, IU y Sumar'), ...aliasProv(['43'], 'Frente Amplio', 'Comuns, IU y Sumar'), ...aliasProv(['28'], 'Frente Amplio', 'Más Madrid, IU y Sumar'),
-        ...aliasProv(PROV_GAL, 'Frente Amplio-Fronte Ampla', 'Sumar, IU y otros'), ...aliasProv([...PROV_PV, '31'], 'Frente Amplio-Fronte Zabala', 'IU, Sumar y otros'),
-        ...aliasProv(['33'], 'Frente Ampliu por Asturies', 'IU, Sumar y otros')}},
+        ...aliasProv(['15', '32'], 'Frente Amplio-Fronte Ampla', 'Sumar, IU y otros'), ...aliasProv(['36'], 'Fronte Ampla', 'Sumar, IU y otros'),
+        ...aliasProv(['01', '31'], 'Frente Amplio-Fronte Zabala', 'IU, Sumar y otros'), ...aliasProv(['33'], 'Frente Ampliu por Asturies', 'IU, Sumar y otros'),
+        ...aliasProv(['11', '14', '18', '21', '41'], 'Frente Amplio Andaluz', 'IU, Sumar y otros')}},
     {k: 'podemos', n: 'Podemos', f: 'podemos', sin: [...PROV_CAT, ...PROV_VAL, ...PROV_CAN, '07', '52'],   // en esas va dentro de otra lista o no se presenta
       alias: {'33': ['Podemos (Paz, Casa y Trabajo)', '']}},
     {k: 'd21', n: 'Democracia 21', nota: 'Con Ciudadanos y UCIN · solo Madrid y Barcelona', p: ['28', '08']},
