@@ -1,4 +1,14 @@
 'use strict';
+// Clickjacking: GitHub Pages can't send frame-ancestors or X-Frame-Options, so the pages refuse to work inside another
+// site's frame (only the widget, /widget/, which has its own script, is meant to be embedded).
+if (window.top !== window.self){
+  try { window.top.location.replace(location.href); } catch (e) {}
+  document.documentElement.classList.add('enmarcada');
+  const aviso = document.createElement('p'), a = document.createElement('a');
+  aviso.className = 'aviso-marco'; aviso.textContent = 'pactómetro.es no se puede usar dentro de otra web. ';
+  a.href = location.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Ábrela en una pestaña nueva';
+  aviso.append(a, '.'); document.body.prepend(aviso);
+}
 // Cookie notice and poll strip: they only work with JavaScript, so they are not in the static pages
 document.getElementById('saltar').insertAdjacentHTML('afterend', `<section class="ck" id="ck" aria-labelledby="ck-t" hidden>
   <div class="wrap ck-in">
@@ -2086,7 +2096,7 @@ async function viewEncuesta(prueba){
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
 const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '28 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-28';   // date of the last publication, set by scripts/build_dist.py
+const ACTUALIZADO = '29 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-29';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
