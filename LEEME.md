@@ -112,6 +112,8 @@ Pídemelos en el chat de Claude (en el mismo o en uno nuevo, pegando el enlace d
 - El diseño, el código y la recopilación de datos son © 2026 Javier Pereiro Pérez. La web lo indica en el pie y en las páginas «Aviso legal», «Privacidad» y «Cookies».
 - La web no usa cookies. Si algún día añades publicidad o analítica, antes hay que poner un gestor de consentimiento (con botón de rechazar), actualizar la política de cookies y añadir al aviso legal tu NIF y un domicilio.
 - `index.html` lleva una política de seguridad de contenidos (CSP): el navegador solo ejecuta el código de la propia web y la encuesta solo puede enviar datos a Google Apps Script. Si añades un script externo (publicidad, analítica, un mapa…), hay que añadir su dominio a esa política o no funcionará.
+- Las páginas no funcionan dentro de un marco (iframe) de otra web, para que nadie pueda superponer la encuesta o el simulador en su página y engañar a quien pulse (*clickjacking*): enseñan un aviso con el enlace para abrirla. Solo el widget (`/widget/`) se puede insertar.
+- `/.well-known/security.txt` dice dónde avisar de un fallo de seguridad (pactometroes@gmail.com). Caduca el **30 de septiembre de 2027**: antes de esa fecha hay que cambiar `Expires` en `scripts/build_dist.py` (como mucho, un año más).
 - Los resultados oficiales proceden del Ministerio del Interior y del Congreso de los Diputados; hay que citar siempre la fuente, como ya hace la web.
 - Los escaños del Congreso de 1989 y 1993 proceden del proyecto *listas-electorales* (licencia CC BY 4.0), que exige atribución; ya figura en «Fuentes».
 - Si algún día pones publicidad o cobras por algo en la web, la Ley 34/2002 (LSSI) obliga a añadir tu NIF y un domicilio en el aviso legal.

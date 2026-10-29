@@ -47,10 +47,15 @@ assert '__ACTUALIZADO' not in js and '__SLUG_PROV__' not in js and '__PROV_NOMBR
 
 # Content Security Policy (GitHub Pages can't send headers, so it goes in a <meta>). Only our own scripts run
 # (no inline code); the poll and the election night may only talk to Google Apps Script.
-# frame-ancestors is not allowed in a <meta>: the widget can be embedded anywhere, the rest of the site too.
+# frame-ancestors is not allowed in a <meta>: the widget can be embedded anywhere; the rest of the site refuses to work
+# inside a frame from app.js (anti-clickjacking).
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pactometro.es; "
        "font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; "
-       "object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'")
+       "object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests")
+CSP_HASTA_29_10 = CSP.replace('; upgrade-insecure-requests', '')   # the policy before 29-10-2026 (for the page dates)
+# security.txt (RFC 9116): where to report a security problem. Renew «Expires» before that date (at most a year ahead).
+SECURITY_TXT = ('Contact: mailto:pactometroes@gmail.com\nExpires: 2027-09-30T22:00:00.000Z\nPreferred-Languages: es, gl, en\n'
+                f'Canonical: {URL}/.well-known/security.txt\n')
 ICONOS = f'''<link rel="icon" type="image/png" sizes="192x192" href="{URL}/img/icono-192.png">
 <link rel="icon" type="image/png" sizes="144x144" href="{URL}/img/icono-144.png">
 <link rel="icon" type="image/png" sizes="96x96" href="{URL}/img/icono-96.png">
@@ -126,9 +131,12 @@ for pg in paginas:
     os.makedirs(os.path.dirname(destino), exist_ok=True)
     open(destino, 'w', encoding='utf-8').write(doc)
     total_bytes += len(doc.encode('utf-8'))
-    h = hashlib.sha1(doc.encode('utf-8')).hexdigest()[:16]
+    # the page's fingerprint leaves out the CSP line, so a change in the security policy alone does not tell search
+    # engines that 8,000 pages changed (the comparison with h_csp keeps the dates computed before 29-10-2026)
+    h = hashlib.sha1(re.sub(r'<meta http-equiv="Content-Security-Policy"[^>]*>\n', '', doc).encode('utf-8')).hexdigest()[:16]
+    h_csp = hashlib.sha1(doc.replace(CSP, CSP_HASTA_29_10).encode('utf-8')).hexdigest()[:16]
     antes = lastmod.get(path)
-    nuevo_lastmod[path] = antes if antes and antes[0] == h else [h, HOY.isoformat()]
+    nuevo_lastmod[path] = [h, antes[1]] if antes and antes[0] in (h, h_csp) else [h, HOY.isoformat()]
 json.dump(nuevo_lastmod, open(LASTMOD, 'w', encoding='utf-8'), ensure_ascii=False, indent=0, sort_keys=True)
 
 # widget for other websites (its own small page; no cookies, no notice, no tracking)
@@ -172,6 +180,8 @@ open(os.path.join(DIST, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding
                                                    + '\n'.join(urls) + '\n</urlset>\n')
 open(os.path.join(DIST, 'CNAME'), 'w').write('pactometro.es\n')
 open(os.path.join(DIST, '.nojekyll'), 'w').write('')   # files are served as they are (faster deploys)
+os.makedirs(os.path.join(DIST, '.well-known'), exist_ok=True)
+open(os.path.join(DIST, '.well-known', 'security.txt'), 'w').write(SECURITY_TXT)
 
 print('páginas', len(paginas), '· html', total_bytes, 'bytes · sitemap', len(urls), 'direcciones')
 print('dist', sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(DIST) for f in fs), 'bytes')

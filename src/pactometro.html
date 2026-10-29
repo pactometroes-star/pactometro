@@ -71,6 +71,8 @@ p{margin:0}
 .muted{color:var(--muted)}
 .small{font-size:13.5px}
 .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+html.enmarcada body>:not(.aviso-marco){display:none!important}
+.aviso-marco{margin:0;padding:24px 16px;font-size:16px;line-height:1.5}
 .skip{position:absolute;left:12px;top:-120px;z-index:100;background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:999px;font-weight:600;text-decoration:none}
 .skip:focus{top:10px}
 .num{font-variant-numeric:tabular-nums}
@@ -872,6 +874,16 @@ table.data.mapa-tabla td:first-child{overflow-wrap:anywhere}
 
 <script>
 'use strict';
+// Clickjacking: GitHub Pages can't send frame-ancestors or X-Frame-Options, so the pages refuse to work inside another
+// site's frame (only the widget, /widget/, which has its own script, is meant to be embedded).
+if (window.top !== window.self){
+  try { window.top.location.replace(location.href); } catch (e) {}
+  document.documentElement.classList.add('enmarcada');
+  const aviso = document.createElement('p'), a = document.createElement('a');
+  aviso.className = 'aviso-marco'; aviso.textContent = 'pactómetro.es no se puede usar dentro de otra web. ';
+  a.href = location.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Ábrela en una pestaña nueva';
+  aviso.append(a, '.'); document.body.prepend(aviso);
+}
 // Cookie notice and poll strip: they only work with JavaScript, so they are not in the static pages
 document.getElementById('saltar').insertAdjacentHTML('afterend', `<section class="ck" id="ck" aria-labelledby="ck-t" hidden>
   <div class="wrap ck-in">
