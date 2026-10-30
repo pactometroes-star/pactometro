@@ -103,6 +103,24 @@ def minimas(rows, maj, n_max=18):
     return out
 
 
+# ---------------------------------------------------------------- texts shared with app.js (keep them the same there)
+INICIO_LEDE = ('Calculadora de pactos y mayorías: suma los escaños de los partidos y comprueba si llegan a la mayoría absoluta en el Congreso, '
+               'los parlamentos autonómicos, las diputaciones, los cabildos y los más de 8.000 ayuntamientos de España, con los resultados oficiales desde 1977.')
+SIMULADOR_LEDE = ('Calculadora de pactos y mayorías para las elecciones generales del 29 de noviembre de 2026: reparte los 350 escaños del Congreso como creas '
+                  'que quedarán y comprueba qué pactos alcanzan la mayoría absoluta (176) o la simple en la investidura. Puedes partir del resultado del 23-J, '
+                  'de la composición al disolverse las Cortes, de la última encuesta del CIS o de cero.')
+DHONDT_LEDE = ('Escribe los votos de cada candidatura, los escaños en juego y la barrera electoral, y la calculadora reparte los escaños con la ley D\'Hondt, '
+               'la que se usa en las elecciones al Congreso, las municipales y las autonómicas. Empieza con el ejemplo de la propia ley.')
+DHONDT_PASOS = ('<ol class="enlaces">'
+                '<li><b>Barrera.</b> Quedan fuera las candidaturas que no llegan al mínimo de votos válidos (los de las candidaturas más los votos en blanco): '
+                'el 3&nbsp;% en cada provincia en las elecciones al Congreso y el 5&nbsp;% en las municipales.</li>'
+                '<li><b>Cocientes.</b> Los votos de cada candidatura se dividen entre 1, 2, 3… hasta el número de escaños que se reparten.</li>'
+                '<li><b>Reparto.</b> Los escaños van a los cocientes más altos, de mayor a menor, hasta repartirlos todos.</li>'
+                '<li><b>Empates.</b> Si dos cocientes coinciden, el escaño es para la candidatura con más votos; si también empatan en votos, se sortea.</li></ol>'
+                '<p>Ejemplo de la ley (artículo 163 de la LOREG): con 480.000 votos válidos y 8 escaños, A (168.000 votos) obtiene 4; B (104.000), 2; C (72.000), 1, '
+                'y D (64.000), 1. E (40.000) y F (32.000) superan el 3&nbsp;%, pero sus cocientes no llegan a los ocho más altos.</p>')
+
+
 # ---------------------------------------------------------------- building blocks
 def tabla(rows, N, validos=None, unidad='Escaños', caption=''):
     has_v = any(r[4] for r in rows)
@@ -182,6 +200,7 @@ class Generador:
         self.prog = L('programas.json') if os.path.exists(os.path.join(data_dir, 'programas.json')) else None
         self.fam = L('resumen.json').get('familias', {})
         self.cand = L('candidaturas.json') if os.path.exists(os.path.join(data_dir, 'candidaturas.json')) else None
+        self.faq = L('faq.json') if os.path.exists(os.path.join(data_dir, 'faq.json')) else {}
         self.ESC_2026 = json.loads(re.search(r'const ESC_2026 = (\{.*?\});', js_src).group(1))
         cal = re.search(r'const CAL_29N = (\[.*?\n\]);', js_src, re.S).group(1)
         cal = re.sub(r'//[^\n]*', '', cal).replace('null', 'None')
@@ -223,9 +242,18 @@ class Generador:
     def url_prov(self, p):
         return f'/provincia/{self.slug_prov[p]}/'
 
-    def pagina(self, path, ruta, titulo, descripcion, contenido, migas=None, indexar=True):
+    def pagina(self, path, ruta, titulo, descripcion, contenido, migas=None, indexar=True, **extra):
+        """extra: og (social image in /img/), faq (key of data/faq.json → FAQPage data), app (name → WebApplication data)."""
         return {'path': path, 'ruta': ruta, 'titulo': titulo, 'descripcion': re.sub(r'\s+', ' ', descripcion).strip(),
-                'contenido': contenido, 'migas': migas or [], 'indexar': indexar}
+                'contenido': contenido, 'migas': migas or [], 'indexar': indexar, **extra}
+
+    def seccion_faq(self, clave):
+        """Frequently asked questions (data/faq.json): shown on the page and also sent as FAQPage structured data."""
+        F = self.faq.get(clave)
+        if not F:
+            return ''
+        cuerpo = '<div class="faq">' + ''.join(f'<div class="faq-i"><h3>{esc(q)}</h3><p>{a}</p></div>' for q, a in F['preguntas']) + '</div>'
+        return seccion(F['titulo'], cuerpo, '', 'sec-faq')
 
     # ------------------------------------------------ Congreso
     def congreso(self):
@@ -252,9 +280,9 @@ class Generador:
                     + seccion('Resultados por candidatura', tabla(rows, N, validos, caption=f'Resultados de las elecciones generales de {nombre(k)}'),
                               'Totales nacionales oficiales del Ministerio del Interior.' if e.get('fuente') == 'oficial' else esc(e.get('nota') or ''))
                     + seccion('Todas las elecciones generales', hist)
-                    + seccion('Y ahora, el 29-N', enlaces([('Simulador para el 29-N', '/congreso/simulador/', ''), ('El Congreso al disolverse las Cortes', '/congreso/disolucion/', ''),
-                                                           ('Calendario y cómo se reparten los escaños', '/29n/', ''), ('Escaños de tu provincia', '/29n/', '')])))
-            tit = ('Congreso: escaños del 23-J y pactos posibles' if k == '2023' else f'Elecciones generales de {nombre(k)}: escaños y pactos') + ' · pactómetro.es'
+                    + seccion('Y ahora, el 29-N', enlaces([('Simulador de pactos para el 29-N', '/congreso/simulador/', ''), ('El Congreso al disolverse las Cortes', '/congreso/disolucion/', ''),
+                                                           ('Calendario y candidatos del 29-N', '/29n/', ''), ('Calculadora D\'Hondt', '/calculadora-dhondt/', '')])))
+            tit = ('Congreso de los Diputados: escaños del 23-J y calculadora de pactos' if k == '2023' else f'Elecciones generales de {nombre(k)}: escaños y pactos') + ' · pactómetro.es'
             desc = (f"Elecciones generales del {fecha(e['fecha'])}: {resumen_corto(rows, N)}. Mayoría absoluta: 176 de 350 escaños. "
                     "Calcula qué pactos suman y descarga los datos oficiales.")
             out.append(self.pagina(path, 'congreso' if k == '2023' else f'congreso-{k}', tit, desc, cont, [('Inicio', '/'), ('Congreso', '/congreso/')] + ([] if k == '2023' else [(f'Generales {nombre(k)}', path)])))
@@ -268,14 +296,15 @@ class Generador:
                                f"Composición del Congreso al disolverse las Cortes en octubre de 2026: {resumen_corto(rows, N)}. Prueba qué mayorías eran posibles.", cont,
                                [('Inicio', '/'), ('Congreso', '/congreso/'), ('Al disolverse las Cortes', '/congreso/disolucion/')]))
         cont = (migas_html([('Inicio', '/'), ('Congreso', '/congreso/'), ('Simulador 29-N', '/congreso/simulador/')])
-                + cabecera('Congreso de los Diputados · 350 escaños · mayoría absoluta 176', 'Simulador para el 29-N',
-                           'Reparte los 350 escaños como creas que quedarán tras las elecciones generales del 29 de noviembre de 2026 y comprueba qué pactos alcanzan la mayoría absoluta. '
-                           'Puedes partir del resultado del 23-J, de la composición al disolverse las Cortes, de la última encuesta del CIS o de cero.')
-                + seccion('Cómo funciona', '<ul class="enlaces"><li>Cambia los escaños de cada candidatura con − y + o escribiendo el número.</li><li>Marca el voto de cada una en la investidura: sí, abstención o no.</li>'
-                          '<li>El pactómetro calcula si hay investidura en primera votación (176 síes) o en segunda (más síes que noes).</li><li>Comparte tu escenario con un enlace o una imagen.</li></ul>'))
-        out.append(self.pagina('/congreso/simulador/', 'congreso-simulador', 'Simulador de pactos para el 29-N · pactómetro.es',
-                               'Simula el resultado de las elecciones generales del 29 de noviembre de 2026: reparte los 350 escaños del Congreso, prueba pactos y compártelos.', cont,
-                               [('Inicio', '/'), ('Congreso', '/congreso/'), ('Simulador 29-N', '/congreso/simulador/')]))
+                + cabecera('Congreso de los Diputados · 350 escaños · mayoría absoluta 176', 'Simulador de pactos para el 29-N', SIMULADOR_LEDE)
+                + seccion('Cómo funciona la calculadora de pactos', '<ul class="enlaces"><li>Cambia los escaños de cada candidatura con − y + o escribiendo el número.</li><li>Marca el voto de cada una en la investidura: sí, abstención o no.</li>'
+                          '<li>El pactómetro calcula si hay investidura en primera votación (176 síes) o en segunda (más síes que noes).</li><li>Comparte tu escenario con un enlace o una imagen.</li></ul>')
+                + self.seccion_faq('simulador'))
+        out.append(self.pagina('/congreso/simulador/', 'congreso-simulador', 'Simulador de pactos del 29-N: calcula mayorías en el Congreso · pactómetro.es',
+                               'Calculadora de pactos para las elecciones generales del 29-N: reparte los 350 escaños, prueba coaliciones y comprueba si suman los 176 de la '
+                               'mayoría absoluta. Compártelo con un enlace.', cont,
+                               [('Inicio', '/'), ('Congreso', '/congreso/'), ('Simulador 29-N', '/congreso/simulador/')],
+                               og='og-simulador.png', faq='simulador', app='Simulador de pactos del 29-N'))
         return out
 
     # ------------------------------------------------ 29-N
@@ -294,11 +323,24 @@ class Generador:
                 + seccion('Calendario electoral', cal)
                 + (self.seccion_candidaturas() if self.cand else '')
                 + '<div class="section" id="sec-prov"><div class="section-head"><h2>Diputados por provincia</h2><p>Madrid gana un escaño (38) y Cádiz pierde uno (8) respecto a 2023. Cada provincia reparte sus escaños con la ley D\'Hondt entre las candidaturas que superan el 3 % de los votos válidos.</p></div>' + tb + '</div>'
-                + seccion('Más sobre el 29-N', enlaces([('Programas electorales de los partidos', '/29n/programas/', ''), ('Simulador para el 29-N', '/congreso/simulador/', ''),
-                                                        ('Encuesta de pactómetro.es', '/encuesta/', ''), ('Resultados en directo (noche electoral)', '/29n/resultados/', '')])))
-        out = [self.pagina('/29n/', '29n', 'Elecciones generales del 29-N de 2026: calendario y escaños · pactómetro.es',
-                           'Elecciones generales del 29 de noviembre de 2026: calendario electoral, diputados por provincia, cómo se reparten los escaños (D\'Hondt y barrera del 3 %), tipos de voto y cómo votar.',
+                + seccion('Más sobre el 29-N', enlaces([('Programas electorales de los partidos', '/29n/programas/', ''), ('Simulador de pactos para el 29-N', '/congreso/simulador/', ''),
+                                                        ('Calculadora D\'Hondt', '/calculadora-dhondt/', ''), ('Encuesta de pactómetro.es', '/encuesta/', ''),
+                                                        ('Resultados en directo (noche electoral)', '/29n/resultados/', '')])))
+        out = [self.pagina('/29n/', '29n', 'Elecciones generales del 29-N: candidatos, calendario y escaños · pactómetro.es',
+                           'Elecciones generales del 29 de noviembre de 2026: candidatos de cada provincia, calendario electoral, diputados por provincia, cómo se reparten los escaños '
+                           '(ley D\'Hondt), tipos de voto y cómo votar.',
                            cont, [('Inicio', '/'), ('Elecciones 29-N', '/29n/')])]
+        # calculadora D'Hondt (the interactive calculator is drawn by app.js; the page carries the explanation as text)
+        cont = (migas_html([('Inicio', '/'), ('Calculadora D\'Hondt', '/calculadora-dhondt/')])
+                + cabecera('Herramienta · reparto de escaños', 'Calculadora D\'Hondt', DHONDT_LEDE)
+                + seccion('Cómo funciona la ley D\'Hondt', DHONDT_PASOS)
+                + self.seccion_faq('dhondt')
+                + seccion('Para seguir', enlaces([('Simulador de pactos para el 29-N', '/congreso/simulador/', ''), ('Elecciones generales del 29-N', '/29n/', ''),
+                                                 ('Mapa electoral de España', '/mapa/', '')])))
+        out.append(self.pagina('/calculadora-dhondt/', 'dhondt', 'Calculadora D\'Hondt: reparto de escaños online · pactómetro.es',
+                               'Calculadora de la ley D\'Hondt: escribe los votos de cada candidatura y los escaños en juego y mira cómo se reparten, con la barrera '
+                               'del 3 % del Congreso o la del 5 % de las municipales.', cont, [('Inicio', '/'), ('Calculadora D\'Hondt', '/calculadora-dhondt/')],
+                               faq='dhondt', app='Calculadora D\'Hondt'))
         # programas
         if self.prog:
             P = self.prog
@@ -374,7 +416,7 @@ class Generador:
         intro = (f'{n} candidaturas presentadas en {esc(nombre)} según el BOE del {fecha(boe.get("fecha", C["revisado"]))}. Todavía no son definitivas: '
                  'las juntas electorales las proclaman el 2 de noviembre y el BOE publica las listas proclamadas el 3. '
                  'Primero, las de los partidos con diputados en el Congreso saliente; después, el resto por orden alfabético.')
-        return seccion('Candidaturas al Congreso el 29-N', tabla_ + ''.join(f'<p class="small muted">{x}</p>' for x in pie), intro, 'sec-candidaturas')
+        return seccion(f'Candidatos al Congreso por {nombre} el 29-N', tabla_ + ''.join(f'<p class="small muted">{x}</p>' for x in pie), intro, 'sec-candidaturas')
 
     # ------------------------------------------------ provinces (general elections + municipalities)
     def provincias(self):
@@ -431,11 +473,12 @@ class Generador:
                     + '<div id="prov-cis"></div>'
                     + seccion(f'Ayuntamientos de {nombre}', lis, f'Los {len(lista)} municipios con datos: entra en cualquiera para ver su pleno y calcular quién puede gobernar.', 'sec-municipios')
                     + seccion('También en esta provincia', enlaces(links)))
-            hay_cand = bool(self.cand and self.cand.get('provincias', {}).get(p))
-            tit = (f'{nombre}: candidaturas del 29-N, resultados del 23-J y ayuntamientos · pactómetro.es' if hay_cand
+            cand_p = (self.cand or {}).get('provincias', {}).get(p)
+            tit = (f'Candidatos al Congreso por {nombre} el 29-N y resultados del 23-J · pactómetro.es' if cand_p
                    else f'{nombre}: diputados el 29-N, resultados del 23-J y ayuntamientos · pactómetro.es')
-            desc = (f"{nombre} elige {esc26} diputados el 29-N" + (': candidaturas presentadas y cabezas de lista' if hay_cand else '')
-                    + f". Resultado del 23-J en la provincia: {resumen_corto(rows, N)}. Pactos, municipios y diputación de {nombre}.")
+            desc = ((f"Candidatos y cabezas de lista al Congreso por {nombre} el 29-N ({len(cand_p['listas'])} candidaturas) y {esc26} "
+                     f"{'diputado' if esc26 == 1 else 'diputados'} en juego" if cand_p else f"{nombre} elige {esc26} diputados el 29-N")
+                    + f". Resultado del 23-J: {resumen_corto(rows, N)}. Pactos, municipios y diputación de {nombre}.")
             out.append(self.pagina(self.url_prov(p), f'prov-{p}', tit, desc, cont, [('Inicio', '/'), ('Elecciones 29-N', '/29n/'), (nombre, self.url_prov(p))]))
         return out
 
@@ -460,7 +503,7 @@ class Generador:
                     + cabecera(f"{esc(a['camara'])} · {e['escanos']} escaños", a['n'], lede)
                     + seccion(f"Resultado de las elecciones del {fecha(e['fecha'])}", tabla(rows, N, caption=f"{a['camara']}: elecciones del {fecha(e['fecha'])}"), fuente)
                     + seccion('Todas sus elecciones', hist))
-            out.append(self.pagina(f'/parlamento/{k}/', f'auto-{k}', f"{a['camara']}: escaños y pactos posibles · pactómetro.es",
+            out.append(self.pagina(f'/parlamento/{k}/', f'auto-{k}', f"{a['camara']}: escaños, mayoría absoluta y pactos · pactómetro.es",
                                    f"{a['camara']}, elecciones del {fecha(e['fecha'])}: {resumen_corto(rows, N)}. Mayoría absoluta: {e['escanos'] // 2 + 1} de {e['escanos']}. Todas sus elecciones desde 1980.",
                                    cont, [('Inicio', '/'), ('Autonomías', '/autonomias/'), (a['n'], f'/parlamento/{k}/')]))
         cont = (migas_html([('Inicio', '/'), ('Autonomías', '/autonomias/')])
@@ -504,7 +547,7 @@ class Generador:
                         + (seccion('Todas sus elecciones', hist) if len(ys) > 1 else '')
                         + (seccion('En la provincia', enlaces(extra)) if extra else ''))
                 desc = f"{nombre}: {resumen_corto(rows, N)}. Mayoría absoluta: {e['escanos'] // 2 + 1} de {e['escanos']}. Calcula los pactos posibles y consulta todas sus elecciones."
-                out.append(self.pagina(path, f'{t}-{k}', f'{nombre}: escaños y pactos posibles · pactómetro.es', desc, cont,
+                out.append(self.pagina(path, f'{t}-{k}', f'{nombre}: escaños, mayoría absoluta y pactos · pactómetro.es', desc, cont,
                                        [('Inicio', '/'), ('Diputaciones y cabildos', '/locales/'), (nombre, path)]))
             grupos.append(seccion({'dip': 'Diputaciones provinciales', 'cab': 'Cabildos insulares', 'con': 'Consells insulars', 'jjgg': 'Juntas Generales'}[t], enlaces(items, 'enlaces col2')))
         cont = (migas_html([('Inicio', '/'), ('Diputaciones y cabildos', '/locales/')])
@@ -578,7 +621,7 @@ class Generador:
             else:
                 desc = (f'Elecciones municipales de {y} en {nombre} ({prov}): {resumen_corto(rows, N)}. Mayoría absoluta: {escanos // 2 + 1} de {escanos} concejales. '
                         'Calcula los pactos posibles y consulta todas sus elecciones desde 1979.')
-            out.append(self.pagina(path, f'mun-{ine}', f'Ayuntamiento de {nombre}{dup}: concejales y pactos · pactómetro.es', desc, cont,
+            out.append(self.pagina(path, f'mun-{ine}', f'Ayuntamiento de {nombre}{dup}: concejales, elecciones municipales y pactos · pactómetro.es', desc, cont,
                                    [('Inicio', '/'), ('Ayuntamientos', '/ayuntamientos/'), (prov, self.url_prov(p)), (nombre, path)]))
         # search page: provinces → municipalities
         cap = [r for r in self.M['municipios'] if r[0] in set(self.M['capitales'])]
@@ -664,8 +707,8 @@ class Generador:
                           f'Elecciones municipales de 2023, en {fmt(len(ay["m"]))} municipios con resultados. ' + cuentas(fams_m, 'concejales', 'municipios'))
                 + '<p class="small muted">Límites: © Instituto Geográfico Nacional (CC BY 4.0), vía es-atlas. Resultados: Ministerio del Interior; autonómicas recopiladas de fuentes públicas.</p>')
         return [self.pagina('/mapa/', 'mapa', 'Mapa electoral de España: quién ganó en cada provincia y municipio · pactómetro.es',
-                            'Mapa electoral interactivo de España: quién ganó en cada provincia (elecciones generales desde 1977), comunidad autónoma, diputación y '
-                            'ayuntamiento (municipales desde 1979). Pulsa en el mapa para ver cada resultado.',
+                            'Mapa electoral interactivo de España: quién ganó en cada provincia, comunidad autónoma, diputación y ayuntamiento, con las generales desde 1977 '
+                            'y las municipales desde 1979.',
                             cont, [('Inicio', '/'), ('Mapa electoral', '/mapa/')])]
 
     # ------------------------------------------------ other sections
@@ -673,20 +716,22 @@ class Generador:
         N = self.N
         provs = sorted(self.prov_n.items(), key=lambda kv: kv[1])
         out = []
-        cont = (cabecera('pactómetro.es', '¿Quién puede gobernar?', 'Calcula las mayorías y los pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, los cabildos y los más de 8.000 ayuntamientos de España, con los resultados oficiales desde 1977.')
-                + seccion('Elecciones generales del 29 de noviembre de 2026', enlaces([('Calendario y cómo se reparten los escaños', '/29n/', ''), ('Simulador para el 29-N', '/congreso/simulador/', ''),
-                                                                                     ('Programas electorales', '/29n/programas/', ''), ('Encuesta de pactómetro.es', '/encuesta/', ''), ('Resultados en directo', '/29n/resultados/', '')]))
+        cont = (cabecera('pactómetro.es', '¿Quién puede gobernar?', INICIO_LEDE)
+                + seccion('Elecciones generales del 29 de noviembre de 2026', enlaces([('Calendario y candidatos del 29-N', '/29n/', ''), ('Simulador de pactos para el 29-N', '/congreso/simulador/', ''),
+                                                                                     ('Calculadora D\'Hondt', '/calculadora-dhondt/', ''), ('Programas electorales', '/29n/programas/', ''),
+                                                                                     ('Encuesta de pactómetro.es', '/encuesta/', ''), ('Resultados en directo', '/29n/resultados/', '')]))
                 + seccion('Instituciones', enlaces([('Congreso de los Diputados', '/congreso/', ''), ('Parlamentos autonómicos', '/autonomias/', ''), ('Diputaciones, cabildos y consells', '/locales/', ''),
                                                      ('Ayuntamientos', '/ayuntamientos/', ''), ('Mapa electoral de España', '/mapa/', ''), ('Histórico electoral', '/historico/', ''), ('Comparar instituciones', '/comparar/', '')]))
-                + seccion('Tu provincia', enlaces([(n, self.url_prov(k), '') for k, n in provs], 'enlaces col3'), 'Diputados que elige el 29-N, resultado del 23-J y todos sus ayuntamientos.'))
-        out.append(self.pagina('/', 'inicio', titulo_inicio, desc_inicio, cont))
+                + seccion('Tu provincia', enlaces([(n, self.url_prov(k), '') for k, n in provs], 'enlaces col3'), 'Diputados que elige el 29-N, candidatos, resultado del 23-J y todos sus ayuntamientos.')
+                + self.seccion_faq('inicio'))
+        out.append(self.pagina('/', 'inicio', titulo_inicio, desc_inicio, cont, faq='inicio', app='Pactómetro: calculadora de pactos y mayorías'))
         fijas = [
             ('/historico/', 'historico', 'Histórico electoral: elecciones generales, autonómicas y municipales · pactómetro.es', 'Histórico electoral', 'Histórico electoral',
              'Todas las elecciones generales, las investiduras y el Senado desde 1977, las autonómicas desde 1980 y los concejales de toda España desde 1979.'),
             ('/comparar/', 'comparar', 'Comparar instituciones y elecciones · pactómetro.es', 'Cruce de datos', 'Comparar',
              'Pon frente a frente hasta cuatro instituciones o elecciones (el Congreso, un parlamento, una diputación o cualquier ayuntamiento) y compara votos y escaños.'),
-            ('/encuesta/', 'encuesta', 'Encuesta del 29-N: ¿a quién piensas votar? · pactómetro.es', 'Encuesta de pactómetro.es', '¿A quién piensas votar el 29-N?',
-             'Encuesta abierta y anónima de pactómetro.es sobre las elecciones generales del 29 de noviembre de 2026. Se responde en un minuto; necesita JavaScript.'),
+            ('/encuesta/', 'encuesta', 'Encuesta de las elecciones generales del 29-N: ¿a quién piensas votar? · pactómetro.es', 'Encuesta de pactómetro.es', '¿A quién piensas votar el 29-N?',
+             'Encuesta abierta y anónima sobre las elecciones generales del 29 de noviembre de 2026: elige tu provincia y responde en un minuto a quién piensas votar. Necesita JavaScript.'),
             ('/fuentes/', 'fuentes', 'Fuentes y metodología · pactómetro.es', 'Metodología', 'Fuentes y metodología',
              'De dónde salen los datos de pactómetro.es (Ministerio del Interior, Congreso de los Diputados y fuentes públicas) y cómo se calculan las mayorías.'),
             ('/aviso-legal/', 'aviso-legal', 'Aviso legal · pactómetro.es', 'Información legal', 'Aviso legal', 'Titular, condiciones de uso y propiedad intelectual de pactómetro.es.'),
@@ -694,7 +739,8 @@ class Generador:
             ('/cookies/', 'cookies', 'Política de cookies · pactómetro.es', 'Información legal', 'Política de cookies', 'pactómetro.es no usa cookies. Qué guarda tu navegador y cómo borrarlo.'),
         ]
         for path, ruta, tit, eb, h1, desc in fijas:
-            out.append(self.pagina(path, ruta, tit, desc, migas_html([('Inicio', '/'), (h1, path)]) + cabecera(eb, h1, esc(desc)), [('Inicio', '/'), (h1, path)]))
+            out.append(self.pagina(path, ruta, tit, desc, migas_html([('Inicio', '/'), (h1, path)]) + cabecera(eb, h1, esc(desc)), [('Inicio', '/'), (h1, path)],
+                                   **({'og': 'og-encuesta.png'} if ruta == 'encuesta' else {})))
         return out
 
     def todas(self, titulo_inicio, desc_inicio):

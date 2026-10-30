@@ -66,14 +66,26 @@ PUBLISHER = '{"@type":"Person","name":"Javier Pereiro Pérez","sameAs":["https:/
 
 
 def jsonld(pg):
+    """Structured data of a page: WebSite (home) or BreadcrumbList, plus FAQPage and WebApplication where the page has them."""
+    out = []
     if pg['path'] == '/':
-        return ('{"@context":"https://schema.org","@type":"WebSite","name":"pactómetro.es","alternateName":["Pactómetro","pactometro.es"],'
-                f'"url":"{URL}/","inLanguage":"es-ES","publisher":{PUBLISHER}}}')
-    if not pg['migas']:
-        return ''
-    items = ','.join('{"@type":"ListItem","position":%d,"name":%s,"item":"%s%s"}' % (i + 1, json.dumps(t, ensure_ascii=False), URL, u)
-                     for i, (t, u) in enumerate(pg['migas']))
-    return '{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[' + items + ']}'
+        out.append('{"@context":"https://schema.org","@type":"WebSite","name":"pactómetro.es","alternateName":["Pactómetro","pactometro.es"],'
+                   f'"url":"{URL}/","inLanguage":"es-ES","publisher":{PUBLISHER}}}')
+    elif pg['migas']:
+        items = ','.join('{"@type":"ListItem","position":%d,"name":%s,"item":"%s%s"}' % (i + 1, json.dumps(t, ensure_ascii=False), URL, u)
+                         for i, (t, u) in enumerate(pg['migas']))
+        out.append('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[' + items + ']}')
+    if pg.get('app'):
+        out.append(json.dumps({'@context': 'https://schema.org', '@type': 'WebApplication', 'name': pg['app'], 'url': URL + pg['path'],
+                               'applicationCategory': 'ReferenceApplication', 'operatingSystem': 'Cualquiera (navegador web)', 'inLanguage': 'es-ES',
+                               'isAccessibleForFree': True, 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR'},
+                               'publisher': json.loads(PUBLISHER)}, ensure_ascii=False, separators=(',', ':')))
+    F = gen.faq.get(pg.get('faq') or '')
+    if F:
+        out.append(json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
+            {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a.replace('href="/', f'href="{URL}/')}} for q, a in F['preguntas']]},
+            ensure_ascii=False, separators=(',', ':')))
+    return [x.replace('</', '<\\/') for x in out]
 
 
 def documento(pg):
@@ -93,7 +105,7 @@ def documento(pg):
 <meta property="og:title" content="{esc(pg["titulo"])}">
 <meta property="og:description" content="{esc(pg["descripcion"])}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{URL}/img/og-image.png">
+<meta property="og:image" content="{URL}/img/{pg.get('og', 'og-image.png')}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -102,7 +114,7 @@ def documento(pg):
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/app.css">
-{f'<script type="application/ld+json">{ld}</script>' if ld else ''}'''
+{chr(10).join(f'<script type="application/ld+json">{x}</script>' for x in ld)}'''
     body = shell.strip().replace('<!--CONTENIDO-->', pg['contenido'])
     return (f'<!doctype html>\n<html lang="es">\n<head>\n{head}\n</head>\n<body data-ruta="{esc(pg["ruta"])}">\n{body}\n'
             '<script src="/config.js"></script>\n<script src="/app.js"></script>\n</body>\n</html>\n')
@@ -164,7 +176,7 @@ for y, d in gen.mapa_ayuntamientos().items():
 
 shutil.copytree(os.path.join(SITE, 'fonts'), os.path.join(DIST, 'fonts'))   # self-hosted Archivo and Ibarra Real Nova (OFL)
 for f in ['logo.png', 'logo-oscuro.png', 'icono-32.png', 'icono-48.png', 'icono-64.png', 'icono-96.png', 'icono-144.png', 'icono-192.png', 'icono-512.png',
-          'apple-touch-icon.png', 'og-image.png']:
+          'apple-touch-icon.png', 'og-image.png', 'og-encuesta.png', 'og-simulador.png']:
     shutil.copy(os.path.join(BRAND, f), os.path.join(DIST, 'img', f))
 shutil.copy(os.path.join(BRAND, 'favicon.ico'), os.path.join(DIST, 'favicon.ico'))
 shutil.copy(os.path.join(SITE, 'config.js'), os.path.join(DIST, 'config.js'))
