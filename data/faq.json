@@ -1,0 +1,34 @@
+{
+ "nota": "Preguntas frecuentes de la portada, el simulador del 29-N y la calculadora D'Hondt. Las respuestas admiten enlaces internos (<a href=\"/…/\">). Se muestran en la página y van también como datos estructurados (FAQPage).",
+ "inicio": {
+  "titulo": "Preguntas frecuentes sobre pactos y mayorías",
+  "preguntas": [
+   ["¿Qué es un pactómetro?", "Es una calculadora de pactos: sumas los escaños de los partidos que podrían ponerse de acuerdo y compruebas si llegan a la mayoría absoluta, que es la mitad más uno de los miembros de la cámara. En pactómetro.es puedes calcular mayorías en el Congreso, los parlamentos autonómicos, las diputaciones, los cabildos, los consells y todos los ayuntamientos de España."],
+   ["¿Cuántos escaños hacen falta para la mayoría absoluta en el Congreso?", "176 de los 350 diputados. En la primera votación de investidura el candidato necesita esa mayoría absoluta; si no la consigue, en la segunda votación, 48 horas después, le basta con tener más síes que noes."],
+   ["¿Cómo se calcula la mayoría absoluta en un ayuntamiento?", "Es la mitad más uno de los concejales del pleno: en un pleno de 21 concejales, 11. Si ningún candidato a alcalde la consigue en la votación de investidura, es alcalde quien encabeza la lista más votada en el municipio."],
+   ["¿Cómo simulo los pactos del 29-N?", "En el <a href=\"/congreso/simulador/\">simulador de pactos del 29-N</a> repartes los 350 escaños como creas que quedarán, marcas qué vota cada partido en la investidura y ves al momento si hay mayoría. Puedes partir del resultado del 23-J, de la composición al disolverse las Cortes, de la última encuesta del CIS o de cero, y compartir tu escenario con un enlace."],
+   ["¿Cómo se reparten los escaños?", "En el Congreso, con la ley D'Hondt en cada provincia y solo entre las candidaturas que superan el 3 % de los votos válidos; en las elecciones municipales la barrera es del 5 %. Puedes probarlo con la <a href=\"/calculadora-dhondt/\">calculadora D'Hondt</a>."],
+   ["¿De dónde salen los datos?", "De los resultados oficiales del Ministerio del Interior y del Congreso de los Diputados. Las elecciones autonómicas, que el Ministerio no publica, se han recopilado de fuentes públicas. Más detalles en <a href=\"/fuentes/\">fuentes y metodología</a>."]
+  ]
+ },
+ "simulador": {
+  "titulo": "Preguntas frecuentes sobre el simulador de pactos",
+  "preguntas": [
+   ["¿Cuántos escaños necesita un pacto para gobernar?", "Para investir a un presidente en la primera votación hacen falta 176 síes, la mayoría absoluta del Congreso. En la segunda basta con más síes que noes, así que las abstenciones también cuentan: el simulador calcula los dos casos."],
+   ["¿Qué pasa si ningún candidato consigue la investidura?", "Se pueden proponer otros candidatos. Si dos meses después de la primera votación ninguno ha sido investido, se disuelven las Cortes y se convocan nuevas elecciones (artículo 99 de la Constitución)."],
+   ["¿Desde qué resultado empieza la simulación?", "Puedes elegir el resultado del 23-J, la composición del Congreso al disolverse las Cortes, la estimación de la última encuesta del CIS traducida a escaños por pactómetro.es (salvo en los días en que la ley prohíbe publicar sondeos) o empezar de cero. Después cambia los escaños de cada partido como quieras."],
+   ["¿Puedo compartir mi simulación?", "Sí: el botón «Compartir» crea un enlace con tus escaños y tus votos, una imagen para redes sociales y el código para insertar el pactómetro en otra web."],
+   ["¿Se guarda lo que simulo?", "Solo en tu navegador y solo si aceptas guardar tus preferencias. pactómetro.es no recibe ni almacena tus escenarios."]
+  ]
+ },
+ "dhondt": {
+  "titulo": "Preguntas frecuentes sobre la ley D'Hondt",
+  "preguntas": [
+   ["¿Qué es la ley D'Hondt?", "Es el método que reparte los escaños en proporción a los votos: los votos de cada candidatura se dividen entre 1, 2, 3… hasta el número de escaños en juego, y los escaños van a los cocientes más altos. Debe su nombre al jurista belga Victor D'Hondt."],
+   ["¿Qué es la barrera electoral?", "El porcentaje mínimo de votos válidos, incluidos los votos en blanco, que necesita una candidatura para entrar en el reparto: el 3 % en cada provincia en las elecciones al Congreso y el 5 % en las municipales."],
+   ["¿Qué pasa si dos cocientes empatan?", "El escaño es para la candidatura con más votos en total; si también empatan en votos, se decide por sorteo (artículo 163 de la Ley Orgánica del Régimen Electoral General)."],
+   ["¿Por qué el voto en blanco puede perjudicar a los partidos pequeños?", "Porque cuenta como voto válido: sube el número de votos necesarios para superar la barrera, aunque los votos en blanco no se lleven ningún escaño."],
+   ["¿Dónde se usa la ley D'Hondt?", "En las elecciones al Congreso, las municipales, las europeas y las autonómicas, cada una con su propia barrera y sus circunscripciones. El Senado se elige con otro sistema: listas abiertas y voto limitado."]
+  ]
+ }
+}

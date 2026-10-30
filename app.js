@@ -942,6 +942,8 @@ function cisPanel(C){
   </section>`;
 }
 const LEYENDA_ELECCION = k => k.includes('-') ? (k.endsWith('-04') ? 'abril de ' : 'noviembre de ') + k.slice(0, 4) : k;
+// Mismo texto que la página estática del simulador (scripts/paginas.py, SIMULADOR_LEDE)
+const SIMULADOR_LEDE = 'Calculadora de pactos y mayorías para las elecciones generales del 29 de noviembre de 2026: reparte los 350 escaños del Congreso como creas que quedarán y comprueba qué pactos alcanzan la mayoría absoluta (176) o la simple en la investidura. Puedes partir del resultado del 23-J, de la composición al disolverse las Cortes, de la última encuesta del CIS o de cero.';
 async function viewCongreso(modo, clave){
   const G = await load('generales.json');
   const conv = G.convocatoria;
@@ -957,7 +959,7 @@ async function viewCongreso(modo, clave){
     extra = `<p class="small muted" style="margin-top:10px">${esc(G.disolucion.nota)}</p>`;
     fuente = 'compilada';
   } else if (modo === 'simulador'){
-    titulo = 'Simulador para el 29-N'; editable = true; simKey = 'pacto.sim.v2'; fuente = 'simulacion';
+    titulo = 'Simulador de pactos para el 29-N'; editable = true; simKey = 'pacto.sim.v2'; fuente = 'simulacion';
     const veda = enVedaSondeos();
     const C = veda ? null : await load('cis.json').catch(() => null);
     const from23 = base23.map(p => ({...p, votos: null})), fromDis = baseDis.map(p => ({...p, votos: null}));
@@ -1014,10 +1016,12 @@ async function viewCongreso(modo, clave){
     </div>`;
   app.innerHTML = `${notice}
     <div class="page-head"><span class="eyebrow">Congreso de los Diputados · 350 escaños</span><h1>${esc(titulo)}</h1>
-    <div class="row">${badge(fuente)}${modo === 'simulador' ? '<span class="small muted">Escenario editable para las elecciones generales del 29 de noviembre de 2026</span>' : ''}${data ? `<span class="small muted">${data.leg === 'Constituyente' ? 'Legislatura constituyente' : data.leg + ' Legislatura'} · ${fecha(data.fecha)}${data.censo ? ` · censo ${fmt(data.censo)} · participación ${fmtPct(100 * data.votantes / data.censo)}` : ''}</span>` : ''}</div></div>
+    ${modo === 'simulador' ? `<p class="lede">${esc(SIMULADOR_LEDE)}</p>` : ''}
+    <div class="row">${badge(fuente)}${data ?`<span class="small muted">${data.leg === 'Constituyente' ? 'Legislatura constituyente' : data.leg + ' Legislatura'} · ${fecha(data.fecha)}${data.censo ? ` · censo ${fmt(data.censo)} · participación ${fmtPct(100 * data.votantes / data.censo)}` : ''}</span>` : ''}</div></div>
     ${tabs}${cabecera}<div class="sheet pad" id="pacto-slot"></div>${extra}
-    <div class="section" id="detalle"></div>`;
+    <div class="section" id="detalle"></div>${modo === 'simulador' ? '<section class="section" id="sec-faq" hidden></section>' : ''}`;
   iniciarCuenta();
+  if (modo === 'simulador') ponerFaq('simulador', app.querySelector('#sec-faq'));
   app.querySelector('#sel-congreso').addEventListener('change', e => { if (e.target.value) irA('congreso-' + e.target.value); });
   app.querySelector('#pacto-slot').appendChild(Pactometro({total: 350, partidos, regla: 'congreso', preset, presetNota, editable, simKey, simBases, simEstado, votosValidos: validos, recuento: rcData, exportar}));
   const det = app.querySelector('#detalle');
@@ -1062,9 +1066,10 @@ const CAL_29N = [   // [inicio, fin, qué, detalle] — calendario electoral de 
   ['2026-12-23', null, 'Nuevas Cortes', 'Sesiones constitutivas del Congreso y del Senado, a las 10:00.'],
 ];
 const DH_EJEMPLO = [['A', 168000], ['B', 104000], ['C', 72000], ['D', 64000], ['E', 40000], ['F', 32000]];   // ejemplo del art. 163 LOREG
-// Reparto de escaños: barrera del 3 % de los votos válidos y ley D'Hondt (art. 163 LOREG)
-function dhondt(cands, blancos, escanos){
-  const validos = cands.reduce((a, c) => a + c.v, 0) + blancos, barrera = validos * .03;
+// Reparto de escaños con la ley D'Hondt entre las candidaturas que superan la barrera (umbral, sobre los votos válidos):
+// el 3 % en el Congreso (art. 163 LOREG) y el 5 % en las municipales (art. 180)
+function dhondt(cands, blancos, escanos, umbral = .03){
+  const validos = cands.reduce((a, c) => a + c.v, 0) + blancos, barrera = validos * umbral;
   const ok = cands.filter(c => c.v > 0 && c.v >= barrera);
   const cocientes = [];
   ok.forEach(c => { for (let d = 1; d <= escanos; d++) cocientes.push({c, d, q: c.v / d}); });
@@ -1076,6 +1081,93 @@ function dhondt(cands, blancos, escanos){
   return {validos, barrera, ok, gana: new Set(gana.map(g => g.c.i + ':' + g.d)), res, ult, sorteo};
 }
 const fmtQ = q => q.toLocaleString('es-ES', {maximumFractionDigits: 2, useGrouping: 'always'});
+// Calculadora D'Hondt: en su página (/calculadora-dhondt/) y en la de las elecciones del 29-N. Los textos son los mismos
+// que los de la página estática (scripts/paginas.py, DHONDT_LEDE y DHONDT_PASOS).
+const DHONDT_LEDE = "Escribe los votos de cada candidatura, los escaños en juego y la barrera electoral, y la calculadora reparte los escaños con la ley D'Hondt, la que se usa en las elecciones al Congreso, las municipales y las autonómicas. Empieza con el ejemplo de la propia ley.";
+const DHONDT_PASOS = '<ol class="enlaces">'
+  + '<li><b>Barrera.</b> Quedan fuera las candidaturas que no llegan al mínimo de votos válidos (los de las candidaturas más los votos en blanco): el 3&nbsp;% en cada provincia en las elecciones al Congreso y el 5&nbsp;% en las municipales.</li>'
+  + '<li><b>Cocientes.</b> Los votos de cada candidatura se dividen entre 1, 2, 3… hasta el número de escaños que se reparten.</li>'
+  + '<li><b>Reparto.</b> Los escaños van a los cocientes más altos, de mayor a menor, hasta repartirlos todos.</li>'
+  + '<li><b>Empates.</b> Si dos cocientes coinciden, el escaño es para la candidatura con más votos; si también empatan en votos, se sortea.</li></ol>';
+const DH_UMBRALES = [['3', '3 % (Congreso)'], ['5', '5 % (municipales)'], ['0', 'Sin barrera']];
+function tablaDhondt(cands, escanos, r, caption){
+  const cols = Math.min(escanos, 12);
+  const filas = cands.slice().sort((a, b) => b.v - a.v).map(c => {
+    const dentro = r.ok.includes(c);
+    const celdas = Array.from({length: cols}, (_, j) => { const d = j + 1, g = dentro && r.gana.has(c.i + ':' + d); return `<td class="n${g ? ' win' : ''}${dentro ? '' : ' out'}">${dentro ? fmtQ(c.v / d) : '—'}${g ? '<span class="vh"> (escaño)</span>' : ''}</td>`; }).join('');
+    return `<tr><th scope="row">${esc(c.n || 'Sin nombre')}</th><td class="n">${fmtQ(c.v)}</td><td class="n">${r.validos ? fmtPct(100 * c.v / r.validos) : '—'}</td>${celdas}<td class="n"><b>${dentro ? r.res.get(c) : '—'}</b></td></tr>`;
+  }).join('');
+  return `<div class="tablewrap"><table class="data e-dh-t"><caption class="vh">${caption || "Cocientes de la ley D'Hondt. Las celdas marcadas obtienen escaño."}</caption><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">% válidos</th>${Array.from({length: cols}, (_, j) => `<th class="n">÷ ${j + 1}</th>`).join('')}<th class="n">Escaños</th></tr></thead><tbody>${filas}</tbody></table></div>${escanos > 12 ? '<p class="small muted">Se muestran los doce primeros divisores; el reparto usa todos.</p>' : ''}`;
+}
+// El ejemplo del artículo 163 de la LOREG: 480.000 votos válidos y 8 escaños
+function ejemploDhondt(el){
+  if (!el) return;
+  const ej = DH_EJEMPLO.map(([n, v], i) => ({i, n, v}));
+  el.innerHTML = tablaDhondt(ej, 8, dhondt(ej, 0, 8), "Ejemplo del artículo 163 de la LOREG: cocientes de la ley D'Hondt. Las celdas marcadas obtienen escaño.")
+    + '<p class="small">Resultado: A, 4 escaños; B, 2; C, 1, y D, 1. E y F superan el 3 % (14.400 votos) pero sus cocientes no llegan a los ocho más altos.</p>';
+}
+function htmlCalculadoraDhondt(){
+  const provs = Object.entries(ESC_2026).map(([k, s]) => ({n: PROV_NOMBRE[k] || k, s})).sort((a, b) => a.n.localeCompare(b.n, 'es'));
+  return `<div class="sheet pad e-dh">
+      <div class="e-dh-cfg">
+        <label>Escaños en juego <input type="number" id="dh-esc" min="1" max="60" value="8" inputmode="numeric"></label>
+        <label>Usar los de una provincia <select class="select" id="dh-prov"><option value="">Elige una provincia</option>${provs.map(p => `<option value="${p.s}">${esc(p.n)} (${p.s})</option>`).join('')}</select></label>
+        <label>Votos en blanco <input type="number" id="dh-bl" min="0" value="0" inputmode="numeric"></label>
+        <label>Barrera <select class="select" id="dh-um">${DH_UMBRALES.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select></label>
+      </div>
+      <div class="tablewrap"><table class="data e-dh-in"><caption class="vh">Candidaturas y votos de la calculadora</caption><thead><tr><th>Candidatura</th><th class="n">Votos</th><th><span class="vh">Quitar</span></th></tr></thead><tbody id="dh-rows"></tbody></table></div>
+      <div class="row"><button class="btn ghost" type="button" id="dh-add">Añadir candidatura</button><button class="btn ghost" type="button" id="dh-reset">Volver al ejemplo de la ley</button></div>
+      <p class="e-dh-sum" id="dh-sum" aria-live="polite"></p>
+      <div id="dh-out"></div>
+    </div>`;
+}
+function calculadoraDhondt(raiz){
+  const q = s => raiz.querySelector(s);
+  const $rows = q('#dh-rows'), $esc = q('#dh-esc'), $bl = q('#dh-bl'), $um = q('#dh-um'), $prov = q('#dh-prov'), $out = q('#dh-out'), $sum = q('#dh-sum');
+  if (!$rows) return;
+  let filas = DH_EJEMPLO.map(([n, v]) => ({n, v}));
+  const pintarFilas = () => {
+    $rows.innerHTML = filas.map((f, i) => `<tr><td><input type="text" data-i="${i}" data-f="n" value="${esc(f.n)}" aria-label="Nombre de la candidatura ${i + 1}" maxlength="30"></td><td class="n"><input type="number" data-i="${i}" data-f="v" value="${esc(f.v)}" min="0" inputmode="numeric" aria-label="Votos de la candidatura ${i + 1}"></td><td><button class="btn ghost" type="button" data-q="${i}" aria-label="Quitar la candidatura ${i + 1}"${filas.length < 2 ? ' disabled' : ''}>Quitar</button></td></tr>`).join('');
+  };
+  const calcular = () => {
+    const escanos = Math.max(1, Math.min(60, parseInt($esc.value, 10) || 1)), blancos = Math.max(0, parseInt($bl.value, 10) || 0);
+    const pc = Math.max(0, Math.min(99, +$um.value || 0));
+    const cands = filas.map((f, i) => ({i, n: String(f.n).trim(), v: Math.max(0, Math.round(+f.v) || 0)}));
+    const r = dhondt(cands, blancos, escanos, pc / 100);
+    if (!r.validos){ $out.innerHTML = ''; $sum.textContent = 'Escribe los votos de al menos una candidatura.'; return; }
+    const reparto = cands.filter(c => r.res.get(c) > 0).sort((a, b) => r.res.get(b) - r.res.get(a)).map(c => `${c.n || 'Sin nombre'} (${r.res.get(c)})`);
+    const fuera = cands.filter(c => c.v > 0 && !r.ok.includes(c)).map(c => c.n || 'Sin nombre');
+    const barrera = pc ? `La barrera del ${pc} % es de ${fmt(Math.ceil(r.barrera))} votos (sobre ${fmt(r.validos)} válidos).` : `Sin barrera: entran en el reparto todas las candidaturas con votos (${fmt(r.validos)} válidos).`;
+    $sum.innerHTML = `<b>Reparto de ${escanos} ${escanos === 1 ? 'escaño' : 'escaños'}:</b> ${esc(listaY(reparto)) || 'ninguno'}. ${barrera}${fuera.length ? ` No llegan: ${esc(listaY(fuera))}.` : ''}${r.ult ? ` El último escaño se adjudica con un cociente de ${fmtQ(r.ult.q)}.` : ''}${r.sorteo ? ' Hay un empate exacto en el último escaño: se resolvería por sorteo.' : ''}`;
+    $out.innerHTML = tablaDhondt(cands, escanos, r);
+  };
+  $rows.addEventListener('input', ev => { const t = ev.target, i = +t.dataset.i; if (!filas[i]) return; filas[i][t.dataset.f] = t.value; calcular(); });
+  $rows.addEventListener('click', ev => { const b = ev.target.closest('[data-q]'); if (!b || filas.length < 2) return; filas.splice(+b.dataset.q, 1); pintarFilas(); calcular(); const f = $rows.querySelector('input'); if (f) f.focus(); });
+  q('#dh-add').addEventListener('click', () => { filas.push({n: String.fromCharCode(65 + filas.length % 26), v: 0}); pintarFilas(); calcular(); const nf = $rows.querySelector('tr:last-child input'); nf.focus(); nf.select(); });
+  q('#dh-reset').addEventListener('click', () => { filas = DH_EJEMPLO.map(([n, v]) => ({n, v})); $esc.value = 8; $bl.value = 0; $um.value = '3'; $prov.value = ''; pintarFilas(); calcular(); });
+  // the seats of a province are those of the Congreso: its 3 % barrier goes with them
+  $prov.addEventListener('change', ev => { if (ev.target.value){ $esc.value = ev.target.value; $um.value = '3'; calcular(); } });
+  $esc.addEventListener('input', calcular); $bl.addEventListener('input', calcular); $um.addEventListener('change', calcular);
+  pintarFilas(); calcular();
+}
+
+/* ================================================================ vista: calculadora D'Hondt */
+function viewDhondt(){
+  app.innerHTML = `
+  <div class="page-head"><span class="eyebrow">Herramienta · reparto de escaños</span><h1>Calculadora D'Hondt</h1>
+    <p class="lede">${esc(DHONDT_LEDE)}</p></div>
+  <div class="section">${htmlCalculadoraDhondt()}</div>
+  <section class="section" aria-labelledby="t-como"><div class="section-head"><h2 id="t-como">Cómo funciona la ley D'Hondt</h2></div>
+    ${DHONDT_PASOS}
+    <p style="margin-top:18px">Este es el ejemplo que trae la propia ley (artículo 163 de la LOREG): 480.000 votos válidos en una provincia que elige 8 diputados.</p>
+    <div id="dh-ej"></div></section>
+  <section class="section" id="sec-faq" hidden></section>
+  <section class="section" aria-labelledby="t-seguir"><div class="section-head"><h2 id="t-seguir">Para seguir</h2></div>
+    <ul class="enlaces"><li><a href="#congreso-simulador">Simulador de pactos para el 29-N</a></li><li><a href="#29n">Elecciones generales del 29-N</a>: calendario, candidatos y escaños de cada provincia</li><li><a href="#mapa">Mapa electoral de España</a></li></ul></section>`;
+  ejemploDhondt(app.querySelector('#dh-ej'));
+  calculadoraDhondt(app);
+  ponerFaq('dhondt', app.querySelector('#sec-faq'));
+}
 
 async function view29N(){
   setTitle('Elecciones del 29-N');
@@ -1139,18 +1231,8 @@ async function view29N(){
       </li>
     </ol></section>
 
-  <section class="section" id="sec-dhondt" aria-labelledby="t-dh"><div class="section-head"><h2 id="t-dh">Calculadora D'Hondt</h2><p>Escribe los votos de cada candidatura y los escaños en juego para ver cómo se reparten. Empieza con el ejemplo de la ley.</p></div>
-    <div class="sheet pad e-dh">
-      <div class="e-dh-cfg">
-        <label>Escaños en juego <input type="number" id="dh-esc" min="1" max="60" value="8" inputmode="numeric"></label>
-        <label>Usar los de una provincia <select class="select" id="dh-prov"><option value="">Elige una provincia</option>${provs.slice().sort((a, b) => a.n.localeCompare(b.n, 'es')).map(p => `<option value="${p.s}">${esc(p.n)} (${p.s})</option>`).join('')}</select></label>
-        <label>Votos en blanco <input type="number" id="dh-bl" min="0" value="0" inputmode="numeric"></label>
-      </div>
-      <div class="tablewrap"><table class="data e-dh-in"><caption class="vh">Candidaturas y votos de la calculadora</caption><thead><tr><th>Candidatura</th><th class="n">Votos</th><th><span class="vh">Quitar</span></th></tr></thead><tbody id="dh-rows"></tbody></table></div>
-      <div class="row"><button class="btn ghost" type="button" id="dh-add">Añadir candidatura</button><button class="btn ghost" type="button" id="dh-reset">Volver al ejemplo de la ley</button></div>
-      <p class="e-dh-sum" id="dh-sum" aria-live="polite"></p>
-      <div id="dh-out"></div>
-    </div></section>
+  <section class="section" id="sec-dhondt" aria-labelledby="t-dh"><div class="section-head"><h2 id="t-dh">Calculadora D'Hondt</h2><p>Escribe los votos de cada candidatura y los escaños en juego para ver cómo se reparten. Empieza con el ejemplo de la ley. También está en <a href="#dhondt">su propia página</a>, para guardarla o compartirla.</p></div>
+    ${htmlCalculadoraDhondt()}</section>
 
   <section class="section" id="sec-cand" aria-labelledby="t-cand"><div class="section-head"><h2 id="t-cand">Quién se presenta</h2><p id="cand-nota">Coaliciones para el Congreso y pactos para el Senado.</p></div>
     <div class="prose" id="cand-cuerpo"><p class="muted">Cargando…</p></div></section>
@@ -1208,40 +1290,8 @@ async function view29N(){
   iniciarCuenta();
   app.querySelectorAll('.tabs a[href^="#sec-"]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const t = app.querySelector(a.getAttribute('href')); t.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); const h = t.querySelector('h2'); if (h){ h.tabIndex = -1; h.focus({preventScroll: true}); } }));
   // ejemplo de la ley (fijo) y calculadora
-  const tabla = (cands, blancos, escanos, r) => {
-    const cols = Math.min(escanos, 12);
-    const filas = cands.slice().sort((a, b) => b.v - a.v).map(c => {
-      const dentro = r.ok.includes(c);
-      const celdas = Array.from({length: cols}, (_, j) => { const d = j + 1, g = dentro && r.gana.has(c.i + ':' + d); return `<td class="n${g ? ' win' : ''}${dentro ? '' : ' out'}">${dentro ? fmtQ(c.v / d) : '—'}${g ? '<span class="vh"> (escaño)</span>' : ''}</td>`; }).join('');
-      return `<tr><th scope="row">${esc(c.n || 'Sin nombre')}</th><td class="n">${fmtQ(c.v)}</td><td class="n">${r.validos ? fmtPct(100 * c.v / r.validos) : '—'}</td>${celdas}<td class="n"><b>${dentro ? r.res.get(c) : '—'}</b></td></tr>`;
-    }).join('');
-    return `<div class="tablewrap"><table class="data e-dh-t"><caption class="vh">Cocientes de la ley D'Hondt. Las celdas marcadas obtienen escaño.</caption><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">% válidos</th>${Array.from({length: cols}, (_, j) => `<th class="n">÷ ${j + 1}</th>`).join('')}<th class="n">Escaños</th></tr></thead><tbody>${filas}</tbody></table></div>${escanos > 12 ? '<p class="small muted">Se muestran los doce primeros divisores; el reparto usa todos.</p>' : ''}`;
-  };
-  const ej = DH_EJEMPLO.map(([n, v], i) => ({i, n, v}));
-  const rej = dhondt(ej, 0, 8);
-  app.querySelector('#dh-ej').innerHTML = tabla(ej, 0, 8, rej).replace('<caption class="vh">Cocientes', '<caption class="vh">Ejemplo del artículo 163 de la LOREG: cocientes') + `<p class="small">Resultado: A, 4 escaños; B, 2; C, 1, y D, 1. E y F superan el 3 % (14.400 votos) pero sus cocientes no llegan a los ocho más altos.</p>`;
-  const $rows = app.querySelector('#dh-rows'), $esc = app.querySelector('#dh-esc'), $bl = app.querySelector('#dh-bl'), $out = app.querySelector('#dh-out'), $sum = app.querySelector('#dh-sum');
-  let filas = DH_EJEMPLO.map(([n, v]) => ({n, v}));
-  const pintarFilas = () => {
-    $rows.innerHTML = filas.map((f, i) => `<tr><td><input type="text" data-i="${i}" data-f="n" value="${esc(f.n)}" aria-label="Nombre de la candidatura ${i + 1}" maxlength="30"></td><td class="n"><input type="number" data-i="${i}" data-f="v" value="${f.v}" min="0" inputmode="numeric" aria-label="Votos de la candidatura ${i + 1}"></td><td><button class="btn ghost" type="button" data-q="${i}" aria-label="Quitar la candidatura ${i + 1}"${filas.length < 2 ? ' disabled' : ''}>Quitar</button></td></tr>`).join('');
-  };
-  const calcular = () => {
-    const escanos = Math.max(1, Math.min(60, parseInt($esc.value, 10) || 1)), blancos = Math.max(0, parseInt($bl.value, 10) || 0);
-    const cands = filas.map((f, i) => ({i, n: f.n.trim(), v: Math.max(0, Math.round(+f.v) || 0)}));
-    const r = dhondt(cands, blancos, escanos);
-    if (!r.validos){ $out.innerHTML = ''; $sum.textContent = 'Escribe los votos de al menos una candidatura.'; return; }
-    const reparto = cands.filter(c => r.res.get(c) > 0).sort((a, b) => r.res.get(b) - r.res.get(a)).map(c => `${c.n || 'Sin nombre'} (${r.res.get(c)})`);
-    const fuera = cands.filter(c => c.v > 0 && !r.ok.includes(c)).map(c => c.n || 'Sin nombre');
-    $sum.innerHTML = `<b>Reparto de ${escanos} ${escanos === 1 ? 'escaño' : 'escaños'}:</b> ${esc(listaY(reparto)) || 'ninguno'}. La barrera del 3 % es de ${fmt(Math.ceil(r.barrera))} votos (sobre ${fmt(r.validos)} válidos).${fuera.length ? ` No llegan: ${esc(listaY(fuera))}.` : ''}${r.ult ? ` El último escaño se adjudica con un cociente de ${fmtQ(r.ult.q)}.` : ''}${r.sorteo ? ' Hay un empate exacto en el último escaño: se resolvería por sorteo.' : ''}`;
-    $out.innerHTML = tabla(cands, blancos, escanos, r);
-  };
-  $rows.addEventListener('input', ev => { const t = ev.target, i = +t.dataset.i; if (!filas[i]) return; filas[i][t.dataset.f] = t.dataset.f === 'v' ? t.value : t.value; calcular(); });
-  $rows.addEventListener('click', ev => { const b = ev.target.closest('[data-q]'); if (!b || filas.length < 2) return; filas.splice(+b.dataset.q, 1); pintarFilas(); calcular(); const f = $rows.querySelector('input'); if (f) f.focus(); });
-  app.querySelector('#dh-add').addEventListener('click', () => { filas.push({n: String.fromCharCode(65 + filas.length % 26), v: 0}); pintarFilas(); calcular(); const nf = $rows.querySelector('tr:last-child input'); nf.focus(); nf.select(); });
-  app.querySelector('#dh-reset').addEventListener('click', () => { filas = DH_EJEMPLO.map(([n, v]) => ({n, v})); $esc.value = 8; $bl.value = 0; app.querySelector('#dh-prov').value = ''; pintarFilas(); calcular(); });
-  app.querySelector('#dh-prov').addEventListener('change', ev => { if (ev.target.value){ $esc.value = ev.target.value; calcular(); } });
-  $esc.addEventListener('input', calcular); $bl.addEventListener('input', calcular);
-  pintarFilas(); calcular();
+  ejemploDhondt(app.querySelector('#dh-ej'));
+  calculadoraDhondt(app);
   // candidaturas y pactos (data/candidaturas.json)
   load('candidaturas.json').then(C => {
     const box = app.querySelector('#cand-cuerpo'); if (!box) return;
@@ -1961,6 +2011,34 @@ function sincronizarReloj(){
 }
 const hoyISO = () => { const d = ahoraReal(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
+// Share the poll, before answering and after, only while it can be answered
+const ENC_URL = 'https://pactometro.es/encuesta/';
+const encCompartible = () => encModo() === 'previa' || (encModo() === 'real' && encEstado() === 'abierta');
+function bloqueCompartirEncuesta(despues){
+  if (!encCompartible()) return '';
+  const txt = despues ? 'Ya he respondido la encuesta del 29-N de pactómetro.es. ¿Y tú? Es anónima y se responde en un minuto:'
+    : '¿A quién piensas votar el 29-N? Responde la encuesta anónima de pactómetro.es, se tarda un minuto:';
+  const u = encodeURIComponent(ENC_URL), t = encodeURIComponent(txt), tu = encodeURIComponent(txt + ' ' + ENC_URL);
+  const red = (n, href) => `<a class="btn ghost" href="${href}" target="_blank" rel="noopener">${n}<span class="vh"> (se abre en una pestaña nueva)</span></a>`;
+  return `<section class="enc-share" aria-labelledby="enc-share-t-${despues ? 2 : 1}" data-txt="${esc(txt)}">
+    <p class="enc-share-t" id="enc-share-t-${despues ? 2 : 1}">${despues ? 'Ayuda a que la encuesta llegue a más gente' : 'Compártela para que llegue a más gente'}</p>
+    ${despues ? '<p class="enc-share-i">Cuantas más personas respondan, más interesante será. Mándala a tus contactos o compártela en tus redes:</p>' : ''}
+    <div class="share-red">${navigator.share ? '<button class="btn" type="button" data-encs="nativo">Compartir…</button>' : ''}${red('WhatsApp', `https://wa.me/?text=${tu}`)}${red('Telegram', `https://t.me/share/url?url=${u}&text=${t}`)}${red('X', `https://twitter.com/intent/tweet?text=${t}&url=${u}`)}${red('Facebook', `https://www.facebook.com/sharer/sharer.php?u=${u}`)}${red('Bluesky', `https://bsky.app/intent/compose?text=${tu}`)}<a class="btn ghost" href="mailto:?subject=${encodeURIComponent('Encuesta del 29-N')}&amp;body=${encodeURIComponent(txt + '\n\n' + ENC_URL)}">Correo</a><button class="btn ghost" type="button" data-encs="copiar">Copiar enlace</button></div>
+    <p class="enc-share-st" role="status"></p></section>`;
+}
+function activarCompartirEncuesta(raiz){
+  raiz.querySelectorAll('.enc-share').forEach(s => s.addEventListener('click', async ev => {
+    const b = ev.target.closest('[data-encs]'); if (!b) return;
+    const st = s.querySelector('.enc-share-st');
+    if (b.dataset.encs === 'nativo'){
+      try { await navigator.share({title: 'Encuesta del 29-N · pactómetro.es', text: s.dataset.txt, url: ENC_URL}); } catch(e){ /* cancelado */ }
+      return;
+    }
+    try { await navigator.clipboard.writeText(ENC_URL); st.textContent = 'Enlace copiado: ya puedes pegarlo donde quieras.'; }
+    catch(e){ st.textContent = `Copia esta dirección: ${ENC_URL}`; }
+  }));
+}
+
 async function viewEncuesta(prueba){
   const M = await load('municipios.json');
   const modo = encModo(), estado = encEstado();
@@ -1993,8 +2071,9 @@ async function viewEncuesta(prueba){
     if (estado === 'antes') cuerpo = msg('Próximamente', 'La encuesta abrirá muy pronto', 'Se podrá responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).');
     else if (estado === 'cerrada') cuerpo = msg('Encuesta cerrada', 'Gracias a quienes participasteis', 'Se podía responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).', false);
     else if (modo === 'pendiente') cuerpo = msg('En un momento', 'La encuesta todavía no está disponible', 'Estamos terminando de preparar la recogida de respuestas. Vuelve a entrar en unos minutos.');
-    else if (ya && ya.dia) cuerpo = `<div class="sheet pad enc-msg"><span class="eyebrow">Ya has respondido</span><h2>Gracias por participar</h2><p>Solo se admite una respuesta por navegador. Se puede responder hasta las 20:00.</p><div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
+    else if (ya && ya.dia) cuerpo = `<div class="sheet pad enc-msg"><span class="eyebrow">Ya has respondido</span><h2>Gracias por participar</h2><p>Solo se admite una respuesta por navegador. Se puede responder hasta el domingo 22 de noviembre a las 20:00.</p>${bloqueCompartirEncuesta(true)}<div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
   }
+  const conFormulario = !cuerpo;
   if (!cuerpo){
     cuerpo = `<form class="sheet pad enc" id="enc-form" novalidate autocomplete="off">
       <fieldset class="enc-q"><legend><span class="enc-n">1</span><span>¿En qué provincia votas?</span></legend>
@@ -2024,9 +2103,18 @@ async function viewEncuesta(prueba){
         <p class="small muted" id="enc-estado">Elige una respuesta en la pregunta 2 para poder enviar.</p></div>
     </form>`;
   }
-  app.innerHTML = `${cabecera}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
+  app.innerHTML = `${cabecera}${conFormulario && !probando ? bloqueCompartirEncuesta(false) : ''}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
+  activarCompartirEncuesta(app);
   const form = app.querySelector('#enc-form');
   if (!form) return;
+  // after answering, the share block goes into the thank-you message (the one above the form is removed)
+  // after answering: the top share block goes away, the one in the message works, and the focus (the button that was pressed
+  // no longer exists) moves to the message, so keyboard and screen reader users carry on from there
+  const graciasCompartir = main => {
+    const arriba = app.querySelector(':scope > .enc-share'); if (arriba) arriba.remove();
+    activarCompartirEncuesta(main);
+    const h = main.querySelector('.enc-msg h2'); if (h){ h.tabIndex = -1; h.focus({preventScroll: true}); }
+  };
   const $prov = form.querySelector('#enc-prov'), $rec = form.querySelector('#enc-rec'), $btn = form.querySelector('#enc-enviar'), $est = form.querySelector('#enc-estado'), $ok = form.querySelector('#enc-acepto');
   const etiquetaBoton = $btn.textContent;
   const marcar = () => {
@@ -2066,7 +2154,8 @@ async function viewEncuesta(prueba){
     if (modo === 'previa'){
       main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Vista previa · no se ha guardado</span><h2>Así verá la confirmación quien responda</h2>
         <p>Has elegido <b>${esc(visto)}</b>${datos.provincia ? ` en ${esc(datos.provincia)}` : ''}${datos.recuerdo ? ` (recuerdo de voto: ${esc(datos.recuerdo)})` : ''}. En pactómetro.es esta respuesta se guardaría de forma anónima en la hoja de cálculo privada del titular.</p>
-        <button class="btn" type="button" id="enc-otra">Volver a probar</button></div>`;
+        ${bloqueCompartirEncuesta(true)}<button class="btn" type="button" id="enc-otra">Volver a probar</button></div>`;
+      graciasCompartir(main);
       main.querySelector('#enc-otra').addEventListener('click', () => viewEncuesta(prueba));
       main.scrollIntoView({behavior: 'smooth', block: 'start'});
       return;
@@ -2084,7 +2173,8 @@ async function viewEncuesta(prueba){
       store.set(ENC.clave, {dia: hoyISO()});
       main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Respuesta registrada</span><h2>Gracias por participar</h2>
         <p>Tu respuesta se ha guardado de forma anónima. Los resultados no se publican en la web.</p>
-        <div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
+        ${bloqueCompartirEncuesta(true)}<div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
+      graciasCompartir(main);
       main.scrollIntoView({behavior: 'smooth', block: 'start'});
     } catch(e){
       $btn.disabled = false; $btn.textContent = etiquetaBoton;
@@ -2096,7 +2186,7 @@ async function viewEncuesta(prueba){
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
 const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '29 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-29';   // date of the last publication, set by scripts/build_dist.py
+const ACTUALIZADO = '30 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-30';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
@@ -2265,15 +2355,29 @@ const NUM_TXT = ['ninguna', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'si
 const miles = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');   // 8.174, también con cuatro cifras
 const listaY = n => n.length < 2 ? (n[0] || '') : n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1];
 
+// Preguntas frecuentes (data/faq.json): las mismas que las de la página estática, que también las lleva como datos estructurados (FAQPage).
+// Las respuestas son HTML de nuestro propio archivo (con enlaces internos).
+function ponerFaq(clave, sec){
+  if (!sec) return;
+  load('faq.json').then(F => {
+    const f = F && F[clave]; if (!f || !Array.isArray(f.preguntas) || !sec.isConnected) return;
+    const portada = sec.classList.contains('h-sec');
+    (sec.querySelector('.wrap') || sec).innerHTML = `<div class="${portada ? 'h-sec-head' : 'section-head'}"><h2 id="t-faq">${esc(f.titulo)}</h2></div>
+      <div class="faq">${f.preguntas.map(([p, r]) => `<div class="faq-i"><h3>${esc(p)}</h3><p>${r}</p></div>`).join('')}</div>`;
+    sec.setAttribute('aria-labelledby', 't-faq'); sec.hidden = false;
+    enlazar(sec);
+  }).catch(e => console.error(e));
+}
+
 async function viewInicio(){
-  document.title = 'Pactómetro · Mayorías y pactos en todas las instituciones de España';
+  document.title = 'Pactómetro: calculadora de pactos y mayorías de España';
   app.className = 'home';
   app.innerHTML = `
   <section class="h-hero" aria-labelledby="h-titulo"><div class="wrap">
     ${avisoElecciones()}
     <div class="h-intro">
       <h1 class="h-title" id="h-titulo">¿Quién puede gobernar?</h1>
-      <p class="h-lede">Calcula las mayorías y los pactos posibles en el Congreso, los parlamentos autonómicos, las diputaciones, los cabildos y los más de 8.000 ayuntamientos de España, con los resultados oficiales desde 1977.</p>
+      <p class="h-lede">Calculadora de pactos y mayorías: suma los escaños de los partidos y comprueba si llegan a la mayoría absoluta en el Congreso, los parlamentos autonómicos, las diputaciones, los cabildos y los más de 8.000 ayuntamientos de España, con los resultados oficiales desde 1977.</p>
       <form class="h-search" id="h-search" role="search" autocomplete="off" novalidate>
         <label for="h-q">Busca tu ayuntamiento, tu diputación o tu parlamento</label>
         <div class="h-sbox">
@@ -2346,10 +2450,13 @@ async function viewInicio(){
     <div class="h-tools">
       <div class="h-tool"><h3>Histórico electoral</h3><p>Las elecciones generales, las investiduras y el Senado desde 1977, las autonómicas desde 1980 y los concejales de toda España desde 1979.</p><a href="#historico">Ver el histórico</a></div>
       <div class="h-tool"><h3>Comparar</h3><p>Pon frente a frente hasta cuatro instituciones o elecciones: tu ayuntamiento en 2019 y en 2023, el Congreso y tu comunidad, dos diputaciones…</p><a href="#comparar">Comparar instituciones</a></div>
+      <div class="h-tool"><h3>Calculadora D'Hondt</h3><p>Escribe los votos de cada candidatura y los escaños en juego y mira cómo se reparten con la ley D'Hondt, con la barrera del Congreso o la de las municipales.</p><a href="#dhondt">Abrir la calculadora D'Hondt</a></div>
       <div class="h-tool"><h3>Descargas en Excel</h3><p>Cada pactómetro y cada comparación se descargan en una hoja de cálculo con los votos, los escaños, las mayorías posibles y el histórico.</p></div>
       <div class="h-tool"><h3>De dónde salen los datos</h3><p>Resultados oficiales del Ministerio del Interior y del Congreso. Las autonómicas, que el Ministerio no publica, se han recopilado de fuentes públicas y llevan la marca «Recopilado».</p><a href="#fuentes">Fuentes y metodología</a></div>
     </div>
-  </div></section>`;
+  </div></section>
+  <section class="h-sec" id="h-faq" hidden><div class="wrap"></div></section>`;
+  ponerFaq('inicio', app.querySelector('#h-faq'));
   Buscador(app.querySelector('#h-search'));
   iniciarCuenta();
   mapaInicio(app.querySelector('#h-mapa'));
@@ -3254,7 +3361,7 @@ const LOCAL_URL = {dip: 'diputacion', cab: 'cabildo', con: 'consell', jjgg: 'jun
 const PAG_FIJAS = {inicio: '/', congreso: '/congreso/', 'congreso-disolucion': '/congreso/disolucion/', 'congreso-simulador': '/congreso/simulador/',
   autonomias: '/autonomias/', locales: '/locales/', ayuntamientos: '/ayuntamientos/', historico: '/historico/', encuesta: '/encuesta/', 'encuesta-prueba': '/encuesta/?prueba=1',
   comparar: '/comparar/', '29n': '/29n/', programas: '/29n/programas/', directo: '/29n/resultados/', fuentes: '/fuentes/', 'aviso-legal': '/aviso-legal/',
-  privacidad: '/privacidad/', cookies: '/cookies/', mapa: '/mapa/'};
+  privacidad: '/privacidad/', cookies: '/cookies/', mapa: '/mapa/', dhondt: '/calculadora-dhondt/'};
 const esRuta = h => !!h && !/^(sec-|h-|app$|ck-|t-|enc-)/.test(h);   // anything else after # is an in-page anchor
 // Route key → address (null if a municipality's address is not known yet)
 function urlDe(h){
@@ -3335,6 +3442,7 @@ async function dispatch(h){
   if (h === 'encuesta' || h === 'encuesta-prueba'){ setTitle('Encuesta 29-N'); return viewEncuesta(h === 'encuesta-prueba'); }
   if (h === 'comparar' || h.startsWith('comparar?')) return viewComparar(h.slice(9));
   if (h === '29n') return view29N();
+  if (h === 'dhondt'){ setTitle("Calculadora D'Hondt"); return viewDhondt(); }
   if (h === 'fuentes'){ setTitle('Fuentes y metodología'); return viewFuentes(); }
   if ((m = h.match(/^prov-(\d{2})$/))) return viewProvincia(m[1]);
   if (h === 'programas'){ setTitle('Programas electorales del 29-N'); return viewProgramas(); }
@@ -3343,7 +3451,7 @@ async function dispatch(h){
   if (LEGAL_PAGS.some(x => x[0] === h)) return viewLegal(h);
   return notFound();
 }
-const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta', programas: '29n', directo: '29n', mapa: 'mapa'};
+const NAV = {inicio: 'inicio', '29n': '29n', congreso: 'congreso', disolucion: 'congreso', simulador: 'congreso', auto: 'autonomias', autonomias: 'autonomias', locales: 'locales', dip: 'locales', cab: 'locales', con: 'locales', jjgg: 'locales', ayuntamientos: 'ayuntamientos', mun: 'ayuntamientos', historico: 'historico', comparar: 'comparar', fuentes: 'fuentes', aviso: 'fuentes', privacidad: 'fuentes', cookies: 'fuentes', encuesta: 'encuesta', programas: '29n', directo: '29n', mapa: 'mapa', dhondt: '29n'};
 const $mast = document.querySelector('.mast'), $menu = document.getElementById('menu-btn');
 function cerrarMenu(){ $mast.classList.remove('open'); $menu.setAttribute('aria-expanded', 'false'); }
 $menu.addEventListener('click', () => { const abrir = !$mast.classList.contains('open'); $mast.classList.toggle('open', abrir); $menu.setAttribute('aria-expanded', String(abrir)); });
