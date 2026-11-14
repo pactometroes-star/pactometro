@@ -873,40 +873,42 @@ function avisoElecciones(conv, sinEncuesta){
 }
 
 /* ================================================================ vista: Congreso */
-/* Encuesta del CIS como punto de partida del simulador (data/cis.json, scripts/cis_proyeccion.py).
+/* Encuesta del CIS como punto de partida del simulador (data/cis.json, scripts/cis_proyeccion.py y scripts/cis3584/).
    Art. 69.7 LOREG: durante los cinco días anteriores a la votación no se pueden publicar sondeos. Se oculta del 24 al 28 de noviembre
    (hora peninsular) y el 29 hasta que cierren todos los colegios (20:00 en Canarias = 21:00 peninsular). */
 const VEDA_SONDEOS = ['2026-11-23T23:00:00Z', '2026-11-29T20:00:00Z'];
 const enVedaSondeos = (t = Date.now()) => t >= Date.parse(VEDA_SONDEOS[0]) && t < Date.parse(VEDA_SONDEOS[1]);
 const VEDA_AVISO = `<div class="veda" role="note"><p><b>Del 24 al 28 de noviembre no se pueden publicar encuestas electorales</b> (art. 69.7 de la Ley Orgánica del Régimen Electoral General). Por eso el simulador no muestra ahora la encuesta del CIS y parte del resultado del 23-J. La encuesta vuelve cuando cierren los colegios electorales el 29 de noviembre.</p></div>`;
+const rangoCis = h => h[0] === h[1] ? String(h[0]) : h[0] + '–' + h[1];     // horquilla de escaños del CIS (percentiles 5-95)
 function cisPanel(C){
   const E = C.estudio, F = C.ficha, P = C.proyeccion.provincias;
   const dec = x => x === null || x === undefined ? '' : x.toLocaleString('es-ES', {minimumFractionDigits: 1, maximumFractionDigits: 2});
   const nueva = '<span class="vh"> (se abre en una pestaña nueva)</span>';
   const enlace = (u, t) => `<a href="${esc(u)}" target="_blank" rel="noopener">${t}${nueva}</a>`;
+  const sinEsc = '<span aria-hidden="true">–</span><span class="vh">sin escaños estimados</span>';
   const fichaFilas = [
     ['Organismo', 'Centro de Investigaciones Sociológicas (CIS), calle Montalbán 8, 28014 Madrid'],
     ['Estudio', `n.º ${E.numero}, «${E.titulo}» (avance de resultados publicado el ${fecha(E.publicado)})`],
     ['Ámbito', F.ambito], ['Universo', F.universo], ['Tamaño de la muestra', F.muestra], ['Afijación', F.afijacion],
     ['Ponderación', F.ponderacion], ['Puntos de muestreo', F.puntos], ['Procedimiento de muestreo', F.procedimiento],
     ['Modo de entrevista', F.modo], ['Error muestral', F.error], ['Trabajo de campo', F.fechas], ['Pregunta de intención de voto', F.pregunta]];
-  const est = C.partidos.map(p => `<tr><td><span class="sw" style="background:${p.color}"></span><b>${esc(p.sig)}</b></td><td class="n">${dec(p.directo)}</td><td class="n">±${dec(p.margen)}</td><td class="n"><b>${dec(p.est)}</b></td><td class="n">${p.esc}</td></tr>`).join('')
-    + C.resto.map((r, i) => `<tr${i === 0 ? ' class="sep"' : ''}><td>${esc(r.n)}</td><td class="n">${dec(r.directo)}</td><td class="n">±${dec(r.margen)}</td><td class="n">${r.est === null ? '' : dec(r.est)}</td><td class="n"></td></tr>`).join('')
-    + `<tr class="sep"><td>Entrevistas (N)</td><td class="n">${fmtQ(C.n)}</td><td></td><td></td><td class="n"><b>350</b></td></tr>`;
-  const conEsc = C.partidos.filter(p => p.esc > 0);
-  const corto = p => p.k === 'fa' ? 'SUMAR / FA' : niceSig(p.sig);
+  const est = C.partidos.map(p => `<tr><td><span class="sw" style="background:${p.color}"></span><b>${esc(p.cis)}</b></td><td class="n">${dec(p.directo)}</td><td class="n">±${dec(p.margen)}</td><td class="n"><b>${dec(p.est)}</b></td><td class="n">${p.h ? rangoCis(p.h) : sinEsc}</td><td class="n">${p.esc}</td></tr>`).join('')
+    + C.resto.map((r, i) => `<tr${i === 0 ? ' class="sep"' : ''}><td>${esc(r.n)}</td><td class="n">${dec(r.directo)}</td><td class="n">±${dec(r.margen)}</td><td class="n">${r.est === null ? '' : dec(r.est)}</td><td></td><td></td></tr>`).join('')
+    + `<tr class="sep"><td>Entrevistas (N)</td><td class="n">${fmtQ(C.n)}</td><td></td><td></td><td></td><td class="n"><b>350</b></td></tr>`;
+  const conH = C.partidos.filter(p => p.h);                 // candidaturas con horquilla de escaños en la tabla provincial del CIS
   const provs = Object.keys(P).sort((a, b) => P[a].n.localeCompare(P[b].n, 'es'));
-  const provTabla = `<div class="tablewrap"><table class="data"><caption class="vh">Proyección de escaños por provincia de pactómetro.es a partir de la estimación del CIS</caption>
-    <thead><tr><th>Provincia</th><th class="n">Escaños</th>${conEsc.map(p => `<th class="n" title="${esc(p.sig)}">${esc(corto(p))}</th>`).join('')}</tr></thead>
-    <tbody>${provs.map(k => `<tr><td>${esc(P[k].n)}</td><td class="n"><b>${P[k].escanos}</b></td>${conEsc.map(p => P[k].r[p.k] ? `<td class="n">${P[k].r[p.k]}</td>` : '<td class="n z"><span aria-hidden="true">·</span><span class="vh">0</span></td>').join('')}</tr>`).join('')}
-    <tr class="sep"><td><b>Total</b></td><td class="n"><b>350</b></td>${conEsc.map(p => `<td class="n"><b>${p.esc}</b></td>`).join('')}</tr></tbody></table></div>`;
+  const celda = (k, p) => { const h = P[k].h[p.k]; return h ? `<td class="n">${P[k].r[p.k] || '<span aria-hidden="true">·</span><span class="vh">0</span>'}<span class="rg"><span class="vh">horquilla </span>${rangoCis(h)}</span></td>` : '<td class="n z"><span aria-hidden="true">·</span><span class="vh">0</span></td>'; };
+  const provTabla = `<div class="tablewrap"><table class="data"><caption class="vh">Escaños de partida por provincia y horquilla del CIS entre paréntesis</caption>
+    <thead><tr><th>Provincia</th><th class="n">Escaños</th>${conH.map(p => `<th class="n" title="${esc(p.cis)}">${esc(p.sig)}</th>`).join('')}</tr></thead>
+    <tbody>${provs.map(k => `<tr><td>${esc(P[k].n)}</td><td class="n"><b>${P[k].escanos}</b></td>${conH.map(p => celda(k, p)).join('')}</tr>`).join('')}
+    <tr class="sep"><td><b>Total</b></td><td class="n"><b>350</b></td>${conH.map(p => `<td class="n"><b>${p.esc}</b><span class="rg"><span class="vh">horquilla </span>${rangoCis(p.h)}</span></td>`).join('')}</tr></tbody></table></div>`;
   return `<section class="sheet pad cis" aria-labelledby="cis-t">
     <div class="cis-head">
       <div>
         <span class="eyebrow">Punto de partida del simulador</span>
         <h2 class="h3" id="cis-t">Encuesta del CIS: ${esc(E.titulo)}</h2>
-        <p>El simulador arranca con la <b>estimación de voto del Centro de Investigaciones Sociológicas (CIS)</b>: estudio n.º ${E.numero}, publicado el ${fecha(E.publicado)}, con trabajo de campo del 1 al 6 de octubre, ${fmtQ(C.n)} entrevistas telefónicas y un error muestral de ±1,4 %.</p>
-        <p class="small">El CIS estima porcentajes de voto, no escaños: los escaños de partida son una proyección de pactómetro.es a partir de esos porcentajes.</p>
+        <p>El simulador arranca con la <b>estimación del Centro de Investigaciones Sociológicas (CIS)</b> para el 29-N: estudio n.º ${E.numero}, publicado el ${fecha(E.publicado)}, con trabajo de campo ${esc(F.fechas.charAt(0).toLowerCase() + F.fechas.slice(1))}, ${fmtQ(C.n)} entrevistas telefónicas y un error muestral de ${esc(F.error_corto)}.</p>
+        <p class="small">El CIS da los escaños como horquillas, no como cifras exactas. Los escaños de partida son un reparto central dentro de esas horquillas, calculado por pactómetro.es.</p>
       </div>
       <div class="cis-acc">
         <a class="btn solid" href="${esc(E.url)}" target="_blank" rel="noopener">Ver el estudio en la web del CIS${nueva}<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -917,26 +919,26 @@ function cisPanel(C){
       <h3>Ficha técnica</h3>
       <dl class="cis-dl">${fichaFilas.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       <h3>De las respuestas a la estimación</h3>
-      <p>El <b>voto directo</b> es lo que contestan los entrevistados a la pregunta de intención de voto, en porcentaje sobre el total de entrevistados («sobre censo», en palabras del CIS). La <b>estimación de voto</b> es el porcentaje sobre el voto válido que calcula el CIS: una ${esc(C.metodo_cis.charAt(0).toLowerCase() + C.metodo_cis.slice(1))}</p>
-      <div class="tablewrap"><table class="data"><caption class="vh">Estimación de voto del CIS, estudio ${E.numero}</caption>
-        <thead><tr><th>Candidatura</th><th class="n">Voto directo<br>(% sobre censo)</th><th class="n">Margen de error<br>(IC 95 %)</th><th class="n">Estimación CIS<br>(% voto válido)</th><th class="n">Escaños<br>(pactómetro.es)</th></tr></thead>
+      <p>El <b>voto directo</b> es lo que contestan los entrevistados a la pregunta de intención de voto, en porcentaje sobre el total de entrevistados («sobre censo», en palabras del CIS). La <b>estimación de voto</b> es el porcentaje sobre el voto válido que calcula el CIS. ${esc(C.metodo_cis)}</p>
+      <div class="tablewrap"><table class="data"><caption class="vh">Estimación de voto y de escaños del CIS, estudio ${E.numero}</caption>
+        <thead><tr><th>Candidatura</th><th class="n">Voto directo<br>(% sobre censo)</th><th class="n">Margen de error<br>(IC 95 %)</th><th class="n">Estimación CIS<br>(% voto válido)</th><th class="n">Escaños<br>(horquilla del CIS)</th><th class="n">Escaños de partida<br>(pactómetro.es)</th></tr></thead>
         <tbody>${est}</tbody></table></div>
       <h3>Notas del CIS</h3>
       <ul>${C.notas_cis.map(n => `<li>${esc(n)}</li>`).join('')}<li>El margen teórico de error del voto directo es un intervalo de confianza del 95 %.</li></ul>
       <p>Documentos oficiales: ${enlace(E.url, 'avance de resultados')} · ${enlace(E.estimacion_pdf, 'estimación de voto (PDF)')} · ${enlace(E.frecuencias_pdf, 'frecuencias y ficha técnica (PDF)')} · ${enlace(E.excel, 'documentación completa (Excel)')}.</p>
       <p class="small muted">Cita: Centro de Investigaciones Sociológicas, Estudio n.º ${E.numero}, «${esc(E.titulo)}». Avance de resultados, Madrid, ${fecha(E.publicado)}.</p>
     </div></details>
-    <details class="more"><summary>Cómo calcula pactómetro.es los escaños</summary><div>
-      <p>El CIS no estima escaños. Para convertir su estimación nacional en escaños, pactómetro.es aplica un método sencillo y transparente:</p>
+    <details class="more"><summary>Cómo elige pactómetro.es los escaños de partida</summary><div>
+      <p>El CIS publica, para cada provincia y para el total, una horquilla de escaños por candidatura, no un reparto concreto. El simulador necesita escaños enteros que sumen los de cada provincia, así que pactómetro.es elige este reparto:</p>
       <ol>
-        <li>Parte de los votos de cada partido en cada provincia el 23 de julio de 2023 (resultados oficiales del Ministerio del Interior).</li>
-        <li>Cada partido sube o baja en todas las provincias en la misma proporción en que lo hace en el conjunto de España según el CIS: si la estimación le da un 10 % más de voto que el que logró en 2023, se le suma un 10 % en cada provincia.</li>
-        <li>SUMAR / Frente Amplio y Podemos, que en 2023 se presentaron juntos en Sumar, siguen el reparto provincial de Sumar. Se Acabó la Fiesta no se presentó al Congreso en 2023: recibe el mismo porcentaje en todas las provincias.</li>
-        <li>«Otros partidos» (7,9 %) y el voto en blanco (0,3 %) se reparten por igual en todas las provincias: cuentan para la barrera del 3 %, pero no obtienen escaños.</li>
-        <li>En cada provincia los porcentajes se ajustan para sumar el 100 % del voto válido y se reparten los escaños del Real Decreto 806/2026 con la barrera del 3 % y la ley D'Hondt (art. 163 LOREG), como se explica en <a href="#29n">Elecciones 29-N</a>.</li>
+        <li>Cada candidatura queda dentro de su horquilla en cada provincia, y los escaños de cada provincia suman los que le corresponden según el Real Decreto 806/2026.</li>
+        <li>Cada candidatura queda también dentro de su horquilla nacional.</li>
+        <li>Entre todos los repartos que cumplen lo anterior, se elige el que menos se aleja del centro de las horquillas, las provinciales y las nacionales.</li>
+        <li>El CIS no estima escaños para SALF ni para CC-Municipalistas Primero Canarias, y su tabla provincial no tiene columna para UPN: pactómetro.es no les asigna escaños.</li>
       </ol>
-      <p>Es una aproximación orientativa: supone que el voto cambia igual en todo el territorio, algo que no suele ocurrir, sobre todo con los partidos que solo se presentan en algunas provincias. Úsala como punto de partida y cambia los escaños como quieras.</p>
+      <p>Es una de las muchas combinaciones compatibles con las horquillas, no una predicción del CIS. Úsala como punto de partida y cambia los escaños como quieras.</p>
       <h3>Escaños por provincia</h3>
+      <p class="small">En cada casilla, el reparto de partida y, debajo, la horquilla del CIS.</p>
       ${provTabla}
     </div></details>
   </section>`;
@@ -963,10 +965,10 @@ async function viewCongreso(modo, clave){
     const veda = enVedaSondeos();
     const C = veda ? null : await load('cis.json').catch(() => null);
     const from23 = base23.map(p => ({...p, votos: null})), fromDis = baseDis.map(p => ({...p, votos: null}));
-    const deCis = C ? C.partidos.map((p, i) => ({id: 'c' + i, sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, votos: null, esc: p.esc, nota: 'CIS: ' + fmtPct(p.est) + ' del voto'})) : null;
+    const deCis = C ? C.partidos.map((p, i) => ({id: 'c' + i, sig: p.sig, nom: p.nom, color: p.color, fam: p.fam, votos: null, esc: p.esc, nota: 'CIS: ' + fmtPct(p.est) + ' del voto' + (p.h ? ' · ' + rangoCis(p.h) + ' escaños' : '')})) : null;
     simBases = [
       deCis && {k: 'cis', label: 'Encuesta del CIS', partidos: deCis,
-        origen: 'Escaños estimados por pactómetro.es a partir de la estimación de voto del barómetro del CIS de octubre de 2026 (estudio 3582).'},
+        origen: C && `Reparto central de pactómetro.es dentro de las horquillas de escaños que publica el CIS en su estudio preelectoral n.º ${C.estudio.numero}, publicado el ${fecha(C.estudio.publicado)}.`},
       {k: 'r2023', label: 'Resultado del 23-J', partidos: from23, origen: 'Escaños que obtuvo cada candidatura en las elecciones generales del 23 de julio de 2023.'},
       {k: 'dis', label: 'Al disolverse las Cortes', partidos: fromDis, origen: 'Composición del Congreso al disolverse las Cortes, con los cambios de la legislatura.'}].filter(Boolean);
     const saved = store.get(simKey);
@@ -2186,7 +2188,7 @@ async function viewEncuesta(prueba){
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
 const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '30 de octubre de 2026', ACTUALIZADO_ISO = '2026-10-30';   // date of the last publication, set by scripts/build_dist.py
+const ACTUALIZADO = '14 de noviembre de 2026', ACTUALIZADO_ISO = '2026-11-14';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
@@ -2320,7 +2322,7 @@ async function viewFuentes(){
       <li><b>Juntas Generales vascas y consells de Mallorca, Menorca y Eivissa (2023):</b> resultados recopilados de fuentes públicas. El Consell de Formentera es dato oficial (se elige en las municipales).</li>
       <li><b>Mapa electoral:</b> límites de municipios, provincias y comunidades del Equipamiento Geográfico de Referencia Nacional del <a href="https://www.ign.es/" target="_blank" rel="noopener">Instituto Geográfico Nacional</a> (© IGN, licencia CC BY 4.0), en la versión simplificada del proyecto <a href="https://github.com/martgnz/es-atlas" target="_blank" rel="noopener">es-atlas</a> de Martín González (licencia MIT), con Canarias desplazada junto a la península (proyección cónica conforme de d3-composite-projections). En cada lugar se colorea la candidatura con más escaños (y, si empatan, la más votada); el tono intenso indica que tiene más de la mitad. Las islas de Baleares y Canarias se dibujan uniendo sus municipios.</li>
       <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
-      <li><b>Simulador del 29-N, encuesta del CIS:</b> estimación de voto del <a href="https://www.cis.es/gl/w/avance-de-resultados-del-estudio-3582-bar%C3%B3metro-de-octubre-2026-" target="_blank" rel="noopener">Barómetro de octubre 2026</a> del Centro de Investigaciones Sociológicas (estudio n.º 3582; trabajo de campo del 1 al 6 de octubre de 2026; 5.025 entrevistas; publicado el 14 de octubre de 2026). El CIS no estima escaños: los escaños de partida son una proyección de pactómetro.es (variación proporcional sobre los resultados provinciales del 23-J, barrera del 3 % y ley D'Hondt con los escaños por provincia del Real Decreto 806/2026). No se muestra durante los cinco días anteriores a la votación ni el 29 de noviembre hasta el cierre de los colegios (art. 69.7 LOREG).</li>
+      <li><b>Simulador del 29-N, encuesta del CIS:</b> estimación de voto y horquillas de escaños del <a href="https://www.cis.es/es/w/avance-de-resultados-del-estudio-3584-preelectoral-elecciones-generales-2026-" target="_blank" rel="noopener">estudio preelectoral de las elecciones generales 2026</a> del Centro de Investigaciones Sociológicas (estudio n.º 3584; trabajo de campo del 7 al 30 de octubre de 2026; 45.074 entrevistas; publicado el 12 de noviembre de 2026). El CIS da los escaños como horquillas (percentiles 5 y 95 de sus simulaciones), no como cifras exactas: los escaños de partida son un reparto central de pactómetro.es dentro de las horquillas provinciales y nacionales, con los escaños por provincia del Real Decreto 806/2026. No se muestra durante los cinco días anteriores a la votación ni el 29 de noviembre hasta el cierre de los colegios (art. 69.7 LOREG).</li>
       <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
     </ul>
     <h2>Cómo se calcula</h2>
@@ -2473,7 +2475,7 @@ async function viewInicio(){
 }
 
 // Hemiciclo del Congreso: los partidos elegidos se colocan a la izquierda con su color y el resto pasa a gris.
-// Muestra la proyección de la última encuesta del CIS (C) mientras no haya resultados del 29-N; si no, la última elección general.
+// Muestra el reparto central de la última encuesta del CIS (C) mientras no haya resultados del 29-N; si no, la última elección general.
 function DemoCongreso(G, box, C){
   if (!box || !box.isConnected) return;
   const ult = Object.keys(G.congreso).sort((a, b) => G.congreso[a].fecha.localeCompare(G.congreso[b].fecha)).pop();   // newest general election
@@ -2482,10 +2484,10 @@ function DemoCongreso(G, box, C){
   let total, P;
   if (cis){
     total = 350;
-    P = C.partidos.filter(p => p.esc > 0).map((p, i) => ({id: 'p' + i, sig: niceSig(p.sig), nom: `${p.nom}: ${fmtPct(p.est)} en la estimación de voto del CIS`, color: p.color, esc: p.esc})).sort((a, b) => b.esc - a.esc);
-    box.querySelector('.h-demo-head span').textContent = 'Encuesta del CIS · octubre de 2026';
+    P = C.partidos.filter(p => p.esc > 0).map((p, i) => ({id: 'p' + i, sig: niceSig(p.sig), nom: `${p.nom}: ${fmtPct(p.est)} en la estimación de voto del CIS${p.h ? ' · horquilla de ' + rangoCis(p.h) + ' escaños' : ''}`, color: p.color, esc: p.esc})).sort((a, b) => b.esc - a.esc);
+    box.querySelector('.h-demo-head span').textContent = 'Encuesta preelectoral del CIS · ' + fecha(C.estudio.publicado);
     const src = box.querySelector('#h-demo-src'), lk = box.querySelector('#h-demo-link');
-    src.innerHTML = `Escaños estimados por pactómetro.es a partir de la estimación de voto del <a href="${esc(C.estudio.url)}" target="_blank" rel="noopener">barómetro de octubre de 2026 del CIS<span class="vh"> (se abre en una pestaña nueva)</span></a> (estudio n.º ${C.estudio.numero}). El CIS publica porcentajes de voto, no escaños.`;
+    src.innerHTML = `Reparto central de pactómetro.es dentro de las horquillas de escaños del <a href="${esc(C.estudio.url)}" target="_blank" rel="noopener">estudio preelectoral del CIS<span class="vh"> (se abre en una pestaña nueva)</span></a> (n.º ${C.estudio.numero}). El CIS publica horquillas de escaños, no cifras exactas.`;
     src.hidden = false;
     lk.href = '#congreso-simulador'; lk.textContent = 'Abrir el simulador con la encuesta del CIS';
   } else {
@@ -2725,11 +2727,13 @@ async function viewProvincia(p){
   if (!slot || enVedaSondeos()) return;
   const C = await load('cis.json').catch(() => null);
   const pr = C && C.proyeccion && C.proyeccion.provincias[p]; if (!pr) return;
-  const filas = C.partidos.filter(x => pr.r[x.k]).map(x => [x.sig, x.nom, x.color, x.fam, null, pr.r[x.k]]).sort((a, b) => b[5] - a[5]);
+  const filas = C.partidos.filter(x => pr.h[x.k]).map(x => ({x, r: pr.r[x.k] || 0, h: pr.h[x.k]})).sort((a, b) => b.r - a.r || b.h[1] - a.h[1] || b.h[0] - a.h[0]);
   slot.innerHTML = `<div class="section"><div class="section-head"><h2>Con la última encuesta del CIS</h2>
-    <p>Diputados que obtendría cada candidatura en ${esc(pr.n)} con la estimación de voto del <a href="${esc(C.estudio.url)}" target="_blank" rel="noopener">barómetro del CIS de ${esc(C.estudio.titulo.replace(/^Barómetro de /, ''))}<span class="vh"> (se abre en una pestaña nueva)</span></a> (estudio n.º ${C.estudio.numero}).
-    Es una proyección de pactómetro.es, no un dato del CIS, que no estima escaños: se explica en el <a href="#congreso-simulador">simulador</a>.</p></div>
-    ${resultsTable(filas, {unit: 'Diputados'})}</div>`;
+    <p>Diputados que el CIS estima para ${esc(pr.n)} en su <a href="${esc(C.estudio.url)}" target="_blank" rel="noopener">estudio preelectoral n.º ${C.estudio.numero}<span class="vh"> (se abre en una pestaña nueva)</span></a>: una horquilla por candidatura (percentiles 5 y 95 de sus simulaciones, no un intervalo de confianza).
+    El <a href="#congreso-simulador">simulador</a> parte de un reparto central de pactómetro.es dentro de esas horquillas.</p></div>
+    <div class="tablewrap"><table class="data"><caption class="vh">Diputados por candidatura en ${esc(pr.n)} según el CIS</caption>
+      <thead><tr><th>Candidatura</th><th class="n">Horquilla del CIS</th><th class="n">Reparto de partida</th></tr></thead>
+      <tbody>${filas.map(f => `<tr><td><span class="sw" style="background:${f.x.color}"></span><b>${esc(f.x.sig)}</b></td><td class="n">${rangoCis(f.h)}</td><td class="n"><b>${f.r}</b></td></tr>`).join('')}</tbody></table></div></div>`;
 }
 async function viewProgramas(){}
 // Noche electoral: escrutinio provisional que se actualiza solo. Datos: la pestaña «Directo» de la hoja de Google

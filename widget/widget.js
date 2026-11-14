@@ -68,8 +68,8 @@ async function datos(){
   if (ruta === 'cis' || (ruta === 'congreso-simulador' && !q.get('p'))){
     if (enVeda()) return {vacio: 'Del 24 al 28 de noviembre la ley prohíbe publicar encuestas electorales (art. 69.7 de la LOREG), y el día 29 hasta el cierre de los colegios.', enlace: '/congreso/simulador/', titulo: 'Simulador del 29-N'};
     const C = await load('cis.json');
-    return {titulo: 'Congreso · proyección con el barómetro del CIS', sub: `${C.estudio.titulo} (estudio ${C.estudio.numero}). Escaños estimados por pactómetro.es: el CIS no estima escaños.`,
-      total: 350, rows: C.partidos.filter(p => p.esc).map(p => [p.sig, p.nom, p.color, p.fam, null, p.esc]), enlace: '/congreso/simulador/' + extra(), fuente: 'CIS, estudio ' + C.estudio.numero + ' · proyección de pactómetro.es'};
+    return {titulo: 'Congreso · encuesta preelectoral del CIS', sub: `Estudio ${C.estudio.numero}. Reparto central de pactómetro.es dentro de las horquillas de escaños del CIS, que no da cifras exactas.`,
+      total: 350, rows: C.partidos.filter(p => p.esc).map(p => [p.sig, p.nom, p.color, p.fam, null, p.esc]), enlace: '/congreso/simulador/' + extra(), fuente: 'CIS, estudio ' + C.estudio.numero + ' · reparto central de pactómetro.es'};
   }
   if (ruta === 'congreso-simulador'){
     const G = await load('generales.json');

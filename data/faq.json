@@ -16,7 +16,7 @@
   "preguntas": [
    ["¿Cuántos escaños necesita un pacto para gobernar?", "Para investir a un presidente en la primera votación hacen falta 176 síes, la mayoría absoluta del Congreso. En la segunda basta con más síes que noes, así que las abstenciones también cuentan: el simulador calcula los dos casos."],
    ["¿Qué pasa si ningún candidato consigue la investidura?", "Se pueden proponer otros candidatos. Si dos meses después de la primera votación ninguno ha sido investido, se disuelven las Cortes y se convocan nuevas elecciones (artículo 99 de la Constitución)."],
-   ["¿Desde qué resultado empieza la simulación?", "Puedes elegir el resultado del 23-J, la composición del Congreso al disolverse las Cortes, la estimación de la última encuesta del CIS traducida a escaños por pactómetro.es (salvo en los días en que la ley prohíbe publicar sondeos) o empezar de cero. Después cambia los escaños de cada partido como quieras."],
+   ["¿Desde qué resultado empieza la simulación?", "Puedes elegir el resultado del 23-J, la composición del Congreso al disolverse las Cortes, la última encuesta del CIS (el CIS da horquillas de escaños y pactómetro.es elige un reparto central dentro de ellas; no se muestra en los días en que la ley prohíbe publicar sondeos) o empezar de cero. Después cambia los escaños de cada partido como quieras."],
    ["¿Puedo compartir mi simulación?", "Sí: el botón «Compartir» crea un enlace con tus escaños y tus votos, una imagen para redes sociales y el código para insertar el pactómetro en otra web."],
    ["¿Se guarda lo que simulo?", "Solo en tu navegador y solo si aceptas guardar tus preferencias. pactómetro.es no recibe ni almacena tus escenarios."]
   ]
