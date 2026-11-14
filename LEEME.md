@@ -168,3 +168,12 @@ Si la conexión automática con los datos del Ministerio está disponible, se po
 - **Imágenes para redes:** la encuesta y el simulador tienen su propia imagen al compartirlos (`og-encuesta.png`, `og-simulador.png`). Las genera `scripts/og_imagenes.py`; si cambia el texto, se vuelve a ejecutar.
 - **Encuesta:** tiene botones para compartirla antes de responder y en la confirmación (WhatsApp, Telegram, X, Facebook, Bluesky, correo, copiar el enlace y, en el móvil, el menú de compartir del sistema). Desaparecen solos cuando la encuesta se cierra.
 - **Search Console:** después de cada cambio grande, vuelve a enviar `sitemap.xml`. En «Rendimiento» se ve qué búsquedas traen visitas; con eso se pueden ajustar los títulos.
+
+## 12. Encuesta del CIS (desde el 14-11-2026)
+
+`data/cis.json` es la encuesta que muestran el simulador del 29-N (`/congreso/simulador/`, como punto de partida), la demostración de la portada, la tabla «Con la última encuesta del CIS» de cada provincia y el widget `?i=cis`. **Solo se muestra la última**: desde el 12-11-2026 es el estudio preelectoral n.º 3584 (campo del 7 al 30 de octubre, 45.074 entrevistas). La anterior, el barómetro de octubre (3582), se conserva en `scripts/cis3584/cis_3582_anterior.json` solo como archivo.
+
+- **De dónde salen los datos:** los porcentajes y las horquillas de escaños son los del PDF «Estimación de voto» del CIS (`3584_estimacion-pdf`). Las horquillas de las 52 circunscripciones están en `scripts/cis3584/horquillas_provincias.json` y se comprobaron una a una contra el PDF.
+- **Escaños de partida:** el CIS no da un reparto concreto, sino horquillas (percentiles 5-95). `scripts/cis3584/reparto_central.py` elige, por programación entera, el reparto que respeta todas las horquillas provinciales y nacionales, suma los escaños de cada provincia y queda más cerca de los centros. Después, `python3 scripts/cis_proyeccion.py` genera `data/cis.json`.
+- **Veda:** del 24 al 28 de noviembre (artículo 69.7 de la LOREG) la web oculta sola toda la encuesta; no hay cifras del CIS en el HTML estático.
+- **Siguiente encuesta:** pega las horquillas y la tabla nacional del nuevo PDF en esos dos ficheros, vuelve a ejecutar los scripts, compila y publica. Si cambian las candidaturas con horquilla, hay que tocar `COLS` y `EST` en `reparto_central.py`.
