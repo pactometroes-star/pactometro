@@ -449,6 +449,8 @@ details.more > div{padding:0 14px 14px}
 .enc-msg{display:grid;gap:10px;justify-items:start}
 .enc-msg p{max-width:62ch;color:var(--ink-2)}
 .enc-err{font-weight:600;color:var(--ink);border-left:3px solid var(--ink);padding-left:10px}
+.enc-ancha{display:grid;gap:18px}
+.enc-res figure{margin:0 auto;max-width:1100px}
 .enc-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);align-items:start}
 @media (max-width:900px){.enc-layout{grid-template-columns:minmax(0,1fr)}}
 .enc-how{display:grid;gap:14px;padding:clamp(16px,2.4vw,24px);border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}
@@ -3011,7 +3013,8 @@ async function viewEncuesta(prueba){
         <p class="small muted" id="enc-estado">Elige una respuesta en la pregunta 2 para poder enviar.</p></div>
     </form>`;
   }
-  app.innerHTML = `${cabecera}${conFormulario && !probando ? bloqueCompartirEncuesta(false) : ''}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
+  const soloResultado = !probando && modo !== 'previa' && estado === 'cerrada';
+  app.innerHTML = soloResultado ? `${cabecera}<div id="enc-main" class="enc-ancha">${cuerpo}</div>` : `${cabecera}${conFormulario && !probando ? bloqueCompartirEncuesta(false) : ''}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
   activarCompartirEncuesta(app);
   const form = app.querySelector('#enc-form');
   if (!form) return;
