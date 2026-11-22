@@ -2123,7 +2123,8 @@ async function viewEncuesta(prueba){
         <p class="small muted" id="enc-estado">Elige una respuesta en la pregunta 2 para poder enviar.</p></div>
     </form>`;
   }
-  app.innerHTML = `${cabecera}${conFormulario && !probando ? bloqueCompartirEncuesta(false) : ''}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
+  const soloResultado = !probando && modo !== 'previa' && estado === 'cerrada';
+  app.innerHTML = soloResultado ? `${cabecera}<div id="enc-main" class="enc-ancha">${cuerpo}</div>` : `${cabecera}${conFormulario && !probando ? bloqueCompartirEncuesta(false) : ''}<div class="enc-layout"><div id="enc-main">${cuerpo}</div>${como}</div>`;
   activarCompartirEncuesta(app);
   const form = app.querySelector('#enc-form');
   if (!form) return;
