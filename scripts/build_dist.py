@@ -176,7 +176,7 @@ for y, d in gen.mapa_ayuntamientos().items():
 
 shutil.copytree(os.path.join(SITE, 'fonts'), os.path.join(DIST, 'fonts'))   # self-hosted Archivo and Ibarra Real Nova (OFL)
 for f in ['logo.png', 'logo-oscuro.png', 'icono-32.png', 'icono-48.png', 'icono-64.png', 'icono-96.png', 'icono-144.png', 'icono-192.png', 'icono-512.png',
-          'apple-touch-icon.png', 'og-image.png', 'og-encuesta.png', 'og-simulador.png']:
+          'apple-touch-icon.png', 'og-image.png', 'og-encuesta.png', 'og-simulador.png', 'encuesta-resultado-29n.png']:
     shutil.copy(os.path.join(BRAND, f), os.path.join(DIST, 'img', f))
 shutil.copy(os.path.join(BRAND, 'favicon.ico'), os.path.join(DIST, 'favicon.ico'))
 shutil.copy(os.path.join(SITE, 'config.js'), os.path.join(DIST, 'config.js'))

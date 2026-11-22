@@ -177,3 +177,8 @@ Si la conexión automática con los datos del Ministerio está disponible, se po
 - **Escaños de partida:** el CIS no da un reparto concreto, sino horquillas (percentiles 5-95). `scripts/cis3584/reparto_central.py` elige, por programación entera, el reparto que respeta todas las horquillas provinciales y nacionales, suma los escaños de cada provincia y queda más cerca de los centros. Después, `python3 scripts/cis_proyeccion.py` genera `data/cis.json`.
 - **Veda:** del 24 al 28 de noviembre (artículo 69.7 de la LOREG) la web oculta sola toda la encuesta; no hay cifras del CIS en el HTML estático.
 - **Siguiente encuesta:** pega las horquillas y la tabla nacional del nuevo PDF en esos dos ficheros, vuelve a ejecutar los scripts, compila y publica. Si cambian las candidaturas con horquilla, hay que tocar `COLS` y `EST` en `reparto_central.py`.
+
+## 13. Resultado de la encuesta 29-N (22-XI-2026)
+- Cierre automático el 22-XI a las 20:00 (ENC.cierre). Al cerrar, /encuesta/ muestra el resultado: imagen `img/encuesta-resultado-29n.png`, tabla y ficha técnica (`bloqueResultadoEnc`, constante `ENC_RES` en pactometro.html).
+- Se oculta solo del 24-XI 00:00 al cierre de colegios del 29-N (`enVedaSondeos`); durante la veda muestra `VEDA_ENC`. El fichero de la imagen sigue accesible por URL: si se quiere, retirarlo el 23-XI por la noche y volver a subirlo el 29.
+- Método: `scripts/encuesta_final.py` (pesos por CCAA, mezcla con el CIS 3584, K=40, mínimo 30 respuestas por territorio, tope ±30 % sobre el 23-J para partidos territoriales, rangos bootstrap 300) y `scripts/encuesta_hemiciclo.py` (imagen). Datos: 281 respuestas (265 válidas), PDF exportado el 22-XI.
