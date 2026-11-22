@@ -180,5 +180,4 @@ Si la conexión automática con los datos del Ministerio está disponible, se po
 
 ## 13. Resultado de la encuesta 29-N (22-XI-2026)
 - Cierre automático el 22-XI a las 20:00 (ENC.cierre). Al cerrar, /encuesta/ muestra el resultado: imagen `img/encuesta-resultado-29n.png`, tabla y ficha técnica (`bloqueResultadoEnc`, constante `ENC_RES` en pactometro.html).
-- Se oculta solo del 24-XI 00:00 al cierre de colegios del 29-N (`enVedaSondeos`); durante la veda muestra `VEDA_ENC`. El fichero de la imagen sigue accesible por URL: si se quiere, retirarlo el 23-XI por la noche y volver a subirlo el 29.
 - Método: `scripts/encuesta_final.py` (pesos por CCAA, mezcla con el CIS 3584, K=40, mínimo 30 respuestas por territorio, tope ±30 % sobre el 23-J para partidos territoriales, rangos bootstrap 300) y `scripts/encuesta_hemiciclo.py` (imagen). Datos: 281 respuestas (265 válidas), PDF exportado el 22-XI.
