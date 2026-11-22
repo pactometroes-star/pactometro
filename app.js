@@ -878,6 +878,7 @@ function avisoElecciones(conv, sinEncuesta){
    (hora peninsular) y el 29 hasta que cierren todos los colegios (20:00 en Canarias = 21:00 peninsular). */
 const VEDA_SONDEOS = ['2026-11-23T23:00:00Z', '2026-11-29T20:00:00Z'];
 const enVedaSondeos = (t = Date.now()) => t >= Date.parse(VEDA_SONDEOS[0]) && t < Date.parse(VEDA_SONDEOS[1]);
+const VEDA_ENC = `<div class="veda" role="note"><p><b>Del 24 al 28 de noviembre no se pueden publicar encuestas electorales</b> (art. 69.7 de la Ley Orgánica del Régimen Electoral General). Por eso el resultado de esta encuesta no se muestra ahora. Volverá a verse cuando cierren los colegios electorales el 29 de noviembre. Gracias a todas las personas que participasteis.</p></div>`;
 const VEDA_AVISO = `<div class="veda" role="note"><p><b>Del 24 al 28 de noviembre no se pueden publicar encuestas electorales</b> (art. 69.7 de la Ley Orgánica del Régimen Electoral General). Por eso el simulador no muestra ahora la encuesta del CIS y parte del resultado del 23-J. La encuesta vuelve cuando cierren los colegios electorales el 29 de noviembre.</p></div>`;
 const rangoCis = h => h[0] === h[1] ? String(h[0]) : h[0] + '–' + h[1];     // horquilla de escaños del CIS (percentiles 5-95)
 function cisPanel(C){
@@ -1995,11 +1996,34 @@ function actualizarPromo(h){
   const pag = (h || 'inicio').split(/[-.?]/)[0];
   el.hidden = !encPromo() || store.get(PROMO_KEY) === hoyISO() || pag === 'encuesta' || pag === '29n';
 }
+
+// Resultado de la encuesta (cerrada el 22-XI a las 20:00). No se muestra del 24 al 28-XI (art. 69.7 LOREG).
+const ENC_RES = {
+  img: '/img/encuesta-resultado-29n.png', respuestas: 281, validas: 265, desde: '13 de octubre', hasta: '22 de noviembre de 2026',
+  grandes: [['PSOE', '130'], ['Vox', '87'], ['PP', '63'], ['Frente Amplio', '18']],
+  otros: [['ERC', '8–11'], ['Junts', '4–8'], ['Podemos', '6–11'], ['EH Bildu', '5–7'], ['EAJ-PNV', '5–7'], ['Compromís', '5–7'], ['Adelante Andalucía', '3–7'], ['BNG', '2–4'],
+    ['Coalición Canaria', '1–3'], ['UPN-PP', '1–3'], ['Unidad del Pueblo Canario', '0–2'], ['Soria Ya', '0–2']]
+};
+function bloqueResultadoEnc(){
+  if (enVedaSondeos()) return '';
+  const R = ENC_RES, fila = a => `<tr><th scope="row">${esc(a[0])}</th><td class="n">${esc(a[1])}</td></tr>`;
+  const alt = 'Reparto de los 350 escaños del Congreso según las personas que votaron en la encuesta de pactómetro.es: ' + R.grandes.map(a => `${a[0]} ${a[1]}`).join(', ') + '; el resto de partidos, con rangos de escaños.';
+  return `<section class="sheet pad enc-res" aria-labelledby="enc-res-t"><h2 id="enc-res-t">Resultado de la encuesta del 29-N</h2>
+    <figure><img src="${R.img}" alt="${esc(alt)}" width="1920" height="1440" loading="lazy" style="width:100%;height:auto"></figure>
+    <details class="more"><summary>Ver los datos en tabla</summary><div class="tablewrap"><table class="data"><caption class="vh">Escaños estimados según la encuesta</caption><thead><tr><th scope="col">Partido</th><th scope="col" class="n">Escaños</th></tr></thead><tbody>${R.grandes.concat(R.otros).map(fila).join('')}</tbody></table></div></details>
+    <h3 class="h3">Ficha técnica</h3>
+    <dl class="enc-rgpd"><div><dt>Quién</dt><dd>Encuesta propia de pactómetro.es, sin encargo ni financiación de terceros. Titular: Javier Pereiro Pérez.</dd></div>
+      <div><dt>Muestra</dt><dd>${R.respuestas} respuestas (${R.validas} con una intención de voto válida) de personas que entraron voluntariamente en la web, del ${R.desde} al ${R.hasta}.</dd></div>
+      <div><dt>Representatividad</dt><dd>No es una muestra representativa ni un sondeo: responde quien quiere y hay provincias con muy pocas respuestas. Es una estimación orientativa, no una predicción.</dd></div>
+      <div><dt>Método</dt><dd>Cuestionario anónimo por internet: provincia, intención de voto y recuerdo de voto del 23-J. Las respuestas se ponderan por comunidad autónoma y se combinan con el CIS (estudio 3584). Los escaños se reparten provincia a provincia por la ley d'Hondt, solo entre las candidaturas que se presentan en cada una. A los partidos territoriales y pequeños, con pocas respuestas en su territorio, se les muestra un rango y su nivel del 23-J se mantiene como referencia.</dd></div></dl>
+    <p class="small muted">Gracias a todas las personas que habéis participado. Este resultado se retira del 24 al 28 de noviembre, cuando está prohibido difundir encuestas electorales, y vuelve a mostrarse cuando cierren los colegios electorales el 29 de noviembre.</p></section>`;
+}
+
 // Bloque destacado de la encuesta (página del 29-N)
 function bloqueEncuesta(){
   if (encModo() === 'pendiente') return '';
   const estado = encModo() === 'previa' ? 'abierta' : encEstado();
-  if (estado === 'cerrada') return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">La encuesta del 29-N está cerrada</p><p>Se pudo responder hasta el domingo 22 de noviembre a las 20:00. Gracias a quienes participasteis.</p></section>';
+  if (estado === 'cerrada') return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">La encuesta del 29-N está cerrada</p><p>Se pudo responder hasta el domingo 22 de noviembre a las 20:00. Gracias a quienes participasteis.</p>' + (enVedaSondeos() ? '' : '<a class="btn lg btn-l" href="#encuesta">Ver el resultado</a>') + '</section>';
   if (encYaRespondida()) return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">Ya has respondido la encuesta del 29-N</p><p>Gracias por participar. Puedes compartirla para que responda más gente: está abierta hasta el domingo 22 de noviembre a las 20:00.</p></section>';
   return `<section class="enc-promo" aria-labelledby="t-enc"><div class="enc-promo-txt"><p class="enc-promo-k">Encuesta de pactómetro.es</p><h2 id="t-enc">¿A quién piensas votar el 29-N?</h2><p>Es anónima, se responde en un minuto y está abierta hasta el domingo 22 de noviembre a las 20:00. Te preguntamos tu provincia, tu intención de voto y, si quieres, lo que votaste el 23-J.</p></div><a class="btn lg btn-l" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a></section>`;
 }
@@ -2057,11 +2081,11 @@ async function viewEncuesta(prueba){
     : probando ? '<div class="notice prev"><span class="date">Modo prueba</span><p>Esta respuesta se guarda en la pestaña «Pruebas» de la hoja de cálculo y no cuenta en la encuesta.</p></div>' : '';
   const cabecera = `<div class="page-head"><span class="eyebrow">Encuesta de pactómetro.es · abierta hasta el 22 de noviembre a las 20:00</span>
     <h1>¿A quién piensas votar el 29-N?</h1>
-    <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Y el recuento es privado: los resultados no se publican en la web.</p></div>${aviso}`;
+    <p class="lede">Es anónima: no te pedimos nombre, correo ni ningún dato que te identifique. Al cerrar la encuesta publicamos aquí el resultado, solo como estimación orientativa.</p></div>${aviso}`;
   const como = `<aside class="enc-how"><h2 class="h3">Cómo funciona</h2><dl>
       <div><dt>Hasta el domingo 22 de noviembre</dt><dd>Se puede responder hasta las 20:00 de ese día (hora peninsular). En cada provincia salen las principales candidaturas que se presentan allí, según el BOE del 28 de octubre, y las demás se eligen con «Otro partido». La lista se revisará con las proclamadas, que el BOE publica el 3 de noviembre.</dd></div>
       <div><dt>Anónima</dt><dd>Solo se guardan tus respuestas, tu provincia y la fecha con la hora redondeada. Ni nombre, ni correo, ni dirección IP. Más en la <a href="#privacidad">política de privacidad</a>.</dd></div>
-      <div><dt>Recuento oculto</dt><dd>Los resultados solo los ve el titular de pactómetro.es. La web no muestra cuántos votos lleva cada partido.</dd></div>
+      <div><dt>Resultado al cerrar</dt><dd>Mientras está abierta, la web no muestra cuántos votos lleva cada partido. Al cerrarla publicamos el resultado agregado, como estimación orientativa.</dd></div>
       <div><dt>Una respuesta por navegador</dt><dd>Tu navegador recuerda que ya has respondido, sin cookies y sin guardar tu respuesta (<a href="#cookies">política de cookies</a>).</dd></div>
       <div><dt>Abierta, no representativa</dt><dd>Responde quien quiere, así que no es una muestra representativa ni una estimación de voto.</dd></div>
     </dl></aside>`;
@@ -2071,7 +2095,7 @@ async function viewEncuesta(prueba){
     cuerpo = msg('Modo prueba', 'Falta conectar la hoja de cálculo', 'Pega la URL de tu aplicación web de Google en config.js y vuelve a publicar la web; después podrás probar aquí el envío.', false);
   } else if (!probando && modo !== 'previa'){
     if (estado === 'antes') cuerpo = msg('Próximamente', 'La encuesta abrirá muy pronto', 'Se podrá responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).');
-    else if (estado === 'cerrada') cuerpo = msg('Encuesta cerrada', 'Gracias a quienes participasteis', 'Se podía responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).', false);
+    else if (estado === 'cerrada') cuerpo = msg('Encuesta cerrada', 'Gracias a quienes participasteis', 'Se podía responder hasta el domingo 22 de noviembre a las 20:00 (hora peninsular).', false) + (enVedaSondeos() ? VEDA_ENC : bloqueResultadoEnc());
     else if (modo === 'pendiente') cuerpo = msg('En un momento', 'La encuesta todavía no está disponible', 'Estamos terminando de preparar la recogida de respuestas. Vuelve a entrar en unos minutos.');
     else if (ya && ya.dia) cuerpo = `<div class="sheet pad enc-msg"><span class="eyebrow">Ya has respondido</span><h2>Gracias por participar</h2><p>Solo se admite una respuesta por navegador. Se puede responder hasta el domingo 22 de noviembre a las 20:00.</p>${bloqueCompartirEncuesta(true)}<div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
   }
@@ -2094,7 +2118,7 @@ async function viewEncuesta(prueba){
         <dl>
           <div><dt>Responsable</dt><dd>Javier Pereiro Pérez, titular de pactómetro.es (pactometroes@gmail.com).</dd></div>
           <div><dt>Qué se guarda</dt><dd>Tus respuestas, tu provincia y la hora redondeada. Sin nombre, correo, dirección IP ni cookies: no se puede saber qué respuesta es la tuya.</dd></div>
-          <div><dt>Para qué</dt><dd>Recuentos estadísticos de uso interno. Las respuestas individuales no se publican.</dd></div>
+          <div><dt>Para qué</dt><dd>Recuentos estadísticos agregados, que se publican como estimación orientativa. Las respuestas individuales no se publican.</dd></div>
           <div><dt>Base jurídica</dt><dd>Tu consentimiento explícito, porque la intención de voto es una opinión política (art. 9 del RGPD).</dd></div>
           <div><dt>Dónde</dt><dd>En una hoja de cálculo privada de Google, hasta el 31 de mayo de 2027 como máximo.</dd></div>
         </dl>
@@ -2174,7 +2198,7 @@ async function viewEncuesta(prueba){
       }
       store.set(ENC.clave, {dia: hoyISO()});
       main.innerHTML = `<div class="sheet pad enc-msg" role="status"><span class="eyebrow">Respuesta registrada</span><h2>Gracias por participar</h2>
-        <p>Tu respuesta se ha guardado de forma anónima. Los resultados no se publican en la web.</p>
+        <p>Tu respuesta se ha guardado de forma anónima. Al cerrar la encuesta publicaremos el resultado agregado.</p>
         ${bloqueCompartirEncuesta(true)}<div class="row"><a class="btn" href="#congreso-simulador">Probar pactos en el simulador</a><a class="btn ghost" href="#congreso">Ver el Congreso</a></div></div>`;
       graciasCompartir(main);
       main.scrollIntoView({behavior: 'smooth', block: 'start'});
@@ -2188,7 +2212,7 @@ async function viewEncuesta(prueba){
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
 const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '14 de noviembre de 2026', ACTUALIZADO_ISO = '2026-11-14';   // date of the last publication, set by scripts/build_dist.py
+const ACTUALIZADO = '22 de noviembre de 2026', ACTUALIZADO_ISO = '2026-11-22';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
@@ -2222,7 +2246,7 @@ function legalAviso(){
     <p>Los cálculos de mayorías y pactos, el simulador y la proyección de escaños a partir de encuestas son herramientas orientativas: no son resultados oficiales ni predicciones. Para cualquier uso con efectos jurídicos, consulta las publicaciones oficiales (Boletín Oficial del Estado, boletines autonómicos y provinciales, y juntas electorales).</p>
     <p>El titular no garantiza que la web esté siempre disponible o libre de errores y no responde de los daños que puedan derivarse de su uso o de las decisiones tomadas a partir de su contenido, salvo en los casos en que la ley lo establezca.</p>
     <h2>Encuestas</h2>
-    <p>La encuesta del 29-N de pactómetro.es es abierta: responde quien quiere, así que no es representativa ni una estimación de voto, y sus resultados no se publican en la web. Cómo se tratan las respuestas se explica en la <a href="#privacidad">política de privacidad</a>.</p>
+    <p>La encuesta del 29-N de pactómetro.es es abierta: responde quien quiere, así que no es representativa ni una estimación de voto, y su resultado se publica solo como estimación orientativa. Cómo se tratan las respuestas se explica en la <a href="#privacidad">política de privacidad</a>.</p>
     <p>Las encuestas de otros organismos, como el Centro de Investigaciones Sociológicas (CIS), se reproducen citando la fuente y con su ficha técnica, y no se muestran durante los cinco días anteriores a la votación ni el día de las elecciones hasta el cierre de los colegios (artículo 69 de la Ley Orgánica 5/1985, del Régimen Electoral General).</p>
     <h2>Propiedad intelectual</h2>
     <p>El diseño, el código, los textos y la recopilación y organización de los datos de pactómetro.es pertenecen a su titular. © 2026 Javier Pereiro Pérez. Todos los derechos reservados.</p>
@@ -2245,7 +2269,7 @@ function legalPrivacidad(){
     <dl class="legal-dl">
       <dt>Qué datos se recogen</dt><dd>Tu provincia y tu intención de voto (obligatorias), tu voto en las generales del 23 de julio de 2023 (opcional) y la fecha y la hora de la respuesta, redondeada a la hora en punto. Nada más: ni nombre, ni correo, ni dirección IP, ni identificadores de tu dispositivo.</dd>
       <dt>Por qué con especial cuidado</dt><dd>La intención y el recuerdo de voto son opiniones políticas, una categoría especial de datos según el artículo 9 del Reglamento General de Protección de Datos (RGPD). La encuesta está pensada para que las respuestas no se puedan asociar a ninguna persona y, además, solo se envían si lo aceptas expresamente marcando la casilla del formulario.</dd>
-      <dt>Para qué</dt><dd>Para elaborar recuentos y cruces estadísticos (por provincia y según el recuerdo de voto) de uso interno. Las respuestas individuales no se publican nunca y los resultados no se muestran en la web.</dd>
+      <dt>Para qué</dt><dd>Para elaborar recuentos y cruces estadísticos (por provincia y según el recuerdo de voto) y publicar el resultado agregado, como estimación orientativa. Las respuestas individuales no se publican nunca.</dd>
       <dt>Base jurídica</dt><dd>Tu consentimiento explícito (artículos 6.1.a y 9.2.a del RGPD), que das al marcar la casilla y enviar. Responder es voluntario.</dd>
       <dt>Quién puede responder</dt><dd>Personas de 18 años o más.</dd>
       <dt>Dónde se guardan</dt><dd>En una hoja de cálculo privada de Google Sheets de la cuenta del titular, que recibe las respuestas a través de Google Apps Script. Al enviar, tu navegador se conecta con los servidores de Google LLC, que reciben tu dirección IP como en cualquier conexión a internet; el envío no lleva cookies y la hoja no guarda la IP. Más información en la ${EXT('https://policies.google.com/privacy?hl=es', 'política de privacidad de Google')}.</dd>
@@ -2323,7 +2347,7 @@ async function viewFuentes(){
       <li><b>Mapa electoral:</b> límites de municipios, provincias y comunidades del Equipamiento Geográfico de Referencia Nacional del <a href="https://www.ign.es/" target="_blank" rel="noopener">Instituto Geográfico Nacional</a> (© IGN, licencia CC BY 4.0), en la versión simplificada del proyecto <a href="https://github.com/martgnz/es-atlas" target="_blank" rel="noopener">es-atlas</a> de Martín González (licencia MIT), con Canarias desplazada junto a la península (proyección cónica conforme de d3-composite-projections). En cada lugar se colorea la candidatura con más escaños (y, si empatan, la más votada); el tono intenso indica que tiene más de la mitad. Las islas de Baleares y Canarias se dibujan uniendo sus municipios.</li>
       <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
       <li><b>Simulador del 29-N, encuesta del CIS:</b> estimación de voto y horquillas de escaños del <a href="https://www.cis.es/es/w/avance-de-resultados-del-estudio-3584-preelectoral-elecciones-generales-2026-" target="_blank" rel="noopener">estudio preelectoral de las elecciones generales 2026</a> del Centro de Investigaciones Sociológicas (estudio n.º 3584; trabajo de campo del 7 al 30 de octubre de 2026; 45.074 entrevistas; publicado el 12 de noviembre de 2026). El CIS da los escaños como horquillas (percentiles 5 y 95 de sus simulaciones), no como cifras exactas: los escaños de partida son un reparto central de pactómetro.es dentro de las horquillas provinciales y nacionales, con los escaños por provincia del Real Decreto 806/2026. No se muestra durante los cinco días anteriores a la votación ni el 29 de noviembre hasta el cierre de los colegios (art. 69.7 LOREG).</li>
-      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Sus resultados no se publican en la web.</li>
+      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Su resultado agregado se publica como estimación orientativa, con su ficha técnica, y se retira del 24 al 28 de noviembre por la prohibición de difundir sondeos.</li>
     </ul>
     <h2>Cómo se calcula</h2>
     <ul>
