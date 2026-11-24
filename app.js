@@ -1997,27 +1997,17 @@ function actualizarPromo(h){
   el.hidden = !encPromo() || store.get(PROMO_KEY) === hoyISO() || pag === 'encuesta' || pag === '29n';
 }
 
-// Resultado de la encuesta (cerrada el 22-XI a las 20:00).
-const ENC_RES = {
-  img: '/img/encuesta-resultado-29n.png', respuestas: 281, validas: 265, desde: '13 de octubre', hasta: '22 de noviembre de 2026',
-  grandes: [['PSOE', '130'], ['Vox', '87'], ['PP', '63'], ['Frente Amplio', '18']],
-  otros: [['ERC', '8–11'], ['Junts', '4–8'], ['Podemos', '6–11'], ['EH Bildu', '5–7'], ['EAJ-PNV', '5–7'], ['Compromís', '5–7'], ['Adelante Andalucía', '3–7'], ['BNG', '2–4'],
-    ['Coalición Canaria', '1–3'], ['UPN-PP', '1–3'], ['Unidad del Pueblo Canario', '0–2'], ['Soria Ya', '0–2']]
-};
+// Resultado de la encuesta: retirado del 24 al 28-XI por la ley electoral (art. 69.7 LOREG); mensaje cívico en su lugar.
 function bloqueResultadoEnc(){
-  const R = ENC_RES, fila = a => `<tr><th scope="row">${esc(a[0])}</th><td class="n">${esc(a[1])}</td></tr>`;
-  const alt = 'Reparto de los 350 escaños del Congreso según las personas que votaron en la encuesta de pactómetro.es: ' + R.grandes.map(a => `${a[0]} ${a[1]}`).join(', ') + '; el resto de partidos, con rangos de escaños.';
-  return `<section class="sheet pad enc-res" aria-labelledby="enc-res-t"><h2 id="enc-res-t">Resultado de la encuesta del 29-N</h2>
-    <figure><img src="${R.img}" alt="${esc(alt)}" width="1920" height="1440" loading="lazy" style="width:100%;height:auto"></figure>
-    <details class="more"><summary>Ver los datos en tabla</summary><div class="tablewrap"><table class="data"><caption class="vh">Escaños estimados según la encuesta</caption><thead><tr><th scope="col">Partido</th><th scope="col" class="n">Escaños</th></tr></thead><tbody>${R.grandes.concat(R.otros).map(fila).join('')}</tbody></table></div></details>
-    <p class="small muted">Gracias a todas las personas que habéis participado.</p></section>`;
+  return `<section class="sheet pad enc-res" aria-labelledby="enc-res-t"><h2 id="enc-res-t">Resultado de la encuesta retirado</h2>
+    <div class="veda" role="note"><p><b>Hemos retirado el resultado de la encuesta por motivos legales.</b> Del 24 al 28 de noviembre la ley electoral (art. 69.7 de la LOREG) prohíbe publicar o difundir encuestas electorales, y en pactómetro.es queremos respetarla.</p></div>
+    <p><b>El domingo 29 de noviembre, ve a votar.</b> Votes lo que votes, tu voto cuenta y es la forma de decidir cómo se reparte el Congreso. Gracias a todas las personas que participasteis en la encuesta.</p></section>`;
 }
-
 // Bloque destacado de la encuesta (página del 29-N)
 function bloqueEncuesta(){
   if (encModo() === 'pendiente') return '';
   const estado = encModo() === 'previa' ? 'abierta' : encEstado();
-  if (estado === 'cerrada') return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">La encuesta del 29-N está cerrada</p><p>Se pudo responder hasta el domingo 22 de noviembre a las 20:00. Gracias a quienes participasteis.</p>' + '<a class="btn lg btn-l" href="#encuesta">Ver el resultado</a>' + '</section>';
+  if (estado === 'cerrada') return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">La encuesta del 29-N está cerrada</p><p>Se pudo responder hasta el domingo 22 de noviembre a las 20:00. Gracias a quienes participasteis.</p>' + '' + '</section>';
   if (encYaRespondida()) return '<section class="enc-promo" aria-label="Encuesta del 29-N"><p class="enc-promo-q">Ya has respondido la encuesta del 29-N</p><p>Gracias por participar. Puedes compartirla para que responda más gente: está abierta hasta el domingo 22 de noviembre a las 20:00.</p></section>';
   return `<section class="enc-promo" aria-labelledby="t-enc"><div class="enc-promo-txt"><p class="enc-promo-k">Encuesta de pactómetro.es</p><h2 id="t-enc">¿A quién piensas votar el 29-N?</h2><p>Es anónima, se responde en un minuto y está abierta hasta el domingo 22 de noviembre a las 20:00. Te preguntamos tu provincia, tu intención de voto y, si quieres, lo que votaste el 23-J.</p></div><a class="btn lg btn-l" href="#encuesta">${encModo() === 'previa' ? 'Ver la encuesta' : 'Responder la encuesta'}</a></section>`;
 }
@@ -2207,7 +2197,7 @@ async function viewEncuesta(prueba){
 
 /* ================================================================ vista: aviso legal, privacidad y cookies */
 const LEGAL_FECHA = '22 de octubre de 2026';          // last change of the legal texts
-const ACTUALIZADO = '22 de noviembre de 2026', ACTUALIZADO_ISO = '2026-11-22';   // date of the last publication, set by scripts/build_dist.py
+const ACTUALIZADO = '24 de noviembre de 2026', ACTUALIZADO_ISO = '2026-11-24';   // date of the last publication, set by scripts/build_dist.py
 const LINKEDIN = 'https://www.linkedin.com/in/javier-pereiro-p%C3%A9rez-159763213/';
 const LEGAL_PAGS = [['aviso-legal', 'Aviso legal', 'Aviso legal'], ['privacidad', 'Privacidad', 'Política de privacidad'], ['cookies', 'Cookies', 'Política de cookies']];
 // What the site keeps in the browser (localStorage). Keep in sync with every store.set() in this file.
@@ -2342,7 +2332,7 @@ async function viewFuentes(){
       <li><b>Mapa electoral:</b> límites de municipios, provincias y comunidades del Equipamiento Geográfico de Referencia Nacional del <a href="https://www.ign.es/" target="_blank" rel="noopener">Instituto Geográfico Nacional</a> (© IGN, licencia CC BY 4.0), en la versión simplificada del proyecto <a href="https://github.com/martgnz/es-atlas" target="_blank" rel="noopener">es-atlas</a> de Martín González (licencia MIT), con Canarias desplazada junto a la península (proyección cónica conforme de d3-composite-projections). En cada lugar se colorea la candidatura con más escaños (y, si empatan, la más votada); el tono intenso indica que tiene más de la mitad. Las islas de Baleares y Canarias se dibujan uniendo sus municipios.</li>
       <li><b>Composición del Congreso al disolverse las Cortes (6-10-2026):</b> recopilada de fuentes públicas y prensa. No es un resultado electoral.</li>
       <li><b>Simulador del 29-N, encuesta del CIS:</b> estimación de voto y horquillas de escaños del <a href="https://www.cis.es/es/w/avance-de-resultados-del-estudio-3584-preelectoral-elecciones-generales-2026-" target="_blank" rel="noopener">estudio preelectoral de las elecciones generales 2026</a> del Centro de Investigaciones Sociológicas (estudio n.º 3584; trabajo de campo del 7 al 30 de octubre de 2026; 45.074 entrevistas; publicado el 12 de noviembre de 2026). El CIS da los escaños como horquillas (percentiles 5 y 95 de sus simulaciones), no como cifras exactas: los escaños de partida son un reparto central de pactómetro.es dentro de las horquillas provinciales y nacionales, con los escaños por provincia del Real Decreto 806/2026. No se muestra durante los cinco días anteriores a la votación ni el 29 de noviembre hasta el cierre de los colegios (art. 69.7 LOREG).</li>
-      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Su resultado agregado se publica como estimación orientativa.</li>
+      <li><b>Encuesta 29-N:</b> encuesta abierta de pactómetro.es, del 13 de octubre al domingo 22 de noviembre de 2026 a las 20:00 (hora peninsular). Responde quien quiere, así que no es representativa ni una estimación de voto. Su resultado agregado se publicó tras el cierre y se ha retirado del 24 al 28 de noviembre para respetar la ley electoral.</li>
     </ul>
     <h2>Cómo se calcula</h2>
     <ul>
